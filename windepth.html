@@ -1014,8 +1014,15 @@ footer{
   <div class="foot-right">vilasio.com</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e,i) => {
     if(e.isIntersecting){
-      setTimeout((
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
