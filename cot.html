@@ -814,11 +814,52 @@ function selectMarket(sym){
   updateScoreCard(sym);
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded",async ()=>{
   const now=new Date();
-  document.getElementById("last-update").textContent="Latest: "+now.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  document.getElementById("last-update").textContent="Loading real CFTC data...";
 
-  Object.keys(MARKETS).forEach(sym=>{allData[sym]=generateData(sym,104)});
+  // Show loading state
+  document.getElementById("score-card").style.opacity="0.4";
+
+  try {
+    const resp = await fetch("https://vilasio-cot-backend.onrender.com/cot/all?weeks=104");
+    if (!resp.ok) throw new Error('API error: '+resp.status);
+    const raw = await resp.json();
+
+    // Transform API response to allData format
+    Object.keys(raw).forEach(sym => {
+      const entries = raw[sym];
+      allData[sym] = {
+        labels: entries.map(e => e.date),
+        lsNet:  entries.map(e => e.ls_net),
+        cmNet:  entries.map(e => e.cm_net),
+        ssNet:  entries.map(e => e.ss_net),
+        oi:     entries.map(e => e.oi),
+        price:  entries.map((e,i) => 100 + i * 0.1), // price not in CFTC data
+      };
+    });
+
+    // Fill missing markets with empty data
+    Object.keys(MARKETS).forEach(sym => {
+      if (!allData[sym]) allData[sym] = {labels:[],lsNet:[],cmNet:[],ssNet:[],oi:[],price:[]};
+    });
+
+    // Find latest date across all markets
+    const dates = Object.values(allData).flatMap(d => d.labels);
+    const latestDate = dates.length ? dates.sort().slice(-1)[0] : null;
+    if (latestDate) {
+      const d = new Date(latestDate);
+      document.getElementById("last-update").textContent="Latest: "+d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+    }
+
+  } catch(e) {
+    console.error("[COT] API fetch failed:", e);
+    document.getElementById("last-update").textContent="CFTC data unavailable — showing demo data";
+    // Fallback to generated data
+    Object.keys(MARKETS).forEach(sym=>{allData[sym]=generateData(sym,104)});
+  }
+
+  document.getElementById("score-card").style.opacity="1";
 
   buildHeatmap();
   updateCharts("ES",chartWeeks);
