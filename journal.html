@@ -888,11 +888,12 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     drawTable(applyTableFilter(filteredTrades));
   });
 });
-const dropZone = document.getElementById('upload-drop');
-['dragover','dragenter'].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add('drag-over'); }));
-['dragleave','dragend'].forEach(ev => dropZone.addEventListener(ev, () => { dropZone.classList.remove('drag-over'); }));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault(); dropZone.classList.remove('drag-over');
+
+const dz = document.getElementById('upload-drop');
+['dragover','dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag-over'); }));
+['dragleave','dragend'].forEach(ev => dz.addEventListener(ev, () => { dz.classList.remove('drag-over'); }));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
   const file = e.dataTransfer.files[0]; if (!file) return;
   document.getElementById('nav-file-name').textContent = file.name;
   const reader = new FileReader();
