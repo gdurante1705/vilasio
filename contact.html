@@ -152,15 +152,17 @@ textarea.form-input{resize:vertical;min-height:120px}
   <div class="contact-form-wrap">
     <div class="cf-title">Send a message</div>
     <div class="cf-sub">Tell us what's on your mind. Be as specific as you like.</div>
-    <form id="contact-form">
+    <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact">
+      <input type="hidden" name="bot-field" style="display:none">
       <div class="form-row">
         <div class="form-field">
           <label class="form-label">Name</label>
-          <input type="text" class="form-input" placeholder="Your name" required>
+          <input type="text" class="form-input" placeholder="Your name" name="name" required>
         </div>
         <div class="form-field">
           <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="your@email.com" required>
+          <input type="email" class="form-input" placeholder="Your email" name="email" required>
         </div>
       </div>
       <div class="form-field">
@@ -176,7 +178,7 @@ textarea.form-input{resize:vertical;min-height:120px}
       </div>
       <div class="form-field">
         <label class="form-label">Message</label>
-        <textarea class="form-input" placeholder="Write your message here..."></textarea>
+        <textarea class="form-input" placeholder="Write your message here..." name="message"></textarea>
       </div>
       <button type="submit" class="form-submit">Send Message →</button>
       <div class="success-msg" id="success-msg">✓ Message sent. We'll be in touch soon.</div>
