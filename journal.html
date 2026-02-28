@@ -158,7 +158,9 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <span class="nav-page">Journal</span>
   </a>
   <div class="nav-right">
+    <span id="storage-info" style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted)"></span>
     <span class="nav-file-name" id="nav-file-name"></span>
+    <button onclick="if(confirm('Clear all saved trades?'))clearStorage()" style="font-size:11px;padding:5px 10px;background:none;border:1px solid var(--brd2);color:var(--muted);cursor:pointer;border-radius:5px;font-family:'Geist',sans-serif;transition:all .15s" onmouseover="this.style.color='var(--red)';this.style.borderColor='var(--red)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--brd2)'">Clear data</button>
     <label class="upload-btn" for="file-input">Import ATAS file</label>
     <input type="file" id="file-input" accept=".xlsx,.xls">
   </div>
@@ -176,6 +178,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
   </label>
   <p class="upload-note">All data stays in your browser — nothing is uploaded to any server.</p>
+  <div id="storage-badge" style="margin-top:16px;font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted);opacity:.7" id="upload-storage-info"></div>
 </div>
 
 <div class="dashboard" id="dashboard">
@@ -324,6 +327,71 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 
 <script>
 
+// ── LOCALSTORAGE PERSISTENCE ─────────────────────────────────────────────────
+const LS_KEY = 'windepth_trades_v1';
+
+function saveToStorage(trades) {
+  try {
+    // Serialize trades (dates → ISO strings)
+    const serialized = trades.map(t => ({
+      ...t,
+      openTime: t.openTime ? t.openTime.toISOString() : null,
+      closeTime: t.closeTime ? t.closeTime.toISOString() : null,
+    }));
+    localStorage.setItem(LS_KEY, JSON.stringify(serialized));
+  } catch(e) { console.warn('Storage save failed:', e); }
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return parsed.map(t => ({
+      ...t,
+      openTime: t.openTime ? new Date(t.openTime) : null,
+      closeTime: t.closeTime ? new Date(t.closeTime) : null,
+    }));
+  } catch(e) { console.warn('Storage load failed:', e); return []; }
+}
+
+function clearStorage() {
+  localStorage.removeItem(LS_KEY);
+  allTrades = [];
+  document.getElementById('upload-zone').style.display = 'flex';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('nav-file-name').textContent = '';
+  updateStorageInfo();
+}
+
+function mergeAndDeduplicate(existing, incoming) {
+  // Deduplicate by openTime + instrument + pnl fingerprint
+  const key = t => {
+    const d = t.openTime ? t.openTime.toISOString() : 'null';
+    return d + '|' + t.instrument + '|' + t.pnl.toFixed(2);
+  };
+  const seen = new Set(existing.map(key));
+  const newOnes = incoming.filter(t => !seen.has(key(t)));
+  return [...existing, ...newOnes].sort((a, b) => a.openTime - b.openTime);
+}
+
+function updateStorageInfo() {
+  const stored = loadFromStorage();
+  const infoEl = document.getElementById('storage-info');
+  if (!infoEl) return;
+  if (stored.length === 0) {
+    infoEl.textContent = 'No saved trades';
+  } else {
+    const dates = stored.filter(t => t.openTime).map(t => t.openTime);
+    const min = new Date(Math.min(...dates));
+    const max = new Date(Math.max(...dates));
+    infoEl.textContent = stored.length + ' trades saved · ' +
+      min.toLocaleDateString('en-GB', {day:'2-digit',month:'short'}) + ' – ' +
+      max.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
+  }
+}
+
+
 
 let allTrades = [];
 let filteredTrades = [];
@@ -342,9 +410,12 @@ document.getElementById('file-input').addEventListener('change', function(e) {
     const ws = wb.Sheets['Journal'];
     if (!ws) { alert('Sheet "Journal" not found. Please export the Journal tab from ATAS.'); return; }
     const rows = XLSX.utils.sheet_to_json(ws, {raw: false, defval: '', dateNF: 'dd.mm.yyyy hh:mm:ss'});
-    allTrades = parseTrades(rows);
-    console.log('Parsed trades:', allTrades.length, allTrades.slice(0,2));
-    console.log('Sample row:', rows[0]);
+    const newTrades = parseTrades(rows);
+    console.log('Parsed trades:', newTrades.length);
+    const existing = loadFromStorage();
+    allTrades = mergeAndDeduplicate(existing, newTrades);
+    saveToStorage(allTrades);
+    updateStorageInfo();
     document.getElementById('upload-zone').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     updateDashboard();
@@ -902,13 +973,29 @@ dz.addEventListener('drop', e => {
     const ws = wb.Sheets['Journal'];
     if (!ws) { alert('Sheet "Journal" not found.'); return; }
     const rows = XLSX.utils.sheet_to_json(ws, {raw:false, defval:'', dateNF:'dd.mm.yyyy hh:mm:ss'});
-    allTrades = parseTrades(rows);
+    const newTrades = parseTrades(rows);
+    const existing = loadFromStorage();
+    allTrades = mergeAndDeduplicate(existing, newTrades);
+    saveToStorage(allTrades);
+    updateStorageInfo();
     document.getElementById('upload-zone').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     updateDashboard();
   };
   reader.readAsArrayBuffer(file);
 });
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+(function init() {
+  updateStorageInfo();
+  const stored = loadFromStorage();
+  if (stored.length > 0) {
+    allTrades = stored;
+    document.getElementById('upload-zone').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    updateDashboard();
+  }
+})();
 </script>
 </body>
 </html>
