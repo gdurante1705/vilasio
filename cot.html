@@ -477,17 +477,25 @@ function generateMarketData(market, weeks) {
 }
 
 /* ═══════════════════════════════════════════
-   DATA LOADER
-   Replace this function with API call later:
-   async function loadData(market, weeks) {
-     const resp = await fetch(`https://cot-api.onrender.com/api/cot?market=${market}&weeks=${weeks}`);
-     return await resp.json();
-   }
+   DATA LOADER — Real API with mock fallback
    ═══════════════════════════════════════════ */
-function loadData(market, weeks) {
+const API_BASE = "https://cot-api.onrender.com"; // UPDATE THIS after Render deploy
+
+async function loadData(market, weeks) {
   const key = `${market}_${weeks}`;
-  if (!allData[key]) allData[key] = generateMarketData(market, weeks);
-  return allData[key];
+  if (allData[key]) return allData[key];
+
+  try {
+    const resp = await fetch(`${API_BASE}/api/cot?market=${market}&weeks=${weeks}`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    allData[key] = data;
+    return data;
+  } catch (e) {
+    console.warn(`API unavailable for ${market}, using mock data:`, e.message);
+    allData[key] = generateMarketData(market, weeks);
+    return allData[key];
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -510,13 +518,19 @@ function fmtK(n) {
 /* ═══════════════════════════════════════════
    HEATMAP
    ═══════════════════════════════════════════ */
-function renderHeatmap() {
+async function renderHeatmap() {
   const grid = document.getElementById("heatmap-grid");
   grid.innerHTML = "";
   const keys = Object.keys(MARKETS);
 
+  // Load all markets in parallel
+  const dataMap = {};
+  await Promise.all(keys.map(async key => {
+    dataMap[key] = await loadData(key, 26);
+  }));
+
   keys.forEach(key => {
-    const d = loadData(key, 26);
+    const d = dataMap[key];
     const lastNet = d.bpNet[d.bpNet.length - 1];
     const prevNet = d.bpNet[d.bpNet.length - 2];
     const chg = lastNet - prevNet;
@@ -535,28 +549,28 @@ function renderHeatmap() {
   });
 
   // Update badge
-  const d = loadData("ES", 26);
+  const d = dataMap["ES"] || dataMap[keys[0]];
   document.getElementById("update-badge").textContent = `REPORT: ${d.reportDate}`;
 }
 
 /* ═══════════════════════════════════════════
    SELECT MARKET
    ═══════════════════════════════════════════ */
-function selectMarket(market) {
+async function selectMarket(market) {
   currentMarket = market;
-  renderHeatmap();
-  renderDetail();
-  renderNetChart();
-  renderDualCharts();
-  renderZScore();
+  await renderHeatmap();
+  await renderDetail();
+  await renderNetChart();
+  await renderDualCharts();
+  await renderZScore();
 }
 
 /* ═══════════════════════════════════════════
    DETAIL SECTION (Positioning bars)
    ═══════════════════════════════════════════ */
-function renderDetail() {
+async function renderDetail() {
   const m = MARKETS[currentMarket];
-  const d = loadData(currentMarket, chartWeeks);
+  const d = await loadData(currentMarket, chartWeeks);
   const last = d.labels.length - 1;
   const prev = last - 1;
 
@@ -599,8 +613,8 @@ function renderDetail() {
 /* ═══════════════════════════════════════════
    NET POSITION CHART
    ═══════════════════════════════════════════ */
-function renderNetChart() {
-  const d = loadData(currentMarket, chartWeeks);
+async function renderNetChart() {
+  const d = await loadData(currentMarket, chartWeeks);
   const ctx = document.getElementById("netChart").getContext("2d");
   if (netChartInst) netChartInst.destroy();
 
@@ -677,8 +691,8 @@ function renderNetChart() {
 /* ═══════════════════════════════════════════
    DUAL CHARTS: OI + SPREAD
    ═══════════════════════════════════════════ */
-function renderDualCharts() {
-  const d = loadData(currentMarket, chartWeeks);
+async function renderDualCharts() {
+  const d = await loadData(currentMarket, chartWeeks);
   const last = d.labels.length - 1;
   const prev = last - 1;
 
@@ -773,8 +787,8 @@ function chartMiniOpts() {
 /* ═══════════════════════════════════════════
    Z-SCORE
    ═══════════════════════════════════════════ */
-function renderZScore() {
-  const d = loadData(currentMarket, 104); // 2 years
+async function renderZScore() {
+  const d = await loadData(currentMarket, 104); // 2 years
   const nets = d.bpNet;
   const mean = nets.reduce((a, v) => a + v, 0) / nets.length;
   const std = Math.sqrt(nets.reduce((a, v) => a + (v - mean) ** 2, 0) / nets.length);
@@ -885,13 +899,13 @@ function renderZScore() {
 /* ═══════════════════════════════════════════
    CORRELATIONS
    ═══════════════════════════════════════════ */
-function renderCorrelations() {
+async function renderCorrelations() {
   const grid = document.getElementById("corr-grid");
   grid.innerHTML = "";
 
-  CORRELATIONS.forEach(pair => {
-    const d1 = loadData(pair.a, 52);
-    const d2 = loadData(pair.b, 52);
+  for (const pair of CORRELATIONS) {
+    const d1 = await loadData(pair.a, 52);
+    const d2 = await loadData(pair.b, 52);
 
     // Pearson correlation on bpNet
     const n = Math.min(d1.bpNet.length, d2.bpNet.length);
@@ -918,22 +932,22 @@ function renderCorrelations() {
       <div class="corr-bar"><div class="corr-bar-fill" style="width:${absR * 100}%;background:${color}"></div></div>
     `;
     grid.appendChild(card);
-  });
+  }
 }
 
 /* ═══════════════════════════════════════════
    WEEK TOGGLES
    ═══════════════════════════════════════════ */
 document.querySelectorAll(".ch-tog").forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
     document.querySelectorAll(".ch-tog").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     chartWeeks = parseInt(btn.dataset.weeks);
     allData = {}; // Clear cache for new week range
-    renderDetail();
-    renderNetChart();
-    renderDualCharts();
-    renderZScore();
+    await renderDetail();
+    await renderNetChart();
+    await renderDualCharts();
+    await renderZScore();
   });
 });
 
@@ -948,13 +962,13 @@ document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 /* ═══════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════ */
-function init() {
-  renderHeatmap();
-  renderDetail();
-  renderNetChart();
-  renderDualCharts();
-  renderZScore();
-  renderCorrelations();
+async function init() {
+  await renderHeatmap();
+  await renderDetail();
+  await renderNetChart();
+  await renderDualCharts();
+  await renderZScore();
+  await renderCorrelations();
 }
 init();
 </script>
