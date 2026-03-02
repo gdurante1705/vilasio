@@ -243,7 +243,7 @@ footer{padding:48px 64px;border-top:1px solid var(--brd2);display:flex;flex-dire
     <!-- POSITIONING BARS -->
     <div class="pos-grid" id="pos-grid">
       <div class="pos-card" id="pc-bigplayers">
-        <div class="pc-label">Non-Commercial</div>
+        <div class="pc-label">Leveraged Funds</div>
         <div class="pc-name">Big Players</div>
         <div class="pc-row">
           <span class="pc-row-label">Long</span>
@@ -264,7 +264,7 @@ footer{padding:48px 64px;border-top:1px solid var(--brd2);display:flex;flex-dire
         </div>
       </div>
       <div class="pos-card" id="pc-dealers">
-        <div class="pc-label">Commercial</div>
+        <div class="pc-label">Dealer / Intermediary</div>
         <div class="pc-name">Dealers</div>
         <div class="pc-row">
           <span class="pc-row-label">Long</span>
@@ -304,8 +304,8 @@ footer{padding:48px 64px;border-top:1px solid var(--brd2);display:flex;flex-dire
       <div class="chart-canvas-wrap"><canvas id="netChart"></canvas></div>
     </div>
     <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Big Players (Non-Commercial)</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Dealers (Commercial)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Big Players (Leveraged / Managed Money)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Dealers (Commercial / Producer)</div>
     </div>
   </div>
 
@@ -479,7 +479,7 @@ function generateMarketData(market, weeks) {
 /* ═══════════════════════════════════════════
    DATA LOADER — Real API with mock fallback
    ═══════════════════════════════════════════ */
-const API_BASE = "https://cot-api.onrender.com"; // UPDATE THIS after Render deploy
+const API_BASE = "https://vilasio-cot-backend.onrender.com";
 
 async function loadData(market, weeks) {
   const key = `${market}_${weeks}`;
