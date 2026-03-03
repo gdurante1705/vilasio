@@ -42,6 +42,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:440px;margin-top:6px}
 .update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
 /* HEATMAP grouped */
+.hm-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px 0;user-select:none}
+.hm-toggle-left{display:flex;align-items:center;gap:8px}
+.hm-toggle-label{font-family:"Syne",sans-serif;font-size:14px;font-weight:700}
+.hm-toggle-count{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;color:var(--gray2)}
+.hm-toggle-arrow{font-family:"DM Mono",monospace;font-size:10px;color:var(--gray2);transition:transform .3s}
+.hm-toggle-arrow.open{transform:rotate(180deg)}
+.hm-content{overflow:hidden;transition:max-height .4s ease;max-height:2000px}
+.hm-content.collapsed{max-height:0}
 .hm-group{margin-bottom:8px}
 .hm-group-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);padding:6px 0 4px;display:flex;align-items:center;gap:8px}
 .hm-group-label::after{content:"";flex:1;height:1px;background:var(--brd2)}
@@ -52,7 +60,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hm-cell:hover{border-color:rgba(200,168,75,0.3);transform:translateY(-1px)}
 .hm-cell.active{border-color:var(--gold);background:var(--surf2)}
 .hmc-sym{font-family:"Syne",sans-serif;font-size:12px;font-weight:700;margin-bottom:1px}
-.hmc-name{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--gray);text-transform:uppercase;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmc-name{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--gray3);text-transform:uppercase;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hmc-net{font-family:"DM Mono",monospace;font-size:9px;font-weight:500}
 .hmc-net.pos{color:var(--grn)}.hmc-net.neg{color:var(--red)}
 .hmc-chg{font-family:"DM Mono",monospace;font-size:7px;margin-top:2px}
@@ -73,9 +81,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .flow-cat{display:flex;align-items:center;gap:8px}
 .flow-cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .flow-cat-name{font-family:"Syne",sans-serif;font-size:11px;font-weight:700}
-.flow-cat-mkts{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--gray);margin-top:1px}
+.flow-cat-mkts{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--gray3);margin-top:1px}
 .flow-bar-area{position:relative;height:24px;display:flex;align-items:center}
-.flow-bar-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:1px;background:var(--brd2)}
+.flow-bar-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:1px;background:var(--brd3)}
 .flow-bar-center{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.08)}
 .flow-bar{position:absolute;top:3px;bottom:3px;border-radius:3px;transition:width 0.6s ease,left 0.6s ease}
 .flow-bar.pos{background:linear-gradient(90deg,rgba(34,197,94,0.15),rgba(34,197,94,0.5))}
@@ -84,11 +92,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .flow-val.pos{color:var(--grn)}.flow-val.neg{color:var(--red)}.flow-val.flat{color:var(--gray)}
 .flow-axis{display:grid;grid-template-columns:100px 1fr 70px;gap:12px;padding:4px 0 0;border-top:1px solid var(--brd2);margin-top:4px}
 .flow-axis-bar{position:relative;height:14px}
-.flow-axis-label{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);position:absolute;top:0}
+.flow-axis-label{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3);position:absolute;top:0}
 .flow-axis-label.left{left:0}.flow-axis-label.center{left:50%;transform:translateX(-50%)}.flow-axis-label.right{right:0}
 .flow-narrative{padding:14px 28px;border-top:1px solid var(--brd);font-size:12px;color:var(--gray2);line-height:1.7}
 .flow-narrative strong{color:var(--white);font-weight:500}
-.flow-footer{padding:10px 28px;border-top:1px solid var(--brd);display:flex;gap:20px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
+.flow-views{display:flex;gap:3px;margin-left:12px}
+.flow-view-btn{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;background:none;border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;transition:all .2s}
+.flow-view-btn:hover{color:var(--white);border-color:var(--brd3)}
+.flow-view-btn.active{background:var(--white);color:var(--bg);border-color:var(--white)}
+.flow-radial-wrap{position:relative;height:340px;padding:20px 28px;display:none}
+.flow-radial-wrap.active{display:block}
+.flow-body.hidden{display:none}
+.flow-footer{padding:10px 28px;border-top:1px solid var(--brd);display:flex;gap:20px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
 .flow-foot-item{display:flex;align-items:center;gap:5px}
 .flow-foot-dot{width:7px;height:3px;border-radius:1px}
 /* DETAIL + CHARTS (unchanged) */
@@ -189,9 +204,9 @@ footer{padding:36px 48px;border-top:1px solid var(--brd2);display:flex;flex-dire
 </head>
 <body>
 <nav><a class="nav-brand" href="index.html"><img class="nav-logo" src="logo.png" alt="V"><span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">COT Intelligence</span></a><div class="nav-right"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="windepth.html">WinDepth</a><a class="nav-btn" href="windepth.html#beta">Get Beta</a></div></nav>
-<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div class="update-badge" id="update-badge">REPORT: loading...</div></div><div id="heatmap-area"></div></section>
+<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div class="update-badge" id="update-badge">REPORT: loading...</div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div id="heatmap-area"></div></div></section>
 <!-- FLOW MAP -->
-<section class="flow-section reveal"><div class="flow-card"><div class="flow-header"><div><div class="flow-title">Capital Flow Map</div><div class="flow-sub">Institutional positioning shifts &#183; week over week</div></div><div class="flow-regime" id="flow-regime">LOADING</div></div><div class="flow-body" id="flow-body"></div><div class="flow-narrative" id="flow-narrative"></div><div class="flow-footer"><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--grn)"></div> Inflow (BP net increasing)</div><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--red)"></div> Outflow (BP net decreasing)</div></div></div></section>
+<section class="flow-section reveal"><div class="flow-card"><div class="flow-header"><div><div class="flow-title">Capital Flow Map</div><div class="flow-sub">Institutional positioning shifts &#183; week over week</div></div><div style="display:flex;align-items:center"><div class="flow-views"><button class="flow-view-btn active" id="fv-bars" onclick="setFlowView('bars')">Bars</button><button class="flow-view-btn" id="fv-radial" onclick="setFlowView('radial')">Radial</button></div><div class="flow-regime" id="flow-regime" style="margin-left:12px">LOADING</div></div></div><div class="flow-body" id="flow-body"></div><div class="flow-radial-wrap" id="flow-radial-wrap"><canvas id="flowRadial"></canvas></div><div class="flow-narrative" id="flow-narrative"></div><div class="flow-footer"><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--grn)"></div> Inflow (BP net increasing)</div><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--red)"></div> Outflow (BP net decreasing)</div></div></div></section>
 <main>
 <div class="detail-section reveal" id="detail-section"><div class="detail-header"><div><div class="dh-market" id="dh-market">E-Mini S&#38;P 500</div><div class="dh-exchange" id="dh-exchange">CME</div></div><div class="dh-right"><div class="dh-date-label">Report Date</div><div class="dh-date" id="dh-date">&#8212;</div></div></div>
 <div class="release-section"><div class="release-header"><div class="rel-title">Latest Release</div><div class="rel-badge" id="rel-badge">&#8212;</div></div><div class="release-grid"><div class="rel-col"><div class="rel-col-label">Non-Commercial &#8212; Big Players</div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-long-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-short-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-bp-net">&#8212;</span><span class="rel-net-chg" id="rel-bp-net-chg">&#8212;</span></div></div></div>
@@ -255,7 +270,7 @@ function rHM(){
       });
       grp.appendChild(grid);area.appendChild(grp);
     });
-    if(mkts.length)document.getElementById("update-badge").textContent="REPORT: "+mkts[0].reportDate;
+    if(mkts.length){document.getElementById("update-badge").textContent="REPORT: "+mkts[0].reportDate;document.getElementById("hm-count").textContent=mkts.length+" MARKETS"}
   }).catch(function(e){console.warn("Summary fail:",e)});
 }
 
@@ -293,6 +308,9 @@ function rFlow(){
       else nr+="Pattern reads as <strong>rotation</strong>: no clear risk-on/off signal. Capital is being reallocated across sectors.";
     }
     document.getElementById("flow-narrative").innerHTML=nr;
+    // Store for radial
+    var rd={cats:{},order:order};order.forEach(function(cat){rd.cats[cat]=cats[cat]?cats[cat].bpNetChg:0});flowData=rd;
+    if(flowView==="radial")drawRadial(rd);
   }).catch(function(e){console.warn("Flow fail:",e)});
 }
 
@@ -332,8 +350,89 @@ function rZS(){return lD(cm,104).then(function(d){var nets=d.bpNet,n=nets.length
   var tagColor=tagCl==="bull"?"var(--grn)":tagCl==="bear"?"var(--red)":"var(--gray2)";
   interp.innerHTML='<span class="tag" style="background:'+tagBg+';color:'+tagColor+'">'+tag+'</span> '+txt;
   var zSc=nets.map(function(v,i){if(i<26)return null;var sl=nets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});var ctx=document.getElementById("zsChart").getContext("2d");if(zC)zC.destroy();var gr=ctx.createLinearGradient(0,0,0,ctx.canvas.parentElement.clientHeight||220);gr.addColorStop(0,"rgba(34,197,94,0.10)");gr.addColorStop(0.5,"rgba(255,255,255,0)");gr.addColorStop(1,"rgba(239,68,68,0.10)");var zsds=[{data:zSc,borderColor:BC,backgroundColor:gr,borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:true,tension:0.3,spanGaps:true,yAxisID:"y"},{data:d.labels.map(function(){return 2}),borderColor:"rgba(34,197,94,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"},{data:d.labels.map(function(){return -2}),borderColor:"rgba(239,68,68,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"},{data:d.labels.map(function(){return 0}),borderColor:"rgba(255,255,255,0.08)",borderWidth:1,pointRadius:0,fill:false,yAxisID:"y"}];var zsSc2={x:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},maxTicksLimit:10}},y:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},stepSize:1},suggestedMin:-3.5,suggestedMax:3.5}};if(pOn.zs&&d.dailyDates&&d.dailyDates.length){var pMap={};d.dailyDates.forEach(function(dt,i){pMap[dt]=d.dailyPrice[i]});var pp=d.labels.map(function(dt){return pMap[dt]!==undefined?pMap[dt]:null});zsds.push({label:"Price",data:pp,borderColor:"rgba(192,196,208,0.55)",borderWidth:1.5,borderDash:[4,2],pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});Object.assign(zsSc2,pAx())}zC=new Chart(ctx,{type:"line",data:{labels:d.labels,datasets:zsds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,bodyFont:{family:"DM Mono",size:10},filter:function(it){return it.datasetIndex===0||(it.dataset.yAxisID==="yP")},callbacks:{label:function(c){var p=pTip(c);if(p)return p;return"Z: "+(c.parsed.y!=null?c.parsed.y.toFixed(2):"--")}}}},scales:zsSc2}})})}
+/* Toggle heatmap */
+var hmOpen=true;
+function toggleHM(){hmOpen=!hmOpen;document.getElementById("hm-content").classList.toggle("collapsed",!hmOpen);document.getElementById("hm-arrow").classList.toggle("open",hmOpen)}
+
+/* Flow view toggle */
+var flowView="bars",flowData=null;
+function setFlowView(v){flowView=v;document.getElementById("fv-bars").classList.toggle("active",v==="bars");document.getElementById("fv-radial").classList.toggle("active",v==="radial");document.getElementById("flow-body").classList.toggle("hidden",v==="radial");var rw=document.getElementById("flow-radial-wrap");rw.classList.toggle("active",v==="radial");if(v==="radial"&&flowData)drawRadial(flowData)}
+
+/* Radial visualization */
+function drawRadial(data){
+  var cv=document.getElementById("flowRadial"),wr=cv.parentElement,rc=wr.getBoundingClientRect();
+  var dp=window.devicePixelRatio||1;
+  cv.width=rc.width*dp;cv.height=rc.height*dp;
+  cv.style.width=rc.width+"px";cv.style.height=rc.height+"px";
+  var c=cv.getContext("2d");c.scale(dp,dp);
+  var W=rc.width,H=rc.height,cx=W/2,cy=H/2,R=Math.min(W,H)*0.36;
+  var cats=data.cats,order=data.order;
+  var n=order.length,mx=0;
+  order.forEach(function(cat){mx=Math.max(mx,Math.abs(cats[cat]||0))});
+  if(mx===0)mx=1;
+  // Draw nodes in circle
+  var nodes=[];
+  order.forEach(function(cat,i){
+    var angle=(i/n)*Math.PI*2-Math.PI/2;
+    var x=cx+Math.cos(angle)*R,y=cy+Math.sin(angle)*R;
+    var val=cats[cat]||0;
+    var sz=14+Math.abs(val)/mx*20;
+    nodes.push({cat:cat,x:x,y:y,val:val,sz:sz,angle:angle});
+  });
+  // Draw arcs between categories with positive correlation (both in or both out)
+  for(var i=0;i<nodes.length;i++){
+    for(var j=i+1;j<nodes.length;j++){
+      var a=nodes[i],b=nodes[j];
+      if((a.val>0&&b.val>0)||(a.val<0&&b.val<0)){
+        var strength=Math.min(Math.abs(a.val),Math.abs(b.val))/mx;
+        c.beginPath();
+        c.moveTo(a.x,a.y);
+        // Bezier through center
+        var midX=cx+(a.x+b.x-2*cx)*0.15,midY=cy+(a.y+b.y-2*cy)*0.15;
+        c.quadraticCurveTo(midX,midY,b.x,b.y);
+        c.strokeStyle=a.val>0?"rgba(34,197,94,"+(0.08+strength*0.2)+")":"rgba(239,68,68,"+(0.08+strength*0.2)+")";
+        c.lineWidth=1+strength*3;
+        c.stroke();
+      }
+    }
+  }
+  // Draw nodes
+  nodes.forEach(function(nd){
+    var col=CC[nd.cat]||"#888";
+    // Glow
+    var grd=c.createRadialGradient(nd.x,nd.y,0,nd.x,nd.y,nd.sz*1.5);
+    grd.addColorStop(0,nd.val>0?"rgba(34,197,94,0.15)":nd.val<0?"rgba(239,68,68,0.15)":"rgba(255,255,255,0.05)");
+    grd.addColorStop(1,"rgba(0,0,0,0)");
+    c.fillStyle=grd;c.beginPath();c.arc(nd.x,nd.y,nd.sz*1.5,0,Math.PI*2);c.fill();
+    // Circle
+    c.beginPath();c.arc(nd.x,nd.y,nd.sz,0,Math.PI*2);
+    c.fillStyle=nd.val>0?"rgba(34,197,94,0.2)":nd.val<0?"rgba(239,68,68,0.2)":"rgba(255,255,255,0.08)";
+    c.fill();
+    c.strokeStyle=col;c.lineWidth=2;c.stroke();
+    // Ring for magnitude
+    c.beginPath();c.arc(nd.x,nd.y,nd.sz,0,Math.PI*2);
+    c.strokeStyle=nd.val>0?"rgba(34,197,94,0.6)":"rgba(239,68,68,0.6)";
+    c.lineWidth=2+Math.abs(nd.val)/mx*3;c.stroke();
+    // Label
+    var lx=nd.x,ly=nd.y-nd.sz-10;
+    if(nd.angle>Math.PI*0.25&&nd.angle<Math.PI*0.75)ly=nd.y+nd.sz+14;
+    c.fillStyle="#f0f1f5";c.font="700 11px Syne";c.textAlign="center";c.textBaseline="middle";
+    c.fillText(nd.cat,lx,ly);
+    // Value inside node
+    c.fillStyle=nd.val>0?"#22c55e":nd.val<0?"#ef4444":"#8a90a0";
+    c.font="500 9px 'DM Mono'";
+    c.fillText((nd.val>=0?"+":"")+fK(nd.val),nd.x,nd.y);
+  });
+  // Center regime
+  c.fillStyle="rgba(255,255,255,0.04)";
+  c.beginPath();c.arc(cx,cy,28,0,Math.PI*2);c.fill();
+  c.fillStyle="#8a90a0";c.font="500 7px 'DM Mono'";c.textAlign="center";c.textBaseline="middle";
+  c.fillText("FLOW",cx,cy-5);c.fillText("MAP",cx,cy+5);
+}
+
 document.querySelectorAll(".ch-tog").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".ch-tog").forEach(function(x){x.classList.remove("active")});b.classList.add("active");cw=parseInt(b.dataset.weeks);aD={};rDet().then(rRel).then(rNet).then(rDual).then(rZS)})});
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
+window.addEventListener("resize",function(){if(flowView==="radial"&&flowData)drawRadial(flowData)});
 /* INIT: load heatmap + flow, then detail for default market */
 rHM().then(function(){return rFlow()}).then(rDet).then(rRel).then(rNet).then(rDual).then(rZS);
 </script>
