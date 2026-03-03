@@ -343,6 +343,8 @@ function rFlow(){
     // Store for sankey
     var rd={cats:{},order:order,mkts:{},links:resp.flowLinks||[]};order.forEach(function(cat){rd.cats[cat]=cats[cat]?cats[cat].bpNetChg:0;rd.mkts[cat]=cats[cat]?cats[cat].markets:[]});flowData=rd;
     if(flowView==="sankey")drawSankey(rd);
+    // Re-open drill if it was open
+    if(drillCat&&rd.mkts[drillCat])openDrill(drillCat);
   }).catch(function(e){console.warn("Flow fail:",e)});
 }
 
@@ -390,7 +392,7 @@ var hmOpen=true;
 function toggleHM(){hmOpen=!hmOpen;document.getElementById("hm-content").classList.toggle("collapsed",!hmOpen);document.getElementById("hm-arrow").classList.toggle("open",hmOpen)}
 
 /* Flow view toggle */
-var flowView="bars",flowData=null,flowWeeks=1;
+var flowView="bars",flowData=null,flowWeeks=1,drillCat=null;
 function setFlowView(v){flowView=v;document.getElementById("fv-bars").classList.toggle("active",v==="bars");document.getElementById("fv-sankey").classList.toggle("active",v==="sankey");document.getElementById("flow-body").classList.toggle("hidden",v==="sankey");var rw=document.getElementById("flow-sankey-wrap");rw.classList.toggle("active",v==="sankey");document.getElementById("flow-sankey-summary").style.display=v==="sankey"?"flex":"none";closeDrill();if(v==="sankey"&&flowData)drawSankey(flowData)}
 
 /* Sankey Flow Diagram - sector colored */
@@ -434,16 +436,16 @@ function drawSankey(data){
   sankeyNodes=Object.assign({},sNodes,dNodes);
   // Filter to top flows only (skip tiny ones)
   var topLinks=links.slice().sort(function(a,b){return b.value-a.value}).slice(0,5);
+  var maxFlow=topLinks.length?topLinks[0].value:1;
   if(topLinks.length){
     topLinks.forEach(function(lk){
       var sn=sNodes[lk.from],dn=dNodes[lk.to];
       if(!sn||!dn||lk.value<=0)return;
-      var fhSrc=(lk.value/sn.val)*sn.h;
-      var fhDst=(lk.value/dn.val)*dn.h;
-      fhSrc=Math.max(3,fhSrc);fhDst=Math.max(3,fhDst);
-      var sy1=sn.y+sn._off,sy2=sy1+fhSrc;
-      var dy1=dn.y+dn._off,dy2=dy1+fhDst;
-      sn._off+=fhSrc;dn._off+=fhDst;
+      // Flow height proportional to value globally, min 4px max 24px
+      var fh=Math.max(4,Math.min(24,(lk.value/maxFlow)*24));
+      var sy1=sn.y+sn._off,sy2=sy1+fh;
+      var dy1=dn.y+dn._off,dy2=dy1+fh;
+      sn._off+=fh+1;dn._off+=fh+1;
       var mx=(sn.x+sn.w+dn.x)/2;
       var col=CC[lk.from]||"#888";
       var grd=c.createLinearGradient(sn.x+sn.w,0,dn.x,0);
@@ -497,6 +499,7 @@ document.getElementById("flowSankey").addEventListener("click",function(e){
   if(clicked)openDrill(clicked);
 });
 function openDrill(cat){
+  drillCat=cat;
   var el=document.getElementById("flow-drill");el.classList.add("active");
   document.getElementById("fd-title").innerHTML='<span style="color:'+(CC[cat]||"#fff")+'">'+cat+'</span> — Asset Breakdown';
   var body=document.getElementById("fd-body");body.innerHTML="";
@@ -514,7 +517,7 @@ function openDrill(cat){
   });
   el.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
-function closeDrill(){document.getElementById("flow-drill").classList.remove("active")}
+function closeDrill(){drillCat=null;document.getElementById("flow-drill").classList.remove("active")}
 /* Sticky sidebar */
 function stickyScroll(dir){var s=document.getElementById("sticky-scroll");s.scrollBy({top:dir*120,behavior:"smooth"})}
 function buildStickyBar(){
