@@ -104,6 +104,24 @@ nav{position:fixed;top:0;left:54px;right:0;z-index:100;display:flex;align-items:
 .flow-sankey-wrap.active{display:block}
 .flow-body.hidden{display:none}
 .flow-week-toggles{display:flex;gap:3px;margin-left:12px}
+.flow-sankey-summary{padding:12px 28px;border-top:1px solid var(--brd);display:none;flex-wrap:wrap;gap:10px;font-family:"DM Mono",monospace;font-size:8px;color:var(--gray3)}
+.fss-item{display:flex;align-items:center;gap:5px}
+.fss-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.fss-arrow{color:var(--gray);margin:0 2px}
+.flow-drill{padding:16px 28px;border-top:1px solid var(--brd);display:none}
+.flow-drill.active{display:block}
+.flow-drill-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.flow-drill-title{font-family:"Syne",sans-serif;font-size:13px;font-weight:700}
+.flow-drill-close{font-family:"DM Mono",monospace;font-size:8px;color:var(--gray2);cursor:pointer;padding:3px 8px;border:1px solid var(--brd2);transition:all .2s}
+.flow-drill-close:hover{color:var(--white);border-color:var(--brd3)}
+.flow-drill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:3px}
+.fd-item{background:var(--surf2);border:1px solid var(--brd2);padding:10px 12px;position:relative;overflow:hidden}
+.fd-item::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.fd-item.up::before{background:var(--grn)}.fd-item.dn::before{background:var(--red)}
+.fd-sym{font-family:"Syne",sans-serif;font-size:12px;font-weight:700}
+.fd-name{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--gray3);text-transform:uppercase;margin-top:1px}
+.fd-val{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;margin-top:4px}
+.fd-val.pos{color:var(--grn)}.fd-val.neg{color:var(--red)}
 .flow-footer{padding:10px 28px;border-top:1px solid var(--brd);display:flex;gap:20px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
 .flow-foot-item{display:flex;align-items:center;gap:5px}
 .flow-foot-dot{width:7px;height:3px;border-radius:1px}
@@ -203,20 +221,20 @@ footer{padding:36px 48px 36px 102px;border-top:1px solid var(--brd2);display:fle
 /* Sticky bottom asset selector */
 /* Sticky left asset sidebar */
 .sticky-bar{position:fixed;top:60px;left:0;bottom:0;z-index:98;width:54px;background:rgba(10,10,16,0.97);backdrop-filter:blur(16px);border-right:1px solid var(--brd2);display:flex;flex-direction:column;align-items:center;padding:0}
-.sticky-arrow{width:100%;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray2);transition:color .2s;flex-shrink:0;background:rgba(10,10,16,0.98)}
+.sticky-arrow{width:100%;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray3);transition:color .2s;flex-shrink:0;background:rgba(10,10,16,0.98)}
 .sticky-arrow.top{border-bottom:1px solid var(--brd)}
 .sticky-arrow.bot{border-top:1px solid var(--brd)}
 .sticky-arrow:hover{color:var(--white)}
 .sticky-scroll{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1;scrollbar-width:none;-ms-overflow-style:none;padding:4px 5px;width:100%;align-items:center}
 .sticky-scroll::-webkit-scrollbar{display:none}
-.sticky-pill{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:0.5px;padding:5px 2px;background:var(--surf2);border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;white-space:nowrap;transition:all .2s;width:44px;text-align:center;line-height:1.2}
+.sticky-pill{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:0.5px;padding:5px 2px;background:var(--surf2);border:1px solid var(--brd2);color:var(--white);cursor:pointer;white-space:nowrap;transition:all .2s;width:44px;text-align:center;line-height:1.2}
 .sticky-pill:hover{color:var(--white);border-color:var(--brd3)}
 .sticky-pill.active{background:var(--white);color:var(--bg);border-color:var(--white)}
 .sticky-pill .sp-sym{display:block;font-weight:500;font-size:8px}
 .sticky-pill .sp-chg{display:block;font-size:5px;margin-top:1px}
 .sticky-pill .sp-chg.up{color:var(--grn)}.sticky-pill .sp-chg.dn{color:var(--red)}
 .sticky-pill.active .sp-chg.up{color:#166534}.sticky-pill.active .sp-chg.dn{color:#991b1b}
-.sticky-cat-sep{font-family:"DM Mono",monospace;font-size:5px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);padding:3px 0 1px;width:44px;text-align:center;border-top:1px solid var(--brd2);margin-top:2px}
+.sticky-cat-sep{font-family:"DM Mono",monospace;font-size:5px;letter-spacing:1px;text-transform:uppercase;color:var(--gray3);padding:3px 0 1px;width:44px;text-align:center;border-top:1px solid var(--brd2);margin-top:2px}
 @media(max-width:768px){.sticky-bar{display:none}nav{left:0;padding:12px 16px}.hero{padding:76px 16px 16px 16px}main{padding:0 16px 40px 16px}.flow-section{padding:0 16px}.release-grid{grid-template-columns:1fr}.rel-summary{grid-template-columns:repeat(2,1fr)}.dual-charts{grid-template-columns:1fr}.zs-top{flex-direction:column}.zs-info{width:100%;border-right:none;border-bottom:1px solid var(--brd)}.detail-header{flex-direction:column;gap:8px}footer{padding:24px 16px}}
 </style>
 </head>
@@ -224,7 +242,7 @@ footer{padding:36px 48px 36px 102px;border-top:1px solid var(--brd2);display:fle
 <nav><a class="nav-brand" href="index.html"><img class="nav-logo" src="logo.png" alt="V"><span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">COT Intelligence</span></a><div class="nav-right"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="windepth.html">WinDepth</a><a class="nav-btn" href="windepth.html#beta">Get Beta</a></div></nav>
 <section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div class="update-badge" id="update-badge">REPORT: loading...</div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div id="heatmap-area"></div></div></section>
 <!-- FLOW MAP -->
-<section class="flow-section reveal"><div class="flow-card"><div class="flow-header"><div><div class="flow-title">Capital Flow Map</div><div class="flow-sub">Institutional positioning shifts</div></div><div style="display:flex;align-items:center"><div class="flow-week-toggles"><button class="ch-tog active flow-wk" data-fwk="1">1W</button><button class="ch-tog flow-wk" data-fwk="4">4W</button><button class="ch-tog flow-wk" data-fwk="12">12W</button></div><div class="flow-views"><button class="flow-view-btn active" id="fv-bars" onclick="setFlowView('bars')">Bars</button><button class="flow-view-btn" id="fv-sankey" onclick="setFlowView('sankey')">Sankey</button></div><div class="flow-regime" id="flow-regime" style="margin-left:12px">LOADING</div></div></div><div class="flow-body" id="flow-body"></div><div class="flow-sankey-wrap" id="flow-sankey-wrap"><canvas id="flowSankey"></canvas></div><div class="flow-narrative" id="flow-narrative"></div><div class="flow-footer"><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--grn)"></div> Inflow (BP net increasing)</div><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--red)"></div> Outflow (BP net decreasing)</div></div></div></section>
+<section class="flow-section reveal"><div class="flow-card"><div class="flow-header"><div><div class="flow-title">Capital Flow Map</div><div class="flow-sub">Institutional positioning shifts</div></div><div style="display:flex;align-items:center"><div class="flow-week-toggles"><button class="ch-tog active flow-wk" data-fwk="1">1W</button><button class="ch-tog flow-wk" data-fwk="4">4W</button><button class="ch-tog flow-wk" data-fwk="12">12W</button></div><div class="flow-views"><button class="flow-view-btn active" id="fv-bars" onclick="setFlowView('bars')">Bars</button><button class="flow-view-btn" id="fv-sankey" onclick="setFlowView('sankey')">Sankey</button></div><div class="flow-regime" id="flow-regime" style="margin-left:12px">LOADING</div></div></div><div class="flow-body" id="flow-body"></div><div class="flow-sankey-wrap" id="flow-sankey-wrap"><canvas id="flowSankey"></canvas></div><div class="flow-sankey-summary" id="flow-sankey-summary"></div><div class="flow-drill" id="flow-drill"><div class="flow-drill-header"><div class="flow-drill-title" id="fd-title"></div><div class="flow-drill-close" onclick="closeDrill()">CLOSE</div></div><div class="flow-drill-grid" id="fd-grid"></div></div><div class="flow-narrative" id="flow-narrative"></div><div class="flow-footer"><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--grn)"></div> Inflow (BP net increasing)</div><div class="flow-foot-item"><div class="flow-foot-dot" style="background:var(--red)"></div> Outflow (BP net decreasing)</div></div></div></section>
 <main>
 <div class="detail-section reveal" id="detail-section"><div class="detail-header"><div><div class="dh-market" id="dh-market">E-Mini S&#38;P 500</div><div class="dh-exchange" id="dh-exchange">CME</div></div><div class="dh-right"><div class="dh-date-label">Report Date</div><div class="dh-date" id="dh-date">&#8212;</div></div></div>
 <div class="release-section"><div class="release-header"><div class="rel-title">Latest Release</div><div class="rel-badge" id="rel-badge">&#8212;</div></div><div class="release-grid"><div class="rel-col"><div class="rel-col-label">Non-Commercial &#8212; Big Players</div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-long-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-short-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-bp-net">&#8212;</span><span class="rel-net-chg" id="rel-bp-net-chg">&#8212;</span></div></div></div>
@@ -301,7 +319,7 @@ function rFlow(){
     var body=document.getElementById("flow-body");body.innerHTML="";
     // Build sorted array
     var arr=[];order.forEach(function(cat){if(cats[cat])arr.push({cat:cat,val:cats[cat].bpNetChg,mkts:cats[cat].markets||[]})});
-    arr.sort(function(a,b){return Math.abs(b.val)-Math.abs(a.val)});
+    // Fixed order - no sorting
     var mx=0;arr.forEach(function(a){mx=Math.max(mx,Math.abs(a.val))});if(mx===0)mx=1;
     arr.forEach(function(a){
       var pct=Math.abs(a.val)/mx*48,isPos=a.val>=0;
@@ -379,9 +397,10 @@ function toggleHM(){hmOpen=!hmOpen;document.getElementById("hm-content").classLi
 
 /* Flow view toggle */
 var flowView="bars",flowData=null,flowWeeks=1;
-function setFlowView(v){flowView=v;document.getElementById("fv-bars").classList.toggle("active",v==="bars");document.getElementById("fv-sankey").classList.toggle("active",v==="sankey");document.getElementById("flow-body").classList.toggle("hidden",v==="sankey");var rw=document.getElementById("flow-sankey-wrap");rw.classList.toggle("active",v==="sankey");if(v==="sankey"&&flowData)drawSankey(flowData)}
+function setFlowView(v){flowView=v;document.getElementById("fv-bars").classList.toggle("active",v==="bars");document.getElementById("fv-sankey").classList.toggle("active",v==="sankey");document.getElementById("flow-body").classList.toggle("hidden",v==="sankey");var rw=document.getElementById("flow-sankey-wrap");rw.classList.toggle("active",v==="sankey");document.getElementById("flow-sankey-summary").style.display=v==="sankey"?"flex":"none";closeDrill();if(v==="sankey"&&flowData)drawSankey(flowData)}
 
-/* Sankey Flow Diagram */
+/* Sankey Flow Diagram - sector colored */
+var sankeyNodes={};
 function drawSankey(data){
   var cv=document.getElementById("flowSankey"),wr=cv.parentElement,rc=wr.getBoundingClientRect();
   var dp=window.devicePixelRatio||1;
@@ -390,7 +409,6 @@ function drawSankey(data){
   var c=cv.getContext("2d");c.scale(dp,dp);
   var W=rc.width,H=rc.height;
   var cats=data.cats,order=data.order,links=data.links||[];
-  // Separate sources (outflow) and destinations (inflow)
   var sources=[],dests=[];
   order.forEach(function(cat){
     var v=cats[cat]||0;
@@ -401,25 +419,25 @@ function drawSankey(data){
   dests.sort(function(a,b){return b.val-a.val});
   if(!sources.length||!dests.length){
     c.fillStyle="#8a90a0";c.font="500 12px 'DM Mono'";c.textAlign="center";
-    c.fillText("No clear directional flows this period",W/2,H/2);return;
+    c.fillText("No clear directional flows this period",W/2,H/2);
+    document.getElementById("flow-sankey-summary").innerHTML="";return;
   }
   var totalOut=sources.reduce(function(a,s){return a+s.val},0);
   var totalIn=dests.reduce(function(a,d){return a+d.val},0);
   var maxTotal=Math.max(totalOut,totalIn);
   var LX=100,RX=W-100,padT=30,padB=20,usableH=H-padT-padB;
-  // Layout source nodes (left)
   var sNodes={},sy=padT;
   sources.forEach(function(s){
     var h=Math.max(22,(s.val/maxTotal)*usableH);
-    sNodes[s.cat]={cat:s.cat,val:s.val,x:LX,y:sy,w:14,h:h,_off:0};sy+=h+6;
+    sNodes[s.cat]={cat:s.cat,val:s.val,x:LX,y:sy,w:14,h:h,_off:0,side:"left"};sy+=h+6;
   });
-  // Layout dest nodes (right)
   var dNodes={},dy=padT;
   dests.forEach(function(d){
     var h=Math.max(22,(d.val/maxTotal)*usableH);
-    dNodes[d.cat]={cat:d.cat,val:d.val,x:RX-14,y:dy,w:14,h:h,_off:0};dy+=h+6;
+    dNodes[d.cat]={cat:d.cat,val:d.val,x:RX-14,y:dy,w:14,h:h,_off:0,side:"right"};dy+=h+6;
   });
-  // Draw flows using real links
+  sankeyNodes=Object.assign({},sNodes,dNodes);
+  // Draw flows using source sector color
   if(links.length){
     links.forEach(function(lk){
       var sn=sNodes[lk.from],dn=dNodes[lk.to];
@@ -430,10 +448,9 @@ function drawSankey(data){
       var dy1=dn.y+dn._off,dy2=dy1+fhDst;
       sn._off+=fhSrc;dn._off+=fhDst;
       var mx=(sn.x+sn.w+dn.x)/2;
+      var col=CC[lk.from]||"#888";
       var grd=c.createLinearGradient(sn.x+sn.w,0,dn.x,0);
-      grd.addColorStop(0,"rgba(239,68,68,0.2)");
-      grd.addColorStop(0.5,"rgba(200,168,75,0.06)");
-      grd.addColorStop(1,"rgba(34,197,94,0.2)");
+      grd.addColorStop(0,col+"60");grd.addColorStop(0.5,col+"20");grd.addColorStop(1,col+"40");
       c.fillStyle=grd;
       c.beginPath();
       c.moveTo(sn.x+sn.w,sy1);
@@ -441,13 +458,11 @@ function drawSankey(data){
       c.lineTo(dn.x,dy2);
       c.bezierCurveTo(mx,dy2,mx,sy2,sn.x+sn.w,sy2);
       c.closePath();c.fill();
-      // Flow label in middle
       var lbX=(sn.x+sn.w+dn.x)/2,lbY=(sy1+sy2+dy1+dy2)/4;
-      c.fillStyle="rgba(240,241,245,0.4)";c.font="500 7px 'DM Mono'";c.textAlign="center";
+      c.fillStyle="rgba(240,241,245,0.5)";c.font="500 7px 'DM Mono'";c.textAlign="center";
       c.fillText(fK(lk.value),lbX,lbY);
     });
   }
-  // Draw source bars + labels
   sources.forEach(function(s){
     var n=sNodes[s.cat],col=CC[s.cat]||"#ef4444";
     c.fillStyle=col;c.fillRect(n.x,n.y,n.w,n.h);
@@ -456,7 +471,6 @@ function drawSankey(data){
     c.fillStyle="#ef4444";c.font="500 8px 'DM Mono'";c.textAlign="right";
     c.fillText("-"+fK(s.val),n.x-8,n.y+n.h/2+13);
   });
-  // Draw dest bars + labels
   dests.forEach(function(d){
     var n=dNodes[d.cat],col=CC[d.cat]||"#22c55e";
     c.fillStyle=col;c.fillRect(n.x,n.y,n.w,n.h);
@@ -465,12 +479,41 @@ function drawSankey(data){
     c.fillStyle="#22c55e";c.font="500 8px 'DM Mono'";c.textAlign="left";
     c.fillText("+"+fK(d.val),n.x+n.w+8,n.y+n.h/2+13);
   });
-  // Headers
-  c.fillStyle="#8a90a0";c.font="500 8px 'DM Mono'";c.textAlign="center";c.textBaseline="top";
-  c.fillText("OUTFLOWS",LX+7,8);
-  c.fillText("INFLOWS",RX-7,8);
+  c.fillStyle="#c0c4d0";c.font="500 8px 'DM Mono'";c.textAlign="center";c.textBaseline="top";
+  c.fillText("OUTFLOWS",LX+7,8);c.fillText("INFLOWS",RX-7,8);
+  // Build text summary
+  var el=document.getElementById("flow-sankey-summary");el.innerHTML="";
+  if(!links.length){el.innerHTML="<span>No measurable inter-sector flows</span>";return}
+  links.slice().sort(function(a,b){return b.value-a.value}).forEach(function(lk){
+    var item=document.createElement("div");item.className="fss-item";
+    item.innerHTML='<span class="fss-dot" style="background:'+(CC[lk.from]||"#888")+'"></span>'+lk.from+' <span class="fss-arrow">&rarr;</span> '+lk.to+': <strong>'+fK(lk.value)+'</strong>';
+    el.appendChild(item);
+  });
 }
-
+// Sankey click for drill-down
+document.getElementById("flowSankey").addEventListener("click",function(e){
+  var rc=this.getBoundingClientRect(),x=e.clientX-rc.left,y=e.clientY-rc.top,clicked=null;
+  Object.keys(sankeyNodes).forEach(function(cat){
+    var n=sankeyNodes[cat];
+    if(x>=n.x-60&&x<=n.x+n.w+60&&y>=n.y-5&&y<=n.y+n.h+5)clicked=cat;
+  });
+  if(clicked)openDrill(clicked);
+});
+function openDrill(cat){
+  var el=document.getElementById("flow-drill");el.classList.add("active");
+  document.getElementById("fd-title").innerHTML='<span style="color:'+(CC[cat]||"#fff")+'">'+cat+'</span> — Asset Breakdown';
+  var grid=document.getElementById("fd-grid");grid.innerHTML="";
+  var mkts=flowData.mkts[cat]||[];
+  mkts.sort(function(a,b){return Math.abs(b.bpNetChg)-Math.abs(a.bpNetChg)});
+  mkts.forEach(function(m){
+    var d=document.createElement("div");d.className="fd-item "+(m.bpNetChg>=0?"up":"dn");d.style.cursor="pointer";
+    d.innerHTML='<div class="fd-sym">'+m.market+'</div><div class="fd-name">'+m.name+'</div><div class="fd-val '+(m.bpNetChg>=0?"pos":"neg")+'">'+(m.bpNetChg>=0?"+":"")+fK(m.bpNetChg)+' BP</div>';
+    d.onclick=function(){selM(m.market)};
+    grid.appendChild(d);
+  });
+  el.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function closeDrill(){document.getElementById("flow-drill").classList.remove("active")}
 /* Sticky sidebar */
 function stickyScroll(dir){var s=document.getElementById("sticky-scroll");s.scrollBy({top:dir*120,behavior:"smooth"})}
 function buildStickyBar(){
