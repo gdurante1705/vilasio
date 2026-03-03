@@ -21,7 +21,7 @@
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:"Inter",sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+nav{position:fixed;top:0;left:54px;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo{width:24px;height:24px;opacity:.9}
 .nav-name{font-family:"Syne",sans-serif;font-size:14px;font-weight:600;color:var(--white)}
@@ -32,7 +32,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-link:hover{color:var(--white)}
 .nav-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;background:var(--white);color:var(--bg);padding:8px 18px;text-decoration:none;transition:all .3s}
 .nav-btn:hover{background:var(--gold2)}
-.hero{padding:88px 48px 24px}
+.hero{padding:88px 48px 24px 102px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
 .pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
@@ -66,7 +66,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hmc-chg{font-family:"DM Mono",monospace;font-size:9px;margin-top:3px}
 .hmc-chg.up{color:var(--grn)}.hmc-chg.dn{color:var(--red)}
 /* FLOW MAP */
-.flow-section{padding:0 48px;margin-top:20px}
+.flow-section{padding:0 48px 0 102px;margin-top:20px}
 .flow-card{background:var(--surf);border:1px solid var(--brd2);overflow:hidden}
 .flow-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
 .flow-title{font-family:"Syne",sans-serif;font-size:15px;font-weight:700}
@@ -108,7 +108,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .flow-foot-item{display:flex;align-items:center;gap:5px}
 .flow-foot-dot{width:7px;height:3px;border-radius:1px}
 /* DETAIL + CHARTS (unchanged) */
-main{padding:0 48px 64px}
+main{padding:0 48px 64px 102px}
 .detail-section{margin-top:24px}
 .detail-header{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 28px;background:var(--surf);border:1px solid var(--brd2)}
 .dh-market{font-family:"Syne",sans-serif;font-size:24px;font-weight:800;letter-spacing:-1px}
@@ -193,7 +193,7 @@ main{padding:0 48px 64px}
 .price-tog{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray);cursor:pointer;transition:all .2s}
 .price-tog:hover{color:var(--white);border-color:var(--brd3)}
 .price-tog.active{background:rgba(200,168,75,0.15);color:var(--gold);border-color:var(--gold-dim)}
-footer{padding:36px 48px 60px;border-top:1px solid var(--brd2);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+footer{padding:36px 48px 36px 102px;border-top:1px solid var(--brd2);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .foot-brand{display:flex;align-items:center;gap:8px}
 .foot-logo{width:18px;height:18px;opacity:.5}
 .foot-name{font-family:"Syne",sans-serif;font-size:12px;font-weight:600;color:var(--gray2)}
@@ -201,17 +201,23 @@ footer{padding:36px 48px 60px;border-top:1px solid var(--brd2);display:flex;flex
 .foot-disclaimer{font-size:10px;color:var(--gray);max-width:500px;line-height:1.4}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 /* Sticky bottom asset selector */
-.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(10,10,16,0.96);backdrop-filter:blur(16px);border-top:1px solid var(--brd2);padding:8px 48px;display:flex;align-items:center;gap:12px}
-.sticky-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);flex-shrink:0}
-.sticky-scroll{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;-ms-overflow-style:none;padding:2px 0}
+/* Sticky left asset sidebar */
+.sticky-bar{position:fixed;top:60px;left:0;bottom:0;z-index:98;width:54px;background:rgba(10,10,16,0.97);backdrop-filter:blur(16px);border-right:1px solid var(--brd2);display:flex;flex-direction:column;align-items:center;padding:0}
+.sticky-arrow{width:100%;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray2);transition:color .2s;flex-shrink:0;background:rgba(10,10,16,0.98)}
+.sticky-arrow.top{border-bottom:1px solid var(--brd)}
+.sticky-arrow.bot{border-top:1px solid var(--brd)}
+.sticky-arrow:hover{color:var(--white)}
+.sticky-scroll{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1;scrollbar-width:none;-ms-overflow-style:none;padding:4px 5px;width:100%;align-items:center}
 .sticky-scroll::-webkit-scrollbar{display:none}
-.sticky-pill{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;padding:5px 10px;background:var(--surf2);border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.sticky-pill{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:0.5px;padding:5px 2px;background:var(--surf2);border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;white-space:nowrap;transition:all .2s;width:44px;text-align:center;line-height:1.2}
 .sticky-pill:hover{color:var(--white);border-color:var(--brd3)}
 .sticky-pill.active{background:var(--white);color:var(--bg);border-color:var(--white)}
-.sticky-pill .sp-chg{font-size:7px;margin-left:4px}
+.sticky-pill .sp-sym{display:block;font-weight:500;font-size:8px}
+.sticky-pill .sp-chg{display:block;font-size:5px;margin-top:1px}
 .sticky-pill .sp-chg.up{color:var(--grn)}.sticky-pill .sp-chg.dn{color:var(--red)}
 .sticky-pill.active .sp-chg.up{color:#166534}.sticky-pill.active .sp-chg.dn{color:#991b1b}
-@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.flow-section{padding:0 16px}.release-grid{grid-template-columns:1fr}.rel-summary{grid-template-columns:repeat(2,1fr)}.dual-charts{grid-template-columns:1fr}.zs-top{flex-direction:column}.zs-info{width:100%;border-right:none;border-bottom:1px solid var(--brd)}.detail-header{flex-direction:column;gap:8px}footer{padding:24px 16px 56px}.sticky-bar{padding:6px 12px}}
+.sticky-cat-sep{font-family:"DM Mono",monospace;font-size:5px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);padding:3px 0 1px;width:44px;text-align:center;border-top:1px solid var(--brd2);margin-top:2px}
+@media(max-width:768px){.sticky-bar{display:none}nav{left:0;padding:12px 16px}.hero{padding:76px 16px 16px 16px}main{padding:0 16px 40px 16px}.flow-section{padding:0 16px}.release-grid{grid-template-columns:1fr}.rel-summary{grid-template-columns:repeat(2,1fr)}.dual-charts{grid-template-columns:1fr}.zs-top{flex-direction:column}.zs-info{width:100%;border-right:none;border-bottom:1px solid var(--brd)}.detail-header{flex-direction:column;gap:8px}footer{padding:24px 16px}}
 </style>
 </head>
 <body>
@@ -232,7 +238,7 @@ footer{padding:36px 48px 60px;border-top:1px solid var(--brd2);display:flex;flex
 </div></div>
 </main>
 <footer><div class="foot-brand"><img class="foot-logo" src="logo.png" alt="V"><span class="foot-name">Vilasio</span></div><div class="foot-copy">&#169; 2025 Vilasio &#183; COT Intelligence</div><div class="foot-disclaimer">Data from CFTC. Updated every Friday. Not financial advice.</div></footer>
-<div class="sticky-bar" id="sticky-bar"><span class="sticky-label">Market</span><div class="sticky-scroll" id="sticky-scroll"></div></div>
+<div class="sticky-bar" id="sticky-bar"><div class="sticky-arrow top" onclick="stickyScroll(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div><div class="sticky-scroll" id="sticky-scroll"></div><div class="sticky-arrow bot" onclick="stickyScroll(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div></div>
 <script>
 /* Category colors */
 var CC={"Equity":"#3b82f6","Energy":"#f59e0b","Metals":"#c8a84b","FX":"#a78bfa","Rates":"#06b6d4","Grains":"#84cc16","Softs":"#f472b6","Livestock":"#fb923c"};
@@ -323,7 +329,7 @@ function rFlow(){
     }
     document.getElementById("flow-narrative").innerHTML=nr;
     // Store for sankey
-    var rd={cats:{},order:order,mkts:{}};order.forEach(function(cat){rd.cats[cat]=cats[cat]?cats[cat].bpNetChg:0;rd.mkts[cat]=cats[cat]?cats[cat].markets:[]});flowData=rd;
+    var rd={cats:{},order:order,mkts:{},links:resp.flowLinks||[]};order.forEach(function(cat){rd.cats[cat]=cats[cat]?cats[cat].bpNetChg:0;rd.mkts[cat]=cats[cat]?cats[cat].markets:[]});flowData=rd;
     if(flowView==="sankey")drawSankey(rd);
   }).catch(function(e){console.warn("Flow fail:",e)});
 }
@@ -333,8 +339,8 @@ function selM(m){cm=m;
   document.querySelectorAll(".hm-cell").forEach(function(c){c.classList.remove("active")});
   document.querySelectorAll(".hm-cell").forEach(function(c){var sym=c.querySelector(".hmc-sym");if(sym&&sym.textContent===m)c.classList.add("active")});
   // Update sticky bar
-  document.querySelectorAll(".sticky-pill").forEach(function(p){p.classList.toggle("active",p.textContent.startsWith(m))});
-  var act=document.querySelector(".sticky-pill.active");if(act)act.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});
+  document.querySelectorAll(".sticky-pill").forEach(function(p){var sym=p.querySelector(".sp-sym");p.classList.toggle("active",sym&&sym.textContent===m)});
+  var act=document.querySelector(".sticky-pill.active");if(act)act.scrollIntoView({block:"center",behavior:"smooth"});
   return rDet().then(rRel).then(rNet).then(rDual).then(rZS);
 }
 function rDet(){return lD(cm,cw).then(function(d){var info=M[cm]||{name:cm,exchange:""};document.getElementById("dh-market").textContent=info.name;document.getElementById("dh-exchange").textContent=info.exchange||"";document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=info.name})}
@@ -383,7 +389,7 @@ function drawSankey(data){
   cv.style.width=rc.width+"px";cv.style.height=rc.height+"px";
   var c=cv.getContext("2d");c.scale(dp,dp);
   var W=rc.width,H=rc.height;
-  var cats=data.cats,order=data.order,mkts=data.mkts;
+  var cats=data.cats,order=data.order,links=data.links||[];
   // Separate sources (outflow) and destinations (inflow)
   var sources=[],dests=[];
   order.forEach(function(cat){
@@ -399,91 +405,94 @@ function drawSankey(data){
   }
   var totalOut=sources.reduce(function(a,s){return a+s.val},0);
   var totalIn=dests.reduce(function(a,d){return a+d.val},0);
-  var LX=40,RX=W-40,MID=W/2;
-  var padT=30,padB=20,usableH=H-padT-padB;
-  // Draw source nodes (left)
-  var sNodes=[],sy=padT;
+  var maxTotal=Math.max(totalOut,totalIn);
+  var LX=100,RX=W-100,padT=30,padB=20,usableH=H-padT-padB;
+  // Layout source nodes (left)
+  var sNodes={},sy=padT;
   sources.forEach(function(s){
-    var h=Math.max(20,(s.val/Math.max(totalOut,totalIn))*usableH);
-    sNodes.push({cat:s.cat,val:s.val,x:LX,y:sy,w:16,h:h});sy+=h+6;
+    var h=Math.max(22,(s.val/maxTotal)*usableH);
+    sNodes[s.cat]={cat:s.cat,val:s.val,x:LX,y:sy,w:14,h:h,_off:0};sy+=h+6;
   });
-  // Draw dest nodes (right)
-  var dNodes=[],dy=padT;
+  // Layout dest nodes (right)
+  var dNodes={},dy=padT;
   dests.forEach(function(d){
-    var h=Math.max(20,(d.val/Math.max(totalOut,totalIn))*usableH);
-    dNodes.push({cat:d.cat,val:d.val,x:RX-16,y:dy,w:16,h:h});dy+=h+6;
+    var h=Math.max(22,(d.val/maxTotal)*usableH);
+    dNodes[d.cat]={cat:d.cat,val:d.val,x:RX-14,y:dy,w:14,h:h,_off:0};dy+=h+6;
   });
-  // Draw flows (bezier curves from source to dest proportionally)
-  sNodes.forEach(function(sn){
-    var srcOffset=0;
-    dNodes.forEach(function(dn){
-      // Flow proportional to min of both
-      var flow=sn.val*(dn.val/totalIn);
-      var fhSrc=flow/totalOut*sn.h;
-      var fhDst=flow/totalIn*dn.h;
-      if(fhSrc<1)return;
-      var sy1=sn.y+srcOffset,sy2=sy1+fhSrc;
-      var dy1=dn.y+(dn._offset||0),dy2=dy1+fhDst;
-      dn._offset=(dn._offset||0)+fhDst;
-      srcOffset+=fhSrc;
-      // Gradient
+  // Draw flows using real links
+  if(links.length){
+    links.forEach(function(lk){
+      var sn=sNodes[lk.from],dn=dNodes[lk.to];
+      if(!sn||!dn||lk.value<=0)return;
+      var fhSrc=(lk.value/sn.val)*sn.h;
+      var fhDst=(lk.value/dn.val)*dn.h;
+      var sy1=sn.y+sn._off,sy2=sy1+fhSrc;
+      var dy1=dn.y+dn._off,dy2=dy1+fhDst;
+      sn._off+=fhSrc;dn._off+=fhDst;
+      var mx=(sn.x+sn.w+dn.x)/2;
       var grd=c.createLinearGradient(sn.x+sn.w,0,dn.x,0);
-      grd.addColorStop(0,"rgba(239,68,68,0.25)");
-      grd.addColorStop(0.5,"rgba(200,168,75,0.08)");
-      grd.addColorStop(1,"rgba(34,197,94,0.25)");
+      grd.addColorStop(0,"rgba(239,68,68,0.2)");
+      grd.addColorStop(0.5,"rgba(200,168,75,0.06)");
+      grd.addColorStop(1,"rgba(34,197,94,0.2)");
       c.fillStyle=grd;
       c.beginPath();
       c.moveTo(sn.x+sn.w,sy1);
-      c.bezierCurveTo(MID,sy1,MID,dy1,dn.x,dy1);
+      c.bezierCurveTo(mx,sy1,mx,dy1,dn.x,dy1);
       c.lineTo(dn.x,dy2);
-      c.bezierCurveTo(MID,dy2,MID,sy2,sn.x+sn.w,sy2);
+      c.bezierCurveTo(mx,dy2,mx,sy2,sn.x+sn.w,sy2);
       c.closePath();c.fill();
+      // Flow label in middle
+      var lbX=(sn.x+sn.w+dn.x)/2,lbY=(sy1+sy2+dy1+dy2)/4;
+      c.fillStyle="rgba(240,241,245,0.4)";c.font="500 7px 'DM Mono'";c.textAlign="center";
+      c.fillText(fK(lk.value),lbX,lbY);
     });
-  });
-  // Draw source bars
-  sNodes.forEach(function(n){
-    var col=CC[n.cat]||"#ef4444";
+  }
+  // Draw source bars + labels
+  sources.forEach(function(s){
+    var n=sNodes[s.cat],col=CC[s.cat]||"#ef4444";
     c.fillStyle=col;c.fillRect(n.x,n.y,n.w,n.h);
-    // Label
     c.fillStyle="#f0f1f5";c.font="700 10px Syne";c.textAlign="right";c.textBaseline="middle";
-    c.fillText(n.cat,n.x+n.w+8+c.measureText(n.cat).width,n.y+n.h/2);
-    c.textAlign="left";c.fillText(n.cat,n.x+n.w+8,n.y+n.h/2);
-    // Value
-    c.fillStyle="#ef4444";c.font="500 8px 'DM Mono'";
-    c.fillText("-"+fK(n.val),n.x+n.w+8,n.y+n.h/2+12);
+    c.fillText(s.cat,n.x-8,n.y+n.h/2);
+    c.fillStyle="#ef4444";c.font="500 8px 'DM Mono'";c.textAlign="right";
+    c.fillText("-"+fK(s.val),n.x-8,n.y+n.h/2+13);
   });
-  // Draw dest bars
-  dNodes.forEach(function(n){
-    var col=CC[n.cat]||"#22c55e";
+  // Draw dest bars + labels
+  dests.forEach(function(d){
+    var n=dNodes[d.cat],col=CC[d.cat]||"#22c55e";
     c.fillStyle=col;c.fillRect(n.x,n.y,n.w,n.h);
-    // Label
-    c.fillStyle="#f0f1f5";c.font="700 10px Syne";c.textAlign="right";c.textBaseline="middle";
-    c.fillText(n.cat,n.x-8,n.y+n.h/2);
-    // Value
-    c.fillStyle="#22c55e";c.font="500 8px 'DM Mono'";
-    c.fillText("+"+fK(n.val),n.x-8,n.y+n.h/2+12);
-    c.textAlign="right";
+    c.fillStyle="#f0f1f5";c.font="700 10px Syne";c.textAlign="left";c.textBaseline="middle";
+    c.fillText(d.cat,n.x+n.w+8,n.y+n.h/2);
+    c.fillStyle="#22c55e";c.font="500 8px 'DM Mono'";c.textAlign="left";
+    c.fillText("+"+fK(d.val),n.x+n.w+8,n.y+n.h/2+13);
   });
   // Headers
-  c.fillStyle="#8a90a0";c.font="500 8px 'DM Mono'";c.textAlign="left";c.textBaseline="top";
-  c.fillText("OUTFLOWS",LX,8);
-  c.textAlign="right";c.fillText("INFLOWS",RX,8);
+  c.fillStyle="#8a90a0";c.font="500 8px 'DM Mono'";c.textAlign="center";c.textBaseline="top";
+  c.fillText("OUTFLOWS",LX+7,8);
+  c.fillText("INFLOWS",RX-7,8);
 }
 
-/* Sticky bottom bar */
+/* Sticky sidebar */
+function stickyScroll(dir){var s=document.getElementById("sticky-scroll");s.scrollBy({top:dir*120,behavior:"smooth"})}
 function buildStickyBar(){
   var scroll=document.getElementById("sticky-scroll");scroll.innerHTML="";
   var keys=Object.keys(M);
-  keys.forEach(function(k){
-    var info=M[k];if(!info)return;
-    var pill=document.createElement("div");pill.className="sticky-pill"+(k===cm?" active":"");
-    var chg=info.bpNetChg||0,chCl=chg>=0?"up":"dn";
-    pill.innerHTML=k+'<span class="sp-chg '+chCl+'">'+(chg>=0?"+":"")+fK(chg)+'</span>';
-    pill.onclick=(function(m){return function(){selM(m)}})(k);
-    scroll.appendChild(pill);
+  // Group by category
+  var byCat={};keys.forEach(function(k){var info=M[k];if(!info)return;var cat=info.cat||"Other";if(!byCat[cat])byCat[cat]=[];byCat[cat].push(k)});
+  CORDER.forEach(function(cat){
+    if(!byCat[cat]||!byCat[cat].length)return;
+    var sep=document.createElement("div");sep.className="sticky-cat-sep";sep.textContent=cat.substring(0,3).toUpperCase();
+    scroll.appendChild(sep);
+    byCat[cat].forEach(function(k){
+      var info=M[k];
+      var pill=document.createElement("div");pill.className="sticky-pill"+(k===cm?" active":"");
+      var chg=info.bpNetChg||0,chCl=chg>=0?"up":"dn";
+      pill.innerHTML='<span class="sp-sym">'+k+'</span><span class="sp-chg '+chCl+'">'+(chg>=0?"+":"")+fK(chg)+'</span>';
+      pill.onclick=(function(m){return function(){selM(m)}})(k);
+      scroll.appendChild(pill);
+    });
   });
   // Scroll active into view
-  setTimeout(function(){var act=scroll.querySelector(".active");if(act)act.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})},100);
+  setTimeout(function(){var act=scroll.querySelector(".active");if(act)act.scrollIntoView({block:"center",behavior:"smooth"})},100);
 }
 
 /* Flow weeks toggle */
