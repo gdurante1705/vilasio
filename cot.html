@@ -106,6 +106,44 @@ main{padding:0 64px 80px}
 .pc-chg.up{color:var(--grn)}
 .pc-chg.dn{color:var(--red)}
 
+
+/* LATEST RELEASE */
+.release-section{border:1px solid var(--brd2);border-top:none;background:var(--surf)}
+.release-header{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid var(--brd)}
+.rel-title{font-family:"Syne",sans-serif;font-size:15px;font-weight:700}
+.rel-date{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.release-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.rel-col{padding:24px 32px}
+.rel-col:first-child{border-right:1px solid var(--brd)}
+.rel-col-title{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-bottom:16px}
+.rel-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--brd)}
+.rel-row:last-child{border-bottom:none}
+.rel-row-left{display:flex;align-items:center;gap:10px}
+.rel-row-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);width:52px}
+.rel-row-val{font-family:"DM Mono",monospace;font-size:13px;font-weight:500;color:var(--white)}
+.rel-row-right{display:flex;align-items:center;gap:8px}
+.rel-delta{font-family:"DM Mono",monospace;font-size:11px;font-weight:500}
+.rel-delta.up{color:var(--grn)}.rel-delta.dn{color:var(--red)}.rel-delta.flat{color:var(--gray)}
+.rel-arrow{font-size:10px}.rel-arrow.up{color:var(--grn)}.rel-arrow.dn{color:var(--red)}
+.rel-bar-wrap{width:80px;height:6px;background:var(--surf2);border-radius:3px;overflow:hidden}
+.rel-bar{height:100%;border-radius:3px;transition:width 0.5s ease}
+.rel-bar.positive{background:var(--grn)}.rel-bar.negative{background:var(--red)}
+.rel-net-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0 4px;margin-top:4px;border-top:1px solid var(--brd2)}
+.rel-net-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+.rel-net-group{display:flex;align-items:baseline;gap:12px}
+.rel-net-val{font-family:"Syne",sans-serif;font-size:18px;font-weight:700}
+.rel-net-val.pos{color:var(--grn)}.rel-net-val.neg{color:var(--red)}
+.rel-net-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
+.rel-net-delta.up{color:var(--grn)}.rel-net-delta.dn{color:var(--red)}
+.release-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--brd)}
+.rel-stat{padding:16px 24px;text-align:center;border-right:1px solid var(--brd)}
+.rel-stat:last-child{border-right:none}
+.rel-stat-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:4px}
+.rel-stat-val{font-family:"Syne",sans-serif;font-size:16px;font-weight:700}
+.rel-stat-chg{font-family:"DM Mono",monospace;font-size:9px;margin-top:2px}
+.rel-stat-chg.up{color:var(--grn)}.rel-stat-chg.dn{color:var(--red)}
+@media(max-width:768px){.release-grid{grid-template-columns:1fr}.release-summary{grid-template-columns:repeat(2,1fr)}}
+
 /* CHARTS SECTION */
 .charts-area{margin-top:0;border:1px solid var(--brd2);border-top:none;background:var(--surf)}
 .chart-controls{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid var(--brd)}
@@ -284,6 +322,35 @@ footer{padding:48px 64px;border-top:1px solid var(--brd2);display:flex;flex-dire
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+
+  <!-- LATEST RELEASE -->
+  <div class="release-section reveal" id="release-section">
+    <div class="release-header">
+      <div class="rel-title">Latest Release — Week-over-Week</div>
+      <div class="rel-date" id="rel-date">—</div>
+    </div>
+    <div class="release-grid">
+      <div class="rel-col">
+        <div class="rel-col-title">Non-Commercial — Big Players</div>
+        <div class="rel-row"><div class="rel-row-left"><span class="rel-row-label">Long</span><span class="rel-row-val" id="rel-bp-long">—</span></div><div class="rel-row-right"><span class="rel-arrow" id="rel-bp-long-arrow">—</span><span class="rel-delta" id="rel-bp-long-chg">—</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div>
+        <div class="rel-row"><div class="rel-row-left"><span class="rel-row-label">Short</span><span class="rel-row-val" id="rel-bp-short">—</span></div><div class="rel-row-right"><span class="rel-arrow" id="rel-bp-short-arrow">—</span><span class="rel-delta" id="rel-bp-short-chg">—</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div>
+        <div class="rel-net-row"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-bp-net">—</span><span class="rel-net-delta" id="rel-bp-net-chg">—</span></div></div>
+      </div>
+      <div class="rel-col">
+        <div class="rel-col-title">Commercial — Dealers</div>
+        <div class="rel-row"><div class="rel-row-left"><span class="rel-row-label">Long</span><span class="rel-row-val" id="rel-dl-long">—</span></div><div class="rel-row-right"><span class="rel-arrow" id="rel-dl-long-arrow">—</span><span class="rel-delta" id="rel-dl-long-chg">—</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-dl-long-bar"></div></div></div></div>
+        <div class="rel-row"><div class="rel-row-left"><span class="rel-row-label">Short</span><span class="rel-row-val" id="rel-dl-short">—</span></div><div class="rel-row-right"><span class="rel-arrow" id="rel-dl-short-arrow">—</span><span class="rel-delta" id="rel-dl-short-chg">—</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-dl-short-bar"></div></div></div></div>
+        <div class="rel-net-row"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-dl-net">—</span><span class="rel-net-delta" id="rel-dl-net-chg">—</span></div></div>
+      </div>
+    </div>
+    <div class="release-summary">
+      <div class="rel-stat"><div class="rel-stat-label">Open Interest</div><div class="rel-stat-val" id="rel-oi">—</div><div class="rel-stat-chg" id="rel-oi-chg">—</div></div>
+      <div class="rel-stat"><div class="rel-stat-label">OI Change</div><div class="rel-stat-val" id="rel-oi-delta">—</div><div class="rel-stat-chg" id="rel-oi-pct">—</div></div>
+      <div class="rel-stat"><div class="rel-stat-label">BP Net Shift</div><div class="rel-stat-val" id="rel-bp-shift">—</div><div class="rel-stat-chg" id="rel-bp-direction">—</div></div>
+      <div class="rel-stat"><div class="rel-stat-label">DL Net Shift</div><div class="rel-stat-val" id="rel-dl-shift">—</div><div class="rel-stat-chg" id="rel-dl-direction">—</div></div>
     </div>
   </div>
 
@@ -480,21 +547,59 @@ function generateMarketData(market, weeks) {
    DATA LOADER — Real API with mock fallback
    ═══════════════════════════════════════════ */
 const API_BASE = "https://vilasio-cot-backend.onrender.com";
+const CACHE_PFX = "vcot_";
+
+function nextFridayExpiry() {
+  const n = new Date(), d = n.getUTCDay();
+  const till = (6 - d + 7) % 7 || 7;
+  const nx = new Date(n); nx.setUTCDate(nx.getUTCDate() + till);
+  nx.setUTCHours(0,0,0,0); return nx.getTime();
+}
+function lsGet(k) {
+  try {
+    const r = localStorage.getItem(CACHE_PFX + k);
+    if (!r) return null;
+    const c = JSON.parse(r);
+    if (Date.now() < c.ex) return c.d;
+    return {_old:true, _d:c.d};
+  } catch(e){return null;}
+}
+function lsSet(k, d) {
+  try { localStorage.setItem(CACHE_PFX+k, JSON.stringify({d:d,ex:nextFridayExpiry(),t:Date.now()})); } catch(e){}
+}
+async function fetchR(url, tries, gap) {
+  for (let i=0;i<=tries;i++) {
+    try {
+      const c=new AbortController(), t=setTimeout(()=>c.abort(),15000);
+      const r=await fetch(url,{signal:c.signal}); clearTimeout(t);
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return await r.json();
+    } catch(e) {
+      if(i<tries) await new Promise(r=>setTimeout(r,gap*(i+1)));
+      else throw e;
+    }
+  }
+}
 
 async function loadData(market, weeks) {
-  const key = `${market}_${weeks}`;
+  const key = market+"_"+weeks;
   if (allData[key]) return allData[key];
-
+  // localStorage cache
+  const cached = lsGet(key);
+  if (cached && !cached._old) { allData[key]=cached; return cached; }
+  if (cached && cached._old) {
+    allData[key]=cached._d;
+    fetchR(API_BASE+"/api/cot?market="+market+"&weeks="+weeks,2,3000)
+      .then(d=>{allData[key]=d;lsSet(key,d);}).catch(()=>{});
+    return cached._d;
+  }
+  // Fresh fetch with retry
   try {
-    const resp = await fetch(`${API_BASE}/api/cot?market=${market}&weeks=${weeks}`);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    allData[key] = data;
-    return data;
-  } catch (e) {
-    console.warn(`API unavailable for ${market}, using mock data:`, e.message);
-    allData[key] = generateMarketData(market, weeks);
-    return allData[key];
+    const data = await fetchR(API_BASE+"/api/cot?market="+market+"&weeks="+weeks,3,3000);
+    allData[key]=data; lsSet(key,data); return data;
+  } catch(e) {
+    console.warn("API failed for "+market+", mock:", e.message);
+    allData[key]=generateMarketData(market,weeks); return allData[key];
   }
 }
 
@@ -560,6 +665,7 @@ async function selectMarket(market) {
   currentMarket = market;
   await renderHeatmap();
   await renderDetail();
+  await renderLatestRelease();
   await renderNetChart();
   await renderDualCharts();
   await renderZScore();
@@ -613,6 +719,40 @@ async function renderDetail() {
 /* ═══════════════════════════════════════════
    NET POSITION CHART
    ═══════════════════════════════════════════ */
+
+async function renderLatestRelease() {
+  const d = await loadData(currentMarket, chartWeeks);
+  const L = d.labels.length - 1, P = L - 1;
+  if (P < 0) return;
+  document.getElementById("rel-date").textContent = "Report: " + d.reportDate;
+  const bLC=d.bpLong[L]-d.bpLong[P], bSC=d.bpShort[L]-d.bpShort[P], bNC=d.bpNet[L]-d.bpNet[P];
+  const dLC=d.dlLong[L]-d.dlLong[P], dSC=d.dlShort[L]-d.dlShort[P], dNC=d.dlNet[L]-d.dlNet[P];
+  const oC=d.oi[L]-d.oi[P];
+  const mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);
+  function fR(pfx,val,delta){
+    document.getElementById(pfx).textContent=fmt(val);
+    const ce=document.getElementById(pfx+"-chg"),ae=document.getElementById(pfx+"-arrow"),be=document.getElementById(pfx+"-bar");
+    ce.textContent=fmtSigned(delta); ce.className="rel-delta "+(delta>0?"up":delta<0?"dn":"flat");
+    ae.textContent=delta>0?"\u25B2":delta<0?"\u25BC":"\u2014"; ae.className="rel-arrow "+(delta>0?"up":delta<0?"dn":"");
+    be.style.width=(Math.abs(delta)/mx*100)+"%"; be.className="rel-bar "+(delta>=0?"positive":"negative");
+  }
+  fR("rel-bp-long",d.bpLong[L],bLC); fR("rel-bp-short",d.bpShort[L],bSC);
+  const bne=document.getElementById("rel-bp-net"); bne.textContent=fmtSigned(d.bpNet[L]); bne.className="rel-net-val "+(d.bpNet[L]>=0?"pos":"neg");
+  const bnce=document.getElementById("rel-bp-net-chg"); bnce.textContent=fmtSigned(bNC)+" w/w"; bnce.className="rel-net-delta "+(bNC>=0?"up":"dn");
+  fR("rel-dl-long",d.dlLong[L],dLC); fR("rel-dl-short",d.dlShort[L],dSC);
+  const dne=document.getElementById("rel-dl-net"); dne.textContent=fmtSigned(d.dlNet[L]); dne.className="rel-net-val "+(d.dlNet[L]>=0?"pos":"neg");
+  const dnce=document.getElementById("rel-dl-net-chg"); dnce.textContent=fmtSigned(dNC)+" w/w"; dnce.className="rel-net-delta "+(dNC>=0?"up":"dn");
+  document.getElementById("rel-oi").textContent=fmt(d.oi[L]);
+  const oce=document.getElementById("rel-oi-chg"); oce.textContent=fmtSigned(oC)+" w/w"; oce.className="rel-stat-chg "+(oC>=0?"up":"dn");
+  document.getElementById("rel-oi-delta").textContent=fmtSigned(oC);
+  const ope=document.getElementById("rel-oi-pct"); const op=d.oi[P]>0?((oC/d.oi[P])*100).toFixed(1):"0.0";
+  ope.textContent=(oC>=0?"+":"")+op+"%"; ope.className="rel-stat-chg "+(oC>=0?"up":"dn");
+  document.getElementById("rel-bp-shift").textContent=fmtSigned(bNC);
+  const bde=document.getElementById("rel-bp-direction"); bde.textContent=bNC>0?"More Bullish":bNC<0?"More Bearish":"Unchanged"; bde.className="rel-stat-chg "+(bNC>0?"up":bNC<0?"dn":"");
+  document.getElementById("rel-dl-shift").textContent=fmtSigned(dNC);
+  const dde=document.getElementById("rel-dl-direction"); dde.textContent=dNC>0?"More Bullish":dNC<0?"More Bearish":"Unchanged"; dde.className="rel-stat-chg "+(dNC>0?"up":dNC<0?"dn":"");
+}
+
 async function renderNetChart() {
   const d = await loadData(currentMarket, chartWeeks);
   const ctx = document.getElementById("netChart").getContext("2d");
@@ -945,6 +1085,7 @@ document.querySelectorAll(".ch-tog").forEach(btn => {
     chartWeeks = parseInt(btn.dataset.weeks);
     allData = {}; // Clear cache for new week range
     await renderDetail();
+    await renderLatestRelease();
     await renderNetChart();
     await renderDualCharts();
     await renderZScore();
@@ -965,6 +1106,7 @@ document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 async function init() {
   await renderHeatmap();
   await renderDetail();
+  await renderLatestRelease();
   await renderNetChart();
   await renderDualCharts();
   await renderZScore();
