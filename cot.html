@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>COT Intelligence — Vilasio</title>
+<title>COT Intelligence - Vilasio</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -19,7 +19,6 @@
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:"Inter",sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo{width:24px;height:24px;opacity:.9}
@@ -31,7 +30,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-link:hover{color:var(--white)}
 .nav-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;background:var(--white);color:var(--bg);padding:8px 18px;text-decoration:none;transition:all .3s}
 .nav-btn:hover{background:var(--gold2)}
-
 .hero{padding:88px 48px 24px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
@@ -41,7 +39,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-h1 em{font-style:normal;color:var(--gold2)}
 .hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:440px;margin-top:6px}
 .update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
-
 .heatmap-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
 @media(max-width:900px){.heatmap-grid{grid-template-columns:repeat(3,1fr)}}
 .hm-cell{background:var(--surf);border:1px solid var(--brd2);padding:12px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
@@ -55,9 +52,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hmc-net.pos{color:var(--grn)}.hmc-net.neg{color:var(--red)}
 .hmc-chg{font-family:"DM Mono",monospace;font-size:8px;margin-top:2px}
 .hmc-chg.up{color:var(--grn)}.hmc-chg.dn{color:var(--red)}
-
 main{padding:0 48px 64px}
-
 .detail-section{margin-top:24px}
 .detail-header{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 28px;background:var(--surf);border:1px solid var(--brd2)}
 .dh-market{font-family:"Syne",sans-serif;font-size:24px;font-weight:800;letter-spacing:-1px}
@@ -65,17 +60,14 @@ main{padding:0 48px 64px}
 .dh-right{text-align:right}
 .dh-date-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
 .dh-date{font-family:"Syne",sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-top:2px}
-
 .release-section{border:1px solid var(--brd2);border-top:none;background:var(--surf)}
 .release-header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--brd)}
 .rel-title{font-family:"Syne",sans-serif;font-size:13px;font-weight:700}
 .rel-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
 .release-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.rel-col{padding:20px 28px}
-.rel-col:first-child{border-right:1px solid var(--brd)}
+.rel-col{padding:20px 28px}.rel-col:first-child{border-right:1px solid var(--brd)}
 .rel-col-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:14px}
-.rel-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--brd)}
-.rel-row:last-child{border-bottom:none}
+.rel-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--brd)}.rel-row:last-child{border-bottom:none}
 .rel-row-left{display:flex;align-items:center;gap:10px}
 .rel-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);width:44px}
 .rel-val{font-family:"DM Mono",monospace;font-size:12px;font-weight:500}
@@ -83,23 +75,18 @@ main{padding:0 48px 64px}
 .rel-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;min-width:70px;text-align:right}
 .rel-delta.up{color:var(--grn)}.rel-delta.dn{color:var(--red)}.rel-delta.flat{color:var(--gray)}
 .rel-bar-wrap{width:60px;height:4px;background:var(--surf3);border-radius:2px;overflow:hidden}
-.rel-bar{height:100%;border-radius:2px;transition:width .4s ease}
-.rel-bar.pos{background:var(--grn)}.rel-bar.neg{background:var(--red)}
+.rel-bar{height:100%;border-radius:2px;transition:width .4s ease}.rel-bar.pos{background:var(--grn)}.rel-bar.neg{background:var(--red)}
 .rel-net{display:flex;align-items:center;justify-content:space-between;padding:12px 0 0;margin-top:6px;border-top:1px solid var(--brd2)}
 .rel-net-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
 .rel-net-group{display:flex;align-items:baseline;gap:10px}
 .rel-net-val{font-family:"Syne",sans-serif;font-size:18px;font-weight:800}
 .rel-net-val.pos{color:var(--grn)}.rel-net-val.neg{color:var(--red)}
-.rel-net-chg{font-family:"DM Mono",monospace;font-size:9px}
-.rel-net-chg.up{color:var(--grn)}.rel-net-chg.dn{color:var(--red)}
+.rel-net-chg{font-family:"DM Mono",monospace;font-size:9px}.rel-net-chg.up{color:var(--grn)}.rel-net-chg.dn{color:var(--red)}
 .rel-summary{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--brd)}
-.rel-stat{padding:14px 20px;text-align:center;border-right:1px solid var(--brd)}
-.rel-stat:last-child{border-right:none}
+.rel-stat{padding:14px 20px;text-align:center;border-right:1px solid var(--brd)}.rel-stat:last-child{border-right:none}
 .rel-stat-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:3px}
 .rel-stat-val{font-family:"Syne",sans-serif;font-size:15px;font-weight:700}
-.rel-stat-sub{font-family:"DM Mono",monospace;font-size:8px;margin-top:1px}
-.rel-stat-sub.up{color:var(--grn)}.rel-stat-sub.dn{color:var(--red)}
-
+.rel-stat-sub{font-family:"DM Mono",monospace;font-size:8px;margin-top:1px}.rel-stat-sub.up{color:var(--grn)}.rel-stat-sub.dn{color:var(--red)}
 .charts-area{border:1px solid var(--brd2);border-top:none;background:var(--surf)}
 .chart-controls{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--brd)}
 .ch-title{font-family:"Syne",sans-serif;font-size:13px;font-weight:700}
@@ -113,17 +100,14 @@ main{padding:0 48px 64px}
 .chart-legend{display:flex;gap:16px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
 .legend-item{display:flex;align-items:center;gap:5px}
 .legend-dot{width:7px;height:7px;border-radius:50%}
-
 .dual-charts{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--brd2);border-top:none}
-.dual-chart-card{background:var(--surf);padding:16px 20px}
-.dual-chart-card:first-child{border-right:1px solid var(--brd2)}
+.dual-chart-card{background:var(--surf);padding:16px 20px}.dual-chart-card:first-child{border-right:1px solid var(--brd2)}
 .dc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .dc-title{font-family:"Syne",sans-serif;font-size:13px;font-weight:700}
 .dc-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:2px}
 .dc-val{font-family:"Syne",sans-serif;font-size:18px;font-weight:700;text-align:right}
 .dc-val-sub{font-family:"DM Mono",monospace;font-size:8px;color:var(--gray);text-align:right;margin-top:1px}
 .dc-canvas{position:relative;height:140px}
-
 .zscore-section{margin-top:24px}
 .zs-card{background:var(--surf);border:1px solid var(--brd2);overflow:hidden}
 .zs-top{display:flex;align-items:stretch;border-bottom:1px solid var(--brd)}
@@ -137,315 +121,67 @@ main{padding:0 48px 64px}
 .zs-gauge-marker{position:absolute;top:-3px;width:3px;height:14px;background:var(--white);border-radius:1px;transform:translateX(-50%);transition:left .5s ease;box-shadow:0 0 6px rgba(255,255,255,0.4)}
 .zs-gauge-labels{display:flex;justify-content:space-between;margin-top:4px;font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--gray)}
 .zs-stats{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-items:center}
-.zs-stat{text-align:center;padding:16px;border-right:1px solid var(--brd)}
-.zs-stat:last-child{border-right:none}
+.zs-stat{text-align:center;padding:16px;border-right:1px solid var(--brd)}.zs-stat:last-child{border-right:none}
 .zs-stat-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:3px}
 .zs-stat-val{font-family:"Syne",sans-serif;font-size:16px;font-weight:700}
 .zs-chart-area{padding:16px 20px 12px}
 .zs-chart-wrap{position:relative;height:220px}
 .zs-chart-legend{display:flex;gap:16px;padding:8px 28px 14px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
-
-.price-tog{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray);cursor:pointer;transition:all .2s;margin-left:6px}
+.price-tog{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray);cursor:pointer;transition:all .2s}
 .price-tog:hover{color:var(--white);border-color:var(--brd3)}
 .price-tog.active{background:rgba(200,168,75,0.15);color:var(--gold);border-color:var(--gold-dim)}
-
 footer{padding:36px 48px;border-top:1px solid var(--brd2);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .foot-brand{display:flex;align-items:center;gap:8px}
 .foot-logo{width:18px;height:18px;opacity:.5}
 .foot-name{font-family:"Syne",sans-serif;font-size:12px;font-weight:600;color:var(--gray2)}
 .foot-copy{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
 .foot-disclaimer{font-size:10px;color:var(--gray);max-width:500px;line-height:1.4}
-
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
-.reveal.visible{opacity:1;transform:none}
-
-@media(max-width:768px){
-  nav{padding:12px 16px}
-  .hero{padding:76px 16px 16px}
-  main{padding:0 16px 40px}
-  .release-grid{grid-template-columns:1fr}
-  .rel-summary{grid-template-columns:repeat(2,1fr)}
-  .dual-charts{grid-template-columns:1fr}
-  .zs-top{flex-direction:column}
-  .zs-info{width:100%;border-right:none;border-bottom:1px solid var(--brd)}
-  .zs-stats{grid-template-columns:repeat(3,1fr)}
-  .detail-header{flex-direction:column;gap:8px}
-  .price-tog{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray);cursor:pointer;transition:all .2s;margin-left:6px}
-.price-tog:hover{color:var(--white);border-color:var(--brd3)}
-.price-tog.active{background:rgba(200,168,75,0.15);color:var(--gold);border-color:var(--gold-dim)}
-
-footer{padding:24px 16px}
-}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.release-grid{grid-template-columns:1fr}.rel-summary{grid-template-columns:repeat(2,1fr)}.dual-charts{grid-template-columns:1fr}.zs-top{flex-direction:column}.zs-info{width:100%;border-right:none;border-bottom:1px solid var(--brd)}.detail-header{flex-direction:column;gap:8px}footer{padding:24px 16px}}
 </style>
 </head>
 <body>
-
-<nav>
-  <a class="nav-brand" href="index.html">
-    <img class="nav-logo" src="logo.png" alt="Vilasio">
-    <span class="nav-name">Vilasio</span>
-    <span class="nav-sep">&middot;</span>
-    <span class="nav-page">COT Intelligence</span>
-  </a>
-  <div class="nav-right">
-    <a class="nav-link" href="index.html">Home</a>
-    <a class="nav-link" href="windepth.html">WinDepth</a>
-    <a class="nav-btn" href="windepth.html#beta">Get Beta</a>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-top">
-    <div>
-      <div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div>
-      <h1 class="hero-h1">Who is <em>really</em> moving the market.</h1>
-      <p class="hero-desc">Commitments of Traders data &mdash; institutional positioning across futures markets, updated every Friday.</p>
-    </div>
-    <div class="update-badge" id="update-badge">REPORT: loading...</div>
-  </div>
-  <div class="heatmap-grid" id="heatmap-grid"></div>
-</section>
-
+<nav><a class="nav-brand" href="index.html"><img class="nav-logo" src="logo.png" alt="V"><span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">COT Intelligence</span></a><div class="nav-right"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="windepth.html">WinDepth</a><a class="nav-btn" href="windepth.html#beta">Get Beta</a></div></nav>
+<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div class="update-badge" id="update-badge">REPORT: loading...</div></div><div class="heatmap-grid" id="heatmap-grid"></div></section>
 <main>
-  <div class="detail-section reveal" id="detail-section">
-    <div class="detail-header">
-      <div>
-        <div class="dh-market" id="dh-market">E-Mini S&amp;P 500</div>
-        <div class="dh-exchange" id="dh-exchange">Chicago Mercantile Exchange</div>
-      </div>
-      <div class="dh-right">
-        <div class="dh-date-label">Report Date</div>
-        <div class="dh-date" id="dh-date">&mdash;</div>
-      </div>
-    </div>
-
-    <div class="release-section" id="release-section">
-      <div class="release-header">
-        <div class="rel-title">Latest Release</div>
-        <div class="rel-badge" id="rel-badge">&mdash;</div>
-      </div>
-      <div class="release-grid">
-        <div class="rel-col">
-          <div class="rel-col-label">Non-Commercial &mdash; Big Players</div>
-          <div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&mdash;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-long-chg">&mdash;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div>
-          <div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&mdash;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-short-chg">&mdash;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div>
-          <div class="rel-net"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-bp-net">&mdash;</span><span class="rel-net-chg" id="rel-bp-net-chg">&mdash;</span></div></div>
-        </div>
-        <div class="rel-col">
-          <div class="rel-col-label">Commercial &mdash; Dealers</div>
-          <div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long">&mdash;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-dl-long-chg">&mdash;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-dl-long-bar"></div></div></div></div>
-          <div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short">&mdash;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-dl-short-chg">&mdash;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-dl-short-bar"></div></div></div></div>
-          <div class="rel-net"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-dl-net">&mdash;</span><span class="rel-net-chg" id="rel-dl-net-chg">&mdash;</span></div></div>
-        </div>
-      </div>
-      <div class="rel-summary">
-        <div class="rel-stat"><div class="rel-stat-label">Open Interest</div><div class="rel-stat-val" id="rel-oi">&mdash;</div><div class="rel-stat-sub" id="rel-oi-chg">&mdash;</div></div>
-        <div class="rel-stat"><div class="rel-stat-label">OI Change</div><div class="rel-stat-val" id="rel-oi-delta">&mdash;</div><div class="rel-stat-sub" id="rel-oi-pct">&mdash;</div></div>
-        <div class="rel-stat"><div class="rel-stat-label">BP Net Shift</div><div class="rel-stat-val" id="rel-bp-shift">&mdash;</div><div class="rel-stat-sub" id="rel-bp-dir">&mdash;</div></div>
-        <div class="rel-stat"><div class="rel-stat-label">DL Net Shift</div><div class="rel-stat-val" id="rel-dl-shift">&mdash;</div><div class="rel-stat-sub" id="rel-dl-dir">&mdash;</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="charts-area reveal">
-    <div class="chart-controls">
-      <div>
-        <div class="ch-title">Net Position Over Time</div>
-        <div class="ch-sub" id="chart-market-label">E-Mini S&amp;P 500 &middot; Weekly</div>
-      </div>
-      <div class="ch-toggles">
-        <button class="ch-tog active" data-weeks="26">26W</button>
-        <button class="ch-tog" data-weeks="52">52W</button>
-        <button class="ch-tog" data-weeks="104">2Y</button>
-      </div>
-      <button class="price-tog" id="pt-net" onclick="togglePrice('net')">Price</button>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Big Players (Non-Commercial)</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Dealers (Commercial)</div>
-      <div class="legend-item" id="price-legend-net" style="display:none"><span class="legend-dot" style="background:var(--gray3)"></span> Price</div>
-    </div>
-  </div>
-
-  <div class="dual-charts reveal">
-    <div class="dual-chart-card">
-      <div class="dc-header">
-        <div><div class="dc-title">Open Interest</div><div class="dc-sub">Total contracts outstanding</div></div>
-        <div><button class="price-tog" id="pt-oi" onclick="togglePrice('oi')" style="margin-bottom:4px">Price</button><div class="dc-val" id="oi-current">&mdash;</div><div class="dc-val-sub" id="oi-change">&mdash;</div></div>
-      </div>
-      <div class="dc-canvas"><canvas id="oiChart"></canvas></div>
-    </div>
-    <div class="dual-chart-card">
-      <div class="dc-header">
-        <div><div class="dc-title">Net Spread</div><div class="dc-sub">Big Players &minus; Dealers divergence</div></div>
-        <div><button class="price-tog" id="pt-spread" onclick="togglePrice('spread')" style="margin-bottom:4px">Price</button><div class="dc-val" id="spread-current">&mdash;</div><div class="dc-val-sub" id="spread-label">Latest spread</div></div>
-      </div>
-      <div class="dc-canvas"><canvas id="spreadChart"></canvas></div>
-    </div>
-  </div>
-
-  <div class="zscore-section reveal">
-    <div class="zs-card">
-      <div class="zs-top">
-        <div class="zs-info">
-          <div style="display:flex;justify-content:space-between;align-items:center"><div class="zs-label">Big Players Net Z-Score (2Y)</div><button class="price-tog" id="pt-zs" onclick="togglePrice('zs')">Price</button></div>
-          <div class="zs-value neutral" id="zs-value">+0.00</div>
-          <div class="zs-reading neutral" id="zs-reading">NEUTRAL</div>
-          <div class="zs-gauge" style="margin-top:16px">
-            <div class="zs-gauge-marker" id="zs-marker" style="left:50%"></div>
-          </div>
-          <div class="zs-gauge-labels"><span>-3 Extreme Short</span><span>0</span><span>+3 Extreme Long</span></div>
-        </div>
-        <div class="zs-stats">
-          <div class="zs-stat"><div class="zs-stat-label">Current Net</div><div class="zs-stat-val" id="zs-current">&mdash;</div></div>
-          <div class="zs-stat"><div class="zs-stat-label">2Y Mean</div><div class="zs-stat-val" id="zs-mean">&mdash;</div></div>
-          <div class="zs-stat"><div class="zs-stat-label">2Y Std Dev</div><div class="zs-stat-val" id="zs-std">&mdash;</div></div>
-        </div>
-      </div>
-      <div class="zs-chart-area">
-        <div class="zs-chart-wrap"><canvas id="zsChart"></canvas></div>
-      </div>
-      <div class="zs-chart-legend">
-        <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Z-Score</div>
-        <div class="legend-item"><span class="legend-dot" style="background:rgba(34,197,94,0.4)"></span> +2 Extreme Long</div>
-        <div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.4)"></span> -2 Extreme Short</div>
-      </div>
-    </div>
-  </div>
+<div class="detail-section reveal" id="detail-section"><div class="detail-header"><div><div class="dh-market" id="dh-market">E-Mini S&#38;P 500</div><div class="dh-exchange" id="dh-exchange">CME</div></div><div class="dh-right"><div class="dh-date-label">Report Date</div><div class="dh-date" id="dh-date">&#8212;</div></div></div>
+<div class="release-section"><div class="release-header"><div class="rel-title">Latest Release</div><div class="rel-badge" id="rel-badge">&#8212;</div></div><div class="release-grid"><div class="rel-col"><div class="rel-col-label">Non-Commercial &#8212; Big Players</div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-long-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-bp-short-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-bp-net">&#8212;</span><span class="rel-net-chg" id="rel-bp-net-chg">&#8212;</span></div></div></div>
+<div class="rel-col"><div class="rel-col-label">Commercial &#8212; Dealers</div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-dl-long-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-dl-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short">&#8212;</span></div><div class="rel-row-right"><span class="rel-delta" id="rel-dl-short-chg">&#8212;</span><div class="rel-bar-wrap"><div class="rel-bar" id="rel-dl-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><div class="rel-net-group"><span class="rel-net-val" id="rel-dl-net">&#8212;</span><span class="rel-net-chg" id="rel-dl-net-chg">&#8212;</span></div></div></div></div>
+<div class="rel-summary"><div class="rel-stat"><div class="rel-stat-label">Open Interest</div><div class="rel-stat-val" id="rel-oi">&#8212;</div><div class="rel-stat-sub" id="rel-oi-chg">&#8212;</div></div><div class="rel-stat"><div class="rel-stat-label">OI Change</div><div class="rel-stat-val" id="rel-oi-delta">&#8212;</div><div class="rel-stat-sub" id="rel-oi-pct">&#8212;</div></div><div class="rel-stat"><div class="rel-stat-label">BP Net Shift</div><div class="rel-stat-val" id="rel-bp-shift">&#8212;</div><div class="rel-stat-sub" id="rel-bp-dir">&#8212;</div></div><div class="rel-stat"><div class="rel-stat-label">DL Net Shift</div><div class="rel-stat-val" id="rel-dl-shift">&#8212;</div><div class="rel-stat-sub" id="rel-dl-dir">&#8212;</div></div></div></div></div>
+<div class="charts-area reveal"><div class="chart-controls"><div><div class="ch-title">Net Position Over Time</div><div class="ch-sub" id="chart-market-label">E-Mini S&#38;P 500</div></div><div style="display:flex;align-items:center;gap:6px"><div class="ch-toggles"><button class="ch-tog active" data-weeks="26">26W</button><button class="ch-tog" data-weeks="52">52W</button><button class="ch-tog" data-weeks="104">2Y</button></div><button class="price-tog" id="pt-net" onclick="togP('net')">Price</button></div></div><div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netChart"></canvas></div></div><div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Big Players</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Dealers</div><div class="legend-item" id="pl-net" style="display:none"><span class="legend-dot" style="background:var(--gray3)"></span> Price</div></div></div>
+<div class="dual-charts reveal"><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Open Interest</div><div class="dc-sub">Total contracts</div></div><div style="text-align:right"><button class="price-tog" id="pt-oi" onclick="togP('oi')" style="margin-bottom:4px">Price</button><div class="dc-val" id="oi-current">&#8212;</div><div class="dc-val-sub" id="oi-change">&#8212;</div></div></div><div class="dc-canvas"><canvas id="oiChart"></canvas></div></div><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Net Spread</div><div class="dc-sub">BP - DL divergence</div></div><div style="text-align:right"><button class="price-tog" id="pt-sp" onclick="togP('sp')" style="margin-bottom:4px">Price</button><div class="dc-val" id="spread-current">&#8212;</div><div class="dc-val-sub" id="spread-label">Latest spread</div></div></div><div class="dc-canvas"><canvas id="spreadChart"></canvas></div></div></div>
+<div class="zscore-section reveal"><div class="zs-card"><div class="zs-top"><div class="zs-info"><div style="display:flex;justify-content:space-between;align-items:center"><div class="zs-label">BP Net Z-Score (2Y)</div><button class="price-tog" id="pt-zs" onclick="togP('zs')">Price</button></div><div class="zs-value neutral" id="zs-value">+0.00</div><div class="zs-reading neutral" id="zs-reading">NEUTRAL</div><div class="zs-gauge" style="margin-top:16px"><div class="zs-gauge-marker" id="zs-marker" style="left:50%"></div></div><div class="zs-gauge-labels"><span>-3 Extreme Short</span><span>0</span><span>+3 Extreme Long</span></div></div><div class="zs-stats"><div class="zs-stat"><div class="zs-stat-label">Current Net</div><div class="zs-stat-val" id="zs-current">&#8212;</div></div><div class="zs-stat"><div class="zs-stat-label">2Y Mean</div><div class="zs-stat-val" id="zs-mean">&#8212;</div></div><div class="zs-stat"><div class="zs-stat-label">2Y Std Dev</div><div class="zs-stat-val" id="zs-std">&#8212;</div></div></div></div><div class="zs-chart-area"><div class="zs-chart-wrap"><canvas id="zsChart"></canvas></div></div><div class="zs-chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:rgba(34,197,94,0.4)"></span> +2</div><div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.4)"></span> -2</div><div class="legend-item" id="pl-zs" style="display:none"><span class="legend-dot" style="background:var(--gray3)"></span> Price</div></div></div></div>
 </main>
-
-<footer>
-  <div class="foot-brand"><img class="foot-logo" src="logo.png" alt="Vilasio"><span class="foot-name">Vilasio</span></div>
-  <div class="foot-copy">&copy; 2025 Vilasio &middot; COT Intelligence</div>
-  <div class="foot-disclaimer">Data sourced from CFTC official publications. Updated every Friday. Not financial advice.</div>
-</footer>
-
-<script>
-const MARKETS={ES:{name:"E-Mini S&P 500",exchange:"Chicago Mercantile Exchange",cat:"Equity"},NQ:{name:"E-Mini Nasdaq 100",exchange:"Chicago Mercantile Exchange",cat:"Equity"},GC:{name:"Gold",exchange:"Commodity Exchange Inc.",cat:"Metals"},CL:{name:"Crude Oil WTI",exchange:"New York Mercantile Exchange",cat:"Energy"},SI:{name:"Silver",exchange:"Commodity Exchange Inc.",cat:"Metals"},ZB:{name:"30-Year T-Bond",exchange:"Chicago Board of Trade",cat:"Rates"},"6E":{name:"Euro FX",exchange:"Chicago Mercantile Exchange",cat:"FX"},"6B":{name:"British Pound",exchange:"Chicago Mercantile Exchange",cat:"FX"},"6J":{name:"Japanese Yen",exchange:"Chicago Mercantile Exchange",cat:"FX"},NG:{name:"Natural Gas",exchange:"New York Mercantile Exchange",cat:"Energy"},ZC:{name:"Corn",exchange:"Chicago Board of Trade",cat:"Agri"},ZW:{name:"Wheat",exchange:"Chicago Board of Trade",cat:"Agri"}};
-
-let currentMarket="ES",chartWeeks=26,allData={};
-let netChartInst=null,oiChartInst=null,spreadChartInst=null,zsChartInst=null;
-
-function seededRandom(s){let x=Math.sin(s+1)*99999;return x-Math.floor(x);}
-function generateMarketData(market,weeks){
-  const seed=market.split("").reduce((a,c)=>a+c.charCodeAt(0),0);
-  const cfgs={ES:{bpLong:280000,bpShort:140000,dlLong:210000,dlShort:320000,amp:40000,trend:600},NQ:{bpLong:48000,bpShort:30000,dlLong:22000,dlShort:38000,amp:12000,trend:200},GC:{bpLong:240000,bpShort:50000,dlLong:80000,dlShort:260000,amp:30000,trend:-150},CL:{bpLong:352000,bpShort:180000,dlLong:828000,dlShort:1045000,amp:35000,trend:-400},SI:{bpLong:52000,bpShort:20000,dlLong:18000,dlShort:48000,amp:15000,trend:80},ZB:{bpLong:95000,bpShort:155000,dlLong:180000,dlShort:110000,amp:25000,trend:-200},"6E":{bpLong:60000,bpShort:150000,dlLong:140000,dlShort:55000,amp:30000,trend:300},"6B":{bpLong:35000,bpShort:70000,dlLong:62000,dlShort:30000,amp:20000,trend:100},"6J":{bpLong:25000,bpShort:100000,dlLong:90000,dlShort:22000,amp:25000,trend:-80},NG:{bpLong:80000,bpShort:105000,dlLong:120000,dlShort:80000,amp:20000,trend:-150},ZC:{bpLong:320000,bpShort:110000,dlLong:150000,dlShort:350000,amp:50000,trend:400},ZW:{bpLong:85000,bpShort:130000,dlLong:110000,dlShort:70000,amp:30000,trend:50}};
-  const cfg=cfgs[market]||cfgs.ES;const labels=[],bpLong=[],bpShort=[],bpNet=[],dlLong=[],dlShort=[],dlNet=[],oi=[];const now=new Date();
-  for(let i=weeks;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i*7);const day=d.getDay();d.setDate(d.getDate()-((day+5)%7));labels.push(d.toISOString().slice(0,10));const n1=(seededRandom(seed+i)-0.5)*cfg.amp,n2=(seededRandom(seed+i+100)-0.5)*cfg.amp*0.6;const trend=cfg.trend*(weeks-i);const bl=Math.round(cfg.bpLong+n1+trend*0.4),bs=Math.round(cfg.bpShort+n2-trend*0.2),dll=Math.round(cfg.dlLong-n1*0.7+trend*0.1),dls=Math.round(cfg.dlShort+n1*0.5-trend*0.15);bpLong.push(bl);bpShort.push(bs);bpNet.push(bl-bs);dlLong.push(dll);dlShort.push(dls);dlNet.push(dll-dls);oi.push(Math.round((bl+bs+dll+dls)*0.9+seededRandom(seed+i+50)*100000));}
-  return{labels,bpLong,bpShort,bpNet,dlLong,dlShort,dlNet,oi,reportDate:labels[labels.length-1]};
-}
-
-const API_BASE="https://vilasio-cot-backend.onrender.com";
-const CP="vcot_";
-function nxExp(){const n=new Date(),d=n.getUTCDay(),t=(6-d+7)%7||7,x=new Date(n);x.setUTCDate(x.getUTCDate()+t);x.setUTCHours(0,0,0,0);return x.getTime();}
-function lsG(k){try{const r=localStorage.getItem(CP+k);if(!r)return null;const c=JSON.parse(r);if(Date.now()<c.ex)return c.d;return{_old:1,_d:c.d};}catch(e){return null;}}
-function lsS(k,d){try{localStorage.setItem(CP+k,JSON.stringify({d:d,ex:nxExp(),t:Date.now()}));}catch(e){}}
-async function fR(url,tries,gap){for(let i=0;i<=tries;i++){try{const r=await Promise.race([fetch(url),new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),15000))]);if(!r.ok)throw new Error("HTTP "+r.status);return await r.json();}catch(e){if(i<tries)await new Promise(r=>setTimeout(r,gap*(i+1)));else throw e;}}}
-async function loadData(market,weeks){
-  const key=market+"_"+weeks;
-  if(allData[key])return allData[key];
-  const cached=lsG(key);
-  if(cached&&!cached._old){allData[key]=cached;return cached;}
-  if(cached&&cached._old){allData[key]=cached._d;fR(API_BASE+"/api/cot?market="+market+"&weeks="+weeks,2,3000).then(d=>{allData[key]=d;lsS(key,d);}).catch(()=>{});return cached._d;}
-  try{const data=await fR(API_BASE+"/api/cot?market="+market+"&weeks="+weeks,3,3000);allData[key]=data;lsS(key,data);return data;}
-  catch(e){console.warn("API fail "+market+":",e.message);allData[key]=generateMarketData(market,weeks);return allData[key];}
-}
-
-function fmt(n){if(n==null)return"\u2014";return n.toLocaleString("en-US");}
-function fmtS(n){if(n==null)return"\u2014";return(n>=0?"+":"")+n.toLocaleString("en-US");}
-function fmtK(n){if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(0)+"K";return n.toString();}
-
-async function renderHeatmap(){
-  const grid=document.getElementById("heatmap-grid");grid.innerHTML="";
-  const keys=Object.keys(MARKETS),dm={};
-  await Promise.all(keys.map(async k=>{dm[k]=await loadData(k,26);}));
-  keys.forEach(k=>{
-    const d=dm[k],last=d.bpNet[d.bpNet.length-1],prev=d.bpNet[d.bpNet.length-2],chg=last-prev;
-    const bias=chg>5000?"bull":chg<-5000?"bear":"neut";
-    const cell=document.createElement("div");
-    cell.className="hm-cell "+bias+(k===currentMarket?" active":"");
-    cell.innerHTML='<div class="hmc-sym">'+k+'</div><div class="hmc-name">'+MARKETS[k].name+'</div><div class="hmc-net '+(last>=0?"pos":"neg")+'">'+fmtS(last)+'</div><div class="hmc-chg '+(chg>=0?"up":"dn")+'">'+fmtS(chg)+' w/w</div>';
-    cell.addEventListener("click",()=>selectMarket(k));grid.appendChild(cell);
-  });
-  document.getElementById("update-badge").textContent="REPORT: "+(dm.ES||dm[keys[0]]).reportDate;
-}
-
-async function selectMarket(m){currentMarket=m;await renderHeatmap();await renderDetail();await renderRelease();await renderNetChart();await renderDualCharts();await renderZScore();}
-
-async function renderDetail(){
-  const m=MARKETS[currentMarket],d=await loadData(currentMarket,chartWeeks);
-  document.getElementById("dh-market").textContent=m.name;
-  document.getElementById("dh-exchange").textContent=m.exchange;
-  document.getElementById("dh-date").textContent=d.reportDate;
-  document.getElementById("chart-market-label").textContent=m.name+" \u00b7 Weekly";
-}
-
-async function renderRelease(){
-  const d=await loadData(currentMarket,chartWeeks),L=d.labels.length-1,P=L-1;
-  if(P<0)return;
-  document.getElementById("rel-badge").textContent="W/W Change \u00b7 "+d.reportDate;
-  const bLC=d.bpLong[L]-d.bpLong[P],bSC=d.bpShort[L]-d.bpShort[P],bNC=d.bpNet[L]-d.bpNet[P];
-  const dLC=d.dlLong[L]-d.dlLong[P],dSC=d.dlShort[L]-d.dlShort[P],dNC=d.dlNet[L]-d.dlNet[P];
-  const oC=d.oi[L]-d.oi[P];
-  const mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);
-  function fill(pfx,val,delta){
-    document.getElementById(pfx).textContent=fmt(val);
-    const ce=document.getElementById(pfx+"-chg");ce.textContent=fmtS(delta);ce.className="rel-delta "+(delta>0?"up":delta<0?"dn":"flat");
-    const be=document.getElementById(pfx+"-bar");be.style.width=(Math.abs(delta)/mx*100)+"%";be.className="rel-bar "+(delta>=0?"pos":"neg");
-  }
-  fill("rel-bp-long",d.bpLong[L],bLC);fill("rel-bp-short",d.bpShort[L],bSC);
-  const bne=document.getElementById("rel-bp-net");bne.textContent=fmtS(d.bpNet[L]);bne.className="rel-net-val "+(d.bpNet[L]>=0?"pos":"neg");
-  const bnce=document.getElementById("rel-bp-net-chg");bnce.textContent=fmtS(bNC)+" w/w";bnce.className="rel-net-chg "+(bNC>=0?"up":"dn");
-  fill("rel-dl-long",d.dlLong[L],dLC);fill("rel-dl-short",d.dlShort[L],dSC);
-  const dne=document.getElementById("rel-dl-net");dne.textContent=fmtS(d.dlNet[L]);dne.className="rel-net-val "+(d.dlNet[L]>=0?"pos":"neg");
-  const dnce=document.getElementById("rel-dl-net-chg");dnce.textContent=fmtS(dNC)+" w/w";dnce.className="rel-net-chg "+(dNC>=0?"up":"dn");
-  document.getElementById("rel-oi").textContent=fmt(d.oi[L]);
-  const oce=document.getElementById("rel-oi-chg");oce.textContent=fmtS(oC)+" w/w";oce.className="rel-stat-sub "+(oC>=0?"up":"dn");
-  document.getElementById("rel-oi-delta").textContent=fmtS(oC);
-  const ope=document.getElementById("rel-oi-pct"),op=d.oi[P]>0?((oC/d.oi[P])*100).toFixed(1):"0.0";
-  ope.textContent=(oC>=0?"+":"")+op+"%";ope.className="rel-stat-sub "+(oC>=0?"up":"dn");
-  document.getElementById("rel-bp-shift").textContent=fmtS(bNC);
-  const bde=document.getElementById("rel-bp-dir");bde.textContent=bNC>0?"More Bullish":bNC<0?"More Bearish":"Flat";bde.className="rel-stat-sub "+(bNC>0?"up":bNC<0?"dn":"");
-  document.getElementById("rel-dl-shift").textContent=fmtS(dNC);
-  const dde=document.getElementById("rel-dl-dir");dde.textContent=dNC>0?"More Bullish":dNC<0?"More Bearish":"Flat";dde.className="rel-stat-sub "+(dNC>0?"up":dNC<0?"dn":"");
-}
-
-async function renderNetChart(){
-  const d=await loadData(currentMarket,chartWeeks),ctx=document.getElementById("netChart").getContext("2d");
-  if(netChartInst)netChartInst.destroy();
-  var nds=[{label:"Big Players",data:d.bpNet,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.06)",borderWidth:1.5,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"},{label:"Dealers",data:d.dlNet,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.04)",borderWidth:1.5,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"}];
-  var nsc={x:{grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},maxTicksLimit:8}},y:{grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:v=>fmtK(v)}}};
-  if(priceOn.net&&d.price){nds.push(pDS(d.price));Object.assign(nsc,pAx());}
-  netChartInst=new Chart(ctx,{type:"line",data:{labels:d.labels,datasets:nds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Syne",weight:"700",size:12},bodyFont:{family:"DM Mono",size:10},padding:10,callbacks:{label:function(c){if(c.dataset.yAxisID==="yPrice")return"Price: "+c.parsed.y.toLocaleString();return c.dataset.label+": "+fmtS(c.parsed.y);}}}},scales:nsc}});
-}
-
-function miniOpts(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,bodyFont:{family:"DM Mono",size:9},callbacks:{label:c=>fmtS(c.parsed.y)}}},scales:{x:{display:false},y:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},callback:v=>fmtK(v),maxTicksLimit:4}}}};}
-
-async function renderDualCharts(){
-  const d=await loadData(currentMarket,chartWeeks),L=d.labels.length-1,P=L-1;
-  document.getElementById("oi-current").textContent=fmt(d.oi[L]);
-  const oiChg=d.oi[L]-d.oi[P];document.getElementById("oi-change").textContent=fmtS(oiChg)+" w/w";document.getElementById("oi-change").style.color=oiChg>=0?"var(--grn)":"var(--red)";
-  if(oiChartInst)oiChartInst.destroy();
-  var oids=[{data:d.oi,borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"}];
-  var oiop=miniOpts();oiop.scales.y={position:"left",grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},callback:v=>fmtK(v),maxTicksLimit:4}};
-  if(priceOn.oi&&d.price){oids.push(pDS(d.price));Object.assign(oiop.scales,pAx());}
-  oiChartInst=new Chart(document.getElementById("oiChart").getContext("2d"),{type:"line",data:{labels:d.labels,datasets:oids},options:oiop});
-}
-
-document.querySelectorAll(".ch-tog").forEach(btn=>{btn.addEventListener("click",async()=>{document.querySelectorAll(".ch-tog").forEach(b=>b.classList.remove("active"));btn.classList.add("active");chartWeeks=parseInt(btn.dataset.weeks);allData={};await renderDetail();await renderRelease();await renderNetChart();await renderDualCharts();await renderZScore();});});
-
-const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible");});},{threshold:0.1});
-document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
-
-
-let priceOn={net:false,oi:false,spread:false,zs:false};
-function togglePrice(ch){priceOn[ch]=!priceOn[ch];var b=document.getElementById("pt-"+ch);if(b)b.classList.toggle("active",priceOn[ch]);if(ch==="net"){renderNetChart();var e=document.getElementById("price-legend-net");if(e)e.style.display=priceOn.net?"flex":"none";}else if(ch==="oi"||ch==="spread")renderDualCharts();else if(ch==="zs")renderZScore();}
-function pDS(p){return{label:"Price",data:p,borderColor:"rgba(192,196,208,0.5)",borderWidth:1.5,borderDash:[4,2],pointRadius:0,pointHoverRadius:3,fill:false,tension:0.3,yAxisID:"yPrice"};}
-function pAx(){return{yPrice:{position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(v<10?2:0);}}}};}
-
-async function init(){await renderHeatmap();await renderDetail();await renderRelease();await renderNetChart();await renderDualCharts();await renderZScore();}
-init();
+<footer><div class="foot-brand"><img class="foot-logo" src="logo.png" alt="V"><span class="foot-name">Vilasio</span></div><div class="foot-copy">&#169; 2025 Vilasio &#183; COT Intelligence</div><div class="foot-disclaimer">Data from CFTC. Updated every Friday. Not financial advice.</div></footer>
+<script id="app-script">
+var MARKETS={ES:{name:"E-Mini S&P 500",exchange:"Chicago Mercantile Exchange"},NQ:{name:"E-Mini Nasdaq 100",exchange:"Chicago Mercantile Exchange"},GC:{name:"Gold",exchange:"Commodity Exchange Inc."},CL:{name:"Crude Oil WTI",exchange:"New York Mercantile Exchange"},SI:{name:"Silver",exchange:"Commodity Exchange Inc."},ZB:{name:"30-Year T-Bond",exchange:"Chicago Board of Trade"},"6E":{name:"Euro FX",exchange:"Chicago Mercantile Exchange"},"6B":{name:"British Pound",exchange:"Chicago Mercantile Exchange"},"6J":{name:"Japanese Yen",exchange:"Chicago Mercantile Exchange"},NG:{name:"Natural Gas",exchange:"New York Mercantile Exchange"},ZC:{name:"Corn",exchange:"Chicago Board of Trade"},ZW:{name:"Wheat",exchange:"Chicago Board of Trade"}};
+var currentMarket="ES",chartWeeks=26,allData={},netCI=null,oiCI=null,spCI=null,zsCI=null,pOn={net:false,oi:false,sp:false,zs:false};
+function sR(s){var x=Math.sin(s+1)*99999;return x-Math.floor(x)}
+function genMock(mk,wk){var seed=0;for(var i=0;i<mk.length;i++)seed+=mk.charCodeAt(i);var c={bpLong:280000,bpShort:140000,dlLong:210000,dlShort:320000,amp:40000,trend:600};var labels=[],bpL=[],bpS=[],bpN=[],dlL=[],dlS=[],dlN=[],oi=[],price=[];var now=new Date();for(var i=wk;i>=0;i--){var d=new Date(now);d.setDate(d.getDate()-i*7);labels.push(d.toISOString().slice(0,10));var n1=(sR(seed+i)-0.5)*c.amp;var bl=Math.round(c.bpLong+n1),bs=Math.round(c.bpShort-n1*0.5),dll=Math.round(c.dlLong-n1*0.7),dls=Math.round(c.dlShort+n1*0.5);bpL.push(bl);bpS.push(bs);bpN.push(bl-bs);dlL.push(dll);dlS.push(dls);dlN.push(dll-dls);oi.push(Math.round((bl+bs+dll+dls)*0.9));price.push(Math.round(5000+sR(seed+i+200)*2000))}return{labels:labels,bpLong:bpL,bpShort:bpS,bpNet:bpN,dlLong:dlL,dlShort:dlS,dlNet:dlN,oi:oi,price:price,reportDate:labels[labels.length-1]}}
+var API="https://vilasio-cot-backend.onrender.com",CP="vcot_";
+function nxE(){var n=new Date(),d=n.getUTCDay(),t=(6-d+7)%7||7,x=new Date(n);x.setUTCDate(x.getUTCDate()+t);x.setUTCHours(0,0,0,0);return x.getTime()}
+function lG(k){try{var r=localStorage.getItem(CP+k);if(!r)return null;var c=JSON.parse(r);if(Date.now()<c.ex)return c.d;return{_o:1,_d:c.d}}catch(e){return null}}
+function lS(k,d){try{localStorage.setItem(CP+k,JSON.stringify({d:d,ex:nxE(),t:Date.now()}))}catch(e){}}
+function fR(url,n,g){return new Promise(function(ok,no){var a=0;function go(){Promise.race([fetch(url),new Promise(function(_,r){setTimeout(function(){r(new Error("timeout"))},15000)})]).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(ok).catch(function(e){a++;if(a<=n)setTimeout(go,g*a);else no(e)})}go()})}
+function loadData(mk,wk){var key=mk+"_"+wk;if(allData[key])return Promise.resolve(allData[key]);var ca=lG(key);if(ca&&!ca._o){allData[key]=ca;return Promise.resolve(ca)}if(ca&&ca._o){allData[key]=ca._d;fR(API+"/api/cot?market="+mk+"&weeks="+wk,2,3000).then(function(d){allData[key]=d;lS(key,d)}).catch(function(){});return Promise.resolve(ca._d)}return fR(API+"/api/cot?market="+mk+"&weeks="+wk,3,3000).then(function(d){allData[key]=d;lS(key,d);return d}).catch(function(e){console.warn("API fail "+mk+":",e.message);allData[key]=genMock(mk,wk);return allData[key]})}
+function fmt(n){if(n==null)return"\u2014";return n.toLocaleString("en-US")}
+function fS(n){if(n==null)return"\u2014";return(n>=0?"+":"")+n.toLocaleString("en-US")}
+function fK(n){if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(0)+"K";return n.toString()}
+function togP(ch){pOn[ch]=!pOn[ch];var b=document.getElementById("pt-"+ch);if(b)b.classList.toggle("active",pOn[ch]);var l=document.getElementById("pl-"+ch);if(l)l.style.display=pOn[ch]?"flex":"none";if(ch==="net")renderNetChart();else if(ch==="oi"||ch==="sp")renderDualCharts();else if(ch==="zs")renderZScore()}
+function pDS(p){return{label:"Price",data:p,borderColor:"rgba(192,196,208,0.55)",borderWidth:1.5,borderDash:[4,2],pointRadius:0,pointHoverRadius:3,fill:false,tension:0.3,yAxisID:"yP"}}
+function pAx(){return{yP:{position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(v<10?4:v<100?2:0)}}}}}
+function pTip(c){if(c.dataset.yAxisID==="yP"){var v=c.parsed.y;return"Price: "+(v>=1000?v.toLocaleString():v.toFixed(v<10?4:2))}return null}
+function renderHeatmap(){var g=document.getElementById("heatmap-grid");g.innerHTML="";var ks=Object.keys(MARKETS);return Promise.all(ks.map(function(k){return loadData(k,26)})).then(function(res){var dm={};ks.forEach(function(k,i){dm[k]=res[i]});ks.forEach(function(k){var d=dm[k],la=d.bpNet[d.bpNet.length-1],pr=d.bpNet[d.bpNet.length-2],ch=la-pr,bi=ch>5000?"bull":ch<-5000?"bear":"neut",ce=document.createElement("div");ce.className="hm-cell "+bi+(k===currentMarket?" active":"");ce.innerHTML='<div class="hmc-sym">'+k+'</div><div class="hmc-name">'+MARKETS[k].name+'</div><div class="hmc-net '+(la>=0?"pos":"neg")+'">'+fS(la)+'</div><div class="hmc-chg '+(ch>=0?"up":"dn")+'">'+fS(ch)+' w/w</div>';ce.onclick=(function(m){return function(){selectMarket(m)}})(k);g.appendChild(ce)});document.getElementById("update-badge").textContent="REPORT: "+(dm.ES||dm[ks[0]]).reportDate})}
+function selectMarket(m){currentMarket=m;return renderHeatmap().then(renderDetail).then(renderRelease).then(renderNetChart).then(renderDualCharts).then(renderZScore)}
+function renderDetail(){return loadData(currentMarket,chartWeeks).then(function(d){var m=MARKETS[currentMarket];document.getElementById("dh-market").textContent=m.name;document.getElementById("dh-exchange").textContent=m.exchange;document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=m.name})}
+function renderRelease(){return loadData(currentMarket,chartWeeks).then(function(d){var L=d.labels.length-1,P=L-1;if(P<0)return;document.getElementById("rel-badge").textContent="W/W \u00b7 "+d.reportDate;var bLC=d.bpLong[L]-d.bpLong[P],bSC=d.bpShort[L]-d.bpShort[P],bNC=d.bpNet[L]-d.bpNet[P],dLC=d.dlLong[L]-d.dlLong[P],dSC=d.dlShort[L]-d.dlShort[P],dNC=d.dlNet[L]-d.dlNet[P],oC=d.oi[L]-d.oi[P],mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);function fi(p,v,dl){document.getElementById(p).textContent=fmt(v);var c=document.getElementById(p+"-chg");c.textContent=fS(dl);c.className="rel-delta "+(dl>0?"up":dl<0?"dn":"flat");var b=document.getElementById(p+"-bar");b.style.width=(Math.abs(dl)/mx*100)+"%";b.className="rel-bar "+(dl>=0?"pos":"neg")}fi("rel-bp-long",d.bpLong[L],bLC);fi("rel-bp-short",d.bpShort[L],bSC);var bne=document.getElementById("rel-bp-net");bne.textContent=fS(d.bpNet[L]);bne.className="rel-net-val "+(d.bpNet[L]>=0?"pos":"neg");var bnc=document.getElementById("rel-bp-net-chg");bnc.textContent=fS(bNC)+" w/w";bnc.className="rel-net-chg "+(bNC>=0?"up":"dn");fi("rel-dl-long",d.dlLong[L],dLC);fi("rel-dl-short",d.dlShort[L],dSC);var dne=document.getElementById("rel-dl-net");dne.textContent=fS(d.dlNet[L]);dne.className="rel-net-val "+(d.dlNet[L]>=0?"pos":"neg");var dnc=document.getElementById("rel-dl-net-chg");dnc.textContent=fS(dNC)+" w/w";dnc.className="rel-net-chg "+(dNC>=0?"up":"dn");document.getElementById("rel-oi").textContent=fmt(d.oi[L]);var oc=document.getElementById("rel-oi-chg");oc.textContent=fS(oC)+" w/w";oc.className="rel-stat-sub "+(oC>=0?"up":"dn");document.getElementById("rel-oi-delta").textContent=fS(oC);var op=document.getElementById("rel-oi-pct"),pct=d.oi[P]>0?((oC/d.oi[P])*100).toFixed(1):"0.0";op.textContent=(oC>=0?"+":"")+pct+"%";op.className="rel-stat-sub "+(oC>=0?"up":"dn");document.getElementById("rel-bp-shift").textContent=fS(bNC);var bd=document.getElementById("rel-bp-dir");bd.textContent=bNC>0?"More Bullish":bNC<0?"More Bearish":"Flat";bd.className="rel-stat-sub "+(bNC>0?"up":bNC<0?"dn":"");document.getElementById("rel-dl-shift").textContent=fS(dNC);var dd=document.getElementById("rel-dl-dir");dd.textContent=dNC>0?"More Bullish":dNC<0?"More Bearish":"Flat";dd.className="rel-stat-sub "+(dNC>0?"up":dNC<0?"dn":"")})}
+function renderNetChart(){return loadData(currentMarket,chartWeeks).then(function(d){var ctx=document.getElementById("netChart").getContext("2d");if(netCI)netCI.destroy();var ds=[{label:"Big Players",data:d.bpNet,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.06)",borderWidth:1.5,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"},{label:"Dealers",data:d.dlNet,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.04)",borderWidth:1.5,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"}];var sc={x:{grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},maxTicksLimit:8}},y:{grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return fK(v)}}}};if(pOn.net&&d.price){ds.push(pDS(d.price));Object.assign(sc,pAx())}netCI=new Chart(ctx,{type:"line",data:{labels:d.labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Syne",weight:"700",size:12},bodyFont:{family:"DM Mono",size:10},padding:10,callbacks:{label:function(c){var p=pTip(c);if(p)return p;return c.dataset.label+": "+fS(c.parsed.y)}}}},scales:sc}})})}
+function miniOp(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,bodyFont:{family:"DM Mono",size:9},callbacks:{label:function(c){var p=pTip(c);if(p)return p;return fS(c.parsed.y)}}}},scales:{x:{display:false},y:{position:"left",grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},callback:function(v){return fK(v)},maxTicksLimit:4}}}}}
+function renderDualCharts(){return loadData(currentMarket,chartWeeks).then(function(d){var L=d.labels.length-1,P=L-1;document.getElementById("oi-current").textContent=fmt(d.oi[L]);var oiC=d.oi[L]-d.oi[P];document.getElementById("oi-change").textContent=fS(oiC)+" w/w";document.getElementById("oi-change").style.color=oiC>=0?"var(--grn)":"var(--red)";if(oiCI)oiCI.destroy();var oids=[{data:d.oi,borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"}];var oiop=miniOp();if(pOn.oi&&d.price){oids.push(pDS(d.price));Object.assign(oiop.scales,pAx())}oiCI=new Chart(document.getElementById("oiChart").getContext("2d"),{type:"line",data:{labels:d.labels,datasets:oids},options:oiop});var sp=d.bpNet.map(function(v,i){return v-d.dlNet[i]});document.getElementById("spread-current").textContent=fS(sp[L]);document.getElementById("spread-current").style.color=sp[L]>=0?"var(--grn)":"var(--red)";if(spCI)spCI.destroy();var spds=[{data:sp,borderColor:"#c8a84b",segment:{borderColor:function(c){return c.p1.parsed.y>=0?"#22c55e":"#ef4444"}},backgroundColor:"rgba(255,255,255,0.02)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"}];var spop=miniOp();if(pOn.sp&&d.price){spds.push(pDS(d.price));Object.assign(spop.scales,pAx())}spCI=new Chart(document.getElementById("spreadChart").getContext("2d"),{type:"line",data:{labels:d.labels,datasets:spds},options:spop})})}
+function renderZScore(){return loadData(currentMarket,104).then(function(d){var nets=d.bpNet,n=nets.length,cur=nets[n-1],mean=nets.reduce(function(a,v){return a+v},0)/n,std=Math.sqrt(nets.reduce(function(a,v){return a+(v-mean)*(v-mean)},0)/n),z=std>0?(cur-mean)/std:0;var zE=document.getElementById("zs-value");zE.textContent=(z>=0?"+":"")+z.toFixed(2);var cl=z>2?"bull":z<-2?"bear":"neutral";zE.className="zs-value "+cl;var rE=document.getElementById("zs-reading");rE.textContent=z>2?"EXTREME LONG":z>1?"ABOVE AVG":z>-1?"NEUTRAL":z>-2?"BELOW AVG":"EXTREME SHORT";rE.className="zs-reading "+cl;document.getElementById("zs-marker").style.left=Math.min(100,Math.max(0,((z+3)/6)*100))+"%";document.getElementById("zs-current").textContent=fS(cur);document.getElementById("zs-current").style.color=cur>=0?"var(--grn)":"var(--red)";document.getElementById("zs-mean").textContent=fS(Math.round(mean));document.getElementById("zs-std").textContent=fmt(Math.round(std));var zSc=nets.map(function(v,i){if(i<26)return null;var sl=nets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});var ctx=document.getElementById("zsChart").getContext("2d");if(zsCI)zsCI.destroy();var gr=ctx.createLinearGradient(0,0,0,ctx.canvas.parentElement.clientHeight||220);gr.addColorStop(0,"rgba(34,197,94,0.10)");gr.addColorStop(0.5,"rgba(255,255,255,0)");gr.addColorStop(1,"rgba(239,68,68,0.10)");var zsds=[{data:zSc,borderColor:"#c8a84b",backgroundColor:gr,borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:true,tension:0.3,spanGaps:true,yAxisID:"y"},{data:d.labels.map(function(){return 2}),borderColor:"rgba(34,197,94,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"},{data:d.labels.map(function(){return -2}),borderColor:"rgba(239,68,68,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"},{data:d.labels.map(function(){return 0}),borderColor:"rgba(255,255,255,0.08)",borderWidth:1,pointRadius:0,fill:false,yAxisID:"y"}];var zsSc2={x:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},maxTicksLimit:10}},y:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},stepSize:1},suggestedMin:-3.5,suggestedMax:3.5}};if(pOn.zs&&d.price){zsds.push(pDS(d.price));Object.assign(zsSc2,pAx())}zsCI=new Chart(ctx,{type:"line",data:{labels:d.labels,datasets:zsds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,bodyFont:{family:"DM Mono",size:10},filter:function(it){return it.datasetIndex===0||(it.dataset.yAxisID==="yP")},callbacks:{label:function(c){var p=pTip(c);if(p)return p;return"Z: "+(c.parsed.y!=null?c.parsed.y.toFixed(2):"--")}}}},scales:zsSc2}})})}
+document.querySelectorAll(".ch-tog").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".ch-tog").forEach(function(x){x.classList.remove("active")});b.classList.add("active");chartWeeks=parseInt(b.dataset.weeks);allData={};renderDetail().then(renderRelease).then(renderNetChart).then(renderDualCharts).then(renderZScore)})});
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
+renderHeatmap().then(renderDetail).then(renderRelease).then(renderNetChart).then(renderDualCharts).then(renderZScore);
 </script>
 </body>
 </html>
