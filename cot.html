@@ -196,8 +196,8 @@ main{padding:0 48px 64px 120px}
 .zs-stat{text-align:center;padding:16px;border-right:1px solid var(--brd)}.zs-stat:last-child{border-right:none}
 .zs-stat-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:3px}
 .zs-stat-val{font-family:"Syne",sans-serif;font-size:16px;font-weight:700}
-.zs-chart-area{padding:16px 20px 28px;overflow:visible}
-.zs-chart-wrap{position:relative;height:360px;overflow:visible}
+.zs-chart-area{padding:16px 20px 24px;overflow:visible}
+.zs-chart-wrap{position:relative;height:320px;overflow:visible}
 .zs-chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:8px 28px 14px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);overflow:visible}
 .zs-explain{padding:20px 28px;border-top:1px solid var(--brd);font-size:12px;color:var(--gray2);line-height:1.8}
 .zs-explain strong{color:var(--gold);font-weight:500}
@@ -394,17 +394,19 @@ function rZS(){return lD(cm,104).then(function(d){var nets=d.bpNet,dlNets=d.dlNe
   var tagColor=tagCl==="bull"?"var(--grn)":tagCl==="bear"?"var(--red)":"var(--gray2)";
   interp.innerHTML='<span class="tag" style="background:'+tagBg+';color:'+tagColor+'">'+tag+'</span> '+txt;
   /* Compute BP z-scores */
-  var zScBp=nets.map(function(v,i){if(i<26)return null;var sl=nets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});
+  var zScBpRaw=nets.map(function(v,i){if(i<26)return null;var sl=nets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});
   /* Compute DL z-scores */
-  var zScDl=dlNets.map(function(v,i){if(i<26)return null;var sl=dlNets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});
+  var zScDlRaw=dlNets.map(function(v,i){if(i<26)return null;var sl=dlNets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});
+  /* Trim leading nulls so chart starts at first real data point */
+  var trimStart=26;var zsLabels=d.labels.slice(trimStart);var zScBp=zScBpRaw.slice(trimStart);var zScDl=zScDlRaw.slice(trimStart);
   var ctx=document.getElementById("zsChart").getContext("2d");if(zC)zC.destroy();var gr=ctx.createLinearGradient(0,0,0,ctx.canvas.parentElement.clientHeight||280);gr.addColorStop(0,"rgba(34,197,94,0.10)");gr.addColorStop(0.5,"rgba(255,255,255,0)");gr.addColorStop(1,"rgba(239,68,68,0.10)");
   var zsds=[];
   if(zsShow.bp)zsds.push({label:"BP Z-Score",data:zScBp,borderColor:BC,backgroundColor:gr,borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:true,tension:0.3,spanGaps:true,yAxisID:"y"});
   if(zsShow.dl)zsds.push({label:"DL Z-Score",data:zScDl,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:false,tension:0.3,spanGaps:true,yAxisID:"y"});
-  zsds.push({data:d.labels.map(function(){return 2}),borderColor:"rgba(34,197,94,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"});
-  zsds.push({data:d.labels.map(function(){return -2}),borderColor:"rgba(239,68,68,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"});
-  zsds.push({data:d.labels.map(function(){return 0}),borderColor:"rgba(255,255,255,0.08)",borderWidth:1,pointRadius:0,fill:false,yAxisID:"y"});
-  var zsSc2={x:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},maxTicksLimit:10}},y:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},stepSize:1},min:-5,max:5}};if(pOn.zs&&d.dailyDates&&d.dailyDates.length){var pMap={};d.dailyDates.forEach(function(dt,i){pMap[dt]=d.dailyPrice[i]});var pp=d.labels.map(function(dt){return pMap[dt]!==undefined?pMap[dt]:null});zsds.push({label:"Price",data:pp,borderColor:"rgba(240,241,245,0.7)",borderWidth:1.5,borderDash:[4,2],pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});Object.assign(zsSc2,pAx())}zC=new Chart(ctx,{type:"line",data:{labels:d.labels,datasets:zsds},options:{responsive:true,maintainAspectRatio:false,clip:false,layout:{padding:{top:14,bottom:24,left:10,right:10}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,bodyFont:{family:"DM Mono",size:10},filter:function(it){return it.datasetIndex<2||(it.dataset.yAxisID==="yP")},callbacks:{label:function(c){var p=pTip(c);if(p)return p;return c.dataset.label+": "+(c.parsed.y!=null?c.parsed.y.toFixed(2):"--")}}}},scales:zsSc2}})})}
+  zsds.push({data:zsLabels.map(function(){return 2}),borderColor:"rgba(34,197,94,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"});
+  zsds.push({data:zsLabels.map(function(){return -2}),borderColor:"rgba(239,68,68,0.3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,yAxisID:"y"});
+  zsds.push({data:zsLabels.map(function(){return 0}),borderColor:"rgba(255,255,255,0.08)",borderWidth:1,pointRadius:0,fill:false,yAxisID:"y"});
+  var zsSc2={x:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},maxTicksLimit:10}},y:{grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},stepSize:1},suggestedMin:-4,suggestedMax:4}};if(pOn.zs&&d.dailyDates&&d.dailyDates.length){var pMap={};d.dailyDates.forEach(function(dt,i){pMap[dt]=d.dailyPrice[i]});var pp=zsLabels.map(function(dt){return pMap[dt]!==undefined?pMap[dt]:null});zsds.push({label:"Price",data:pp,borderColor:"rgba(240,241,245,0.7)",borderWidth:1.5,borderDash:[4,2],pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});Object.assign(zsSc2,pAx())}zC=new Chart(ctx,{type:"line",data:{labels:zsLabels,datasets:zsds},options:{responsive:true,maintainAspectRatio:false,clip:false,layout:{padding:{top:14,bottom:24,left:10,right:10}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,bodyFont:{family:"DM Mono",size:10},filter:function(it){return it.datasetIndex<2||(it.dataset.yAxisID==="yP")},callbacks:{label:function(c){var p=pTip(c);if(p)return p;return c.dataset.label+": "+(c.parsed.y!=null?c.parsed.y.toFixed(2):"--")}}}},scales:zsSc2}})})}
 /* Toggle heatmap */
 var hmOpen=true;
 function toggleHM(){hmOpen=!hmOpen;document.getElementById("hm-content").classList.toggle("collapsed",!hmOpen);document.getElementById("hm-arrow").classList.toggle("open",hmOpen)}
