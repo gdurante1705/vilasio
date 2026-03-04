@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Insights — Vilasio</title>
+<title>About — Vilasio</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 
@@ -58,50 +58,33 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 }
 
 
-.blog-hero{padding:160px 64px 80px}
-.bh-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards .1s}
-.bh-h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(42px,5vw,68px);font-weight:700;letter-spacing:-2px;line-height:1.05;margin-bottom:16px;opacity:0;animation:fadeUp .8s ease forwards .25s}
-.bh-h1 em{font-style:normal;color:var(--gold2)}
-.bh-sub{font-size:16px;color:var(--gray2);max-width:480px;line-height:1.7;opacity:0;animation:fadeUp .8s ease forwards .4s}
-section.blog-body{padding:40px 64px 100px}
-.blog-filter{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap}
-.bf-btn{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:8px 18px;border:1px solid var(--brd2);background:none;color:var(--gray);cursor:pointer;transition:all .3s}
-.bf-btn:hover,.bf-btn.active{background:var(--surf2);color:var(--white);border-color:var(--brd2)}
-.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.blog-card{background:var(--surf);border:1px solid var(--brd);transition:all .3s;cursor:pointer;text-decoration:none;display:block;color:inherit}
-.blog-card:hover{border-color:var(--brd2);transform:translateY(-3px)}
-.bc-top{height:3px}
-.bc-top.gold{background:var(--gold)}
-.bc-top.blu{background:var(--blu)}
-.bc-top.grn{background:var(--grn)}
-.bc-body{padding:32px}
-.bc-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.bc-cat{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
-.bc-date{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;color:var(--gray)}
-.bc-title{font-family:"Space Grotesk",sans-serif;font-size:18px;font-weight:500;line-height:1.3;margin-bottom:12px;transition:color .3s}
-.blog-card:hover .bc-title{color:var(--gold2)}
-.bc-excerpt{font-size:13px;color:var(--gray2);line-height:1.6;margin-bottom:20px}
-.bc-read{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);transition:color .3s}
-.blog-card:hover .bc-read{color:var(--gold)}
-.blog-featured{background:var(--surf);border:1px solid var(--brd2);position:relative;overflow:hidden;margin-bottom:2px;display:grid;grid-template-columns:1fr 1fr;transition:border-color .3s}
-.blog-featured:hover{border-color:var(--gold)}
-.blog-featured::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.bf-content{padding:48px}
-.bf-badge{display:inline-block;font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:3px 12px;margin-bottom:20px}
-.bf-title{font-family:"Space Grotesk",sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:600;line-height:1.2;margin-bottom:16px}
-.bf-excerpt{font-size:15px;color:var(--gray2);line-height:1.7;margin-bottom:24px}
-.bf-read{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
-.bf-visual{display:flex;align-items:center;justify-content:center;background:var(--bg2);border-left:1px solid var(--brd);padding:48px}
-.bf-metric{text-align:center}
-.bf-metric-num{font-family:"Space Grotesk",sans-serif;font-size:72px;font-weight:700;color:var(--gold2);line-height:1}
-.bf-metric-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-top:8px}
-.coming-soon{grid-column:1/-1;background:var(--surf);border:1px solid var(--brd);padding:48px;text-align:center}
-.cs-icon{font-size:32px;color:var(--gold);margin-bottom:16px}
-.cs-title{font-family:"Space Grotesk",sans-serif;font-size:18px;font-weight:500;margin-bottom:8px}
-.cs-desc{font-size:14px;color:var(--gray2);max-width:400px;margin:0 auto 24px}
-.cs-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid var(--gold);padding:10px 24px;transition:all .3s}
-.cs-link:hover{background:var(--gold);color:var(--bg)}
-@media(max-width:960px){.blog-hero,.blog-body{padding-left:24px;padding-right:24px}.blog-grid{grid-template-columns:1fr}.blog-featured{grid-template-columns:1fr}.bf-visual{display:none}}
+.about-hero{padding:160px 64px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;min-height:80vh}
+.ah-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards .1s}
+.ah-h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(42px,5vw,68px);font-weight:700;letter-spacing:-2px;line-height:1.05;margin-bottom:24px;opacity:0;animation:fadeUp .8s ease forwards .25s}
+.ah-h1 em{font-style:normal;color:var(--gold2)}
+.ah-desc{font-size:16px;color:var(--gray2);line-height:1.8;max-width:480px;opacity:0;animation:fadeUp .8s ease forwards .4s}
+.ah-desc strong{color:var(--white);font-weight:500}
+.ah-visual{display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp .8s ease forwards .55s}
+.ah-stat{background:var(--surf);border:1px solid var(--brd);padding:24px 28px;display:flex;align-items:center;gap:20px;transition:border-color .3s}
+.ah-stat:hover{border-color:var(--brd2)}
+.ah-stat-num{font-family:"Space Grotesk",sans-serif;font-size:36px;font-weight:700;color:var(--gold2);line-height:1;min-width:80px}
+.ah-stat-label{font-size:14px;color:var(--gray2);line-height:1.5}
+.ah-stat-label strong{display:block;color:var(--white);font-weight:500;font-size:15px;margin-bottom:2px}
+section.about-body{padding:80px 64px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px}
+.ag-card{background:var(--surf);border:1px solid var(--brd);padding:36px;transition:border-color .3s;position:relative;overflow:hidden}
+.ag-card:hover{border-color:var(--brd2)}
+.ag-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--brd);transition:background .3s}
+.ag-card:hover::before{background:var(--gold)}
+.ag-icon{font-size:28px;margin-bottom:16px;color:var(--gold)}
+.ag-title{font-family:"Space Grotesk",sans-serif;font-size:16px;font-weight:500;margin-bottom:10px}
+.ag-desc{font-size:13px;color:var(--gray2);line-height:1.7}
+.about-mission{background:var(--surf);border:1px solid var(--brd2);padding:64px;margin-top:2px;position:relative;overflow:hidden}
+.about-mission::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.am-quote{font-family:"Space Grotesk",sans-serif;font-size:clamp(22px,3vw,32px);font-weight:500;line-height:1.4;color:var(--white);max-width:700px;margin:0 auto;text-align:center}
+.am-quote em{font-style:italic;color:var(--gold2)}
+.am-source{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-top:24px;text-align:center}
+@media(max-width:960px){.about-hero{grid-template-columns:1fr;padding:120px 24px 60px;gap:48px}.about-grid{grid-template-columns:1fr}.section.about-body{padding:60px 24px}.about-mission{padding:40px 24px}}
 
 </style>
 </head>
@@ -112,78 +95,80 @@ section.blog-body{padding:40px 64px 100px}
     <a href="index.html" style="text-decoration:none"><span class="nav-name">Vilasio</span></a>
   </div>
   <div class="nav-right">
-    <a href="about.html" class="nav-link">About</a>
-    <a href="blog.html" class="nav-link active">Insights</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="blog.html" class="nav-link">Insights</a>
     <a href="contact.html" class="nav-link">Contact</a>
-    <a href="contact.html" class="nav-btn">Get Beta</a>
+    
   </div>
   <button class="nav-mobile-btn" onclick="document.querySelector('.nav-mobile-menu').classList.toggle('open')">☰</button>
   <div class="nav-mobile-menu">
     <a href="about.html">About</a>
     <a href="blog.html">Insights</a>
     <a href="contact.html">Contact</a>
-    <a href="contact.html">Get Beta</a>
   </div>
 </nav>
 
-<div class="blog-hero">
-  <div class="bh-tag">◈ Vilasio Insights</div>
-  <h1 class="bh-h1">Thinking about<br><em>markets.</em></h1>
-  <p class="bh-sub">Analysis, frameworks and perspectives on NQ Futures, order flow, market structure and performance quality from the Vilasio team.</p>
+<div class="about-hero">
+  <div>
+    <div class="ah-tag">◈ About Vilasio</div>
+    <h1 class="ah-h1">We built the tools<br>we <em>needed</em> ourselves.</h1>
+    <p class="ah-desc">
+      Vilasio was created by futures traders who spent years operating in the NQ market and 
+      found that <strong>no existing metric could measure what actually mattered</strong> — 
+      the structural quality of how a system wins.<br><br>
+      Deep experience in <strong>microstructure, order flow, options dynamics</strong> and 
+      global macro gave us the perspective to build something different.
+      COT Intelligence is that something.
+    </p>
+  </div>
+  <div class="ah-visual">
+    <div class="ah-stat">
+      <div class="ah-stat-num">NQ</div>
+      <div class="ah-stat-label"><strong>Primary Market</strong>Nasdaq 100 Futures — E-mini &amp; Micro</div>
+    </div>
+    <div class="ah-stat">
+      <div class="ah-stat-num">L2</div>
+      <div class="ah-stat-label"><strong>Market Depth</strong>Real-time Level 2 via dxFeed on ATAS</div>
+    </div>
+    <div class="ah-stat">
+      <div class="ah-stat-num">RF</div>
+      <div class="ah-stat-label"><strong>Execution</strong>Rithmic protocol on professional prop firms</div>
+    </div>
+  </div>
 </div>
 
 <div class="divider"></div>
 
-<section class="blog-body">
-  <a href="#" class="blog-featured reveal" style="text-decoration:none;color:inherit">
-    <div class="bf-content">
-      <div class="bf-badge">Featured</div>
-      <div class="bf-title">Why Your Profit Factor Is Lying to You</div>
-      <div class="bf-excerpt">Two traders, identical Profit Factor, completely different structural depth. One is replicable. One will blow up on the next slow week. Here's how to tell them apart using institutional positioning data.</div>
-      <div class="bf-read">Read article →</div>
-    </div>
-    <div class="bf-visual">
-      <div class="bf-metric">
-        <div class="bf-metric-num">0.84</div>
-        <div class="bf-metric-label">Positioning Score</div>
-      </div>
-    </div>
-  </a>
+<section class="about-body">
+  <p class="s-tag reveal">What we focus on</p>
+  <h2 class="s-h2 reveal">Built on depth.<br><em>Not theory.</em></h2>
 
-  <div class="blog-grid" style="margin-top:2px">
-    <a href="#" class="blog-card reveal" style="text-decoration:none;color:inherit">
-      <div class="bc-top gold"></div>
-      <div class="bc-body">
-        <div class="bc-meta"><span class="bc-cat">Performance</span><span class="bc-date">Jan 2025</span></div>
-        <div class="bc-title">The Structural Difference Between a Good Month and a Good System</div>
-        <div class="bc-excerpt">Monthly PnL tells you what happened. Institutional positioning tells you whether it can happen again. Here's the distinction that separates professionals from lucky amateurs.</div>
-        <div class="bc-read">Read more →</div>
-      </div>
-    </a>
-    <a href="#" class="blog-card reveal reveal-d1" style="text-decoration:none;color:inherit">
-      <div class="bc-top blu"></div>
-      <div class="bc-body">
-        <div class="bc-meta"><span class="bc-cat">Microstructure</span><span class="bc-date">Jan 2025</span></div>
-        <div class="bc-title">Reading Order Flow on NQ: What the Tape Actually Tells You</div>
-        <div class="bc-excerpt">Most traders look at price. The tape shows who is moving it and why. A framework for reading absorption, initiative and trapped participants in real time.</div>
-        <div class="bc-read">Read more →</div>
-      </div>
-    </a>
-    <a href="#" class="blog-card reveal reveal-d2" style="text-decoration:none;color:inherit">
-      <div class="bc-top grn"></div>
-      <div class="bc-body">
-        <div class="bc-meta"><span class="bc-cat">Macro</span><span class="bc-date">Dec 2024</span></div>
-        <div class="bc-title">How Options Dealer Positioning Shapes Intraday NQ Behaviour</div>
-        <div class="bc-excerpt">Gamma exposure and dealer hedging flows create predictable price behaviour at specific levels. Understanding this adds a structural layer to any scalping approach.</div>
-        <div class="bc-read">Read more →</div>
-      </div>
-    </a>
-    <div class="coming-soon reveal" style="margin-top:2px">
-      <div class="cs-icon">◈</div>
-      <div class="cs-title">More insights coming soon</div>
-      <div class="cs-desc">We publish frameworks and analysis when we have something worth saying. Follow us on LinkedIn for regular updates.</div>
-      <a href="https://linkedin.com" target="_blank" class="cs-link">Follow on LinkedIn</a>
+  <div class="about-grid">
+    <div class="ag-card reveal">
+      <div class="ag-icon">⬡</div>
+      <div class="ag-title">Microstructure &amp; Order Flow</div>
+      <div class="ag-desc">We trade where price is made — reading real-time tape, footprint charts and Level 2 data to understand who is actually moving the market and why.</div>
     </div>
+    <div class="ag-card reveal reveal-d1">
+      <div class="ag-icon">◈</div>
+      <div class="ag-title">Scalping on NQ Futures</div>
+      <div class="ag-desc">Short time-frame precision on one of the most liquid instruments in the world. Every tick has structure. We build systems that exploit it consistently.</div>
+    </div>
+    <div class="ag-card reveal reveal-d2">
+      <div class="ag-icon">◎</div>
+      <div class="ag-title">Options &amp; Derivatives</div>
+      <div class="ag-desc">Understanding the options market gives a structural edge in futures. Gamma exposure, dealer positioning and volatility surface dynamics inform our directional bias.</div>
+    </div>
+    <div class="ag-card reveal reveal-d3">
+      <div class="ag-icon">◻</div>
+      <div class="ag-title">Global Macro Framework</div>
+      <div class="ag-desc">Short-term execution sits inside a macro context. We track Fed policy, liquidity cycles and institutional flows to align tactical entries with the bigger picture.</div>
+    </div>
+  </div>
+
+  <div class="about-mission reveal" style="margin-top:2px">
+    <div class="am-quote">"Profit is visible. <em>Depth is invisible.</em><br>We built our tools to make the invisible measurable."</div>
+    <div class="am-source">Vilasio — Core Philosophy</div>
   </div>
 </section>
 
