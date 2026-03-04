@@ -156,7 +156,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .pillars-h2{font-family:"Space Grotesk",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:600;letter-spacing:-1px;line-height:1.1;margin-bottom:52px}
 .pillars-h2 em{font-style:normal;color:var(--gold2)}
 
-.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.pillars-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
 
 .pillar{
   background:var(--surf);border:1px solid var(--brd);
@@ -168,14 +168,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .pillar:hover{border-color:var(--brd2);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
 .pillar::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;transition:background .3s}
 .pillar.wd::before{background:var(--gold)}
-.pillar.coach::before{background:var(--blu)}
 .pillar.insights::before{background:var(--grn)}
 
 .pillar-body{padding:40px;flex:1}
 .pillar-num{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-bottom:20px}
 .pillar-icon{font-size:32px;margin-bottom:20px}
 .pillar.wd .pillar-icon{color:var(--gold)}
-.pillar.coach .pillar-icon{color:var(--blu)}
 .pillar.insights .pillar-icon{color:var(--grn)}
 
 .pillar-title{font-family:"Space Grotesk",sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.5px;margin-bottom:12px}
@@ -265,10 +263,8 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-dropdown-arrow" id="tools-arrow">▼</span></button>
       <div class="nav-dropdown-menu">
         <a href="cot.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#3b82f6"></span>COT Intelligence</a>
-        <a href="volume_profile.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#8b5cf6"></span>Volume Profile</a>
       </div>
     </div>
-    <a href="coaching.html" class="nav-link">Coaching</a>
     <a href="blog.html" class="nav-link">Insights</a>
     <a href="contact.html" class="nav-link">Contact</a>
     <a href="windepth.html" class="nav-btn">Get WinDepth</a>
@@ -277,8 +273,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <div class="nav-mobile-menu">
     <a href="about.html">About</a>
     <a href="cot.html">COT Intelligence</a>
-    <a href="volume_profile.html">Volume Profile</a>
-    <a href="coaching.html">Coaching</a>
     <a href="blog.html">Insights</a>
     <a href="contact.html">Contact</a>
     <a href="windepth.html">Get WinDepth</a>
@@ -317,7 +311,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <!-- PILLARS -->
 <section class="pillars">
   <p class="pillars-tag reveal">What we do</p>
-  <h2 class="pillars-h2 reveal">Three ways to build<br><em>a deeper edge.</em></h2>
+  <h2 class="pillars-h2 reveal">Two ways to build<br><em>a deeper edge.</em></h2>
 
   <div class="pillars-grid">
     <a href="windepth.html" class="pillar wd reveal">
@@ -333,22 +327,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
     </a>
 
-    <a href="coaching.html" class="pillar coach reveal reveal-d1">
+    <a href="blog.html" class="pillar insights reveal reveal-d1">
       <div class="pillar-body">
         <div class="pillar-num">02</div>
-        <div class="pillar-icon">▲</div>
-        <div class="pillar-title">Alpha Execution</div>
-        <div class="pillar-desc">Group coaching program built around order flow, microstructure and systematic performance review. For traders who want to understand markets at a structural level.</div>
-      </div>
-      <div class="pillar-footer">
-        <span class="pillar-cta">View Program</span>
-        <span class="pillar-arrow">→</span>
-      </div>
-    </a>
-
-    <a href="blog.html" class="pillar insights reveal reveal-d2">
-      <div class="pillar-body">
-        <div class="pillar-num">03</div>
         <div class="pillar-icon">◻</div>
         <div class="pillar-title">Insights</div>
         <div class="pillar-desc">Frameworks, analysis and perspectives on NQ Futures, order flow dynamics, options structure and performance quality from the Vilasio team.</div>
@@ -410,7 +391,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <div class="foot-links">
     <a href="about.html">About</a>
     <a href="windepth.html">WinDepth</a>
-    <a href="coaching.html">Coaching</a>
+    <a href="cot.html">COT Intelligence</a>
     <a href="blog.html">Insights</a>
     <a href="contact.html">Contact</a>
   </div>
