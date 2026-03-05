@@ -7,330 +7,88 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a10;
-    --surf: #12121c;
-    --surf2: #1a1a28;
-    --surf3: #22222f;
-    --brd: #ffffff08;
-    --brd2: #ffffff0c;
-    --brd3: #ffffff15;
-    --white: #f0f1f5;
-    --gray: #5a6070;
-    --gray2: #8a90a0;
-    --gray3: #c0c4d0;
-    --grn: #22c55e;
-    --red: #ef4444;
-    --grn-dim: rgba(34,197,94,0.10);
-    --red-dim: rgba(239,68,68,0.10);
-    --bp: #5b8af0;
-    --gold: #c8a84b;
-    --gold-dim: rgba(200,168,75,0.15);
+:root {
+  --bg:#0a0a10;--surf:#12121c;--surf2:#1a1a28;--surf3:#22222f;
+  --brd:#ffffff08;--brd2:#ffffff0c;--brd3:#ffffff15;
+  --white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;
+  --grn:#22c55e;--red:#ef4444;--grn-dim:rgba(34,197,94,.10);--red-dim:rgba(239,68,68,.10);
+  --bp:#5b8af0;--gold:#c8a84b;--orange:#f97316;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:56px;background:rgba(10,10,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd2)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--white);text-decoration:none}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-cta{color:var(--white)!important;border:1px solid var(--brd3);padding:6px 14px;border-radius:4px}
+main{max-width:960px;margin:0 auto;padding:48px 24px 80px}
+.hero{margin-bottom:40px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .1s}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:10px}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-.03em;line-height:1.1}
+.hero-sub{margin-top:8px;font-size:13px;color:var(--gray3)}
+.sec-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray3);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--brd2)}
+.sec-source{font-size:10px;color:var(--gray);letter-spacing:.04em;text-transform:none;font-family:'DM Mono',monospace}
 
-    --fear-color: #ef4444;
-    --neutral-color: #8a90a0;
-    --greed-color: #22c55e;
-  }
+/* COMPOSITE */
+.composite-card{background:var(--surf);border:1px solid var(--brd2);border-radius:12px;padding:28px 32px;margin-bottom:32px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .15s}
+.composite-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.composite-score{font-family:'Syne',sans-serif;font-weight:800;font-size:56px;letter-spacing:-.04em;line-height:1;min-width:80px}
+.composite-info{flex:1;min-width:160px}
+.composite-label{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.composite-desc{font-size:12px;color:var(--gray3)}
+.composite-bar-wrap{flex:2;min-width:200px}
+.composite-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#ef4444 0%,#f97316 25%,#8a90a0 50%,#84cc16 75%,#22c55e 100%);position:relative;margin-bottom:6px}
+.composite-needle{position:absolute;top:-5px;width:3px;height:18px;background:var(--white);border-radius:2px;transform:translateX(-50%);transition:left 1.2s cubic-bezier(.4,0,.2,1);left:50%}
+.composite-scale{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--gray)}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ASSET GRID */
+.assets-section{margin-bottom:32px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .25s}
+.asset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.asset-card{background:var(--surf);border:1px solid var(--brd2);border-radius:10px;padding:16px 18px;transition:border-color .2s}
+.asset-card:hover{border-color:var(--brd3)}
+.asset-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.asset-sym{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.asset-src{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);padding:2px 5px;border:1px solid var(--brd3);border-radius:3px;white-space:nowrap}
+.asset-name{font-size:10px;color:var(--gray2);margin-bottom:12px}
+.asset-score{font-family:'Syne',sans-serif;font-weight:700;font-size:30px;letter-spacing:-.03em;line-height:1;margin-bottom:8px}
+.bar-wrap{height:4px;background:var(--surf3);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.bar-fill{height:100%;border-radius:2px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.sent-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.detail-text{font-size:10px;color:var(--gray);margin-top:4px}
+.na-text{font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);padding:8px 0}
 
-  body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* MACRO GRID */
+.macro-section{opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .35s}
+.macro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.macro-card{background:var(--surf);border:1px solid var(--brd2);border-radius:10px;padding:18px 20px}
+.macro-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.macro-name{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray3)}
+.macro-src{font-family:'DM Mono',monospace;font-size:9px;color:var(--gray);padding:2px 5px;border:1px solid var(--brd3);border-radius:3px}
+.macro-period{font-size:10px;color:var(--gray);margin-bottom:14px}
+.macro-body{display:flex;align-items:flex-end;gap:14px;margin-bottom:12px}
+.macro-score{font-family:'Syne',sans-serif;font-weight:700;font-size:38px;letter-spacing:-.03em;line-height:1;min-width:54px}
+.macro-stats{flex:1}
+.macro-stat{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:10px;color:var(--gray3);margin-bottom:3px}
+.macro-stat span:last-child{color:var(--white)}
+.mini-chart{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:10px;border-bottom:1px solid var(--brd2);padding-bottom:2px}
+.mini-bar{flex:1;border-radius:2px 2px 0 0;min-height:2px;opacity:.7}
+.mini-bar.latest{opacity:1}
 
-  /* NAV */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px; height: 56px;
-    background: rgba(10,10,16,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--brd2);
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: 18px; letter-spacing: -0.02em;
-    color: var(--white); text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 28px; align-items: center; }
-  .nav-links a {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--gray2); text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover, .nav-links a.active { color: var(--white); }
-  .nav-cta {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--white) !important;
-    border: 1px solid var(--brd3);
-    padding: 6px 14px; border-radius: 4px;
-    transition: background 0.2s, border-color 0.2s !important;
-  }
-  .nav-cta:hover { background: var(--surf2) !important; border-color: var(--bp) !important; }
+.loading{text-align:center;padding:40px;font-family:'DM Mono',monospace;font-size:12px;color:var(--gray)}
+.dot-pulse::after{content:'...';animation:dots 1.5s infinite}
+@keyframes dots{0%,20%{content:'.'}40%,60%{content:'..'}80%,100%{content:'...'}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
-  /* MAIN LAYOUT */
-  main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-
-  /* HERO */
-  .hero {
-    margin-bottom: 48px;
-    opacity: 0; transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.1s;
-  }
-  .hero-label {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--gray); margin-bottom: 10px;
-  }
-  .hero h1 {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: clamp(28px, 5vw, 42px);
-    letter-spacing: -0.03em; line-height: 1.1;
-    color: var(--white);
-  }
-  .hero-sub {
-    margin-top: 10px;
-    font-size: 13px; color: var(--gray3);
-    font-weight: 300;
-  }
-
-  /* GAUGE CARD */
-  .gauge-card {
-    background: var(--surf);
-    border: 1px solid var(--brd2);
-    border-radius: 12px;
-    padding: 40px 40px 36px;
-    margin-bottom: 24px;
-    opacity: 0; transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .gauge-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gauge-accent, var(--gray)), transparent);
-    opacity: 0.5;
-  }
-
-  .gauge-header {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; margin-bottom: 36px;
-  }
-  .gauge-title {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--gray3);
-  }
-  .gauge-timestamp {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: var(--gray); letter-spacing: 0.05em;
-  }
-
-  /* ARC GAUGE */
-  .gauge-arc-wrap {
-    display: flex; flex-direction: column; align-items: center;
-    margin-bottom: 36px;
-  }
-  .gauge-svg-wrap { position: relative; width: 280px; }
-  .gauge-svg-wrap svg { width: 100%; height: auto; }
-  .gauge-center-text {
-    position: absolute;
-    bottom: 8px; left: 50%; transform: translateX(-50%);
-    text-align: center;
-    pointer-events: none;
-  }
-  .gauge-score-num {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: 52px; letter-spacing: -0.04em;
-    line-height: 1; color: var(--white);
-    display: block;
-  }
-  .gauge-label-text {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    margin-top: 4px; display: block;
-  }
-
-  /* COMPONENTS */
-  .components-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px; margin-bottom: 0;
-  }
-  .comp-card {
-    background: var(--surf2);
-    border: 1px solid var(--brd);
-    border-radius: 8px; padding: 18px 20px;
-  }
-  .comp-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .comp-name {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--gray3);
-  }
-  .comp-weight {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: var(--gray); letter-spacing: 0.05em;
-  }
-  .comp-score {
-    font-family: 'Syne', sans-serif; font-weight: 700;
-    font-size: 32px; letter-spacing: -0.03em;
-    line-height: 1; margin-bottom: 6px;
-  }
-  .comp-detail {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    color: var(--gray2);
-  }
-  .comp-bar {
-    margin-top: 12px; height: 3px;
-    background: var(--surf3); border-radius: 2px; overflow: hidden;
-  }
-  .comp-bar-fill {
-    height: 100%; border-radius: 2px;
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 0;
-  }
-
-  /* POLYMARKET TABLE */
-  .poly-section {
-    margin-top: 24px;
-    opacity: 0; transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.35s;
-  }
-  .section-title {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--gray3); margin-bottom: 14px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-title::after {
-    content: ''; flex: 1; height: 1px;
-    background: var(--brd2);
-  }
-
-  .poly-table {
-    background: var(--surf);
-    border: 1px solid var(--brd2);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .poly-row {
-    display: grid;
-    grid-template-columns: 1fr 80px 90px;
-    padding: 13px 20px;
-    border-bottom: 1px solid var(--brd);
-    align-items: center;
-    transition: background 0.15s;
-  }
-  .poly-row:last-child { border-bottom: none; }
-  .poly-row:hover { background: var(--surf2); }
-  .poly-row.header { background: var(--surf2); }
-  .poly-question {
-    font-size: 12px; color: var(--gray3);
-    line-height: 1.4;
-  }
-  .poly-row.header .poly-question,
-  .poly-row.header .poly-prob,
-  .poly-row.header .poly-vol {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--gray);
-  }
-  .poly-prob {
-    font-family: 'DM Mono', monospace; font-size: 13px;
-    font-weight: 500; text-align: right;
-  }
-  .poly-vol {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    color: var(--gray2); text-align: right;
-  }
-
-  /* SCALE BAR at bottom */
-  .scale-section {
-    margin-top: 24px;
-    opacity: 0; transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.45s;
-  }
-  .scale-bar {
-    height: 6px; border-radius: 4px;
-    background: linear-gradient(90deg,
-      #ef4444 0%,
-      #f97316 25%,
-      #8a90a0 50%,
-      #84cc16 75%,
-      #22c55e 100%
-    );
-    position: relative; margin-bottom: 8px;
-  }
-  .scale-needle {
-    position: absolute; top: -5px;
-    width: 2px; height: 16px;
-    background: var(--white);
-    border-radius: 1px;
-    transform: translateX(-50%);
-    transition: left 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    left: 50%;
-  }
-  .scale-labels {
-    display: flex; justify-content: space-between;
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--gray);
-  }
-
-  /* ERROR / LOADING */
-  .status-msg {
-    text-align: center; padding: 32px;
-    font-family: 'DM Mono', monospace; font-size: 12px;
-    color: var(--gray); letter-spacing: 0.06em;
-  }
-  .dot-pulse::after {
-    content: '...';
-    animation: dots 1.5s infinite;
-  }
-  @keyframes dots {
-    0%,20% { content: '.'; }
-    40%,60% { content: '..'; }
-    80%,100% { content: '...'; }
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* SCORE COLORS */
-  .score-extreme-greed { color: var(--grn); }
-  .score-greed { color: #84cc16; }
-  .score-neutral { color: var(--gray3); }
-  .score-fear { color: #f97316; }
-  .score-extreme-fear { color: var(--red); }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .components-grid { grid-template-columns: 1fr; }
-    .gauge-card { padding: 24px 20px; }
-    nav { padding: 0 16px; }
-    .nav-links { gap: 16px; }
-    main { padding: 32px 16px 60px; }
-  }
+@media(max-width:600px){
+  nav{padding:0 16px}.nav-links{gap:14px}main{padding:28px 14px 60px}
+  .composite-row{flex-direction:column;gap:12px}.composite-score{font-size:42px}
+  .asset-grid{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
-
 <nav>
   <a href="index.html" class="nav-logo">Vilasio</a>
   <div class="nav-links">
@@ -345,262 +103,173 @@
 <main>
   <div class="hero">
     <div class="hero-label">Market Intelligence</div>
-    <h1>Sentiment Gauge</h1>
-    <div class="hero-sub">CBOE Put/Call Ratio · Polymarket Macro Probabilities</div>
+    <h1>Sentiment Dashboard</h1>
+    <div class="hero-sub">Asset Positioning · Macro Release Trend · Institutional Bias</div>
   </div>
 
-  <!-- GAUGE CARD -->
-  <div class="gauge-card" id="gaugeCard">
-    <div class="gauge-header">
-      <div class="gauge-title">Composite Sentiment — 50% PCR · 50% Polymarket</div>
-      <div class="gauge-timestamp" id="timestamp">—</div>
-    </div>
-
-    <div id="gaugeLoading" class="status-msg"><span class="dot-pulse">Loading</span></div>
-
-    <div id="gaugeContent" style="display:none">
-      <!-- ARC -->
-      <div class="gauge-arc-wrap">
-        <div class="gauge-svg-wrap">
-          <svg viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Background arc -->
-            <path id="arcBg" d="M 15 100 A 85 85 0 0 1 185 100"
-              stroke="#1a1a28" stroke-width="12" stroke-linecap="round" fill="none"/>
-            <!-- Colored arc fill -->
-            <path id="arcFill" d="M 15 100 A 85 85 0 0 1 185 100"
-              stroke="#5a6070" stroke-width="12" stroke-linecap="round" fill="none"
-              stroke-dasharray="267" stroke-dashoffset="267"
-              style="transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1), stroke 0.5s ease"/>
-            <!-- Tick marks -->
-            <g stroke="#ffffff10" stroke-width="1">
-              <line x1="100" y1="15" x2="100" y2="25"/>
-              <line x1="27" y1="57" x2="35" y2="62"/>
-              <line x1="173" y1="57" x2="165" y2="62"/>
-              <line x1="15" y1="100" x2="25" y2="100"/>
-              <line x1="185" y1="100" x2="175" y2="100"/>
-            </g>
-            <!-- Tiny zone labels -->
-            <text x="12" y="115" font-family="DM Mono,monospace" font-size="7" fill="#5a6070" text-anchor="middle">FEAR</text>
-            <text x="188" y="115" font-family="DM Mono,monospace" font-size="7" fill="#5a6070" text-anchor="middle">GREED</text>
-          </svg>
-          <div class="gauge-center-text">
-            <span class="gauge-score-num" id="gaugeNum">—</span>
-            <span class="gauge-label-text" id="gaugeLabel">—</span>
+  <!-- COMPOSITE -->
+  <div class="composite-card">
+    <div id="compositeLoading" class="loading" style="padding:12px 0"><span class="dot-pulse">Loading</span></div>
+    <div id="compositeContent" style="display:none">
+      <div class="composite-row">
+        <div class="composite-score" id="cNum">—</div>
+        <div class="composite-info">
+          <div class="composite-label" id="cLabel">—</div>
+          <div class="composite-desc">Composite across assets and macro releases</div>
+        </div>
+        <div class="composite-bar-wrap">
+          <div class="composite-bar"><div class="composite-needle" id="cNeedle"></div></div>
+          <div class="composite-scale">
+            <span>Ext. Fear</span><span>Fear</span><span>Neutral</span><span>Greed</span><span>Ext. Greed</span>
           </div>
         </div>
       </div>
-
-      <!-- SCALE BAR -->
-      <div class="scale-bar">
-        <div class="scale-needle" id="scaleNeedle"></div>
-      </div>
-      <div class="scale-labels">
-        <span>Extreme Fear</span>
-        <span>Fear</span>
-        <span>Neutral</span>
-        <span>Greed</span>
-        <span>Extreme Greed</span>
-      </div>
-
-      <!-- COMPONENT CARDS -->
-      <div class="components-grid" style="margin-top: 28px;" id="componentsGrid">
-        <!-- PCR -->
-        <div class="comp-card">
-          <div class="comp-header">
-            <span class="comp-name">Put/Call Ratio</span>
-            <span class="comp-weight">50%</span>
-          </div>
-          <div class="comp-score" id="pcrScore">—</div>
-          <div class="comp-detail" id="pcrDetail">—</div>
-          <div class="comp-bar"><div class="comp-bar-fill" id="pcrBar"></div></div>
-        </div>
-        <!-- POLYMARKET -->
-        <div class="comp-card">
-          <div class="comp-header">
-            <span class="comp-name">Polymarket</span>
-            <span class="comp-weight">50%</span>
-          </div>
-          <div class="comp-score" id="polyScore">—</div>
-          <div class="comp-detail" id="polyDetail">—</div>
-          <div class="comp-bar"><div class="comp-bar-fill" id="polyBar"></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="gaugeError" style="display:none" class="status-msg">
-      Unable to load sentiment data. Backend may be warming up — try refreshing in a moment.
     </div>
   </div>
 
-  <!-- POLYMARKET TABLE -->
-  <div class="poly-section" id="polySection" style="display:none">
-    <div class="section-title">Polymarket — Macro & Equity Markets</div>
-    <div class="poly-table">
-      <div class="poly-row header">
-        <div class="poly-question">Question</div>
-        <div class="poly-prob" style="text-align:right">Yes %</div>
-        <div class="poly-vol" style="text-align:right">Volume</div>
-      </div>
-      <div id="polyRows"></div>
-    </div>
+  <!-- ASSETS -->
+  <div class="assets-section">
+    <div class="sec-title">Asset Sentiment <span class="sec-source">· PCR (Equity/SPX) · Polymarket</span></div>
+    <div class="asset-grid" id="assetGrid"><div class="loading"><span class="dot-pulse">Loading</span></div></div>
   </div>
 
-  <!-- METHODOLOGY NOTE -->
-  <div class="scale-section">
-    <div class="section-title">Methodology</div>
-    <div style="background:var(--surf); border:1px solid var(--brd2); border-radius:10px; padding:20px 24px;">
-      <p style="font-size:12px; color:var(--gray3); line-height:1.7; margin-bottom:12px;">
-        The composite score combines two independent signals at equal weight (50/50).
-      </p>
-      <p style="font-size:12px; color:var(--gray2); line-height:1.7; margin-bottom:8px;">
-        <span style="color:var(--gray3); font-family:'DM Mono',monospace; font-size:11px;">PUT/CALL RATIO (CBOE)</span><br>
-        Uses the 10-day moving average of the CBOE Equity P/CR. A ratio below 0.7 signals bullish sentiment (more calls than puts); above 1.0 signals bearish hedging. Mapped to a 0–100 score where lower PCR = higher score.
-      </p>
-      <p style="font-size:12px; color:var(--gray2); line-height:1.7;">
-        <span style="color:var(--gray3); font-family:'DM Mono',monospace; font-size:11px;">POLYMARKET</span><br>
-        Aggregates the Yes probability of the highest-volume macro and equity markets (Fed rate decisions, recession odds, S&P 500 targets). The volume-weighted average probability is used directly as the sentiment score.
-      </p>
-    </div>
+  <!-- MACRO -->
+  <div class="macro-section">
+    <div class="sec-title">Macro Releases <span class="sec-source">· BLS API · Polymarket</span></div>
+    <div class="macro-grid" id="macroGrid"><div class="loading"><span class="dot-pulse">Loading</span></div></div>
   </div>
 </main>
 
 <script>
 const API = 'https://vilasio-cot-backend.onrender.com';
 
-// Score → color
-function scoreColor(s) {
-  if (s === null || s === undefined) return 'var(--gray3)';
-  if (s >= 70) return 'var(--grn)';
-  if (s >= 55) return '#84cc16';
-  if (s >= 45) return 'var(--gray3)';
-  if (s >= 30) return '#f97316';
-  return 'var(--red)';
+const scoreColor = s => s===null||s===undefined ? 'var(--gray3)' :
+  s>=70 ? 'var(--grn)' : s>=55 ? '#84cc16' : s>=45 ? 'var(--gray3)' : s>=30 ? 'var(--orange)' : 'var(--red)';
+
+const sentLabel = s => s===null||s===undefined ? 'N/A' :
+  s>=70 ? 'Extreme Greed' : s>=55 ? 'Greed' : s>=45 ? 'Neutral' : s>=30 ? 'Fear' : 'Extreme Fear';
+
+const fmt = (v, d=1) => v===null||v===undefined ? '—' : typeof v==='number' ? v.toFixed(d) : String(v);
+
+function renderComposite(data) {
+  document.getElementById('compositeLoading').style.display = 'none';
+  document.getElementById('compositeContent').style.display = 'block';
+  const s = data.composite;
+  const el = document.getElementById('cNum');
+  el.textContent = s !== null ? Math.round(s) : '—';
+  el.style.color = scoreColor(s);
+  const lbl = document.getElementById('cLabel');
+  lbl.textContent = data.label;
+  lbl.style.color = scoreColor(s);
+  setTimeout(() => { document.getElementById('cNeedle').style.left = (s||50) + '%'; }, 100);
 }
 
-function scoreClass(label) {
-  if (!label) return '';
-  const map = {
-    'EXTREME GREED': 'score-extreme-greed',
-    'GREED': 'score-greed',
-    'NEUTRAL': 'score-neutral',
-    'FEAR': 'score-fear',
-    'EXTREME FEAR': 'score-extreme-fear'
-  };
-  return map[label] || '';
+function assetCard(sym, a) {
+  if (!a) return '';
+  const s = a.score;
+  const color = scoreColor(s);
+  return `<div class="asset-card">
+    <div class="asset-header">
+      <span class="asset-sym">${sym}</span>
+      <span class="asset-src">${a.source}</span>
+    </div>
+    <div class="asset-name">${a.name}</div>
+    ${s !== null
+      ? `<div class="asset-score" style="color:${color}">${Math.round(s)}</div>
+         <div class="bar-wrap"><div class="bar-fill" id="ab${sym}" style="background:${color}"></div></div>
+         <div class="sent-label" style="color:${color}">${sentLabel(s)}</div>`
+      : `<div class="na-text">No data available</div>`}
+    <div class="detail-text">${a.detail}</div>
+  </div>`;
 }
 
-// Draw arc: score 0–100 → stroke-dashoffset
-function setArc(score) {
-  const total = 267; // approximate arc length for half-circle path
-  const offset = total - (score / 100) * total;
-  const fill = document.getElementById('arcFill');
-  fill.style.strokeDashoffset = offset;
-  fill.style.stroke = scoreColor(score);
+function renderAssets(assets) {
+  const ORDER = ['ES','NQ','CL','GC','6E','6B','DX'];
+  document.getElementById('assetGrid').innerHTML = ORDER.map(sym => assetCard(sym, assets[sym])).join('');
+  setTimeout(() => {
+    ORDER.forEach(sym => {
+      const el = document.getElementById('ab' + sym);
+      if (el && assets[sym]?.score !== null) el.style.width = (assets[sym].score||0) + '%';
+    });
+  }, 150);
 }
 
-function formatVolume(v) {
-  if (v >= 1e6) return '$' + (v / 1e6).toFixed(1) + 'M';
-  if (v >= 1e3) return '$' + (v / 1e3).toFixed(0) + 'K';
-  return '$' + v.toFixed(0);
+function miniChart(history, color) {
+  if (!history || history.length < 2) return '';
+  const vals = history.map(h => h.value);
+  const min = Math.min(...vals), max = Math.max(...vals), range = max-min||1;
+  return `<div class="mini-chart">` +
+    vals.map((v,i) => {
+      const pct = Math.max(4, ((v-min)/range)*100);
+      const isLast = i === vals.length-1;
+      return `<div class="mini-bar${isLast?' latest':''}" style="height:${pct}%;background:${isLast?color:'var(--surf3)'}"></div>`;
+    }).join('') + `</div>`;
 }
 
-function truncate(str, n) {
-  return str.length > n ? str.slice(0, n) + '…' : str;
+function macroCard(key, m) {
+  if (!m) return '';
+  const s = m.score;
+  const color = scoreColor(s);
+  let stats = '';
+  if (key==='CPI') {
+    stats = `<div class="macro-stat"><span>Latest MoM</span><span>${fmt(m.latestChg)}%</span></div>
+             <div class="macro-stat"><span>6m avg MoM</span><span>${fmt(m.avg6mChg)}%</span></div>`;
+  } else if (key==='NFP') {
+    const sign = m.latest > 0 ? '+' : '';
+    const savg = m.avg6mChg !== null && m.avg6mChg > 0 ? '+' : '';
+    stats = `<div class="macro-stat"><span>Last release</span><span>${m.latest !== null ? sign+Math.round(m.latest)+'K' : '—'}</span></div>
+             <div class="macro-stat"><span>6m avg</span><span>${m.avg6mChg !== null ? savg+Math.round(m.avg6mChg)+'K' : '—'}</span></div>`;
+  } else if (key==='ICSA'||key==='CCSA') {
+    stats = `<div class="macro-stat"><span>Latest</span><span>${m.latest !== null ? Number(m.latest).toLocaleString() : '—'}</span></div>
+             <div class="macro-stat"><span>6w avg</span><span>${m.avg6mChg !== null ? Math.round(m.avg6mChg).toLocaleString() : '—'}</span></div>`;
+  } else if (key==='RATES') {
+    stats = `<div class="macro-stat"><span>Source</span><span>Polymarket</span></div>
+             <div class="macro-stat"><span>Markets</span><span>${m.detail}</span></div>`;
+  }
+  return `<div class="macro-card">
+    <div class="macro-top">
+      <span class="macro-name">${m.name}</span>
+      <span class="macro-src">${m.source}</span>
+    </div>
+    <div class="macro-period">${m.period||'—'}</div>
+    <div class="macro-body">
+      <div class="macro-score" style="color:${s!==null?color:'var(--gray)'}">${s!==null?Math.round(s):'—'}</div>
+      <div class="macro-stats">${stats}</div>
+    </div>
+    <div class="bar-wrap"><div class="bar-fill" id="mb${key}" style="background:${color}"></div></div>
+    <div class="sent-label" style="color:${s!==null?color:'var(--gray)'};font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase">${sentLabel(s)}</div>
+    ${miniChart(m.history, color)}
+  </div>`;
 }
 
-async function loadSentiment() {
+function renderMacro(macro) {
+  const ORDER = ['CPI','NFP','ICSA','CCSA','RATES'];
+  document.getElementById('macroGrid').innerHTML = ORDER.map(k => macroCard(k, macro[k])).join('');
+  setTimeout(() => {
+    ORDER.forEach(k => {
+      const el = document.getElementById('mb' + k);
+      if (el && macro[k]?.score !== null) el.style.width = (macro[k].score||0) + '%';
+    });
+  }, 150);
+}
+
+async function loadAll() {
   try {
     const res = await fetch(API + '/api/sentiment');
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    const d = await res.json();
-    if (d.status !== 'ok') throw new Error(d.message || 'error');
-
-    const score = d.composite;
-    const label = d.label;
-    const pcr = d.components.pcr;
-    const poly = d.components.polymarket;
-
-    // Show content
-    document.getElementById('gaugeLoading').style.display = 'none';
-    document.getElementById('gaugeContent').style.display = 'block';
-
-    // Timestamp
-    document.getElementById('timestamp').textContent =
-      'Updated ' + new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-
-    // Gauge number + label
-    const numEl = document.getElementById('gaugeNum');
-    const labelEl = document.getElementById('gaugeLabel');
-    numEl.textContent = score !== null ? score.toFixed(0) : '—';
-    numEl.style.color = scoreColor(score);
-    labelEl.textContent = label;
-    labelEl.className = 'gauge-label-text ' + scoreClass(label);
-    labelEl.style.color = scoreColor(score);
-
-    // Gauge card accent
-    document.querySelector('.gauge-card').style.setProperty('--gauge-accent', scoreColor(score));
-
-    // Arc animation (after paint)
-    setTimeout(() => {
-      if (score !== null) setArc(score);
-    }, 100);
-
-    // Scale needle
-    setTimeout(() => {
-      document.getElementById('scaleNeedle').style.left = (score !== null ? score : 50) + '%';
-    }, 100);
-
-    // PCR component
-    if (pcr.score !== null) {
-      const pcrEl = document.getElementById('pcrScore');
-      pcrEl.textContent = pcr.score.toFixed(0);
-      pcrEl.style.color = scoreColor(pcr.score);
-      document.getElementById('pcrDetail').textContent =
-        'PCR ' + (pcr.latest !== null ? pcr.latest.toFixed(2) : '—') +
-        ' · 10d avg ' + (pcr.avg10 !== null ? pcr.avg10.toFixed(2) : '—');
-      setTimeout(() => {
-        document.getElementById('pcrBar').style.width = pcr.score + '%';
-        document.getElementById('pcrBar').style.background = scoreColor(pcr.score);
-      }, 200);
-    }
-
-    // Polymarket component
-    if (poly.score !== null) {
-      const polyEl = document.getElementById('polyScore');
-      polyEl.textContent = poly.score.toFixed(0);
-      polyEl.style.color = scoreColor(poly.score);
-      document.getElementById('polyDetail').textContent =
-        poly.count + ' markets · avg yes ' + poly.score.toFixed(1) + '%';
-      setTimeout(() => {
-        document.getElementById('polyBar').style.width = poly.score + '%';
-        document.getElementById('polyBar').style.background = scoreColor(poly.score);
-      }, 200);
-    }
-
-    // Polymarket table
-    const markets = poly.markets || [];
-    if (markets.length > 0) {
-      const rows = document.getElementById('polyRows');
-      rows.innerHTML = markets.map(m => {
-        const prob = m.yesProb;
-        const color = prob >= 60 ? 'var(--grn)' : prob <= 40 ? 'var(--red)' : 'var(--gray3)';
-        return `<div class="poly-row">
-          <div class="poly-question">${truncate(m.question, 72)}</div>
-          <div class="poly-prob" style="color:${color}">${prob.toFixed(1)}%</div>
-          <div class="poly-vol">${formatVolume(m.volume)}</div>
-        </div>`;
-      }).join('');
-      document.getElementById('polySection').style.display = 'block';
-    }
-
-  } catch (e) {
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'error');
+    renderComposite(data);
+    renderAssets(data.assets || {});
+    renderMacro(data.macro || {});
+  } catch(e) {
     console.error('[Sentiment]', e);
-    document.getElementById('gaugeLoading').style.display = 'none';
-    document.getElementById('gaugeError').style.display = 'block';
+    document.getElementById('compositeLoading').innerHTML =
+      '<span style="color:var(--red)">Error loading — backend may be warming up. Refresh in 30s.</span>';
   }
 }
 
-loadSentiment();
+loadAll();
 </script>
 </body>
 </html>
