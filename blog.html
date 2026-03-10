@@ -106,7 +106,7 @@ section.blog-body{padding:40px 64px 100px}
 
 /* Disclaimer bar */
 .disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
 .disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
 .disclaimer-bar p strong{color:#9ca3af;font-weight:500}
@@ -202,9 +202,6 @@ section.blog-body{padding:40px 64px 100px}
     <span class="foot-name">Vilasio</span>
   </div>
   <div class="foot-links">
-    <a href="about.html">About</a>
-    <a href="blog.html">Insights</a>
-    <a href="contact.html">Contact</a>
     <a href="privacy.html">Privacy Policy</a>
     <a href="terms.html">Terms of Use</a>
   </div>
@@ -220,8 +217,11 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
 <div class="disclaimer-bar">
   <div class="disclaimer-inner">
-    <span class="disclaimer-label">Disclaimer</span>
-    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
+    <span class="disclaimer-label">Risk Disclaimer</span>
+    <p>The information, data visualizations, and analytical tools provided on this website are intended strictly for informational, educational, and research purposes. Vilasio provides financial market analytics designed to help users better understand market structure, institutional positioning, and statistical patterns in financial markets. The content available on this platform does not constitute financial advice, investment advice, trading advice, or recommendations to buy or sell financial instruments.</p>
+    <p>Trading and investing in financial markets involve substantial risk, including the potential loss of capital. Users are solely responsible for their own financial and trading decisions and should conduct their own research or consult a qualified financial professional before making any investment decisions.</p>
+    <p>While reasonable efforts are made to ensure the accuracy and reliability of the information provided, Vilasio makes no guarantees regarding completeness, accuracy, or timeliness of any data or analysis.</p>
+    <p>By using this website and its tools, users acknowledge that Vilasio and its creators cannot be held liable for any financial losses or damages resulting from the use of the information or analytical tools provided.</p>
   </div>
 </div>
 </body>
