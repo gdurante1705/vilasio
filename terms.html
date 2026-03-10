@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Terms of Use — Vilasio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050507;--bg2:#0a0a0f;--surf:#0f0f16;--surf2:#16161f;
+  --brd:rgba(255,255,255,0.07);--brd2:rgba(255,255,255,0.12);
+  --white:#f4f5fa;--gray:#6b7280;--gray2:#9ca3af;
+  --gold:#c8a84b;--gold2:#e8c96a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 64px;background:rgba(5,5,7,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--brd)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-img{width:28px;height:28px;opacity:0.9}
+.nav-name{font-family:"Space Grotesk",sans-serif;font-size:15px;font-weight:500;color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:32px}
+.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
+.nav-link:hover,.nav-link.active{color:var(--white)}
+.nav-btn{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;background:var(--white);color:var(--bg);border:none;padding:10px 22px;cursor:pointer;text-decoration:none;transition:all .3s}
+.nav-btn:hover{background:var(--gold2)}
+.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:20px;cursor:pointer}
+.nav-mobile-menu{display:none;position:fixed;top:65px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--brd);flex-direction:column;padding:24px 32px;gap:20px;z-index:99}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none}
+
+.legal-hero{padding:140px 64px 60px;border-bottom:1px solid var(--brd)}
+.legal-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.legal-h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(36px,4vw,56px);font-weight:700;letter-spacing:-1.5px;line-height:1.05;margin-bottom:16px}
+.legal-h1 em{font-style:normal;color:var(--gold2)}
+.legal-meta{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:2px;color:var(--gray);margin-top:12px}
+
+.legal-body{max-width:800px;margin:0 auto;padding:80px 64px 100px}
+.legal-toc{background:var(--surf);border:1px solid var(--brd);border-left:2px solid var(--gold);padding:28px 32px;margin-bottom:64px}
+.toc-title{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.toc-list a{font-size:13px;color:var(--gray2);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:10px}
+.toc-list a::before{content:'→';font-family:"DM Mono",monospace;font-size:10px;color:var(--gold);opacity:0.6}
+.toc-list a:hover{color:var(--white)}
+
+.legal-section{margin-bottom:56px;scroll-margin-top:100px}
+.ls-num{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ls-title{font-family:"Space Grotesk",sans-serif;font-size:22px;font-weight:600;margin-bottom:20px;color:var(--white)}
+.ls-body{font-size:14px;color:var(--gray2);line-height:1.85}
+.ls-body p{margin-bottom:14px}
+.ls-body p:last-child{margin-bottom:0}
+.ls-body strong{color:var(--white);font-weight:500}
+.ls-body a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+.ls-body a:hover{color:var(--gold2)}
+.ls-body ul{margin:12px 0 12px 20px;display:flex;flex-direction:column;gap:6px}
+.ls-body ul li::marker{color:var(--gold)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--brd2),transparent);margin:56px 0}
+
+/* Warning box */
+.warn-box{background:rgba(200,168,75,0.06);border:1px solid rgba(200,168,75,0.2);border-left:3px solid var(--gold);padding:20px 24px;margin-bottom:24px}
+.warn-box p{font-size:13px;color:var(--gray2);line-height:1.75;margin:0}
+.warn-box strong{color:var(--gold2)}
+
+footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-logo{width:24px;height:24px;opacity:0.7}
+.foot-name{font-family:"Space Grotesk",sans-serif;font-size:13px;font-weight:500;color:var(--gray2)}
+.foot-links{display:flex;gap:28px}
+.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
+.foot-links a:hover{color:var(--white)}
+.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--gray)}
+
+.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
+.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
+.disclaimer-bar a{color:#c8a84b;text-decoration:underline;text-underline-offset:3px}
+.disclaimer-bar a:hover{color:#e8c96a}
+
+@media(max-width:960px){
+  nav{padding:16px 24px}
+  .nav-right{display:none}
+  .nav-mobile-btn{display:block}
+  .legal-hero{padding:120px 24px 48px}
+  .legal-body{padding:48px 24px 80px}
+  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+  footer{flex-direction:column;padding:32px 24px;text-align:center}
+  .foot-links{flex-wrap:wrap;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="noBgWhite.png" alt="Vilasio" class="nav-logo-img">
+    <span class="nav-name">Vilasio</span>
+  </a>
+  <div class="nav-right">
+    <a href="about.html" class="nav-link">About</a>
+    <a href="cot.html" class="nav-link">COT Intelligence</a>
+    <a href="sentiment.html" class="nav-link">Sentiment</a>
+    <a href="blog.html" class="nav-link">Insights</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="contact.html" class="nav-btn">Get Access</a>
+  </div>
+  <button class="nav-mobile-btn">☰</button>
+</nav>
+<div class="nav-mobile-menu">
+  <a href="about.html">About</a>
+  <a href="cot.html">COT Intelligence</a>
+  <a href="sentiment.html">Sentiment</a>
+  <a href="blog.html">Insights</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="legal-hero">
+  <div class="legal-tag">Legal</div>
+  <h1 class="legal-h1">Terms <em>of Use</em></h1>
+  <p style="font-size:15px;color:var(--gray2);max-width:560px;line-height:1.7;margin-top:12px;">By accessing or using Vilasio, you agree to be bound by these Terms. Please read them carefully before using the platform.</p>
+  <div class="legal-meta">Last updated: March 2025 &nbsp;·&nbsp; Effective date: March 2025</div>
+</section>
+
+<div class="legal-body">
+
+  <div class="warn-box">
+    <p><strong>Important:</strong> Vilasio provides market data analysis tools for informational purposes only. Nothing on this platform constitutes financial advice. By using this site, you acknowledge that all trading decisions are made solely at your own risk.</p>
+  </div>
+
+  <div class="legal-toc">
+    <div class="toc-title">Table of Contents</div>
+    <ul class="toc-list">
+      <li><a href="#t1">1. Acceptance of Terms</a></li>
+      <li><a href="#t2">2. Use of the Platform</a></li>
+      <li><a href="#t3">3. No Financial Advice</a></li>
+      <li><a href="#t4">4. Data Sources & Accuracy</a></li>
+      <li><a href="#t5">5. Intellectual Property</a></li>
+      <li><a href="#t6">6. Prohibited Conduct</a></li>
+      <li><a href="#t7">7. Limitation of Liability</a></li>
+      <li><a href="#t8">8. Indemnification</a></li>
+      <li><a href="#t9">9. Availability & Modifications</a></li>
+      <li><a href="#t10">10. Governing Law</a></li>
+      <li><a href="#t11">11. Changes to These Terms</a></li>
+      <li><a href="#t12">12. Contact Us</a></li>
+    </ul>
+  </div>
+
+  <div class="legal-section" id="t1">
+    <div class="ls-num">01</div>
+    <h2 class="ls-title">Acceptance of Terms</h2>
+    <div class="ls-body">
+      <p>By accessing or using the Vilasio platform and any of its tools, data displays, or related content (collectively, the "Service"), you agree to be bound by these Terms of Use ("Terms") and our <a href="privacy.html">Privacy Policy</a>.</p>
+      <p>If you do not agree to any part of these Terms, you must not access or use the Service. Use of the platform constitutes full acceptance of these Terms.</p>
+      <p>You must be at least <strong>18 years of age</strong> to use this platform.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t2">
+    <div class="ls-num">02</div>
+    <h2 class="ls-title">Use of the Platform</h2>
+    <div class="ls-body">
+      <p>Vilasio grants you a limited, non-exclusive, non-transferable, revocable licence to access and use the Service for your personal, non-commercial use, subject to these Terms.</p>
+      <p>You agree to use the platform only for lawful purposes and in compliance with all applicable laws and regulations in your jurisdiction.</p>
+      <p>You are solely responsible for your use of the platform and any decisions you make based on information provided therein.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t3">
+    <div class="ls-num">03</div>
+    <h2 class="ls-title">No Financial Advice</h2>
+    <div class="ls-body">
+      <p>All content, data, charts, analysis, and commentary provided on Vilasio — including COT data analysis, sentiment indicators, market positioning data, and any written or visual content — is provided for <strong>informational and educational purposes only</strong>.</p>
+      <p>Vilasio is <strong>not</strong> a registered investment adviser, broker-dealer, or financial institution. Nothing on this platform should be construed as:</p>
+      <ul>
+        <li>A recommendation to buy or sell any financial instrument</li>
+        <li>An offer or solicitation to engage in any investment activity</li>
+        <li>Personalised investment, financial, tax, or legal advice</li>
+      </ul>
+      <p>Past performance of any market, strategy, or indicator is <strong>not indicative of future results</strong>. Trading futures and other leveraged instruments involves a substantial risk of loss and may not be suitable for all investors. You should conduct your own independent research and consult a qualified financial adviser before making any investment decisions.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t4">
+    <div class="ls-num">04</div>
+    <h2 class="ls-title">Data Sources & Accuracy</h2>
+    <div class="ls-body">
+      <p>Vilasio aggregates data from publicly available third-party sources including, but not limited to, the CFTC (Commitment of Traders reports), CBOE (options data), BLS (macroeconomic data), and Polymarket (prediction market data).</p>
+      <p>While we strive to present accurate and up-to-date information, we make no representations or warranties regarding the completeness, accuracy, reliability, or timeliness of any data displayed on the platform. Data may be delayed, incomplete, or subject to revision by the original source.</p>
+      <p>You acknowledge that any reliance on data provided by this platform is at your own risk.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t5">
+    <div class="ls-num">05</div>
+    <h2 class="ls-title">Intellectual Property</h2>
+    <div class="ls-body">
+      <p>All content on the Vilasio platform — including but not limited to text, graphics, logos, visual design, analytical frameworks, data visualisations, and software — is the proprietary property of Vilasio or its licensors and is protected by applicable intellectual property laws.</p>
+      <p>You may not reproduce, distribute, modify, create derivative works of, publicly display, republish, or exploit any content from this platform without our prior written permission.</p>
+      <p>Permitted use: you may share links to our platform and reference our publicly available content with proper attribution.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t6">
+    <div class="ls-num">06</div>
+    <h2 class="ls-title">Prohibited Conduct</h2>
+    <div class="ls-body">
+      <p>When using the platform, you agree not to:</p>
+      <ul>
+        <li>Scrape, harvest, or systematically extract data from the platform by automated means</li>
+        <li>Attempt to gain unauthorised access to any part of the platform or its backend infrastructure</li>
+        <li>Reverse-engineer, decompile, or disassemble any software component of the platform</li>
+        <li>Use the platform to distribute spam, malware, or any harmful content</li>
+        <li>Misrepresent the source or nature of data obtained from this platform</li>
+        <li>Use the platform in any way that violates applicable laws or regulations</li>
+      </ul>
+      <p>We reserve the right to terminate access for any user found in violation of these prohibitions.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t7">
+    <div class="ls-num">07</div>
+    <h2 class="ls-title">Limitation of Liability</h2>
+    <div class="ls-body">
+      <p>To the maximum extent permitted by applicable law, Vilasio and its operators, employees, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from:</p>
+      <ul>
+        <li>Your use of or inability to use the platform</li>
+        <li>Any trading losses or financial decisions made in reliance on platform data</li>
+        <li>Errors, inaccuracies, or interruptions in data or service</li>
+        <li>Unauthorised access to or alteration of your data</li>
+      </ul>
+      <p>This limitation applies regardless of the theory of liability and even if Vilasio has been advised of the possibility of such damages.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t8">
+    <div class="ls-num">08</div>
+    <h2 class="ls-title">Indemnification</h2>
+    <div class="ls-body">
+      <p>You agree to indemnify, defend, and hold harmless Vilasio and its operators from and against any claims, liabilities, damages, losses, and expenses — including reasonable legal fees — arising out of or in any way connected with your use of the platform or violation of these Terms.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t9">
+    <div class="ls-num">09</div>
+    <h2 class="ls-title">Availability & Modifications</h2>
+    <div class="ls-body">
+      <p>We strive to maintain continuous availability of the platform, but we do not guarantee uninterrupted access. The platform may be temporarily unavailable due to maintenance, updates, or technical issues beyond our control.</p>
+      <p>We reserve the right to modify, suspend, or discontinue any part of the Service at any time without prior notice. We shall not be liable to you or any third party for any such modification, suspension, or discontinuation.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t10">
+    <div class="ls-num">10</div>
+    <h2 class="ls-title">Governing Law</h2>
+    <div class="ls-body">
+      <p>These Terms shall be governed by and construed in accordance with applicable law. Any disputes arising in connection with these Terms shall be subject to the exclusive jurisdiction of the competent courts of the jurisdiction in which Vilasio operates.</p>
+      <p>If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will continue in full force and effect.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t11">
+    <div class="ls-num">11</div>
+    <h2 class="ls-title">Changes to These Terms</h2>
+    <div class="ls-body">
+      <p>We reserve the right to update or modify these Terms at any time. When we do, we will revise the "Last updated" date at the top of this page. Changes take effect immediately upon publication. Your continued use of the platform after any changes constitutes acceptance of the revised Terms.</p>
+      <p>We encourage you to review these Terms periodically to stay informed of any updates.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="legal-section" id="t12">
+    <div class="ls-num">12</div>
+    <h2 class="ls-title">Contact Us</h2>
+    <div class="ls-body">
+      <p>If you have questions about these Terms of Use, please contact us:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:legal@vilasio.com">legal@vilasio.com</a></li>
+        <li><strong>Website:</strong> <a href="contact.html">vilasio.com/contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-brand">
+    <img src="noBgWhite.png" alt="Vilasio" class="foot-logo">
+    <span class="foot-name">Vilasio</span>
+  </div>
+  <div class="foot-links">
+    <a href="about.html">About</a>
+    <a href="cot.html">COT Intelligence</a>
+    <a href="blog.html">Insights</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html" style="color:var(--gold2)">Terms of Use</a>
+  </div>
+  <div class="foot-right">© 2025 Vilasio. Professional trading intelligence.</div>
+</footer>
+
+<div class="disclaimer-bar">
+  <div class="disclaimer-inner">
+    <span class="disclaimer-label">Disclaimer</span>
+    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
+  </div>
+</div>
+
+<script>
+document.querySelector('.nav-mobile-btn').addEventListener('click', function() {
+  document.querySelector('.nav-mobile-menu').classList.toggle('open');
+});
+</script>
+</body>
+</html>
