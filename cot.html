@@ -434,7 +434,6 @@ function rZS(){return lD(cm,104).then(function(d){var nets=d.bpNet,dlNets=d.dlNe
   fillBox("zs-dl-box",zDl,dlCur,Math.round(dlMean),Math.round(dlStd));
   var mName=(M[cm]||{name:cm}).name;
   document.getElementById("zs-asset-label").textContent=mName+" — Z-Score (2Y)";
-  /* interpretation removed */color:'+tagColor+'">'+tag+'</span> '+txt;
   /* Compute BP z-scores */
   var zScBpRaw=nets.map(function(v,i){if(i<26)return null;var sl=nets.slice(0,i+1),m=sl.reduce(function(a,x){return a+x},0)/sl.length,s=Math.sqrt(sl.reduce(function(a,x){return a+(x-m)*(x-m)},0)/sl.length);return s>0?+((v-m)/s).toFixed(2):0});
   /* Compute DL z-scores */
