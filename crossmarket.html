@@ -68,16 +68,10 @@ main{padding:0 48px 64px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
 .legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-dot{width:7px;height:7px;border-radius:50%}
-.disc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:3px}
-.disc-card{background:var(--surf2);border:1px solid var(--brd2);padding:16px 20px;position:relative;overflow:hidden}
-.disc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.disc-card.above::before{background:var(--grn)}.disc-card.below::before{background:var(--red)}
-.disc-asset{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
-.disc-cluster{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-left:8px}
-.disc-sigma{font-family:"Alata",sans-serif;font-size:22px;font-weight:400;margin-top:6px}
-.disc-sigma.above{color:var(--grn)}.disc-sigma.below{color:var(--red)}
-.disc-gap{font-family:"DM Mono",monospace;font-size:10px;color:var(--gray3);margin-top:4px}
-.disc-none{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:1px;color:var(--gray2);padding:12px 0}
+.disc-bar{display:flex;flex-wrap:wrap;gap:6px;padding:6px 28px;border-top:1px solid var(--brd)}
+.disc-badge{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border:1px solid var(--brd2)}
+.disc-badge.above{color:var(--grn);border-color:rgba(34,197,94,0.3);background:var(--grn-dim)}
+.disc-badge.below{color:var(--red);border-color:rgba(239,68,68,0.3);background:var(--red-dim)}
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
 .corr-wrap{padding:20px 28px}
 .corr-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
@@ -142,12 +136,6 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-corr2"><div class="sc-label">BTC-SPX Corr</div><div class="sc-val" id="sc-corr2-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr2-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
   </div>
 
-  <!-- DISCREPANCY ALERTS -->
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Discrepancy Alert</div><div class="ch-sub">Assets diverging &gt;1.5&#963; from cluster average</div></div></div>
-    <div class="corr-wrap" id="disc-alerts" style="min-height:60px"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px">Loading...</div></div>
-  </div>
-
   <!-- CURRENCY STRENGTH -->
   <div class="chart-section reveal">
     <div class="chart-header">
@@ -196,6 +184,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="cmetChart"></canvas></div></div>
+    <div id="cmet-alerts"></div>
     <div class="chart-legend" id="cmet-legend"></div>
   </div>
 
@@ -212,6 +201,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="ceqChart"></canvas></div></div>
+    <div id="ceq-alerts"></div>
     <div class="chart-legend" id="ceq-legend"></div>
   </div>
 
@@ -228,6 +218,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="ccrChart"></canvas></div></div>
+    <div id="ccr-alerts"></div>
     <div class="chart-legend" id="ccr-legend"></div>
   </div>
 
@@ -253,12 +244,11 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Cross-Market Dashboard</div>
     <div class="explain-text">
-      <strong>Discrepancy Alert</strong> flags assets that have diverged significantly (&gt;1.5&#963;) from their cluster average. These divergences create two types of opportunities: mean reversion (the asset returns to the group) or breakout (the asset leads the group). Strongest signals come when divergence exceeds 2&#963;.<br><br>
       <strong>Currency Strength</strong> measures relative performance of 8 major currencies across 12 forex pairs, normalized to base 100. When a currency line rises, it is strengthening vs all others. The spread between the strongest and weakest currencies defines the carry trade opportunity.<br><br>
       <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
       <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
       <strong>Commodity Dashboard</strong> shows performance across timeframes. Energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
-      <strong>Cointegration Charts</strong> show assets within the same cluster normalized to 100. When one diverges from the group, it either reverts (mean reversion trade) or leads the group in its direction (breakout trade). Watch for: metals diverging from gold, Russell diverging from SPX, altcoins diverging from Bitcoin.<br><br>
+      <strong>Cointegration Charts</strong> show assets within the same cluster as % change from the start of the selected window. When one diverges from the group, it either reverts (mean reversion trade) or leads the group in its direction (breakout trade). <strong>Divergence badges</strong> appear below each chart when an asset deviates &gt;1.5&#963; from the cluster average &#8212; strongest signals come above 2&#963;. Watch for: metals diverging from gold, Russell diverging from SPX, altcoins diverging from Bitcoin.<br><br>
       <strong>Value vs Growth</strong> tracks the IWD/IWF ratio alongside individual ETF prices. Rising ratio = capital rotating into value stocks (financials, energy). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.
     </div>
   </div>
@@ -306,7 +296,7 @@ var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",bor
 
 function togCoint(group,k){cointShow[group][k]=cointShow[group][k]?0:1;document.getElementById('leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'')).style.opacity=cointShow[group][k]?'1':'0.3';window[renderMap[group]]()}
 
-function renderAll(){renderCards();renderDiscrepancy();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG()}
+function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG()}
 
 /* --- STATUS CARDS --- */
 function renderCards(){
@@ -336,28 +326,6 @@ function corrCard(id,co,k1,k2){
   document.getElementById(id+"-val").textContent=cv.toFixed(2);
   var e=document.getElementById(id+"-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2);e.className="sc-delta "+(chg>=0?"up":"dn");
   document.getElementById(id).className="status-card neut";
-}
-
-/* --- DISCREPANCY ALERTS --- */
-function renderDiscrepancy(){
-  var el=document.getElementById('disc-alerts');
-  var alerts=D.discrepancyAlerts;
-  if(!alerts||!alerts.length){
-    el.innerHTML='<div class="disc-none">No significant divergences detected &#8212; all clusters aligned.</div>';
-    return;
-  }
-  var html='<div class="disc-grid">';
-  alerts.forEach(function(a){
-    var arrow=a.direction==='above'?'&#9650;':'&#9660;';
-    var sign=a.gap>=0?'+':'';
-    html+='<div class="disc-card '+a.direction+'">';
-    html+='<div><span class="disc-asset">'+a.asset+'</span><span class="disc-cluster">'+a.cluster+'</span></div>';
-    html+='<div class="disc-sigma '+a.direction+'">'+arrow+' '+(a.deviation>=0?'+':'')+a.deviation.toFixed(1)+'&#963;</div>';
-    html+='<div class="disc-gap">'+sign+a.gap.toFixed(1)+'% '+a.direction+' cluster avg ('+a.clusterAvgPct.toFixed(1)+'%)</div>';
-    html+='</div>';
-  });
-  html+='</div>';
-  el.innerHTML=html;
 }
 
 /* --- CURRENCY STRENGTH --- */
@@ -449,14 +417,14 @@ function renderCommodityTable(){
 
 /* --- COINTEGRATION CHART RENDERER --- */
 var cointColors=['#c8a84b','#3b82f6','#06b6d4','#ef4444','#22c55e','#a78bfa','#f59e0b','#f0f1f5'];
-function renderCointChart(chartId,legendId,group,dataKey){
+function renderCointChart(chartId,legendId,group,dataKey,alertsId){
   var co=D.cointegration;if(!co||!co[dataKey])return;
   var days=R[group];
-  // Use hourly for <=30 days, daily for rest
   var src=(days<=30&&co[dataKey].hourly&&co[dataKey].hourly.dates&&co[dataKey].hourly.dates.length)?co[dataKey].hourly:co[dataKey].daily;
   if(!src||!src.dates||!src.dates.length)return;
   var c=src,keys=Object.keys(c.series),ds=[];
-  var rawDates=slDays(c.dates,c.dates,days);
+  var startIdx=filterByDays(c.dates,days);
+  var rawDates=c.dates.slice(startIdx);
   keys.forEach(function(k){if(cointShow[group][k]===undefined)cointShow[group][k]=1});
   // Build legend once
   var leg=document.getElementById(legendId);
@@ -469,21 +437,53 @@ function renderCointChart(chartId,legendId,group,dataKey){
       leg.appendChild(el);
     });
   }
+  // Slice and re-normalize all series (for chart + alerts)
+  var sliced={};
   keys.forEach(function(k,i){
-    if(!cointShow[group][k])return;
-    var raw=slDays(c.series[k],c.dates,days);
-    // Re-normalize: shift so first value = 0%
+    var raw=c.series[k].slice(startIdx);
     var base=null;
     for(var j=0;j<raw.length;j++){if(raw[j]!=null){base=raw[j];break}}
     var vals=base!=null?raw.map(function(v){return v!=null?Math.round((v-base)*100)/100:null}):raw;
+    sliced[k]=vals;
+    if(!cointShow[group][k])return;
     ds.push({label:k,data:vals,borderColor:cointColors[i%cointColors.length],borderWidth:i===0?2:1.5,pointRadius:0,fill:false,tension:0,spanGaps:true});
   });
   if(charts[group])charts[group].destroy();
   charts[group]=new Chart(document.getElementById(chartId).getContext("2d"),{type:"line",data:{labels:rawDates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v>=0?"+":"")+v.toFixed(1)+"%"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return(v>=0?"+":"")+v.toFixed(0)+"%"}})})}}});
+  // --- Inline discrepancy alerts ---
+  var alertEl=document.getElementById(alertsId);if(!alertEl)return;
+  var n=rawDates.length;if(n<10){alertEl.innerHTML='';return;}
+  // Cluster avg per point
+  var avg=[];
+  for(var i=0;i<n;i++){
+    var sum=0,cnt=0;
+    keys.forEach(function(k){if(sliced[k][i]!=null){sum+=sliced[k][i];cnt++}});
+    avg.push(cnt?sum/cnt:0);
+  }
+  // Recent window = last 20% of points
+  var recentLen=Math.max(5,Math.floor(n*0.2));
+  var badges=[];
+  keys.forEach(function(k){
+    var devs=[];
+    for(var i=0;i<n;i++){if(sliced[k][i]!=null)devs.push(sliced[k][i]-avg[i])}
+    if(devs.length<10)return;
+    var recentDevs=devs.slice(-recentLen);
+    var recentAvg=recentDevs.reduce(function(a,b){return a+b},0)/recentDevs.length;
+    var mean=devs.reduce(function(a,b){return a+b},0)/devs.length;
+    var variance=devs.reduce(function(a,b){return a+(b-mean)*(b-mean)},0)/devs.length;
+    var std=Math.max(Math.sqrt(variance),0.01);
+    var z=recentAvg/std;
+    if(Math.abs(z)>=1.5){
+      var dir=z>0?'above':'below';
+      var arrow=z>0?'&#9650; ':'&#9660; ';
+      badges.push('<span class="disc-badge '+dir+'">'+arrow+k+' '+(z>=0?'+':'')+z.toFixed(1)+'&#963;</span>');
+    }
+  });
+  alertEl.innerHTML=badges.length?'<div class="disc-bar">'+badges.join('')+'</div>':'';
 }
-function renderCMet(){renderCointChart('cmetChart','cmet-legend','cmet','metals')}
-function renderCEq(){renderCointChart('ceqChart','ceq-legend','ceq','equities')}
-function renderCCr(){renderCointChart('ccrChart','ccr-legend','ccr','crypto')}
+function renderCMet(){renderCointChart('cmetChart','cmet-legend','cmet','metals','cmet-alerts')}
+function renderCEq(){renderCointChart('ceqChart','ceq-legend','ceq','equities','ceq-alerts')}
+function renderCCr(){renderCointChart('ccrChart','ccr-legend','ccr','crypto','ccr-alerts')}
 
 /* --- VALUE VS GROWTH (3 lines) --- */
 function renderVG(){
