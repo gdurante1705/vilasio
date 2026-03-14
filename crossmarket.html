@@ -137,18 +137,21 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <!-- IRD SPREAD -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Interest Rate Differential &#8212; EUR/USD</div><div class="ch-sub">Real Yield Spread (Foreign &#8722; US) vs FX Price</div></div>
-      <div class="ch-toggles">
-        <button class="ch-tog" data-g="ird" data-rw="12" onclick="setR('ird',12)">1Y</button>
-        <button class="ch-tog" data-g="ird" data-rw="24" onclick="setR('ird',24)">2Y</button>
-        <button class="ch-tog active" data-g="ird" data-rw="36" onclick="setR('ird',36)">3Y</button>
-        <button class="ch-tog" data-g="ird" data-rw="60" onclick="setR('ird',60)">5Y</button>
+      <div><div class="ch-title" id="ird-title">Interest Rate Differential &#8212; EUR/USD</div><div class="ch-sub">Real Yield Spread (Foreign &#8722; US) vs FX Price</div></div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="ch-toggles"><button class="ch-tog active" data-g="irdp" onclick="setIrdPair('EURUSD')">EUR/USD</button><button class="ch-tog" data-g="irdp" onclick="setIrdPair('GBPUSD')">GBP/USD</button><button class="ch-tog" data-g="irdp" onclick="setIrdPair('USDJPY')">USD/JPY</button></div>
+        <div class="ch-toggles">
+          <button class="ch-tog" data-g="ird" data-rw="12" onclick="setR('ird',12)">1Y</button>
+          <button class="ch-tog" data-g="ird" data-rw="24" onclick="setR('ird',24)">2Y</button>
+          <button class="ch-tog active" data-g="ird" data-rw="36" onclick="setR('ird',36)">3Y</button>
+          <button class="ch-tog" data-g="ird" data-rw="60" onclick="setR('ird',60)">5Y</button>
+        </div>
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="irdChart"></canvas></div></div>
     <div class="chart-legend">
       <div class="legend-item" style="cursor:pointer" onclick="togIrd('spread')" id="leg-ird-spread"><span class="legend-dot" style="background:var(--gold)"></span> IRD Spread</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togIrd('fx')" id="leg-ird-fx"><span class="legend-dot" style="background:var(--blu)"></span> EUR/USD Price</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togIrd('fx')" id="leg-ird-fx"><span class="legend-dot" style="background:var(--blu)"></span> <span id="leg-ird-fx-label">EUR/USD Price</span></div>
     </div>
   </div>
 
@@ -226,11 +229,14 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 var R={ird:36,fx:104,carry:36};
+var irdPair='EURUSD';
+var irdLabels={EURUSD:'EUR/USD',GBPUSD:'GBP/USD',USDJPY:'USD/JPY'};
 var irdShow={spread:1,fx:1};
 var fxShow={DXY:1,EURUSD:1,GBPUSD:1,USDJPY:1,AUDUSD:1,USDCAD:1};
 var carryShow={FED_ECB:1,FED_BOE:1,FED_BOJ:1};
 var renderMap={ird:'renderIRD',fx:'renderFX',carry:'renderCarry'};
 
+function setIrdPair(p){irdPair=p;document.querySelectorAll('.ch-tog[data-g="irdp"]').forEach(function(b){b.classList.toggle('active',b.textContent===irdLabels[p])});document.getElementById('ird-title').innerHTML='Interest Rate Differential &#8212; '+irdLabels[p];document.getElementById('leg-ird-fx-label').textContent=irdLabels[p]+' Price';if(D)renderIRD()}
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togIrd(k){irdShow[k]=irdShow[k]?0:1;document.getElementById('leg-ird-'+k).style.opacity=irdShow[k]?'1':'0.3';if(D)renderIRD()}
 function togFx(k){fxShow[k]=fxShow[k]?0:1;document.getElementById('leg-fx-'+k).style.opacity=fxShow[k]?'1':'0.3';if(D)renderFX()}
@@ -278,14 +284,15 @@ function renderCards(){
 }
 
 function renderIRD(){
-  var ird=D.ird.EURUSD;if(!ird||!ird.dates.length)return;
+  var ird=D.ird[irdPair];if(!ird||!ird.dates.length)return;
+  var pLabel=irdLabels[irdPair];
   var rw=R.ird,dates=sl(ird.dates,rw),ds=[];
   if(irdShow.spread)ds.push({label:"IRD Spread",data:sl(ird.spread,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"y",spanGaps:true});
-  if(irdShow.fx)ds.push({label:"EUR/USD",data:sl(ird.fxPrice,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"yR",spanGaps:true});
+  if(irdShow.fx)ds.push({label:pLabel,data:sl(ird.fxPrice,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"yR",spanGaps:true});
   if(charts.ird)charts.ird.destroy();
   var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})};
   if(irdShow.fx)scales.yR={position:"right",grid:{display:false},ticks:{color:"#3b82f6",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(3)}}};
-  charts.ird=new Chart(document.getElementById("irdChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"EUR/USD: "+c.parsed.y.toFixed(4);return"IRD Spread: "+c.parsed.y.toFixed(2)+"%"}}})},scales:scales}});
+  charts.ird=new Chart(document.getElementById("irdChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return pLabel+": "+c.parsed.y.toFixed(4);return"IRD Spread: "+c.parsed.y.toFixed(2)+"%"}}})},scales:scales}});
 }
 
 function renderFX(){
