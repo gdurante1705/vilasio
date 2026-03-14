@@ -137,10 +137,11 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="chart-header">
       <div><div class="ch-title">Currency Strength Matrix</div><div class="ch-sub">Relative Strength Index &#183; Base 100</div></div>
       <div class="ch-toggles">
-        <button class="ch-tog" data-g="cs" data-rw="5" onclick="setR('cs',5)">1M</button>
-        <button class="ch-tog" data-g="cs" data-rw="13" onclick="setR('cs',13)">3M</button>
-        <button class="ch-tog" data-g="cs" data-rw="26" onclick="setR('cs',26)">6M</button>
-        <button class="ch-tog active" data-g="cs" data-rw="52" onclick="setR('cs',52)">1Y</button>
+        <button class="ch-tog" data-g="cs" data-rw="5" onclick="setR('cs',5)">1W</button>
+        <button class="ch-tog" data-g="cs" data-rw="21" onclick="setR('cs',21)">1M</button>
+        <button class="ch-tog active" data-g="cs" data-rw="63" onclick="setR('cs',63)">3M</button>
+        <button class="ch-tog" data-g="cs" data-rw="126" onclick="setR('cs',126)">6M</button>
+        <button class="ch-tog" data-g="cs" data-rw="252" onclick="setR('cs',252)">1Y</button>
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="csChart"></canvas></div></div>
@@ -255,7 +256,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={cs:52,vg:104,cmet:260,ceq:260,ccr:260};
+var R={cs:63,vg:104,cmet:260,ceq:260,ccr:260};
 var csShow={USD:1,EUR:1,GBP:1,JPY:1,AUD:1,CAD:1,CHF:1,NZD:1};
 var vgShow={iwd:1,iwf:1,ratio:1};
 var cointShow={cmet:{},ceq:{},ccr:{}};
