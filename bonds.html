@@ -159,7 +159,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       <div style="display:flex;align-items:center;gap:12px">
         <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
     </div>
-    <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="spreadChart"></canvas></div></div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="spreadChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Normal (positive)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inverted (negative)</div></div>
   </div>
 
@@ -314,7 +314,7 @@ function renderSpread(){
     segment:{borderColor:function(c){return c.p1.parsed.y>=0?"#22c55e":"#ef4444"}},
     backgroundColor:"rgba(255,255,255,0.02)",borderWidth:2,pointRadius:0,fill:true,tension:0.2,spanGaps:true
   },{data:dates.map(function(){return 0}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){var dt=dates[c.dataIndex],v2=y2map[dt],v10=y10map[dt];var parts=[];if(v2!=null)parts.push("2Y: "+fPct(v2));if(v10!=null)parts.push("10Y: "+fPct(v10));parts.push("Spread: "+fPct(c.parsed.y));return parts}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{displayColors:false,filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){var dt=dates[c.dataIndex],v2=y2map[dt],v10=y10map[dt];var parts=[];if(v2!=null)parts.push("2Y: "+fPct(v2));if(v10!=null)parts.push("10Y: "+fPct(v10));parts.push("Spread: "+fPct(c.parsed.y));return parts}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
 }
 
 function renderReal(){
