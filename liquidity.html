@@ -44,22 +44,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .regime-badge.qt{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
 .regime-badge.neutral{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
 .update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
-
-/* Status Cards */
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
 .status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}
 .status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.status-card.up::before{background:var(--grn)}
-.status-card.dn::before{background:var(--red)}
-.status-card.neut::before{background:var(--gray)}
+.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}
 .sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}
 .sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
 .sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
 .sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
-
-/* Chart sections */
 main{padding:0 48px 64px}
 .chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
 .chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
@@ -77,41 +71,29 @@ main{padding:0 48px 64px}
 .chart-canvas-wrap{position:relative;height:340px}
 .chart-canvas-sm{position:relative;height:220px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
-.legend-item{display:flex;align-items:center;gap:5px;cursor:default;transition:opacity .2s}
+.legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-dot{width:7px;height:7px;border-radius:50%}
 .legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
-
-/* Dual + Triple column */
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
-.triple-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:3px}
-
-/* Explain */
+.triple-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:0}
+.section-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
+.section-bar-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--gray2)}
 .explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}
 .explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
 .explain-text{font-size:12px;color:var(--gray2);line-height:1.8}
 .explain-text strong{color:var(--white);font-weight:500}
-.explain-formula{font-family:"DM Mono",monospace;font-size:13px;color:var(--gray3);background:var(--surf2);border:1px solid var(--brd2);padding:12px 20px;margin:12px 0;display:inline-block}
-
-/* Reveal */
+.explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
-
-/* Footer */
 footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
 .disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
 .disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
 .disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
 .disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
 .disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-
 @media(max-width:768px){
-  nav{padding:12px 16px}
-  .hero{padding:76px 16px 16px}
-  main{padding:0 16px 40px}
-  .status-row{grid-template-columns:1fr 1fr}
-  .dual-row{grid-template-columns:1fr}
-  .triple-row{grid-template-columns:1fr}
-  footer{padding:24px 16px;flex-direction:column}
-  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+  nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}
+  .status-row{grid-template-columns:1fr 1fr}.dual-row{grid-template-columns:1fr}.triple-row{grid-template-columns:1fr}
+  footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
 }
 </style>
 </head>
@@ -119,9 +101,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <nav>
   <a class="nav-brand" href="index.html">
     <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
-    <span class="nav-name">Vilasio</span>
-    <span class="nav-sep">&#183;</span>
-    <span class="nav-page">Liquidity Monitor</span>
+    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Liquidity Monitor</span>
   </a>
   <div class="nav-right">
     <a class="nav-link" href="index.html">Home</a>
@@ -149,102 +129,65 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <main>
   <!-- STATUS CARDS -->
   <div class="status-row reveal" id="status-row">
-    <div class="status-card neut" id="sc-netliq">
-      <div class="sc-label">Net Liquidity</div>
-      <div class="sc-val" id="sc-netliq-val">&#8212;</div>
-      <div class="sc-sub"><span class="sc-delta" id="sc-netliq-chg">&#8212;</span><span class="sc-note">W/W</span></div>
-    </div>
-    <div class="status-card neut" id="sc-walcl">
-      <div class="sc-label">Fed Balance Sheet (WALCL)</div>
-      <div class="sc-val" id="sc-walcl-val">&#8212;</div>
-      <div class="sc-sub"><span class="sc-delta" id="sc-walcl-chg">&#8212;</span><span class="sc-note">W/W</span></div>
-    </div>
-    <div class="status-card neut" id="sc-tga">
-      <div class="sc-label">TGA Balance</div>
-      <div class="sc-val" id="sc-tga-val">&#8212;</div>
-      <div class="sc-sub"><span class="sc-delta" id="sc-tga-chg">&#8212;</span><span class="sc-note">W/W &#183; High = Drain</span></div>
-    </div>
-    <div class="status-card neut" id="sc-rrp">
-      <div class="sc-label">Reverse Repo (ON RRP)</div>
-      <div class="sc-val" id="sc-rrp-val">&#8212;</div>
-      <div class="sc-sub"><span class="sc-delta" id="sc-rrp-chg">&#8212;</span><span class="sc-note">W/W</span></div>
-    </div>
+    <div class="status-card neut" id="sc-netliq"><div class="sc-label">Net Liquidity</div><div class="sc-val" id="sc-netliq-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-netliq-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
+    <div class="status-card neut" id="sc-walcl"><div class="sc-label">Fed Balance Sheet (WALCL)</div><div class="sc-val" id="sc-walcl-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-walcl-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
+    <div class="status-card neut" id="sc-tga"><div class="sc-label">TGA Balance</div><div class="sc-val" id="sc-tga-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-tga-chg">&#8212;</span><span class="sc-note">W/W &#183; High = Drain</span></div></div>
+    <div class="status-card neut" id="sc-rrp"><div class="sc-label">Reverse Repo (ON RRP)</div><div class="sc-val" id="sc-rrp-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-rrp-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
   </div>
 
-  <!-- NET LIQUIDITY CHART (only Net Liq + S&P 500) -->
+  <!-- NET LIQUIDITY -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div>
-        <div class="ch-title">Net Liquidity vs S&P 500</div>
-        <div class="ch-sub">WALCL &minus; TGA &minus; Reverse Repo</div>
-      </div>
+      <div><div class="ch-title">Net Liquidity vs S&P 500</div><div class="ch-sub">WALCL &minus; TGA &minus; Reverse Repo</div></div>
       <div style="display:flex;align-items:center;gap:8px">
-        <div class="ch-toggles">
-          <button class="ch-tog" data-range="52" onclick="setRange(52)">1Y</button>
-          <button class="ch-tog" data-range="104" onclick="setRange(104)">2Y</button>
-          <button class="ch-tog active" data-range="156" onclick="setRange(156)">3Y</button>
-        </div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="main" data-rw="52" onclick="setR('main',52)">1Y</button><button class="ch-tog" data-g="main" data-rw="104" onclick="setR('main',104)">2Y</button><button class="ch-tog active" data-g="main" data-rw="156" onclick="setR('main',156)">3Y</button></div>
         <button class="comp-tog active" id="tog-sp" onclick="togSP()" style="margin-left:8px"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gray3);margin-right:3px"></span>S&P 500</button>
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netLiqChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div>
-      <div class="legend-item"><span class="legend-dot dashed"></span> S&P 500</div>
-    </div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div><div class="legend-item"><span class="legend-dot dashed"></span> S&P 500</div></div>
   </div>
 
-  <!-- COMPONENT CHARTS: WALCL, TGA, RRP -->
+  <!-- COMPONENTS: WALCL / TGA / RRP — shared range selector -->
+  <div class="section-bar reveal">
+    <span class="section-bar-label">Components</span>
+    <div class="ch-toggles"><button class="ch-tog" data-g="comp" data-rw="13" onclick="setR('comp',13)">3M</button><button class="ch-tog" data-g="comp" data-rw="26" onclick="setR('comp',26)">6M</button><button class="ch-tog" data-g="comp" data-rw="52" onclick="setR('comp',52)">1Y</button><button class="ch-tog" data-g="comp" data-rw="104" onclick="setR('comp',104)">2Y</button><button class="ch-tog active" data-g="comp" data-rw="156" onclick="setR('comp',156)">3Y</button></div>
+  </div>
   <div class="triple-row reveal">
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div>
-        <div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div>
-      </div>
+      <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="walclChart"></canvas></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">TGA</div><div class="ch-sub">Treasury General Account</div></div>
-        <div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="tga2-current">&#8212;</div>
-      </div>
+      <div class="chart-header"><div><div class="ch-title">TGA</div><div class="ch-sub">Treasury General Account</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="tga2-current">&#8212;</div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="tga2Chart"></canvas></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div>
-        <div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div>
-      </div>
+      <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="rrp2Chart"></canvas></div></div>
     </div>
   </div>
 
   <!-- FED BALANCE SHEET + QE/QT -->
-  <div class="dual-row reveal">
+  <div class="dual-row reveal" style="margin-top:3px">
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">Fed Balance Sheet</div><div class="ch-sub">Treasury + MBS + Other</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="bs" data-rw="13" onclick="setR('bs',13)">3M</button><button class="ch-tog" data-g="bs" data-rw="26" onclick="setR('bs',26)">6M</button><button class="ch-tog" data-g="bs" data-rw="52" onclick="setR('bs',52)">1Y</button><button class="ch-tog" data-g="bs" data-rw="104" onclick="setR('bs',104)">2Y</button><button class="ch-tog active" data-g="bs" data-rw="156" onclick="setR('bs',156)">3Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="bsChart"></canvas></div></div>
-      <div class="chart-legend">
-        <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Treasury</div>
-        <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> MBS</div>
-        <div class="legend-item"><span class="legend-dot" style="background:var(--gray)"></span> Other</div>
-      </div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Treasury</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> MBS</div><div class="legend-item"><span class="legend-dot" style="background:var(--gray)"></span> Other</div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">QE / QT Regime</div><div class="ch-sub">Weekly change in WALCL (Bn)</div></div>
-        <div style="text-align:right">
-          <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">13W Avg</div>
-          <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="qeqt-avg">&#8212;</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="ch-toggles"><button class="ch-tog" data-g="qeqt" data-rw="13" onclick="setR('qeqt',13)">3M</button><button class="ch-tog" data-g="qeqt" data-rw="26" onclick="setR('qeqt',26)">6M</button><button class="ch-tog" data-g="qeqt" data-rw="52" onclick="setR('qeqt',52)">1Y</button><button class="ch-tog" data-g="qeqt" data-rw="104" onclick="setR('qeqt',104)">2Y</button><button class="ch-tog active" data-g="qeqt" data-rw="156" onclick="setR('qeqt',156)">3Y</button></div>
+          <div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">13W Avg</div><div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="qeqt-avg">&#8212;</div></div>
         </div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="qeqtChart"></canvas></div></div>
-      <div class="chart-legend">
-        <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Expansion (QE)</div>
-        <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Contraction (QT)</div>
-      </div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Expansion (QE)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Contraction (QT)</div></div>
     </div>
   </div>
 
@@ -253,9 +196,9 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">Bank Reserves</div><div class="ch-sub">Reserve Balances with Federal Reserve</div></div>
-        <div style="text-align:right">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="ch-toggles"><button class="ch-tog" data-g="res" data-rw="13" onclick="setR('res',13)">3M</button><button class="ch-tog" data-g="res" data-rw="26" onclick="setR('res',26)">6M</button><button class="ch-tog" data-g="res" data-rw="52" onclick="setR('res',52)">1Y</button><button class="ch-tog" data-g="res" data-rw="104" onclick="setR('res',104)">2Y</button><button class="ch-tog active" data-g="res" data-rw="156" onclick="setR('res',156)">3Y</button></div>
           <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="res-current">&#8212;</div>
-          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--gray2)" id="res-sub">Latest</div>
         </div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="resChart"></canvas></div></div>
@@ -263,9 +206,9 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">TGA Tracker</div><div class="ch-sub">Treasury General Account</div></div>
-        <div style="text-align:right">
-          <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="tga-current">&#8212;</div>
-          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--gray2)">High = Liquidity Drained</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="ch-toggles"><button class="ch-tog" data-g="tgaT" data-rw="13" onclick="setR('tgaT',13)">3M</button><button class="ch-tog" data-g="tgaT" data-rw="26" onclick="setR('tgaT',26)">6M</button><button class="ch-tog" data-g="tgaT" data-rw="52" onclick="setR('tgaT',52)">1Y</button><button class="ch-tog" data-g="tgaT" data-rw="104" onclick="setR('tgaT',104)">2Y</button><button class="ch-tog active" data-g="tgaT" data-rw="156" onclick="setR('tgaT',156)">3Y</button></div>
+          <div style="text-align:right"><div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="tga-current">&#8212;</div><div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--gray2)">High = Drain</div></div>
         </div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="tgaChart"></canvas></div></div>
@@ -276,48 +219,40 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">Money Supply</div><div class="ch-sub">M2 level + YoY growth rate</div></div>
-      <div style="text-align:right">
-        <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">M2 YoY</div>
-        <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="m2yoy-current">&#8212;</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="ch-toggles"><button class="ch-tog" data-g="m2" data-rw="12" onclick="setR('m2',12)">1Y</button><button class="ch-tog" data-g="m2" data-rw="24" onclick="setR('m2',24)">2Y</button><button class="ch-tog active" data-g="m2" data-rw="36" onclick="setR('m2',36)">3Y</button></div>
+        <div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">M2 YoY</div><div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="m2yoy-current">&#8212;</div></div>
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="m2Chart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> M2 Level (Bn)</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> M2 YoY Growth %</div>
-    </div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> M2 Level (Bn)</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> M2 YoY Growth %</div></div>
   </div>
 
   <!-- DEFICIT SPENDING -->
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">Deficit Spending</div><div class="ch-sub">Monthly Federal Surplus / Deficit (Bn)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="def" data-rw="12" onclick="setR('def',12)">1Y</button><button class="ch-tog" data-g="def" data-rw="24" onclick="setR('def',24)">2Y</button><button class="ch-tog active" data-g="def" data-rw="36" onclick="setR('def',36)">3Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="defChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Surplus</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Deficit</div>
-    </div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Surplus</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Deficit</div></div>
   </div>
 
   <!-- EXPLANATION -->
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Liquidity Monitor</div>
     <div class="explain-text">
-      <strong>Net Liquidity</strong> is the single most important macro variable for risk assets. It measures how much money is actually available in the financial system.
-      <div class="explain-formula">Net Liquidity = WALCL &minus; TGA &minus; Reverse Repo</div>
+      <strong>Net Liquidity</strong> is the single most important macro variable for risk assets. It measures how much money is actually available in the financial system. The formula is simple: <code>Net Liquidity = WALCL &minus; TGA &minus; Reverse Repo</code>. Each component plays a distinct role in determining how much capital is circulating.<br><br>
       <strong>WALCL</strong> (Fed Total Assets) is the source of liquidity &#8212; when the Fed buys bonds (QE), WALCL increases and liquidity rises. During QT, WALCL shrinks.<br><br>
       <strong>TGA</strong> (Treasury General Account) is the government's checking account at the Fed. When TGA is high, cash is parked there instead of circulating &#8212; liquidity decreases. When TGA drains (government spending), liquidity is released into the system.<br><br>
-      <strong>Reverse Repo (ON RRP)</strong> is where institutions park excess cash overnight with the Fed. High RRP = cash sitting on the sidelines. As RRP declines, that cash re-enters markets.<br><br>
+      <strong>Reverse Repo (ON RRP)</strong> is where institutions park excess cash overnight with the Fed. High RRP means cash sitting on the sidelines. As RRP declines, that cash re-enters markets.<br><br>
       <strong>Key insight:</strong> S&P 500 and Net Liquidity are highly correlated over medium-term horizons. Divergences between the two often resolve with price catching up to liquidity. When Net Liquidity expands while S&P 500 lags &#8212; it tends to be a buying opportunity. When S&P 500 leads while liquidity contracts &#8212; caution is warranted.
     </div>
   </div>
 </main>
 
 <footer>
-  <div style="display:flex;align-items:center;gap:10px">
-    <span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span>
-  </div>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span></div>
   <div style="display:flex;gap:28px">
     <a href="privacy.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Privacy Policy</a>
     <a href="terms.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Terms of Use</a>
@@ -326,321 +261,162 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   </div>
   <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
 </footer>
-<div class="disclaimer-bar">
-  <div class="disclaimer-inner">
-    <span class="disclaimer-label">Financial Disclaimer</span>
-    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
-  </div>
-</div>
+<div class="disclaimer-bar"><div class="disclaimer-inner"><span class="disclaimer-label">Financial Disclaimer</span><p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p></div></div>
 
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
-var D=null, rangeWeeks=156, showSP=1;
-var charts={};
+var D=null, showSP=1, charts={};
 
-function fBn(v){
-  if(v==null)return"\u2014";
-  if(Math.abs(v)>=1000)return"$"+(v/1000).toFixed(2)+"T";
-  if(Math.abs(v)>=1)return"$"+v.toFixed(0)+"B";
-  return"$"+(v*1000).toFixed(0)+"M";
+/* Independent range state per chart group */
+var R={main:156,comp:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
+
+var renderMap={main:'renderNetLiq',comp:'renderComponents',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
+
+function setR(g,w){
+  R[g]=w;
+  document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});
+  if(D&&renderMap[g])window[renderMap[g]]();
 }
-function fChg(v){
-  if(v==null)return"\u2014";
-  var s=v>=0?"+":"";
-  if(Math.abs(v)>=100)return s+(v/1000).toFixed(2)+"T";
-  if(Math.abs(v)>=1)return s+v.toFixed(1)+"B";
-  return s+(v*1000).toFixed(0)+"M";
-}
+
+function fBn(v){if(v==null)return"\u2014";if(Math.abs(v)>=1000)return"$"+(v/1000).toFixed(2)+"T";if(Math.abs(v)>=1)return"$"+v.toFixed(0)+"B";return"$"+(v*1000).toFixed(0)+"M"}
+function fChg(v){if(v==null)return"\u2014";var s=v>=0?"+":"";if(Math.abs(v)>=100)return s+(v/1000).toFixed(2)+"T";if(Math.abs(v)>=1)return s+v.toFixed(1)+"B";return s+(v*1000).toFixed(0)+"M"}
 function fPct(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
-function sliceLast(arr,n){return n>=arr.length?arr:arr.slice(-n)}
+function sl(arr,n){return n>=arr.length?arr:arr.slice(-n)}
 
-/* Chart defaults */
-var axOpts={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
-var tipOpts={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
+var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
+var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 
-function miniOpts(){
+function mOpts(){
   return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
-    plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){return c.dataset.label+": "+fBn(c.parsed.y)}}})},
-    scales:{x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v>=1?v.toFixed(0)+"B":v.toFixed(1)}})})}};
+    plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fBn(c.parsed.y)}}})},
+    scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v>=1?v.toFixed(0)+"B":v.toFixed(1)}})})}};
 }
 
-function setRange(w){
-  rangeWeeks=w;
-  document.querySelectorAll(".ch-tog[data-range]").forEach(function(b){b.classList.toggle("active",parseInt(b.dataset.range)===w)});
-  if(D)renderAll();
-}
-function togSP(){
-  showSP=showSP?0:1;
-  var b=document.getElementById("tog-sp");
-  if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}
-  if(D)renderNetLiq();
-}
+function togSP(){showSP=showSP?0:1;var b=document.getElementById("tog-sp");if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}if(D)renderNetLiq()}
 
-/* ─── RENDER ──────────────────────────────────────────── */
-function renderAll(){
-  renderCards();
-  renderNetLiq();
-  renderComponents();
-  renderBS();
-  renderQEQT();
-  renderReserves();
-  renderTGA();
-  renderM2();
-  renderDeficit();
-}
+function renderAll(){renderCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
 
 function renderCards(){
-  var nl=D.netLiquidity, n=nl.netLiq.length;
-  if(n<2)return;
+  var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
   var cur=nl.netLiq[n-1],prev=nl.netLiq[n-2],chg=cur-prev;
   document.getElementById("sc-netliq-val").textContent=fBn(cur);
   var ce=document.getElementById("sc-netliq-chg");ce.textContent=fChg(chg);ce.className="sc-delta "+(chg>=0?"up":"dn");
   document.getElementById("sc-netliq").className="status-card "+(chg>=0?"up":"dn");
-
   var wc=nl.walcl[n-1],wp=nl.walcl[n-2],wchg=wc-wp;
   document.getElementById("sc-walcl-val").textContent=fBn(wc);
   var we=document.getElementById("sc-walcl-chg");we.textContent=fChg(wchg);we.className="sc-delta "+(wchg>=0?"up":"dn");
   document.getElementById("sc-walcl").className="status-card "+(wchg>=0?"up":"dn");
-
   var tc=nl.tga[n-1],tp=nl.tga[n-2],tchg=tc-tp;
   document.getElementById("sc-tga-val").textContent=fBn(tc);
   var te=document.getElementById("sc-tga-chg");te.textContent=fChg(tchg);te.className="sc-delta "+(tchg>=0?"dn":"up");
   document.getElementById("sc-tga").className="status-card "+(tchg<=0?"up":"dn");
-
   var rc=nl.rrp[n-1],rp=nl.rrp[n-2],rchg=rc-rp;
   document.getElementById("sc-rrp-val").textContent=fBn(rc);
   var re=document.getElementById("sc-rrp-chg");re.textContent=fChg(rchg);re.className="sc-delta "+(rchg<=0?"up":"dn");
   document.getElementById("sc-rrp").className="status-card "+(rchg<=0?"up":"dn");
-
-  /* Regime badge */
-  var badge=document.getElementById("regime-badge");
-  var st=D.qeqt.status;
+  var badge=document.getElementById("regime-badge"),st=D.qeqt.status;
   badge.textContent=st==="QE"?"EXPANDING (QE)":st==="QT"?"CONTRACTING (QT)":"NEUTRAL";
   badge.className="regime-badge "+(st==="QE"?"qe":st==="QT"?"qt":"neutral");
-
-  /* Last updated badge */
-  if(D.lastUpdate){
-    document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
-  }
+  if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
 }
 
 function renderNetLiq(){
-  var nl=D.netLiquidity;
-  var dates=sliceLast(nl.dates,rangeWeeks);
-  var netData=sliceLast(nl.netLiq,rangeWeeks);
-
-  var ds=[{
-    label:"Net Liquidity",data:netData,
-    borderColor:"#22c55e",backgroundColor:"rgba(34,197,94,0.06)",
-    borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"
-  }];
-
-  var scales={
-    x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:10,maxRotation:0})}),
-    y:Object.assign({},axOpts,{position:"left",ticks:Object.assign({},axOpts.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v.toFixed(0)+"B"}})})
-  };
-
+  var nl=D.netLiquidity,rw=R.main,dates=sl(nl.dates,rw),netData=sl(nl.netLiq,rw);
+  var ds=[{label:"Net Liquidity",data:netData,borderColor:"#22c55e",backgroundColor:"rgba(34,197,94,0.06)",borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"}];
+  var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v.toFixed(0)+"B"}})})};
   if(showSP&&D.sp500&&D.sp500.dates.length){
     var spMap={};D.sp500.dates.forEach(function(d,i){spMap[d]=D.sp500.values[i]});
-    var spData=dates.map(function(d){
-      if(spMap[d])return spMap[d];
-      for(var off=1;off<=7;off++){
-        var dt=new Date(d);dt.setDate(dt.getDate()-off);
-        var check=dt.toISOString().slice(0,10);
-        if(spMap[check])return spMap[check];
-        dt=new Date(d);dt.setDate(dt.getDate()+off);
-        check=dt.toISOString().slice(0,10);
-        if(spMap[check])return spMap[check];
-      }
-      return null;
-    });
+    var spData=dates.map(function(d){if(spMap[d])return spMap[d];for(var off=1;off<=7;off++){var dt=new Date(d);dt.setDate(dt.getDate()-off);var ck=dt.toISOString().slice(0,10);if(spMap[ck])return spMap[ck];dt=new Date(d);dt.setDate(dt.getDate()+off);ck=dt.toISOString().slice(0,10);if(spMap[ck])return spMap[ck]}return null});
     ds.push({label:"S&P 500",data:spData,borderColor:"rgba(240,241,245,0.6)",borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});
     scales.yP={position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(0)}}};
   }
-
   if(charts.netLiq)charts.netLiq.destroy();
-  charts.netLiq=new Chart(document.getElementById("netLiqChart").getContext("2d"),{
-    type:"line",data:{labels:dates,datasets:ds},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
-      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){
-        if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();
-        return c.dataset.label+": "+fBn(c.parsed.y);
-      }}})},scales:scales}
-  });
+  charts.netLiq=new Chart(document.getElementById("netLiqChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();return c.dataset.label+": "+fBn(c.parsed.y)}}})},scales:scales}});
 }
 
 function renderComponents(){
-  var nl=D.netLiquidity, n=nl.walcl.length;
-
-  /* WALCL standalone */
-  var wDates=sliceLast(nl.dates,rangeWeeks), wVals=sliceLast(nl.walcl,rangeWeeks);
+  var nl=D.netLiquidity,n=nl.walcl.length,rw=R.comp;
   document.getElementById("walcl-current").textContent=fBn(nl.walcl[n-1]);
   if(charts.walcl)charts.walcl.destroy();
-  charts.walcl=new Chart(document.getElementById("walclChart").getContext("2d"),{
-    type:"line",data:{labels:wDates,datasets:[{label:"WALCL",data:wVals,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:miniOpts()
-  });
-
-  /* TGA standalone */
-  var tDates=sliceLast(nl.dates,rangeWeeks), tVals=sliceLast(nl.tga,rangeWeeks);
+  charts.walcl=new Chart(document.getElementById("walclChart").getContext("2d"),{type:"line",data:{labels:sl(nl.dates,rw),datasets:[{label:"WALCL",data:sl(nl.walcl,rw),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
   document.getElementById("tga2-current").textContent=fBn(nl.tga[n-1]);
   if(charts.tga2)charts.tga2.destroy();
-  charts.tga2=new Chart(document.getElementById("tga2Chart").getContext("2d"),{
-    type:"line",data:{labels:tDates,datasets:[{label:"TGA",data:tVals,borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:miniOpts()
-  });
-
-  /* RRP standalone */
-  var rr=D.rrp;
-  if(rr&&rr.dates.length){
-    var rDates=sliceLast(rr.dates,rangeWeeks), rVals=sliceLast(rr.values,rangeWeeks);
-    var rn=rr.values.length;
-    document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
+  charts.tga2=new Chart(document.getElementById("tga2Chart").getContext("2d"),{type:"line",data:{labels:sl(nl.dates,rw),datasets:[{label:"TGA",data:sl(nl.tga,rw),borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
+  var rr=D.rrp;if(rr&&rr.dates.length){
+    var rn=rr.values.length;document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
     if(charts.rrp2)charts.rrp2.destroy();
-    charts.rrp2=new Chart(document.getElementById("rrp2Chart").getContext("2d"),{
-      type:"line",data:{labels:rDates,datasets:[{label:"Reverse Repo",data:rVals,borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:miniOpts()
-    });
+    charts.rrp2=new Chart(document.getElementById("rrp2Chart").getContext("2d"),{type:"line",data:{labels:sl(rr.dates,rw),datasets:[{label:"Reverse Repo",data:sl(rr.values,rw),borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
   }
 }
 
 function renderBS(){
-  var bs=D.balanceSheet;
-  var dates=sliceLast(bs.dates,rangeWeeks);
-  if(charts.bs)charts.bs.destroy();
-  charts.bs=new Chart(document.getElementById("bsChart").getContext("2d"),{
-    type:"line",data:{labels:dates,datasets:[
-      {label:"Treasury",data:sliceLast(bs.treasury,rangeWeeks),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.15)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
-      {label:"MBS",data:sliceLast(bs.mbs,rangeWeeks),borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.15)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
-      {label:"Other",data:sliceLast(bs.other,rangeWeeks),borderColor:"#5a6070",backgroundColor:"rgba(90,96,112,0.10)",borderWidth:1,pointRadius:0,fill:true,tension:0.3}
-    ]},options:miniOpts()
-  });
+  var bs=D.balanceSheet,rw=R.bs;if(charts.bs)charts.bs.destroy();
+  charts.bs=new Chart(document.getElementById("bsChart").getContext("2d"),{type:"line",data:{labels:sl(bs.dates,rw),datasets:[
+    {label:"Treasury",data:sl(bs.treasury,rw),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.15)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+    {label:"MBS",data:sl(bs.mbs,rw),borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.15)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+    {label:"Other",data:sl(bs.other,rw),borderColor:"#5a6070",backgroundColor:"rgba(90,96,112,0.10)",borderWidth:1,pointRadius:0,fill:true,tension:0.3}
+  ]},options:mOpts()});
 }
 
 function renderQEQT(){
-  var q=D.qeqt;
-  var dates=sliceLast(q.dates,rangeWeeks);
-  var data=sliceLast(q.changes,rangeWeeks);
+  var q=D.qeqt,rw=R.qeqt,dates=sl(q.dates,rw),data=sl(q.changes,rw);
   document.getElementById("qeqt-avg").textContent=fChg(q.avgWeekly)+"/wk";
   document.getElementById("qeqt-avg").style.color=q.avgWeekly>=0?"var(--grn)":"var(--red)";
   if(charts.qeqt)charts.qeqt.destroy();
-  charts.qeqt=new Chart(document.getElementById("qeqtChart").getContext("2d"),{
-    type:"bar",data:{labels:dates,datasets:[{
-      data:data,
-      backgroundColor:data.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),
-      borderColor:data.map(function(v){return v>=0?"#22c55e":"#ef4444"}),
-      borderWidth:1
-    }]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
-      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){return fChg(c.parsed.y)+" Bn"}}})},
-      scales:{x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return v.toFixed(0)+"B"}})})}
-    }
-  });
+  charts.qeqt=new Chart(document.getElementById("qeqtChart").getContext("2d"),{type:"bar",data:{labels:dates,datasets:[{data:data,backgroundColor:data.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),borderColor:data.map(function(v){return v>=0?"#22c55e":"#ef4444"}),borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return fChg(c.parsed.y)+" Bn"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)+"B"}})})}}});
 }
 
 function renderReserves(){
-  var r=D.reserves;
-  if(!r||!r.dates.length)return;
-  var dates=sliceLast(r.dates,rangeWeeks);
-  var vals=sliceLast(r.values,rangeWeeks);
-  var n=r.values.length;
-  document.getElementById("res-current").textContent=fBn(r.values[n-1]);
+  var r=D.reserves,rw=R.res;if(!r||!r.dates.length)return;
+  var n=r.values.length;document.getElementById("res-current").textContent=fBn(r.values[n-1]);
   if(charts.res)charts.res.destroy();
-  charts.res=new Chart(document.getElementById("resChart").getContext("2d"),{
-    type:"line",data:{labels:dates,datasets:[{
-      label:"Reserves",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",
-      borderWidth:1.5,pointRadius:0,fill:true,tension:0.3
-    }]},options:miniOpts()
-  });
+  charts.res=new Chart(document.getElementById("resChart").getContext("2d"),{type:"line",data:{labels:sl(r.dates,rw),datasets:[{label:"Reserves",data:sl(r.values,rw),borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
 }
 
 function renderTGA(){
-  var t=D.tga;
-  if(!t||!t.dates.length)return;
-  var dates=sliceLast(t.dates,rangeWeeks);
-  var vals=sliceLast(t.values,rangeWeeks);
-  var n=t.values.length;
-  document.getElementById("tga-current").textContent=fBn(t.values[n-1]);
+  var t=D.tga,rw=R.tgaT;if(!t||!t.dates.length)return;
+  var n=t.values.length;document.getElementById("tga-current").textContent=fBn(t.values[n-1]);
   if(charts.tga)charts.tga.destroy();
-  charts.tga=new Chart(document.getElementById("tgaChart").getContext("2d"),{
-    type:"line",data:{labels:dates,datasets:[{
-      label:"TGA",data:vals,borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",
-      borderWidth:1.5,pointRadius:0,fill:true,tension:0.3
-    }]},options:miniOpts()
-  });
+  charts.tga=new Chart(document.getElementById("tgaChart").getContext("2d"),{type:"line",data:{labels:sl(t.dates,rw),datasets:[{label:"TGA",data:sl(t.values,rw),borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
 }
 
 function renderM2(){
-  var ms=D.moneySupply;
-  if(!ms)return;
-  var m2=ms.m2,yoy=ms.m2yoy;
-  var dates=sliceLast(m2.dates,Math.min(rangeWeeks,m2.dates.length));
-  var vals=sliceLast(m2.values,Math.min(rangeWeeks,m2.values.length));
-  /* Align YoY on m2 dates */
+  var ms=D.moneySupply;if(!ms)return;
+  var m2=ms.m2,yoy=ms.m2yoy,rw=R.m2;
+  /* Use full M2 date range, align YoY on same dates */
+  var dates=sl(m2.dates,rw),vals=sl(m2.values,rw);
   var yoyMap={};yoy.dates.forEach(function(d,i){yoyMap[d]=yoy.values[i]});
   var yoyData=dates.map(function(d){return yoyMap[d]!=null?yoyMap[d]:null});
   var n=yoy.values.length;
-  if(n>0){
-    var cv=yoy.values[n-1];
-    document.getElementById("m2yoy-current").textContent=fPct(cv);
-    document.getElementById("m2yoy-current").style.color=cv>=0?"var(--grn)":"var(--red)";
-  }
-
-  /* Compute independent min/max for YoY axis */
-  var yoyFiltered=yoyData.filter(function(v){return v!=null});
-  var yoyMin=Math.min.apply(null,yoyFiltered),yoyMax=Math.max.apply(null,yoyFiltered);
-  var yoyPad=(yoyMax-yoyMin)*0.15||1;
-
+  if(n>0){var cv=yoy.values[n-1];document.getElementById("m2yoy-current").textContent=fPct(cv);document.getElementById("m2yoy-current").style.color=cv>=0?"var(--grn)":"var(--red)"}
+  /* Compute independent YoY axis range from visible non-null values */
+  var yoyVis=yoyData.filter(function(v){return v!=null});
+  var yMin=-5,yMax=5;
+  if(yoyVis.length){yMin=Math.min.apply(null,yoyVis);yMax=Math.max.apply(null,yoyVis);var pad=(yMax-yMin)*0.2||1;yMin=Math.floor(yMin-pad);yMax=Math.ceil(yMax+pad)}
   if(charts.m2)charts.m2.destroy();
-  charts.m2=new Chart(document.getElementById("m2Chart").getContext("2d"),{
-    type:"line",data:{labels:dates,datasets:[
-      {label:"M2",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"},
-      {label:"M2 YoY %",data:yoyData,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true}
-    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
-      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){
-        if(c.dataset.yAxisID==="yR")return"M2 YoY: "+fPct(c.parsed.y);
-        return"M2: "+fBn(c.parsed.y);
-      }}})},
-      scales:{
-        x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:8,maxRotation:0})}),
-        y:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return fBn(v)}}},
-        yR:{position:"right",grid:{display:false},beginAtZero:false,min:Math.floor(yoyMin-yoyPad),max:Math.ceil(yoyMax+yoyPad),ticks:{color:"#c8a84b",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}}
-      }
+  charts.m2=new Chart(document.getElementById("m2Chart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
+    {label:"M2",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"},
+    {label:"M2 YoY %",data:yoyData,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+    plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"M2 YoY: "+fPct(c.parsed.y);return"M2: "+fBn(c.parsed.y)}}})},
+    scales:{
+      x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),
+      y:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return fBn(v)}}},
+      yR:{type:"linear",position:"right",grid:{display:false},min:yMin,max:yMax,ticks:{color:"#c8a84b",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}}
     }
-  });
+  }});
 }
 
 function renderDeficit(){
-  var df=D.deficit;
-  if(!df||!df.dates.length)return;
-  var dates=sliceLast(df.dates,Math.min(36,df.dates.length));
-  var vals=sliceLast(df.values,Math.min(36,df.values.length));
+  var df=D.deficit,rw=R.def;if(!df||!df.dates.length)return;
+  var dates=sl(df.dates,rw),vals=sl(df.values,rw);
   if(charts.def)charts.def.destroy();
-  charts.def=new Chart(document.getElementById("defChart").getContext("2d"),{
-    type:"bar",data:{labels:dates,datasets:[{
-      data:vals,
-      backgroundColor:vals.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),
-      borderColor:vals.map(function(v){return v>=0?"#22c55e":"#ef4444"}),
-      borderWidth:1
-    }]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
-      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){return fBn(c.parsed.y)}}})},
-      scales:{
-        x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:12,maxRotation:0})}),
-        y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return fBn(v)}})})
-      }
-    }
-  });
+  charts.def=new Chart(document.getElementById("defChart").getContext("2d"),{type:"bar",data:{labels:dates,datasets:[{data:vals,backgroundColor:vals.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),borderColor:vals.map(function(v){return v>=0?"#22c55e":"#ef4444"}),borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return fBn(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:12,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return fBn(v)}})})}}});
 }
 
-/* ─── INIT ──────────────────────────────────────────── */
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
 document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
-
-(function init(){
-  fetch(API+"/api/liquidity").then(function(r){return r.json()}).then(function(data){
-    if(data.status!=="ok"){console.error("API error:",data.message);return}
-    D=data;
-    renderAll();
-  }).catch(function(e){
-    console.error("Liquidity fetch failed:",e);
-  });
-})();
+(function(){fetch(API+"/api/liquidity").then(function(r){return r.json()}).then(function(d){if(d.status!=="ok"){console.error("API error:",d.message);return}D=d;renderAll()}).catch(function(e){console.error("Liquidity fetch failed:",e)})})();
 </script>
 </body>
 </html>
