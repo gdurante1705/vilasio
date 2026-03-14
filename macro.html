@@ -303,7 +303,7 @@ function renderMorpheus(){
   var len=dates.length;
   if(charts.mo)charts.mo.destroy();
   charts.mo=new Chart(document.getElementById("morphChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"Inflation Rank",data:ir,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3},
+    {label:"Inflation Rank",data:ir,borderColor:"#ef4444",borderWidth:2,pointRadius:0,fill:false,tension:0.3},
     {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:false,tension:0.3},
     {data:Array(len).fill(80),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:Array(len).fill(20),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
