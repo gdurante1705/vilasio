@@ -44,6 +44,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .regime-badge.qt{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
 .regime-badge.neutral{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
 .update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
+.refresh-row{display:flex;align-items:center;gap:8px}
+.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);border:1px solid var(--brd2);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.refresh-btn:hover{color:var(--white);border-color:var(--brd3)}
+.refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
 .status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}
 .status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
@@ -121,7 +125,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
     <div class="hero-badges">
       <div class="regime-badge neutral" id="regime-badge">LOADING</div>
-      <div class="update-badge" id="update-badge">DATA: loading...</div>
+      <div class="refresh-row">
+        <div class="update-badge" id="update-badge">DATA: loading...</div>
+        <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">REFRESH</button>
+      </div>
     </div>
   </div>
 </section>
@@ -412,6 +419,16 @@ function renderDeficit(){
   var dates=sl(df.dates,rw),vals=sl(df.values,rw);
   if(charts.def)charts.def.destroy();
   charts.def=new Chart(document.getElementById("defChart").getContext("2d"),{type:"bar",data:{labels:dates,datasets:[{data:vals,backgroundColor:vals.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),borderColor:vals.map(function(v){return v>=0?"#22c55e":"#ef4444"}),borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return fBn(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:12,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return fBn(v)}})})}}});
+}
+
+function refreshData(){
+  var btn=document.getElementById("refresh-btn");
+  btn.textContent="REFRESHING...";btn.classList.add("loading");
+  document.getElementById("update-badge").textContent="DATA: refreshing...";
+  fetch(API+"/api/liquidity/refresh").then(function(r){return r.json()}).then(function(d){
+    if(d.status!=="ok"){console.error("Refresh error:",d.message);btn.textContent="FAILED";setTimeout(function(){btn.textContent="REFRESH";btn.classList.remove("loading")},2000);return}
+    D=d;renderAll();btn.textContent="REFRESH";btn.classList.remove("loading");
+  }).catch(function(e){console.error("Refresh failed:",e);btn.textContent="FAILED";setTimeout(function(){btn.textContent="REFRESH";btn.classList.remove("loading")},2000)});
 }
 
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
