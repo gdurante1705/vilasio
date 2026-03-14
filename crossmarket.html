@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Cross-Market Analysis - Vilasio</title>
-<meta name="description" content="Cross-Market & Intermarket Analysis by Vilasio — DXY, major forex pairs, and cross-asset correlation matrix for institutional macro analysis.">
+<meta name="description" content="Cross-Market & Intermarket Analysis by Vilasio — currency strength, sector rotation, commodities, correlation matrix, and value vs growth for institutional macro analysis.">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -70,9 +70,10 @@ main{padding:0 48px 64px}
 .legend-dot{width:7px;height:7px;border-radius:50%}
 .corr-wrap{padding:20px 28px}
 .corr-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
-.corr-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:2px;text-transform:uppercase;font-size:8px}
-.corr-table td{padding:8px 6px;text-align:center;font-weight:500;border:1px solid var(--brd)}
-.corr-table td.lbl{text-align:left;color:var(--gray3);font-weight:400;letter-spacing:2px;text-transform:uppercase;font-size:8px;border:none}
+.corr-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:2px;text-transform:uppercase;font-size:8px;border-bottom:1px solid var(--brd2)}
+.corr-table td{padding:8px 6px;text-align:center;font-weight:500;border:1px solid var(--brd2)}
+.corr-table td.lbl{text-align:left;color:var(--gray3);font-weight:400;letter-spacing:1px;font-size:9px;border-left:none}
+.corr-table tr{border-bottom:1px solid var(--brd)}
 .corr-subtitle{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);padding:10px 28px;border-top:1px solid var(--brd)}
 .explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}
 .explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
@@ -111,7 +112,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div>
       <div class="hero-tag"><span class="pulse"></span> Yahoo Finance Data</div>
       <h1 class="hero-h1">Connect all <em>asset classes</em>.</h1>
-      <p class="hero-desc">Dollar index, major forex pairs, and cross-asset correlations &#8212; the intermarket framework that reveals how capital flows between asset classes.</p>
+      <p class="hero-desc">Currency strength, sector rotation, commodities, and cross-asset correlations &#8212; the intermarket framework that reveals how capital flows between asset classes.</p>
     </div>
     <div class="hero-badges">
       <div class="refresh-row">
@@ -124,38 +125,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
 <main>
   <div class="status-row reveal">
-    <div class="status-card neut" id="sc-dxy"><div class="sc-label">DXY</div><div class="sc-val" id="sc-dxy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dxy-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
-    <div class="status-card neut" id="sc-eur"><div class="sc-label">EUR/USD</div><div class="sc-val" id="sc-eur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-eur-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
+    <div class="status-card neut" id="sc-dxy"><div class="sc-label">DXY</div><div class="sc-val" id="sc-dxy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dxy-chg">&#8212;</span><span class="sc-note">vs prior close</span></div></div>
+    <div class="status-card neut" id="sc-eur"><div class="sc-label">EUR/USD</div><div class="sc-val" id="sc-eur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-eur-chg">&#8212;</span><span class="sc-note">vs prior close</span></div></div>
     <div class="status-card neut" id="sc-corr1"><div class="sc-label">SPX-Gold Corr</div><div class="sc-val" id="sc-corr1-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr1-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
     <div class="status-card neut" id="sc-corr2"><div class="sc-label">BTC-SPX Corr</div><div class="sc-val" id="sc-corr2-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr2-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
-  </div>
-
-  <!-- DXY & MAJOR PAIRS -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">DXY &amp; Major Forex Pairs</div><div class="ch-sub">Normalized to 100 for comparison</div></div>
-      <div class="ch-toggles">
-        <button class="ch-tog" data-g="fx" data-rw="26" onclick="setR('fx',26)">6M</button>
-        <button class="ch-tog" data-g="fx" data-rw="52" onclick="setR('fx',52)">1Y</button>
-        <button class="ch-tog active" data-g="fx" data-rw="104" onclick="setR('fx',104)">2Y</button>
-      </div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="fxChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item" style="cursor:pointer" onclick="togFx('DXY')" id="leg-fx-DXY"><span class="legend-dot" style="background:var(--gold)"></span> DXY</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togFx('EURUSD')" id="leg-fx-EURUSD"><span class="legend-dot" style="background:var(--blu)"></span> EUR/USD</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togFx('GBPUSD')" id="leg-fx-GBPUSD"><span class="legend-dot" style="background:var(--cyan)"></span> GBP/USD</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togFx('USDJPY')" id="leg-fx-USDJPY"><span class="legend-dot" style="background:var(--red)"></span> USD/JPY</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togFx('AUDUSD')" id="leg-fx-AUDUSD"><span class="legend-dot" style="background:var(--grn)"></span> AUD/USD</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togFx('USDCAD')" id="leg-fx-USDCAD"><span class="legend-dot" style="background:var(--violet)"></span> USD/CAD</div>
-    </div>
-  </div>
-
-  <!-- CORRELATION MATRIX -->
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Correlation Matrix</div><div class="ch-sub">90-Day Rolling &#183; Daily Returns</div></div></div>
-    <div class="corr-wrap"><table class="corr-table" id="corr-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
-    <div class="corr-subtitle">Compared to previous 90-day window &#8212; arrows show direction of change</div>
   </div>
 
   <!-- CURRENCY STRENGTH -->
@@ -173,6 +146,13 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="chart-legend" id="cs-legend"></div>
   </div>
 
+  <!-- CORRELATION MATRIX -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Correlation Matrix</div><div class="ch-sub">90-Day Rolling &#183; Daily Returns</div></div></div>
+    <div class="corr-wrap"><table class="corr-table" id="corr-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
+    <div class="corr-subtitle">Compared to previous 90-day window &#8212; arrows show direction of change</div>
+  </div>
+
   <!-- SECTOR ROTATION -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Sector Rotation Heatmap</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance %</div></div></div>
@@ -185,20 +165,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="corr-wrap"><table class="corr-table" id="commodity-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
   </div>
 
-  <!-- SEASONALITY -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Seasonality</div><div class="ch-sub">Historical Avg vs Current Year &#183; Monthly Returns %</div></div>
-      <div class="ch-toggles" id="season-toggles"></div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="seasonChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--gray2)"></span> Historical Avg</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Current Year</div></div>
-  </div>
-
   <!-- VALUE VS GROWTH -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Value vs Growth</div><div class="ch-sub">IWD/IWF Ratio &#183; Rising = Value Outperforms</div></div>
+      <div><div class="ch-title">Value vs Growth</div><div class="ch-sub">IWD (Value) &#183; IWF (Growth) &#183; Ratio IWD/IWF</div></div>
       <div class="ch-toggles">
         <button class="ch-tog" data-g="vg" data-rw="26" onclick="setR('vg',26)">6M</button>
         <button class="ch-tog" data-g="vg" data-rw="52" onclick="setR('vg',52)">1Y</button>
@@ -206,20 +176,22 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vgChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Value/Growth Ratio</div></div>
+    <div class="chart-legend">
+      <div class="legend-item" style="cursor:pointer" onclick="togVg('iwd')" id="leg-vg-iwd"><span class="legend-dot" style="background:var(--blu)"></span> IWD (Value)</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togVg('iwf')" id="leg-vg-iwf"><span class="legend-dot" style="background:var(--red)"></span> IWF (Growth)</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togVg('ratio')" id="leg-vg-ratio"><span class="legend-dot" style="background:var(--gold)"></span> Ratio IWD/IWF</div>
+    </div>
   </div>
 
   <!-- EXPLANATION -->
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Cross-Market Dashboard</div>
     <div class="explain-text">
-      <strong>DXY &amp; Major Pairs</strong> shows the Dollar Index alongside major forex pairs, normalized to 100 at the start of the selected window. DXY typically moves inversely to EUR/USD (~57% of index weight). Divergences between pairs that normally move together signal regime change.<br><br>
-      <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
       <strong>Currency Strength</strong> measures relative performance of 8 major currencies across 12 forex pairs, normalized to base 100. When a currency line rises, it is strengthening vs all others. The spread between the strongest and weakest currencies defines the carry trade opportunity.<br><br>
+      <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
       <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
-      <strong>Commodity Dashboard</strong> shows performance across timeframes. Commodities correlate with the economic cycle: energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
-      <strong>Seasonality</strong> compares the average monthly return (10-year historical) with the current year. Deviations from seasonal patterns, especially when confirmed by COT positioning, create high-probability setups.<br><br>
-      <strong>Value vs Growth</strong> tracks the IWD/IWF ratio. Rising ratio = capital rotating into value stocks (financials, energy, industrials). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.
+      <strong>Commodity Dashboard</strong> shows performance across timeframes. Energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
+      <strong>Value vs Growth</strong> tracks the IWD/IWF ratio alongside individual ETF prices. Rising ratio = capital rotating into value stocks (financials, energy). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.
     </div>
   </div>
 </main>
@@ -239,72 +211,74 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={fx:104,cs:52,vg:104};
-var fxShow={DXY:1,EURUSD:1,GBPUSD:1,USDJPY:1,AUDUSD:1,USDCAD:1};
+var R={cs:52,vg:104};
 var csShow={USD:1,EUR:1,GBP:1,JPY:1,AUD:1,CAD:1,CHF:1,NZD:1};
-var seasonAsset='SPX';
-var renderMap={fx:'renderFX',cs:'renderCS',vg:'renderVG'};
+var vgShow={iwd:1,iwf:1,ratio:1};
+var renderMap={cs:'renderCS',vg:'renderVG'};
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
-function togFx(k){fxShow[k]=fxShow[k]?0:1;document.getElementById('leg-fx-'+k).style.opacity=fxShow[k]?'1':'0.3';if(D)renderFX()}
 function togCs(k){csShow[k]=csShow[k]?0:1;document.getElementById('leg-cs-'+k).style.opacity=csShow[k]?'1':'0.3';if(D)renderCS()}
-function setSeason(k){seasonAsset=k;document.querySelectorAll('.ch-tog[data-g="season"]').forEach(function(b){b.classList.toggle('active',b.textContent===k)});if(D)renderSeason()}
+function togVg(k){vgShow[k]=vgShow[k]?0:1;document.getElementById('leg-vg-'+k).style.opacity=vgShow[k]?'1':'0.3';if(D)renderVG()}
 
 function sl(a,n){return n>=a.length?a:a.slice(-n)}
-function round4(v){return Math.round(v*10000)/10000}
 var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 
-function renderAll(){renderCards();renderFX();renderCorrelation();renderCS();renderSectorTable();renderCommodityTable();initSeasonToggles();renderSeason();renderVG()}
+function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderVG()}
 
-function fxCard(id,data,decimals){
-  if(!data||data.values.length<2)return;
-  var n=data.values.length,c=data.values[n-1],p=data.values[n-2],chg=((c-p)/p*100);
-  document.getElementById(id+"-val").textContent=c.toFixed(decimals);
-  var e=document.getElementById(id+"-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
-  document.getElementById(id).className="status-card "+(chg>=0?"up":"dn");
+/* --- STATUS CARDS --- */
+function renderCards(){
+  var sp=D.statusPrices;
+  if(sp&&sp.DXY&&sp.DXY.price!=null){
+    var c=sp.DXY.price,p=sp.DXY.prev,chg=p?((c-p)/p*100):0;
+    document.getElementById("sc-dxy-val").textContent=c.toFixed(2);
+    var e=document.getElementById("sc-dxy-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
+    document.getElementById("sc-dxy").className="status-card "+(chg>=0?"up":"dn");
+  }
+  if(sp&&sp.EURUSD&&sp.EURUSD.price!=null){
+    var c=sp.EURUSD.price,p=sp.EURUSD.prev,chg=p?((c-p)/p*100):0;
+    document.getElementById("sc-eur-val").textContent=c.toFixed(4);
+    var e=document.getElementById("sc-eur-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
+    document.getElementById("sc-eur").className="status-card "+(chg>=0?"up":"dn");
+  }
+  var co=D.correlation;
+  if(co&&co.current){
+    corrCard("sc-corr1",co,"SPX","Gold");
+    corrCard("sc-corr2",co,"BTC","SPX");
+  }
+  if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
 }
-function corrCard(id,labels,current,previous,key1,key2){
-  var i1=labels.indexOf(key1),i2=labels.indexOf(key2);
-  if(i1<0||i2<0)return;
-  var cv=current[i1][i2],pv=previous[i1][i2],chg=cv-pv;
+function corrCard(id,co,k1,k2){
+  var i1=co.labels.indexOf(k1),i2=co.labels.indexOf(k2);if(i1<0||i2<0)return;
+  var cv=co.current[i1][i2],pv=co.previous[i1][i2],chg=cv-pv;
   document.getElementById(id+"-val").textContent=cv.toFixed(2);
   var e=document.getElementById(id+"-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2);e.className="sc-delta "+(chg>=0?"up":"dn");
   document.getElementById(id).className="status-card neut";
 }
 
-function renderCards(){
-  fxCard("sc-dxy",D.forex.DXY,2);
-  fxCard("sc-eur",D.forex.EURUSD,4);
-  var co=D.correlation;
-  if(co&&co.current){
-    corrCard("sc-corr1",co.labels,co.current,co.previous,"SPX","Gold");
-    corrCard("sc-corr2",co.labels,co.current,co.previous,"BTC","SPX");
-  }
-  if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
-}
-
-function renderFX(){
-  var forex=D.forex,rw=R.fx;
-  var colors={DXY:"#c8a84b",EURUSD:"#3b82f6",GBPUSD:"#06b6d4",USDJPY:"#ef4444",AUDUSD:"#22c55e",USDCAD:"#a78bfa"};
-  var labels={DXY:"DXY",EURUSD:"EUR/USD",GBPUSD:"GBP/USD",USDJPY:"USD/JPY",AUDUSD:"AUD/USD",USDCAD:"USD/CAD"};
-  var keys=["DXY","EURUSD","GBPUSD","USDJPY","AUDUSD","USDCAD"];
-  var baseDates=sl(forex.DXY.dates,rw);
-  var ds=[];
-  keys.forEach(function(k){
-    if(!fxShow[k]||!forex[k])return;
-    var raw=forex[k],rawMap={};
-    raw.dates.forEach(function(d,i){rawMap[d]=raw.values[i]});
-    var vals=baseDates.map(function(d){return rawMap[d]||null});
-    var base=null;
-    for(var i=0;i<vals.length;i++){if(vals[i]!=null){base=vals[i];break}}
-    if(base)vals=vals.map(function(v){return v!=null?round4(v/base*100):null});
-    ds.push({label:labels[k],data:vals,borderColor:colors[k],borderWidth:k==="DXY"?2:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+/* --- CURRENCY STRENGTH --- */
+function renderCS(){
+  var cs=D.currencyStrength;if(!cs||!cs.dates||!cs.dates.length)return;
+  var ccyColors={USD:'#c8a84b',EUR:'#3b82f6',GBP:'#06b6d4',JPY:'#ef4444',AUD:'#22c55e',CAD:'#a78bfa',CHF:'#f59e0b',NZD:'#f0f1f5'};
+  var rw=R.cs,dates=sl(cs.dates,rw),ds=[];
+  cs.currencies.forEach(function(c){
+    if(!csShow[c]||!cs.series[c])return;
+    ds.push({label:c,data:sl(cs.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
   });
-  if(charts.fx)charts.fx.destroy();
-  charts.fx=new Chart(document.getElementById("fxChart").getContext("2d"),{type:"line",data:{labels:baseDates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}}),suggestedMin:95,suggestedMax:105})}}});
+  var leg=document.getElementById('cs-legend');
+  if(!leg.children.length){
+    cs.currencies.forEach(function(c){
+      var el=document.createElement('div');el.className='legend-item';el.style.cursor='pointer';el.id='leg-cs-'+c;
+      el.onclick=function(){togCs(c)};
+      el.innerHTML='<span class="legend-dot" style="background:'+(ccyColors[c]||'#888')+'"></span> '+c;
+      leg.appendChild(el);
+    });
+  }
+  if(charts.cs)charts.cs.destroy();
+  charts.cs=new Chart(document.getElementById("csChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
 }
 
+/* --- CORRELATION MATRIX --- */
 function renderCorrelation(){
   var co=D.correlation;if(!co||!co.labels)return;
   var labels=co.labels,cur=co.current,prev=co.previous,n=labels.length;
@@ -321,39 +295,14 @@ function renderCorrelation(){
     html+="<tr><td class='lbl'>"+labels[i]+"</td>";
     for(var j=0;j<n;j++){
       var v=cur[i][j],pv=prev[i][j],bg=corrColor(v);
-      var txt=i===j?"1.00":v.toFixed(2);
-      var ar=i===j?"":arrow(v,pv);
-      html+="<td style='background:"+bg+";color:var(--white)'>"+txt+ar+"</td>";
+      html+="<td style='background:"+bg+";color:var(--white)'>"+(i===j?"1.00":v.toFixed(2))+(i===j?"":arrow(v,pv))+"</td>";
     }
     html+="</tr>";
   }
   document.getElementById("corr-table").innerHTML=html;
 }
 
-/* --- CURRENCY STRENGTH --- */
-function renderCS(){
-  var cs=D.currencyStrength;if(!cs||!cs.dates||!cs.dates.length)return;
-  var ccyColors={USD:'#c8a84b',EUR:'#3b82f6',GBP:'#06b6d4',JPY:'#ef4444',AUD:'#22c55e',CAD:'#a78bfa',CHF:'#f59e0b',NZD:'#f0f1f5'};
-  var rw=R.cs,dates=sl(cs.dates,rw),ds=[];
-  cs.currencies.forEach(function(c){
-    if(!csShow[c]||!cs.series[c])return;
-    ds.push({label:c,data:sl(cs.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
-  });
-  // Build legend once
-  var leg=document.getElementById('cs-legend');
-  if(!leg.children.length){
-    cs.currencies.forEach(function(c){
-      var el=document.createElement('div');el.className='legend-item';el.style.cursor='pointer';el.id='leg-cs-'+c;
-      el.onclick=function(){togCs(c)};
-      el.innerHTML='<span class="legend-dot" style="background:'+(ccyColors[c]||'#888')+'"></span> '+c;
-      leg.appendChild(el);
-    });
-  }
-  if(charts.cs)charts.cs.destroy();
-  charts.cs=new Chart(document.getElementById("csChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
-}
-
-/* --- HEATMAP TABLE HELPER --- */
+/* --- HEATMAP HELPERS --- */
 function heatColor(v){
   if(v==null)return'var(--surf2)';
   var abs=Math.min(Math.abs(v),15),intensity=abs/15*0.6+0.1;
@@ -367,9 +316,9 @@ function renderSectorTable(){
   var s=D.sectorRotation;if(!s||!s.length)return;
   var html='<tr><th style="text-align:left">Sector</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
   s.forEach(function(r){
-    html+='<tr><td class="lbl">'+r.symbol+' '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
+    html+='<tr><td class="lbl">'+r.symbol+' &middot; '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
     ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
-      var v=r[k];html+='<td style="background:'+heatColor(v)+';color:var(--white)">'+fmtPct(v)+'</td>';
+      html+='<td style="background:'+heatColor(r[k])+';color:var(--white)">'+fmtPct(r[k])+'</td>';
     });
     html+='</tr>';
   });
@@ -381,49 +330,32 @@ function renderCommodityTable(){
   var c=D.commodities;if(!c||!c.table||!c.table.length)return;
   var html='<tr><th style="text-align:left">Commodity</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
   c.table.forEach(function(r){
-    html+='<tr><td class="lbl">'+r.symbol+' '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
+    html+='<tr><td class="lbl">'+r.symbol+' &middot; '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
     ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
-      var v=r[k];html+='<td style="background:'+heatColor(v)+';color:var(--white)">'+fmtPct(v)+'</td>';
+      html+='<td style="background:'+heatColor(r[k])+';color:var(--white)">'+fmtPct(r[k])+'</td>';
     });
     html+='</tr>';
   });
   document.getElementById('commodity-table').innerHTML=html;
 }
 
-/* --- SEASONALITY --- */
-var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function initSeasonToggles(){
-  var s=D.seasonality;if(!s)return;
-  var el=document.getElementById('season-toggles');if(el.children.length)return;
-  var keys=Object.keys(s);
-  keys.forEach(function(k,i){
-    var btn=document.createElement('button');btn.className='ch-tog'+(i===0?' active':'');btn.dataset.g='season';btn.textContent=k;
-    btn.onclick=function(){setSeason(k)};
-    el.appendChild(btn);
-  });
-  if(keys.length)seasonAsset=keys[0];
-}
-function renderSeason(){
-  var s=D.seasonality;if(!s||!s[seasonAsset])return;
-  var d=s[seasonAsset];
-  if(charts.season)charts.season.destroy();
-  charts.season=new Chart(document.getElementById("seasonChart").getContext("2d"),{type:"bar",data:{labels:MONTHS,datasets:[
-    {label:"Historical Avg",data:d.historical,backgroundColor:"rgba(138,144,160,0.4)",borderColor:"#8a90a0",borderWidth:1},
-    {label:"Current Year",data:d.current,backgroundColor:"rgba(200,168,75,0.6)",borderColor:"#c8a84b",borderWidth:1}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v!=null?(v>=0?"+":"")+v.toFixed(2)+"%":"\u2014")}}})},scales:{x:axO,y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
-}
-
-/* --- VALUE VS GROWTH --- */
+/* --- VALUE VS GROWTH (3 lines) --- */
 function renderVG(){
   var vg=D.valueGrowth;if(!vg||!vg.dates||!vg.dates.length)return;
-  var rw=R.vg,dates=sl(vg.dates,rw),ratio=sl(vg.ratio,rw);
+  var rw=R.vg,dates=sl(vg.dates,rw),ds=[];
+  // Align IWD and IWF on ratio dates
+  var iwdMap={},iwfMap={};
+  if(vg.iwd)vg.iwd.dates.forEach(function(d,i){iwdMap[d]=vg.iwd.values[i]});
+  if(vg.iwf)vg.iwf.dates.forEach(function(d,i){iwfMap[d]=vg.iwf.values[i]});
+  var iwdVals=dates.map(function(d){return iwdMap[d]||null});
+  var iwfVals=dates.map(function(d){return iwfMap[d]||null});
+  if(vgShow.iwd)ds.push({label:"IWD (Value)",data:iwdVals,borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"y",spanGaps:true});
+  if(vgShow.iwf)ds.push({label:"IWF (Growth)",data:iwfVals,borderColor:"#ef4444",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"y",spanGaps:true});
+  if(vgShow.ratio)ds.push({label:"Ratio IWD/IWF",data:sl(vg.ratio,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true});
   if(charts.vg)charts.vg.destroy();
-  // Compute midline for annotation
-  var avg=ratio.reduce(function(a,b){return a+b},0)/ratio.length;
-  charts.vg=new Chart(document.getElementById("vgChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"Value/Growth",data:ratio,borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {data:dates.map(function(){return avg}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){return"Ratio: "+c.parsed.y.toFixed(4)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(3)}})})}}});
+  var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return"$"+v.toFixed(0)}})})};
+  if(vgShow.ratio)scales.yR={position:"right",grid:{display:false},ticks:{color:"#c8a84b",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(3)}}};
+  charts.vg=new Chart(document.getElementById("vgChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"Ratio: "+c.parsed.y.toFixed(4);return c.dataset.label+": $"+c.parsed.y.toFixed(2)}}})},scales:scales}});
 }
 
 function refreshData(){
