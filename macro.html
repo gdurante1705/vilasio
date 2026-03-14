@@ -150,9 +150,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; <span id="mo-lb-label">12M LOOKBACK</span></div></div>
-      <div style="display:flex;gap:12px;align-items:center">
-        <div class="ch-toggles"><button class="ch-tog active" data-g="molb" data-rw="12" onclick="setMoLB(12)">12M</button><button class="ch-tog" data-g="molb" data-rw="52" onclick="setMoLB(52)">52M</button></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button><button class="ch-tog" data-g="mo" data-rw="120" onclick="setR('mo',120)">10Y</button><button class="ch-tog" data-g="mo" data-rw="9999" onclick="setR('mo',9999)">MAX</button></div>
+      <div style="display:flex;gap:16px;align-items:center">
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">Rank</span><div class="ch-toggles"><button class="ch-tog active" data-g="molb" data-rw="12" onclick="setMoLB(12)">12M</button><button class="ch-tog" data-g="molb" data-rw="52" onclick="setMoLB(52)">52M</button></div></div>
+        <div style="width:1px;height:20px;background:var(--brd2)"></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">View</span><div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button><button class="ch-tog" data-g="mo" data-rw="120" onclick="setR('mo',120)">10Y</button><button class="ch-tog" data-g="mo" data-rw="9999" onclick="setR('mo',9999)">MAX</button></div></div>
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
@@ -297,17 +298,24 @@ function renderCards(){
 }
 
 function renderMorpheus(){
-  var m=D.morpheus,rw=R.mo,dates=fMonArr(sl(m.dates,rw));
+  var m=D.morpheus,rw=R.mo;
   var irKey=moLookback===52?'infRank52':'infRank12',urKey=moLookback===52?'urRank52':'urRank12';
-  var ir=sl(m[irKey]||m.infRank12,rw),ur=sl(m[urKey]||m.urRank12,rw);
+  var rawIr=m[irKey]||m.infRank12,rawUr=m[urKey]||m.urRank12,rawDates=m.dates;
+  // Find first index where BOTH ranks have valid (non-null) data
+  var startIdx=0;
+  for(var i=0;i<rawDates.length;i++){if(rawIr[i]!=null&&rawUr[i]!=null){startIdx=i;break}}
+  // Trim from startIdx, then apply time range
+  var trimD=rawDates.slice(startIdx),trimIr=rawIr.slice(startIdx),trimUr=rawUr.slice(startIdx);
+  var dates=fMonArr(sl(trimD,rw)),ir=sl(trimIr,rw),ur=sl(trimUr,rw);
+  var len=dates.length;
   document.getElementById("mo-lb-label").textContent=moLookback+"M LOOKBACK";
   if(charts.mo)charts.mo.destroy();
   charts.mo=new Chart(document.getElementById("morphChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"Inflation Rank",data:ir,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},
-    {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {data:ir.map(function(){return 80}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
-    {data:ir.map(function(){return 20}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
-    {data:ir.map(function(){return 50}),borderColor:"rgba(255,255,255,0.10)",borderWidth:1,borderDash:[2,4],pointRadius:0,fill:false}
+    {label:"Inflation Rank",data:ir,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3},
+    {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:false,tension:0.3},
+    {data:Array(len).fill(80),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+    {data:Array(len).fill(20),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+    {data:Array(len).fill(50),borderColor:"rgba(255,255,255,0.10)",borderWidth:1,borderDash:[2,4],pointRadius:0,fill:false}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{min:0,max:100,ticks:Object.assign({},axO.ticks,{stepSize:20})})}}});
 }
 
