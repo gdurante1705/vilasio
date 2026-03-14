@@ -146,17 +146,27 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">Treasury Yields</div><div class="ch-sub">2Y &#183; 5Y &#183; 10Y &#183; 30Y</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="yld" data-rw="65" onclick="setR('yld',65)">3M</button><button class="ch-tog" data-g="yld" data-rw="130" onclick="setR('yld',130)">6M</button><button class="ch-tog" data-g="yld" data-rw="260" onclick="setR('yld',260)">1Y</button><button class="ch-tog" data-g="yld" data-rw="520" onclick="setR('yld',520)">2Y</button><button class="ch-tog active" data-g="yld" data-rw="780" onclick="setR('yld',780)">3Y</button></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="ch-toggles"><button class="ch-tog" data-g="yld" data-rw="65" onclick="setR('yld',65)">3M</button><button class="ch-tog" data-g="yld" data-rw="130" onclick="setR('yld',130)">6M</button><button class="ch-tog" data-g="yld" data-rw="260" onclick="setR('yld',260)">1Y</button><button class="ch-tog" data-g="yld" data-rw="520" onclick="setR('yld',520)">2Y</button><button class="ch-tog active" data-g="yld" data-rw="780" onclick="setR('yld',780)">3Y</button></div>
+        <div style="display:flex;gap:3px;margin-left:4px">
+          <button class="comp-tog active" id="tog-2y" onclick="togYld('dgs2')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#f59e0b;margin-right:3px"></span>2Y</button>
+          <button class="comp-tog active" id="tog-5y" onclick="togYld('dgs5')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#3b82f6;margin-right:3px"></span>5Y</button>
+          <button class="comp-tog active" id="tog-10y" onclick="togYld('dgs10')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#c8a84b;margin-right:3px"></span>10Y</button>
+          <button class="comp-tog active" id="tog-30y" onclick="togYld('dgs30')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#a78bfa;margin-right:3px"></span>30Y</button>
+        </div>
+      </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="yieldChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> 2Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> 5Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> 30Y</div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> 2Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> 5Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> 30Y</div></div>
   </div>
 
   <!-- 2Y-10Y SPREAD -->
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">2Y-10Y Spread</div><div class="ch-sub">Inversion = Recession Signal</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gray2)" id="spread-components">2Y: &#8212; | 10Y: &#8212;</div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="spreadChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Normal (positive)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inverted (negative)</div></div>
@@ -239,7 +249,10 @@ var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 /* Daily data: 3M~65, 6M~130, 1Y~260, 2Y~520, 3Y~780 business days */
 var R={yld:780,sp:780,ry:780,be:780,cr:780,ff:780};
+var yldShow={dgs2:1,dgs5:1,dgs10:1,dgs30:1};
+var yldTogIds={dgs2:'tog-2y',dgs5:'tog-5y',dgs10:'tog-10y',dgs30:'tog-30y'};
 var renderMap={yld:'renderYields',sp:'renderSpread',ry:'renderReal',be:'renderBE',cr:'renderCredit',ff:'renderFF'};
+function togYld(k){yldShow[k]=yldShow[k]?0:1;var b=document.getElementById(yldTogIds[k]);if(b){b.classList.toggle('active',!!yldShow[k]);b.classList.toggle('off',!yldShow[k])}if(D)renderYields()}
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function fPct(v){return v==null?"\u2014":v.toFixed(2)+"%"}
@@ -290,18 +303,20 @@ function renderCards(){
 }
 
 function renderYields(){
-  var y=D.yields,rw=R.yld,dates=sl(y.dates,rw);
+  var y=D.yields,rw=R.yld,dates=sl(y.dates,rw),ds=[];
+  if(yldShow.dgs2)ds.push({label:"2Y",data:sl(y.dgs2,rw),borderColor:"#f59e0b",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+  if(yldShow.dgs5)ds.push({label:"5Y",data:sl(y.dgs5,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+  if(yldShow.dgs10)ds.push({label:"10Y",data:sl(y.dgs10,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+  if(yldShow.dgs30)ds.push({label:"30Y",data:sl(y.dgs30,rw),borderColor:"#a78bfa",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
   if(charts.yld)charts.yld.destroy();
-  charts.yld=new Chart(document.getElementById("yieldChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"2Y",data:sl(y.dgs2,rw),borderColor:"#06b6d4",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
-    {label:"5Y",data:sl(y.dgs5,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
-    {label:"10Y",data:sl(y.dgs10,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
-    {label:"30Y",data:sl(y.dgs30,rw),borderColor:"#a78bfa",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true}
-  ]},options:pctOpts()});
+  charts.yld=new Chart(document.getElementById("yieldChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:pctOpts()});
 }
 
 function renderSpread(){
   var s=D.spread,rw=R.sp,dates=sl(s.dates,rw),vals=sl(s.values,rw);
+  /* Show current 2Y and 10Y values in header */
+  var y=D.yields,n=y.dgs2.length;
+  if(n>0){var c2=y.dgs2[n-1],c10=y.dgs10[n-1];document.getElementById("spread-components").textContent="2Y: "+fPct(c2)+" | 10Y: "+fPct(c10)}
   if(charts.sp)charts.sp.destroy();
   charts.sp=new Chart(document.getElementById("spreadChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[{
     label:"2Y-10Y Spread",data:vals,
