@@ -161,7 +161,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
   <!-- MARKET CONSENSUS -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Market Consensus</div><div class="ch-sub">Powered by prediction markets &#183; Real-time probability</div></div></div>
+    <div class="chart-header"><div><div class="ch-title">Market Consensus</div><div class="ch-sub">Powered by Kalshi &#183; CFTC-Regulated Prediction Market</div></div></div>
     <div class="cons-grid" id="consensus-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px">Loading prediction markets...</div></div>
   </div>
 
@@ -396,7 +396,7 @@ function renderConsensus(markets){
     html+='<div class="cons-q">'+m.question+'</div>';
     html+='<div class="cons-prob '+cls+'">'+m.probability+'% YES</div>';
     html+='<div class="cons-meta"><span class="cons-vol">Vol: $'+vol+'</span><span class="cons-cat">'+m.category+'</span></div>';
-    if(m.slug)html+='<a class="cons-link" href="https://polymarket.com/event/'+m.slug+'" target="_blank" rel="noopener">View on Polymarket &#8599;</a>';
+    if(m.slug)html+='<a class="cons-link" href="https://kalshi.com/markets/'+m.slug+'" target="_blank" rel="noopener">View on Kalshi &#8599;</a>';
     html+='</div>';
   });
   el.innerHTML=html;
