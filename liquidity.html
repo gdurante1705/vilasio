@@ -161,14 +161,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <span class="section-bar-label">Components</span>
     <div class="ch-toggles"><button class="ch-tog" data-g="comp" data-rw="13" onclick="setR('comp',13)">3M</button><button class="ch-tog" data-g="comp" data-rw="26" onclick="setR('comp',26)">6M</button><button class="ch-tog" data-g="comp" data-rw="52" onclick="setR('comp',52)">1Y</button><button class="ch-tog" data-g="comp" data-rw="104" onclick="setR('comp',104)">2Y</button><button class="ch-tog active" data-g="comp" data-rw="156" onclick="setR('comp',156)">3Y</button></div>
   </div>
-  <div class="triple-row reveal">
+  <div class="dual-row reveal">
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="walclChart"></canvas></div></div>
-    </div>
-    <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header"><div><div class="ch-title">TGA</div><div class="ch-sub">Treasury General Account</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="tga2-current">&#8212;</div></div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="tga2Chart"></canvas></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div>
@@ -347,9 +343,6 @@ function renderComponents(){
   document.getElementById("walcl-current").textContent=fBn(nl.walcl[n-1]);
   if(charts.walcl)charts.walcl.destroy();
   charts.walcl=new Chart(document.getElementById("walclChart").getContext("2d"),{type:"line",data:{labels:sl(nl.dates,rw),datasets:[{label:"WALCL",data:sl(nl.walcl,rw),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
-  document.getElementById("tga2-current").textContent=fBn(nl.tga[n-1]);
-  if(charts.tga2)charts.tga2.destroy();
-  charts.tga2=new Chart(document.getElementById("tga2Chart").getContext("2d"),{type:"line",data:{labels:sl(nl.dates,rw),datasets:[{label:"TGA",data:sl(nl.tga,rw),borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
   var rr=D.rrp;if(rr&&rr.dates.length){
     var rn=rr.values.length;document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
     if(charts.rrp2)charts.rrp2.destroy();

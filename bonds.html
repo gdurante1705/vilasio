@@ -16,7 +16,7 @@
   --gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);
   --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
   --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
-  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;
+  --amb:#f87171;--blu:#3b82f6;--violet:#a78bfa;
   --cyan:#06b6d4;
 }
 html{scroll-behavior:smooth}
@@ -149,7 +149,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       <div class="ch-toggles"><button class="ch-tog" data-g="yld" data-rw="65" onclick="setR('yld',65)">3M</button><button class="ch-tog" data-g="yld" data-rw="130" onclick="setR('yld',130)">6M</button><button class="ch-tog" data-g="yld" data-rw="260" onclick="setR('yld',260)">1Y</button><button class="ch-tog" data-g="yld" data-rw="520" onclick="setR('yld',520)">2Y</button><button class="ch-tog active" data-g="yld" data-rw="780" onclick="setR('yld',780)">3Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="yieldChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs2')" id="leg-2y"><span class="legend-dot" style="background:#f59e0b"></span> 2Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs5')" id="leg-5y"><span class="legend-dot" style="background:var(--blu)"></span> 5Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs10')" id="leg-10y"><span class="legend-dot" style="background:var(--gold)"></span> 10Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs30')" id="leg-30y"><span class="legend-dot" style="background:var(--violet)"></span> 30Y</div></div>
+    <div class="chart-legend"><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs2')" id="leg-2y"><span class="legend-dot" style="background:#f87171"></span> 2Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs5')" id="leg-5y"><span class="legend-dot" style="background:var(--blu)"></span> 5Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs10')" id="leg-10y"><span class="legend-dot" style="background:var(--gold)"></span> 10Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs30')" id="leg-30y"><span class="legend-dot" style="background:var(--violet)"></span> 30Y</div></div>
   </div>
 
   <!-- 2Y-10Y SPREAD -->
@@ -294,7 +294,7 @@ function renderCards(){
 
 function renderYields(){
   var y=D.yields,rw=R.yld,dates=sl(y.dates,rw),ds=[];
-  if(yldShow.dgs2)ds.push({label:"2Y",data:sl(y.dgs2,rw),borderColor:"#f59e0b",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+  if(yldShow.dgs2)ds.push({label:"2Y",data:sl(y.dgs2,rw),borderColor:"#f87171",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
   if(yldShow.dgs5)ds.push({label:"5Y",data:sl(y.dgs5,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
   if(yldShow.dgs10)ds.push({label:"10Y",data:sl(y.dgs10,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
   if(yldShow.dgs30)ds.push({label:"30Y",data:sl(y.dgs30,rw),borderColor:"#a78bfa",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
