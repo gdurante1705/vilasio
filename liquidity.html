@@ -38,10 +38,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-h1 em{font-style:normal;color:var(--gold2)}
 .hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:540px;margin-top:6px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .regime-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap}
 .regime-badge.qe{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
 .regime-badge.qt{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
 .regime-badge.neutral{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
+.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
 
 /* Status Cards */
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
@@ -75,25 +77,20 @@ main{padding:0 48px 64px}
 .chart-canvas-wrap{position:relative;height:340px}
 .chart-canvas-sm{position:relative;height:220px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
-.legend-item{display:flex;align-items:center;gap:5px;cursor:pointer;transition:opacity .2s}
-.legend-item:hover{opacity:1}
-.legend-item.off{opacity:0.3}
+.legend-item{display:flex;align-items:center;gap:5px;cursor:default;transition:opacity .2s}
 .legend-dot{width:7px;height:7px;border-radius:50%}
 .legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
 
-/* Dual column */
+/* Dual + Triple column */
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
+.triple-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:3px}
 
 /* Explain */
 .explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}
 .explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
 .explain-text{font-size:12px;color:var(--gray2);line-height:1.8}
 .explain-text strong{color:var(--white);font-weight:500}
-.explain-formula{font-family:"DM Mono",monospace;font-size:13px;color:var(--gold);background:rgba(200,168,75,0.06);border:1px solid rgba(200,168,75,0.15);padding:12px 20px;margin:12px 0;display:inline-block}
-
-/* Loading */
-.loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,5,7,0.8);z-index:10}
-.loading-text{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);animation:pulse 1.5s ease infinite}
+.explain-formula{font-family:"DM Mono",monospace;font-size:13px;color:var(--gray3);background:var(--surf2);border:1px solid var(--brd2);padding:12px 20px;margin:12px 0;display:inline-block}
 
 /* Reveal */
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
@@ -112,6 +109,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   main{padding:0 16px 40px}
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
+  .triple-row{grid-template-columns:1fr}
   footer{padding:24px 16px;flex-direction:column}
   .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
 }
@@ -141,7 +139,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       <h1 class="hero-h1">The hidden <em>fuel</em> behind every rally.</h1>
       <p class="hero-desc">Net Liquidity tracking, Fed balance sheet decomposition, and money supply analysis &#8212; the macro variables that drive risk assets.</p>
     </div>
-    <div class="regime-badge neutral" id="regime-badge">LOADING</div>
+    <div class="hero-badges">
+      <div class="regime-badge neutral" id="regime-badge">LOADING</div>
+      <div class="update-badge" id="update-badge">DATA: loading...</div>
+    </div>
   </div>
 </section>
 
@@ -170,7 +171,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
   </div>
 
-  <!-- NET LIQUIDITY CHART -->
+  <!-- NET LIQUIDITY CHART (only Net Liq + S&P 500) -->
   <div class="chart-section reveal">
     <div class="chart-header">
       <div>
@@ -183,21 +184,38 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
           <button class="ch-tog" data-range="104" onclick="setRange(104)">2Y</button>
           <button class="ch-tog active" data-range="156" onclick="setRange(156)">3Y</button>
         </div>
-        <div style="display:flex;gap:3px;margin-left:8px">
-          <button class="comp-tog active" id="tog-sp" onclick="togComp('sp')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gray3);margin-right:3px"></span>S&P 500</button>
-          <button class="comp-tog" id="tog-walcl" onclick="togComp('walcl')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blu);margin-right:3px"></span>WALCL</button>
-          <button class="comp-tog" id="tog-tga" onclick="togComp('tga')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amb);margin-right:3px"></span>TGA</button>
-          <button class="comp-tog" id="tog-rrp" onclick="togComp('rrp')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--violet);margin-right:3px"></span>RRP</button>
-        </div>
+        <button class="comp-tog active" id="tog-sp" onclick="togSP()" style="margin-left:8px"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gray3);margin-right:3px"></span>S&P 500</button>
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netLiqChart"></canvas></div></div>
     <div class="chart-legend">
       <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div>
       <div class="legend-item"><span class="legend-dot dashed"></span> S&P 500</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> WALCL</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--amb)"></span> TGA</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> RRP</div>
+    </div>
+  </div>
+
+  <!-- COMPONENT CHARTS: WALCL, TGA, RRP -->
+  <div class="triple-row reveal">
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div>
+        <div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="walclChart"></canvas></div></div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">TGA</div><div class="ch-sub">Treasury General Account</div></div>
+        <div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="tga2-current">&#8212;</div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="tga2Chart"></canvas></div></div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div>
+        <div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="rrp2Chart"></canvas></div></div>
     </div>
   </div>
 
@@ -230,7 +248,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
   </div>
 
-  <!-- RESERVES + TGA -->
+  <!-- RESERVES + TGA TRACKER -->
   <div class="dual-row reveal">
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
@@ -317,8 +335,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
-var D=null, rangeWeeks=156;
-var compShow={sp:1,walcl:0,tga:0,rrp:0};
+var D=null, rangeWeeks=156, showSP=1;
 var charts={};
 
 function fBn(v){
@@ -341,9 +358,9 @@ function sliceLast(arr,n){return n>=arr.length?arr:arr.slice(-n)}
 var axOpts={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
 var tipOpts={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 
-function miniOpts(h){
+function miniOpts(){
   return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
-    plugins:{legend:{display:false},tooltip:tipOpts},
+    plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){return c.dataset.label+": "+fBn(c.parsed.y)}}})},
     scales:{x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v>=1?v.toFixed(0)+"B":v.toFixed(1)}})})}};
 }
 
@@ -352,10 +369,10 @@ function setRange(w){
   document.querySelectorAll(".ch-tog[data-range]").forEach(function(b){b.classList.toggle("active",parseInt(b.dataset.range)===w)});
   if(D)renderAll();
 }
-function togComp(k){
-  compShow[k]=compShow[k]?0:1;
-  var b=document.getElementById("tog-"+k);
-  if(b){b.classList.toggle("active",!!compShow[k]);b.classList.toggle("off",!compShow[k])}
+function togSP(){
+  showSP=showSP?0:1;
+  var b=document.getElementById("tog-sp");
+  if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}
   if(D)renderNetLiq();
 }
 
@@ -363,6 +380,7 @@ function togComp(k){
 function renderAll(){
   renderCards();
   renderNetLiq();
+  renderComponents();
   renderBS();
   renderQEQT();
   renderReserves();
@@ -386,12 +404,12 @@ function renderCards(){
 
   var tc=nl.tga[n-1],tp=nl.tga[n-2],tchg=tc-tp;
   document.getElementById("sc-tga-val").textContent=fBn(tc);
-  var te=document.getElementById("sc-tga-chg");te.textContent=fChg(tchg);te.className="sc-delta "+(tchg>=0?"dn":"up");/* TGA up=drain=bad */
+  var te=document.getElementById("sc-tga-chg");te.textContent=fChg(tchg);te.className="sc-delta "+(tchg>=0?"dn":"up");
   document.getElementById("sc-tga").className="status-card "+(tchg<=0?"up":"dn");
 
   var rc=nl.rrp[n-1],rp=nl.rrp[n-2],rchg=rc-rp;
   document.getElementById("sc-rrp-val").textContent=fBn(rc);
-  var re=document.getElementById("sc-rrp-chg");re.textContent=fChg(rchg);re.className="sc-delta "+(rchg<=0?"up":"dn");/* RRP down=good */
+  var re=document.getElementById("sc-rrp-chg");re.textContent=fChg(rchg);re.className="sc-delta "+(rchg<=0?"up":"dn");
   document.getElementById("sc-rrp").className="status-card "+(rchg<=0?"up":"dn");
 
   /* Regime badge */
@@ -399,12 +417,16 @@ function renderCards(){
   var st=D.qeqt.status;
   badge.textContent=st==="QE"?"EXPANDING (QE)":st==="QT"?"CONTRACTING (QT)":"NEUTRAL";
   badge.className="regime-badge "+(st==="QE"?"qe":st==="QT"?"qt":"neutral");
+
+  /* Last updated badge */
+  if(D.lastUpdate){
+    document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
+  }
 }
 
 function renderNetLiq(){
   var nl=D.netLiquidity;
   var dates=sliceLast(nl.dates,rangeWeeks);
-  var offset=nl.dates.length-dates.length;
   var netData=sliceLast(nl.netLiq,rangeWeeks);
 
   var ds=[{
@@ -413,21 +435,15 @@ function renderNetLiq(){
     borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"
   }];
 
-  if(compShow.walcl)ds.push({label:"WALCL",data:sliceLast(nl.walcl,rangeWeeks),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"});
-  if(compShow.tga)ds.push({label:"TGA",data:sliceLast(nl.tga,rangeWeeks),borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"});
-  if(compShow.rrp)ds.push({label:"RRP",data:sliceLast(nl.rrp,rangeWeeks),borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"});
-
   var scales={
     x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:10,maxRotation:0})}),
     y:Object.assign({},axOpts,{position:"left",ticks:Object.assign({},axOpts.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v.toFixed(0)+"B"}})})
   };
 
-  if(compShow.sp&&D.sp500&&D.sp500.dates.length){
-    /* Align S&P on net liq dates */
+  if(showSP&&D.sp500&&D.sp500.dates.length){
     var spMap={};D.sp500.dates.forEach(function(d,i){spMap[d]=D.sp500.values[i]});
     var spData=dates.map(function(d){
       if(spMap[d])return spMap[d];
-      /* Find nearest */
       for(var off=1;off<=7;off++){
         var dt=new Date(d);dt.setDate(dt.getDate()-off);
         var check=dt.toISOString().slice(0,10);
@@ -449,15 +465,45 @@ function renderNetLiq(){
       plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){
         if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();
         return c.dataset.label+": "+fBn(c.parsed.y);
-      }}})}
-    ,scales:scales}
+      }}})},scales:scales}
   });
+}
+
+function renderComponents(){
+  var nl=D.netLiquidity, n=nl.walcl.length;
+
+  /* WALCL standalone */
+  var wDates=sliceLast(nl.dates,rangeWeeks), wVals=sliceLast(nl.walcl,rangeWeeks);
+  document.getElementById("walcl-current").textContent=fBn(nl.walcl[n-1]);
+  if(charts.walcl)charts.walcl.destroy();
+  charts.walcl=new Chart(document.getElementById("walclChart").getContext("2d"),{
+    type:"line",data:{labels:wDates,datasets:[{label:"WALCL",data:wVals,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:miniOpts()
+  });
+
+  /* TGA standalone */
+  var tDates=sliceLast(nl.dates,rangeWeeks), tVals=sliceLast(nl.tga,rangeWeeks);
+  document.getElementById("tga2-current").textContent=fBn(nl.tga[n-1]);
+  if(charts.tga2)charts.tga2.destroy();
+  charts.tga2=new Chart(document.getElementById("tga2Chart").getContext("2d"),{
+    type:"line",data:{labels:tDates,datasets:[{label:"TGA",data:tVals,borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:miniOpts()
+  });
+
+  /* RRP standalone */
+  var rr=D.rrp;
+  if(rr&&rr.dates.length){
+    var rDates=sliceLast(rr.dates,rangeWeeks), rVals=sliceLast(rr.values,rangeWeeks);
+    var rn=rr.values.length;
+    document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
+    if(charts.rrp2)charts.rrp2.destroy();
+    charts.rrp2=new Chart(document.getElementById("rrp2Chart").getContext("2d"),{
+      type:"line",data:{labels:rDates,datasets:[{label:"Reverse Repo",data:rVals,borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:miniOpts()
+    });
+  }
 }
 
 function renderBS(){
   var bs=D.balanceSheet;
   var dates=sliceLast(bs.dates,rangeWeeks);
-  var offset=bs.dates.length-dates.length;
   if(charts.bs)charts.bs.destroy();
   charts.bs=new Chart(document.getElementById("bsChart").getContext("2d"),{
     type:"line",data:{labels:dates,datasets:[
@@ -498,7 +544,7 @@ function renderReserves(){
   if(charts.res)charts.res.destroy();
   charts.res=new Chart(document.getElementById("resChart").getContext("2d"),{
     type:"line",data:{labels:dates,datasets:[{
-      data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",
+      label:"Reserves",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",
       borderWidth:1.5,pointRadius:0,fill:true,tension:0.3
     }]},options:miniOpts()
   });
@@ -514,7 +560,7 @@ function renderTGA(){
   if(charts.tga)charts.tga.destroy();
   charts.tga=new Chart(document.getElementById("tgaChart").getContext("2d"),{
     type:"line",data:{labels:dates,datasets:[{
-      data:vals,borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",
+      label:"TGA",data:vals,borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",
       borderWidth:1.5,pointRadius:0,fill:true,tension:0.3
     }]},options:miniOpts()
   });
@@ -535,11 +581,17 @@ function renderM2(){
     document.getElementById("m2yoy-current").textContent=fPct(cv);
     document.getElementById("m2yoy-current").style.color=cv>=0?"var(--grn)":"var(--red)";
   }
+
+  /* Compute independent min/max for YoY axis */
+  var yoyFiltered=yoyData.filter(function(v){return v!=null});
+  var yoyMin=Math.min.apply(null,yoyFiltered),yoyMax=Math.max.apply(null,yoyFiltered);
+  var yoyPad=(yoyMax-yoyMin)*0.15||1;
+
   if(charts.m2)charts.m2.destroy();
   charts.m2=new Chart(document.getElementById("m2Chart").getContext("2d"),{
     type:"line",data:{labels:dates,datasets:[
       {label:"M2",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"},
-      {label:"M2 YoY %",data:yoyData,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true}
+      {label:"M2 YoY %",data:yoyData,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true}
     ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
       plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){
         if(c.dataset.yAxisID==="yR")return"M2 YoY: "+fPct(c.parsed.y);
@@ -547,8 +599,8 @@ function renderM2(){
       }}})},
       scales:{
         x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:8,maxRotation:0})}),
-        y:Object.assign({},axOpts,{position:"left",ticks:Object.assign({},axOpts.ticks,{callback:function(v){return fBn(v)}})}),
-        yR:{position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}}
+        y:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return fBn(v)}}},
+        yR:{position:"right",grid:{display:false},beginAtZero:false,min:Math.floor(yoyMin-yoyPad),max:Math.ceil(yoyMax+yoyPad),ticks:{color:"#c8a84b",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}}
       }
     }
   });
