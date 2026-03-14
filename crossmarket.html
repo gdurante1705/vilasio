@@ -68,6 +68,7 @@ main{padding:0 48px 64px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
 .legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-dot{width:7px;height:7px;border-radius:50%}
+.dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
 .corr-wrap{padding:20px 28px}
 .corr-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
 .corr-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:2px;text-transform:uppercase;font-size:8px;border-bottom:1px solid var(--brd2)}
@@ -86,7 +87,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 .disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
 .disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
 .disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.dual-row{grid-template-columns:1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
 </style>
 </head>
 <body>
@@ -165,6 +166,48 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="corr-wrap"><table class="corr-table" id="commodity-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
   </div>
 
+  <!-- COINTEGRATION: METALS + EQUITIES (dual row) -->
+  <div class="dual-row reveal">
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Metals Cointegration</div><div class="ch-sub">Normalized to 100 &#183; Divergences signal mean reversion</div></div>
+        <div class="ch-toggles">
+          <button class="ch-tog" data-g="cmet" data-rw="63" onclick="setR('cmet',63)">3M</button>
+          <button class="ch-tog" data-g="cmet" data-rw="130" onclick="setR('cmet',130)">6M</button>
+          <button class="ch-tog active" data-g="cmet" data-rw="260" onclick="setR('cmet',260)">1Y</button>
+        </div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="cmetChart"></canvas></div></div>
+      <div class="chart-legend" id="cmet-legend"></div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Equities Cointegration</div><div class="ch-sub">Normalized to 100 &#183; Divergences signal leading moves</div></div>
+        <div class="ch-toggles">
+          <button class="ch-tog" data-g="ceq" data-rw="63" onclick="setR('ceq',63)">3M</button>
+          <button class="ch-tog" data-g="ceq" data-rw="130" onclick="setR('ceq',130)">6M</button>
+          <button class="ch-tog active" data-g="ceq" data-rw="260" onclick="setR('ceq',260)">1Y</button>
+        </div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="ceqChart"></canvas></div></div>
+      <div class="chart-legend" id="ceq-legend"></div>
+    </div>
+  </div>
+
+  <!-- COINTEGRATION: CRYPTO -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Crypto Cointegration</div><div class="ch-sub">Normalized to 100 &#183; Divergences signal mean reversion or leading moves</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="ccr" data-rw="63" onclick="setR('ccr',63)">3M</button>
+        <button class="ch-tog" data-g="ccr" data-rw="130" onclick="setR('ccr',130)">6M</button>
+        <button class="ch-tog active" data-g="ccr" data-rw="260" onclick="setR('ccr',260)">1Y</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="ccrChart"></canvas></div></div>
+    <div class="chart-legend" id="ccr-legend"></div>
+  </div>
+
   <!-- VALUE VS GROWTH -->
   <div class="chart-section reveal">
     <div class="chart-header">
@@ -191,6 +234,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
       <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
       <strong>Commodity Dashboard</strong> shows performance across timeframes. Energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
+      <strong>Cointegration Charts</strong> show assets within the same cluster normalized to 100. When one diverges from the group, it either reverts (mean reversion trade) or leads the group in its direction (breakout trade). Watch for: metals diverging from gold, Russell diverging from SPX, altcoins diverging from Bitcoin.<br><br>
       <strong>Value vs Growth</strong> tracks the IWD/IWF ratio alongside individual ETF prices. Rising ratio = capital rotating into value stocks (financials, energy). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.
     </div>
   </div>
@@ -211,10 +255,11 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={cs:52,vg:104};
+var R={cs:52,vg:104,cmet:260,ceq:260,ccr:260};
 var csShow={USD:1,EUR:1,GBP:1,JPY:1,AUD:1,CAD:1,CHF:1,NZD:1};
 var vgShow={iwd:1,iwf:1,ratio:1};
-var renderMap={cs:'renderCS',vg:'renderVG'};
+var cointShow={cmet:{},ceq:{},ccr:{}};
+var renderMap={cs:'renderCS',vg:'renderVG',cmet:'renderCMet',ceq:'renderCEq',ccr:'renderCCr'};
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togCs(k){csShow[k]=csShow[k]?0:1;document.getElementById('leg-cs-'+k).style.opacity=csShow[k]?'1':'0.3';if(D)renderCS()}
@@ -224,7 +269,9 @@ function sl(a,n){return n>=a.length?a:a.slice(-n)}
 var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 
-function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderVG()}
+function togCoint(group,k){cointShow[group][k]=cointShow[group][k]?0:1;document.getElementById('leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'')).style.opacity=cointShow[group][k]?'1':'0.3';window[renderMap[group]]()}
+
+function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG()}
 
 /* --- STATUS CARDS --- */
 function renderCards(){
@@ -338,6 +385,35 @@ function renderCommodityTable(){
   });
   document.getElementById('commodity-table').innerHTML=html;
 }
+
+/* --- COINTEGRATION CHART RENDERER --- */
+var cointColors=['#c8a84b','#3b82f6','#06b6d4','#ef4444','#22c55e','#a78bfa','#f59e0b','#f0f1f5'];
+function renderCointChart(chartId,legendId,group,dataKey){
+  var co=D.cointegration;if(!co||!co[dataKey]||!co[dataKey].dates||!co[dataKey].dates.length)return;
+  var c=co[dataKey],rw=R[group],dates=sl(c.dates,rw),keys=Object.keys(c.series),ds=[];
+  // Init show flags
+  keys.forEach(function(k){if(cointShow[group][k]===undefined)cointShow[group][k]=1});
+  // Build legend once
+  var leg=document.getElementById(legendId);
+  if(!leg.children.length){
+    keys.forEach(function(k,i){
+      var el=document.createElement('div');el.className='legend-item';el.style.cursor='pointer';
+      el.id='leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'');
+      el.onclick=function(){togCoint(group,k)};
+      el.innerHTML='<span class="legend-dot" style="background:'+cointColors[i%cointColors.length]+'"></span> '+k;
+      leg.appendChild(el);
+    });
+  }
+  keys.forEach(function(k,i){
+    if(!cointShow[group][k])return;
+    ds.push({label:k,data:sl(c.series[k],rw),borderColor:cointColors[i%cointColors.length],borderWidth:i===0?2:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+  });
+  if(charts[group])charts[group].destroy();
+  charts[group]=new Chart(document.getElementById(chartId).getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
+}
+function renderCMet(){renderCointChart('cmetChart','cmet-legend','cmet','metals')}
+function renderCEq(){renderCointChart('ceqChart','ceq-legend','ceq','equities')}
+function renderCCr(){renderCointChart('ccrChart','ccr-legend','ccr','crypto')}
 
 /* --- VALUE VS GROWTH (3 lines) --- */
 function renderVG(){
