@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Macro Regime Dashboard - Vilasio</title>
-<meta name="description" content="Macro Regime Dashboard by Vilasio — Morpheus Trade Off, 4-regime model, inflation monitor, labor market tracker for institutional macro analysis.">
+<meta name="description" content="Macro Regime Dashboard by Vilasio — Macro Regime Oscillator, 4-regime model, inflation monitor, labor market tracker for institutional macro analysis.">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -81,7 +81,6 @@ main{padding:0 48px 64px}
 .legend-dot{width:7px;height:7px;border-radius:50%}
 .legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
-/* Regime card */
 .regime-card{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
 .regime-phase{padding:16px;border:1px solid var(--brd2);text-align:center;opacity:0.3;transition:all .3s}
 .regime-phase.active{opacity:1;border-color:var(--gold);background:rgba(200,168,75,0.04)}
@@ -124,7 +123,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div>
       <div class="hero-tag"><span class="pulse"></span> FRED Monthly Data</div>
       <h1 class="hero-h1">Where are we in the <em>cycle</em>.</h1>
-      <p class="hero-desc">Macro regime identification, inflation/disoccupation pendulum, and the Morpheus Trade Off &#8212; the framework that defines the directional bias before anything else.</p>
+      <p class="hero-desc">Macro regime identification, the inflation/unemployment pendulum, and the regime oscillator &#8212; the framework that defines the directional bias before anything else.</p>
     </div>
     <div class="hero-badges">
       <div style="display:flex;gap:8px">
@@ -147,10 +146,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-cpce"><div class="sc-label">Core PCE YoY</div><div class="sc-val" id="sc-cpce-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-cpce-chg">&#8212;</span><span class="sc-note">Fed's preferred &#183; Target 2%</span></div></div>
   </div>
 
-  <!-- MORPHEUS TRADE OFF -->
+  <!-- MACRO REGIME OSCILLATOR -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Morpheus Trade Off</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank Oscillator (12M)</div></div>
+      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank (12M SMA)</div></div>
       <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
@@ -169,10 +168,17 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">Inflation Monitor</div><div class="ch-sub">YoY % &#183; CPI &#183; Core CPI &#183; PCE &#183; Core PCE &#183; PPI</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="inf" data-rw="24" onclick="setR('inf',24)">2Y</button><button class="ch-tog" data-g="inf" data-rw="36" onclick="setR('inf',36)">3Y</button><button class="ch-tog active" data-g="inf" data-rw="60" onclick="setR('inf',60)">5Y</button></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="inf" data-rw="3" onclick="setR('inf',3)">3M</button><button class="ch-tog" data-g="inf" data-rw="6" onclick="setR('inf',6)">6M</button><button class="ch-tog" data-g="inf" data-rw="12" onclick="setR('inf',12)">1Y</button><button class="ch-tog" data-g="inf" data-rw="24" onclick="setR('inf',24)">2Y</button><button class="ch-tog" data-g="inf" data-rw="36" onclick="setR('inf',36)">3Y</button><button class="ch-tog active" data-g="inf" data-rw="60" onclick="setR('inf',60)">5Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="infChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> CPI</div><div class="legend-item"><span class="legend-dot" style="background:#f87171"></span> Core CPI</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> PCE</div><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> Core PCE</div><div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> PPI</div><div class="legend-item"><span class="legend-dot dashed"></span> 2% Target</div></div>
+    <div class="chart-legend">
+      <div class="legend-item" style="cursor:pointer" onclick="togInf('cpi')" id="leg-cpi"><span class="legend-dot" style="background:var(--red)"></span> CPI</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togInf('ccpi')" id="leg-ccpi"><span class="legend-dot" style="background:#f87171"></span> Core CPI</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togInf('pce')" id="leg-pce"><span class="legend-dot" style="background:var(--blu)"></span> PCE</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togInf('cpce')" id="leg-cpce"><span class="legend-dot" style="background:var(--cyan)"></span> Core PCE</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togInf('ppi')" id="leg-ppi"><span class="legend-dot" style="background:var(--violet)"></span> PPI</div>
+      <div class="legend-item"><span class="legend-dot dashed"></span> 2% Target</div>
+    </div>
   </div>
 
   <!-- LABOR MARKET -->
@@ -180,14 +186,14 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">Unemployment Rate</div><div class="ch-sub">UNRATE %</div></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="ur" data-rw="36" onclick="setR('ur',36)">3Y</button><button class="ch-tog active" data-g="ur" data-rw="60" onclick="setR('ur',60)">5Y</button></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="ur" data-rw="6" onclick="setR('ur',6)">6M</button><button class="ch-tog" data-g="ur" data-rw="12" onclick="setR('ur',12)">1Y</button><button class="ch-tog" data-g="ur" data-rw="36" onclick="setR('ur',36)">3Y</button><button class="ch-tog active" data-g="ur" data-rw="60" onclick="setR('ur',60)">5Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="urChart"></canvas></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">NFP Monthly Change</div><div class="ch-sub">Nonfarm Payrolls (thousands)</div></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="nfp" data-rw="24" onclick="setR('nfp',24)">2Y</button><button class="ch-tog active" data-g="nfp" data-rw="36" onclick="setR('nfp',36)">3Y</button></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="nfp" data-rw="6" onclick="setR('nfp',6)">6M</button><button class="ch-tog" data-g="nfp" data-rw="12" onclick="setR('nfp',12)">1Y</button><button class="ch-tog" data-g="nfp" data-rw="24" onclick="setR('nfp',24)">2Y</button><button class="ch-tog active" data-g="nfp" data-rw="36" onclick="setR('nfp',36)">3Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="nfpChart"></canvas></div></div>
     </div>
@@ -197,14 +203,14 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">Jobless Claims</div><div class="ch-sub">Initial Claims (weekly)</div></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="ic" data-rw="52" onclick="setR('ic',52)">1Y</button><button class="ch-tog active" data-g="ic" data-rw="104" onclick="setR('ic',104)">2Y</button></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="ic" data-rw="26" onclick="setR('ic',26)">6M</button><button class="ch-tog" data-g="ic" data-rw="52" onclick="setR('ic',52)">1Y</button><button class="ch-tog active" data-g="ic" data-rw="104" onclick="setR('ic',104)">2Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="icChart"></canvas></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">JOLTs Job Openings</div><div class="ch-sub">Level (thousands)</div></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="jo" data-rw="24" onclick="setR('jo',24)">2Y</button><button class="ch-tog active" data-g="jo" data-rw="36" onclick="setR('jo',36)">3Y</button></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="jo" data-rw="6" onclick="setR('jo',6)">6M</button><button class="ch-tog" data-g="jo" data-rw="12" onclick="setR('jo',12)">1Y</button><button class="ch-tog" data-g="jo" data-rw="24" onclick="setR('jo',24)">2Y</button><button class="ch-tog active" data-g="jo" data-rw="36" onclick="setR('jo',36)">3Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="joChart"></canvas></div></div>
     </div>
@@ -215,8 +221,8 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="explain-title">How to read the Macro Regime Dashboard</div>
     <div class="explain-text">
       The macro regime defines the <strong>directional bias</strong> before any technical setup. Understanding where we are in the economic cycle determines which asset classes to favor and which to avoid.<br><br>
-      <strong>Morpheus Trade Off</strong> is a proprietary oscillator that measures the trade-off between inflation and unemployment using percent ranks over 12 monthly releases. When <strong>Unemployment rank &gt;80 and Inflation rank &lt;50</strong>, a <strong>dovish switch</strong> is imminent &#8212; the Fed will cut rates, dollar weakens, equities rally. When <strong>Inflation rank &gt;80 and Unemployment rank &lt;50</strong>, a <strong>hawkish switch</strong> is coming &#8212; rates rise, dollar strengthens, growth stocks suffer.<br><br>
-      <strong>The 4-Regime Model</strong> (Casario) classifies the cycle based on growth direction (NFP trend) and inflation direction (CPI YoY trend): <strong>Expansion</strong> (both rising &#8212; equities, commodities), <strong>Reflation</strong> (growth up, inflation down &#8212; tech, bonds), <strong>Stagnation</strong> (growth down, inflation up &#8212; gold, energy), <strong>Slowdown</strong> (both falling &#8212; bonds, cash, defensives).<br><br>
+      <strong>Macro Regime Oscillator</strong> measures the trade-off between inflation and unemployment using percent ranks over 12 monthly releases. When <strong>Unemployment rank &gt;80 and Inflation rank &lt;20</strong>, a <strong>dovish switch</strong> is imminent &#8212; the Fed will cut rates, dollar weakens, equities rally. When <strong>Inflation rank &gt;80 and Unemployment rank &lt;20</strong>, a <strong>hawkish switch</strong> is coming &#8212; rates rise, dollar strengthens, growth stocks suffer.<br><br>
+      <strong>The 4-Regime Model</strong> classifies the cycle based on growth direction (NFP trend) and inflation direction (CPI YoY trend): <strong>Expansion</strong> (both rising &#8212; equities, commodities), <strong>Reflation</strong> (growth up, inflation down &#8212; tech, bonds), <strong>Stagnation</strong> (growth down, inflation up &#8212; gold, energy), <strong>Slowdown</strong> (both falling &#8212; bonds, cash, defensives).<br><br>
       <strong>Inflation Monitor</strong> tracks CPI, Core CPI, PCE, Core PCE and PPI against the Fed's 2% target. Core PCE is the Fed's preferred measure. Readings above target with rising trend = hawkish pressure. Below target with falling trend = dovish space.<br><br>
       <strong>Labor Market</strong> indicators confirm the growth side of the equation. Rising unemployment + falling NFP + rising jobless claims = deterioration. Strong NFP + low unemployment + falling claims = expansion. JOLTs openings measure labor demand &#8212; declining openings lead unemployment increases.
     </div>
@@ -239,8 +245,13 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36};
+var infShow={cpi:1,ccpi:1,pce:1,cpce:1,ppi:1};
 var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO'};
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
+function togInf(k){infShow[k]=infShow[k]?0:1;var el=document.getElementById('leg-'+k);if(el)el.style.opacity=infShow[k]?'1':'0.3';if(D)renderInflation()}
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fMon(d){if(!d)return d;var p=d.split('-');return MON[parseInt(p[1],10)-1]+' '+p[0]}
+function fMonArr(arr){return arr.map(fMon)}
 function fPct(v){return v==null?"\u2014":v.toFixed(2)+"%"}
 function fChgP(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
 function fK(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(0)+"K"}
@@ -257,82 +268,72 @@ function renderCards(){
   document.getElementById("sc-cpi-val").textContent=fPct(cv);
   var e=document.getElementById("sc-cpi-chg");e.textContent=fChgP(chg);e.className="sc-delta "+(chg<=0?"up":"dn");
   document.getElementById("sc-cpi").className="status-card "+(chg<=0?"up":"dn");
-
   var ur=D.labor.unrate,un=ur.values.length;
   var uc=ur.values[un-1],up=ur.values[un-2],uchg=uc-up;
   document.getElementById("sc-ur-val").textContent=fPct(uc);
   var ue=document.getElementById("sc-ur-chg");ue.textContent=fChgP(uchg);ue.className="sc-delta "+(uchg<=0?"up":"dn");
   document.getElementById("sc-ur").className="status-card "+(uchg<=0?"up":"dn");
-
   var nf=D.labor.nfp,nn=nf.values.length;
   var nc=nf.values[nn-1],np=nf.values[nn-2],nchg=nc-np;
   document.getElementById("sc-nfp-val").textContent=fK(nc);
   var ne=document.getElementById("sc-nfp-chg");ne.textContent=fK(nchg);ne.className="sc-delta "+(nc>=0?"up":"dn");
   document.getElementById("sc-nfp").className="status-card "+(nc>=0?"up":"dn");
-
   var cpce=D.inflation.corePceYoY,cn=cpce.values.length;
   var cc=cpce.values[cn-1],cp=cpce.values[cn-2],cchg=cc-cp;
   document.getElementById("sc-cpce-val").textContent=fPct(cc);
   var ce=document.getElementById("sc-cpce-chg");ce.textContent=fChgP(cchg);ce.className="sc-delta "+(cchg<=0?"up":"dn");
   document.getElementById("sc-cpce").className="status-card "+(cchg<=0?"up":"dn");
-
-  /* Regime badge */
   var rb=document.getElementById("regime-badge"),rg=D.regime.toLowerCase();
   rb.textContent=D.regime;rb.className="regime-badge "+rg;
-
-  /* Policy badge */
   var pb=document.getElementById("policy-badge"),ps=D.policySwitch.toLowerCase();
   pb.textContent=D.policySwitch==="NEUTRAL"?"NEUTRAL BIAS":D.policySwitch+" SWITCH";
   pb.className="policy-badge "+ps;
-
   if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
 }
 
 function renderMorpheus(){
-  var m=D.morpheus,rw=R.mo,dates=sl(m.dates,rw);
+  var m=D.morpheus,rw=R.mo,dates=fMonArr(sl(m.dates,rw));
   var ir=sl(m.infRank12,rw),ur=sl(m.urRank12,rw);
   if(charts.mo)charts.mo.destroy();
   charts.mo=new Chart(document.getElementById("morphChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
     {label:"Inflation Rank",data:ir,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},
     {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {data:dates.map(function(){return 80}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
-    {data:dates.map(function(){return 20}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
-    {data:dates.map(function(){return 50}),borderColor:"rgba(255,255,255,0.06)",borderWidth:1,pointRadius:0,fill:false}
+    {data:ir.map(function(){return 80}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+    {data:ir.map(function(){return 20}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+    {data:ir.map(function(){return 50}),borderColor:"rgba(255,255,255,0.06)",borderWidth:1,pointRadius:0,fill:false}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{min:0,max:100,ticks:Object.assign({},axO.ticks,{stepSize:20})})}}});
 }
 
 function renderRegime(){
   var rg=D.regime.toLowerCase();
   ['expansion','reflation','stagnation','slowdown'].forEach(function(p){
-    var el=document.getElementById('rp-'+p);
-    if(el)el.classList.toggle('active',p===rg);
+    var el=document.getElementById('rp-'+p);if(el)el.classList.toggle('active',p===rg);
   });
 }
 
 function renderInflation(){
   var inf=D.inflation,rw=R.inf;
-  /* Align all on CPI dates */
-  var dates=sl(inf.cpiYoY.dates,rw);
-  function alignOn(src){var map={};src.dates.forEach(function(d,i){map[d]=src.values[i]});return dates.map(function(d){return map[d]!=null?map[d]:null})}
+  var dates=fMonArr(sl(inf.cpiYoY.dates,rw));
+  function alignOn(src){var map={};src.dates.forEach(function(d,i){map[d]=src.values[i]});return sl(inf.cpiYoY.dates,rw).map(function(d){return map[d]!=null?map[d]:null})}
+  var ds=[];
+  if(infShow.cpi)ds.push({label:"CPI YoY",data:sl(inf.cpiYoY.values,rw),borderColor:"#ef4444",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+  if(infShow.ccpi)ds.push({label:"Core CPI",data:alignOn(inf.coreCpiYoY),borderColor:"#f87171",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+  if(infShow.pce)ds.push({label:"PCE YoY",data:alignOn(inf.pceYoY),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+  if(infShow.cpce)ds.push({label:"Core PCE",data:alignOn(inf.corePceYoY),borderColor:"#06b6d4",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+  if(infShow.ppi)ds.push({label:"PPI YoY",data:alignOn(inf.ppiYoY),borderColor:"#a78bfa",borderWidth:1,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+  ds.push({label:"2% Target",data:dates.map(function(){return 2}),borderColor:"rgba(255,255,255,0.2)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false});
   if(charts.inf)charts.inf.destroy();
-  charts.inf=new Chart(document.getElementById("infChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"CPI YoY",data:sl(inf.cpiYoY.values,rw),borderColor:"#ef4444",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:"Core CPI",data:alignOn(inf.coreCpiYoY),borderColor:"#f87171",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:"PCE YoY",data:alignOn(inf.pceYoY),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:"Core PCE",data:alignOn(inf.corePceYoY),borderColor:"#06b6d4",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:"PPI YoY",data:alignOn(inf.ppiYoY),borderColor:"#a78bfa",borderWidth:1,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:"2% Target",data:dates.map(function(){return 2}),borderColor:"rgba(255,255,255,0.2)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false}
-  ]},options:pOpts(function(c){if(c.datasetIndex===5)return"Target: 2.00%";return c.dataset.label+": "+fPct(c.parsed.y)})});
+  charts.inf=new Chart(document.getElementById("infChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:pOpts(function(c){if(c.dataset.label==="2% Target")return"Target: 2.00%";return c.dataset.label+": "+fPct(c.parsed.y)})});
 }
 
 function renderUR(){
   var u=D.labor.unrate,rw=R.ur;
   if(charts.ur)charts.ur.destroy();
-  charts.ur=new Chart(document.getElementById("urChart").getContext("2d"),{type:"line",data:{labels:sl(u.dates,rw),datasets:[{label:"Unemployment",data:sl(u.values,rw),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:pOpts(function(c){return"Unemployment: "+fPct(c.parsed.y)})});
+  charts.ur=new Chart(document.getElementById("urChart").getContext("2d"),{type:"line",data:{labels:fMonArr(sl(u.dates,rw)),datasets:[{label:"Unemployment",data:sl(u.values,rw),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:pOpts(function(c){return"Unemployment: "+fPct(c.parsed.y)})});
 }
 
 function renderNFP(){
-  var nf=D.labor.nfp,rw=R.nfp,dates=sl(nf.dates,rw),vals=sl(nf.values,rw);
+  var nf=D.labor.nfp,rw=R.nfp,dates=fMonArr(sl(nf.dates,rw)),vals=sl(nf.values,rw);
   if(charts.nfp)charts.nfp.destroy();
   charts.nfp=new Chart(document.getElementById("nfpChart").getContext("2d"),{type:"bar",data:{labels:dates,datasets:[{data:vals,backgroundColor:vals.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),borderColor:vals.map(function(v){return v>=0?"#22c55e":"#ef4444"}),borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return"NFP: "+fK(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)+"K"}})})}}});
 }
@@ -346,7 +347,7 @@ function renderIC(){
 function renderJO(){
   var jo=D.labor.jolts,rw=R.jo;if(!jo||!jo.dates.length)return;
   if(charts.jo)charts.jo.destroy();
-  charts.jo=new Chart(document.getElementById("joChart").getContext("2d"),{type:"line",data:{labels:sl(jo.dates,rw),datasets:[{label:"JOLTs Openings",data:sl(jo.values,rw),borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return"Openings: "+c.parsed.y.toFixed(0)+"K"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return(v/1000).toFixed(1)+"M"}})})}}});
+  charts.jo=new Chart(document.getElementById("joChart").getContext("2d"),{type:"line",data:{labels:fMonArr(sl(jo.dates,rw)),datasets:[{label:"JOLTs Openings",data:sl(jo.values,rw),borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return"Openings: "+c.parsed.y.toFixed(0)+"K"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return(v/1000).toFixed(1)+"M"}})})}}});
 }
 
 function refreshData(){
