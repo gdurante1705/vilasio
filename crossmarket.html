@@ -312,12 +312,16 @@ function corrCard(id,co,k1,k2){
 
 /* --- CURRENCY STRENGTH --- */
 function renderCS(){
-  var cs=D.currencyStrength;if(!cs||!cs.dates||!cs.dates.length)return;
+  var cs=D.currencyStrength;if(!cs)return;
   var ccyColors={USD:'#c8a84b',EUR:'#3b82f6',GBP:'#06b6d4',JPY:'#ef4444',AUD:'#22c55e',CAD:'#a78bfa',CHF:'#f59e0b',NZD:'#f0f1f5'};
-  var rw=R.cs,dates=sl(cs.dates,rw),ds=[];
+  var rw=R.cs;
+  // Use hourly for 1W (5), daily for everything else
+  var src=(rw<=5&&cs.hourly&&cs.hourly.dates&&cs.hourly.dates.length)?cs.hourly:cs.daily;
+  if(!src||!src.dates||!src.dates.length)return;
+  var dates=sl(src.dates,rw),ds=[];
   cs.currencies.forEach(function(c){
-    if(!csShow[c]||!cs.series[c])return;
-    ds.push({label:c,data:sl(cs.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0,spanGaps:true});
+    if(!csShow[c]||!src.series[c])return;
+    ds.push({label:c,data:sl(src.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0,spanGaps:true});
   });
   var leg=document.getElementById('cs-legend');
   if(!leg.children.length){
@@ -396,9 +400,12 @@ function renderCommodityTable(){
 /* --- COINTEGRATION CHART RENDERER --- */
 var cointColors=['#c8a84b','#3b82f6','#06b6d4','#ef4444','#22c55e','#a78bfa','#f59e0b','#f0f1f5'];
 function renderCointChart(chartId,legendId,group,dataKey){
-  var co=D.cointegration;if(!co||!co[dataKey]||!co[dataKey].dates||!co[dataKey].dates.length)return;
-  var c=co[dataKey],rw=R[group],keys=Object.keys(c.series),ds=[];
-  // Slice dates and re-normalize from slice start (% change from window start)
+  var co=D.cointegration;if(!co||!co[dataKey])return;
+  var rw=R[group];
+  // Use hourly for 1W (5) and 1M (21), daily for rest
+  var src=(rw<=21&&co[dataKey].hourly&&co[dataKey].hourly.dates&&co[dataKey].hourly.dates.length)?co[dataKey].hourly:co[dataKey].daily;
+  if(!src||!src.dates||!src.dates.length)return;
+  var c=src,keys=Object.keys(c.series),ds=[];
   var rawDates=sl(c.dates,rw);
   keys.forEach(function(k){if(cointShow[group][k]===undefined)cointShow[group][k]=1});
   // Build legend once
