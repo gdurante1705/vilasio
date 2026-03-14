@@ -275,7 +275,7 @@ footer{padding:36px 48px 36px 120px;border-top:1px solid var(--brd2);display:fle
     <a href="about.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2,#8a90a0);text-decoration:none">About</a>
   </div>
 </nav>
-<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div class="update-badge" id="update-badge">REPORT: loading...</div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div id="heatmap-area"></div></div></section>
+<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div style="display:flex;align-items:center;gap:8px"><div class="update-badge" id="update-badge">REPORT: loading...</div><button id="cot-refresh-btn" onclick="refreshCOT()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2,#8a90a0);border:1px solid rgba(255,255,255,0.07);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap">REFRESH</button></div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div id="heatmap-area"></div></div></section>
 <main>
 <div class="detail-section reveal" id="detail-section"><div class="detail-header"><div><div class="dh-market" id="dh-market">E-Mini S&#38;P 500</div><div class="dh-exchange" id="dh-exchange">CME</div></div><div class="dh-right"><div class="dh-date-label">Report Date</div><div class="dh-date" id="dh-date">&#8212;</div></div></div>
 <div class="release-section"><div class="release-header"><div class="rel-title">Latest Release</div><div class="rel-badge" id="rel-badge">&#8212;</div></div><div class="release-grid"><div class="rel-col"><div class="rel-col-label" style="color:var(--bp)">Non-Commercial &#8212; Big Players</div><div style="display:flex;align-items:stretch;gap:0"><div style="flex:1"><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&#8212;</span></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&#8212;</span></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><span class="rel-net-val" id="rel-bp-net">&#8212;</span></div></div><div style="width:1px;background:var(--brd);margin:0 0"></div><div style="flex:1;padding-left:16px"><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-bp-long-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-bp-short-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">W/W Net</span><span class="rel-net-chg" id="rel-bp-net-chg" style="font-size:16px;font-weight:400">&#8212;</span></div></div></div></div>
@@ -634,6 +634,24 @@ document.addEventListener("click",function(e){
 document.querySelectorAll(".ch-tog:not(.flow-wk)").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".ch-tog:not(.flow-wk)").forEach(function(x){x.classList.remove("active")});b.classList.add("active");cw=parseInt(b.dataset.weeks);aD={};rDet().then(rRel).then(rNet).then(rDual).then(rZS)})});
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
 window.addEventListener("resize",function(){if(flowView==="sankey"&&flowData)drawSankey(flowData)});
+/* REFRESH */
+function refreshCOT(){
+  var btn=document.getElementById("cot-refresh-btn");
+  btn.textContent="REFRESHING...";btn.style.color="#c8a84b";btn.style.borderColor="rgba(200,168,75,0.3)";btn.style.pointerEvents="none";
+  document.getElementById("update-badge").textContent="REPORT: refreshing...";
+  aD={};/* clear local data cache */
+  fR(API+"/api/cot/refresh",1,5000).then(function(){
+    return rHM();
+  }).then(function(){
+    buildStickyBar();return rFlow();
+  }).then(rDet).then(rRel).then(rNet).then(rDual).then(rZS).then(function(){
+    btn.textContent="REFRESH";btn.style.color="";btn.style.borderColor="";btn.style.pointerEvents="";
+  }).catch(function(e){
+    console.error("COT refresh failed:",e);
+    btn.textContent="FAILED";btn.style.color="#ef4444";
+    setTimeout(function(){btn.textContent="REFRESH";btn.style.color="";btn.style.borderColor="";btn.style.pointerEvents=""},2000);
+  });
+}
 /* INIT: load heatmap + flow, then detail for default market */
 rHM().then(function(){buildStickyBar();return rFlow()}).then(rDet).then(rRel).then(rNet).then(rDual).then(rZS);
 </script>
