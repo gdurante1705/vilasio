@@ -68,6 +68,16 @@ main{padding:0 48px 64px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
 .legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-dot{width:7px;height:7px;border-radius:50%}
+.disc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:3px}
+.disc-card{background:var(--surf2);border:1px solid var(--brd2);padding:16px 20px;position:relative;overflow:hidden}
+.disc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.disc-card.above::before{background:var(--grn)}.disc-card.below::before{background:var(--red)}
+.disc-asset{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
+.disc-cluster{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-left:8px}
+.disc-sigma{font-family:"Alata",sans-serif;font-size:22px;font-weight:400;margin-top:6px}
+.disc-sigma.above{color:var(--grn)}.disc-sigma.below{color:var(--red)}
+.disc-gap{font-family:"DM Mono",monospace;font-size:10px;color:var(--gray3);margin-top:4px}
+.disc-none{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:1px;color:var(--gray2);padding:12px 0}
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
 .corr-wrap{padding:20px 28px}
 .corr-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
@@ -130,6 +140,12 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-eur"><div class="sc-label">EUR/USD</div><div class="sc-val" id="sc-eur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-eur-chg">&#8212;</span><span class="sc-note">vs prior close</span></div></div>
     <div class="status-card neut" id="sc-corr1"><div class="sc-label">SPX-Gold Corr</div><div class="sc-val" id="sc-corr1-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr1-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
     <div class="status-card neut" id="sc-corr2"><div class="sc-label">BTC-SPX Corr</div><div class="sc-val" id="sc-corr2-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr2-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
+  </div>
+
+  <!-- DISCREPANCY ALERTS -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Discrepancy Alert</div><div class="ch-sub">Assets diverging &gt;1.5&#963; from cluster average</div></div></div>
+    <div class="corr-wrap" id="disc-alerts" style="min-height:60px"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px">Loading...</div></div>
   </div>
 
   <!-- CURRENCY STRENGTH -->
@@ -237,6 +253,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Cross-Market Dashboard</div>
     <div class="explain-text">
+      <strong>Discrepancy Alert</strong> flags assets that have diverged significantly (&gt;1.5&#963;) from their cluster average. These divergences create two types of opportunities: mean reversion (the asset returns to the group) or breakout (the asset leads the group). Strongest signals come when divergence exceeds 2&#963;.<br><br>
       <strong>Currency Strength</strong> measures relative performance of 8 major currencies across 12 forex pairs, normalized to base 100. When a currency line rises, it is strengthening vs all others. The spread between the strongest and weakest currencies defines the carry trade opportunity.<br><br>
       <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
       <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
@@ -289,7 +306,7 @@ var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",bor
 
 function togCoint(group,k){cointShow[group][k]=cointShow[group][k]?0:1;document.getElementById('leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'')).style.opacity=cointShow[group][k]?'1':'0.3';window[renderMap[group]]()}
 
-function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG()}
+function renderAll(){renderCards();renderDiscrepancy();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG()}
 
 /* --- STATUS CARDS --- */
 function renderCards(){
@@ -319,6 +336,28 @@ function corrCard(id,co,k1,k2){
   document.getElementById(id+"-val").textContent=cv.toFixed(2);
   var e=document.getElementById(id+"-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2);e.className="sc-delta "+(chg>=0?"up":"dn");
   document.getElementById(id).className="status-card neut";
+}
+
+/* --- DISCREPANCY ALERTS --- */
+function renderDiscrepancy(){
+  var el=document.getElementById('disc-alerts');
+  var alerts=D.discrepancyAlerts;
+  if(!alerts||!alerts.length){
+    el.innerHTML='<div class="disc-none">No significant divergences detected &#8212; all clusters aligned.</div>';
+    return;
+  }
+  var html='<div class="disc-grid">';
+  alerts.forEach(function(a){
+    var arrow=a.direction==='above'?'&#9650;':'&#9660;';
+    var sign=a.gap>=0?'+':'';
+    html+='<div class="disc-card '+a.direction+'">';
+    html+='<div><span class="disc-asset">'+a.asset+'</span><span class="disc-cluster">'+a.cluster+'</span></div>';
+    html+='<div class="disc-sigma '+a.direction+'">'+arrow+' '+(a.deviation>=0?'+':'')+a.deviation.toFixed(1)+'&#963;</div>';
+    html+='<div class="disc-gap">'+sign+a.gap.toFixed(1)+'% '+a.direction+' cluster avg ('+a.clusterAvgPct.toFixed(1)+'%)</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 
 /* --- CURRENCY STRENGTH --- */
