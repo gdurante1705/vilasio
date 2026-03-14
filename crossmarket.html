@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Cross-Market Analysis - Vilasio</title>
-<meta name="description" content="Cross-Market & Intermarket Analysis by Vilasio — IRD model, forex, carry trade, and correlation matrix for institutional macro analysis.">
+<meta name="description" content="Cross-Market & Intermarket Analysis by Vilasio — DXY, major forex pairs, and cross-asset correlation matrix for institutional macro analysis.">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -65,12 +65,9 @@ main{padding:0 48px 64px}
 .ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
 .chart-wrap{padding:12px 20px 16px}
 .chart-canvas-wrap{position:relative;height:340px}
-.chart-canvas-sm{position:relative;height:220px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
 .legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-dot{width:7px;height:7px;border-radius:50%}
-.legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
-/* Correlation heatmap */
 .corr-wrap{padding:20px 28px}
 .corr-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
 .corr-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:2px;text-transform:uppercase;font-size:8px}
@@ -81,7 +78,6 @@ main{padding:0 48px 64px}
 .explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
 .explain-text{font-size:12px;color:var(--gray2);line-height:1.8}
 .explain-text strong{color:var(--white);font-weight:500}
-.explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
 .disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
@@ -113,9 +109,9 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <section class="hero">
   <div class="hero-top">
     <div>
-      <div class="hero-tag"><span class="pulse"></span> Multi-Source Data</div>
+      <div class="hero-tag"><span class="pulse"></span> Yahoo Finance Data</div>
       <h1 class="hero-h1">Connect all <em>asset classes</em>.</h1>
-      <p class="hero-desc">Forex, commodities, equity and intermarket correlations &#8212; the framework that connects all asset classes through interest rate differentials, carry trade flows, and cross-market dynamics.</p>
+      <p class="hero-desc">Dollar index, major forex pairs, and cross-asset correlations &#8212; the intermarket framework that reveals how capital flows between asset classes.</p>
     </div>
     <div class="hero-badges">
       <div class="refresh-row">
@@ -130,29 +126,8 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="status-row reveal">
     <div class="status-card neut" id="sc-dxy"><div class="sc-label">DXY</div><div class="sc-val" id="sc-dxy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dxy-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
     <div class="status-card neut" id="sc-eur"><div class="sc-label">EUR/USD</div><div class="sc-val" id="sc-eur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-eur-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
-    <div class="status-card neut" id="sc-ird"><div class="sc-label">IRD Spread EUR/USD</div><div class="sc-val" id="sc-ird-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ird-chg">&#8212;</span><span class="sc-note">Real Yield Diff</span></div></div>
-    <div class="status-card neut" id="sc-corr"><div class="sc-label">SPX-Gold Corr</div><div class="sc-val" id="sc-corr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
-  </div>
-
-  <!-- IRD SPREAD -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title" id="ird-title">Interest Rate Differential &#8212; EUR/USD</div><div class="ch-sub">Real Yield Spread (Foreign &#8722; US) vs FX Price</div></div>
-      <div style="display:flex;gap:12px;align-items:center">
-        <div class="ch-toggles"><button class="ch-tog active" data-g="irdp" onclick="setIrdPair('EURUSD')">EUR/USD</button><button class="ch-tog" data-g="irdp" onclick="setIrdPair('GBPUSD')">GBP/USD</button><button class="ch-tog" data-g="irdp" onclick="setIrdPair('USDJPY')">USD/JPY</button></div>
-        <div class="ch-toggles">
-          <button class="ch-tog" data-g="ird" data-rw="12" onclick="setR('ird',12)">1Y</button>
-          <button class="ch-tog" data-g="ird" data-rw="24" onclick="setR('ird',24)">2Y</button>
-          <button class="ch-tog active" data-g="ird" data-rw="36" onclick="setR('ird',36)">3Y</button>
-          <button class="ch-tog" data-g="ird" data-rw="60" onclick="setR('ird',60)">5Y</button>
-        </div>
-      </div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="irdChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item" style="cursor:pointer" onclick="togIrd('spread')" id="leg-ird-spread"><span class="legend-dot" style="background:var(--gold)"></span> IRD Spread</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togIrd('fx')" id="leg-ird-fx"><span class="legend-dot" style="background:var(--blu)"></span> <span id="leg-ird-fx-label">EUR/USD Price</span></div>
-    </div>
+    <div class="status-card neut" id="sc-corr1"><div class="sc-label">SPX-Gold Corr</div><div class="sc-val" id="sc-corr1-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr1-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
+    <div class="status-card neut" id="sc-corr2"><div class="sc-label">BTC-SPX Corr</div><div class="sc-val" id="sc-corr2-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr2-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
   </div>
 
   <!-- DXY & MAJOR PAIRS -->
@@ -176,24 +151,6 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
   </div>
 
-  <!-- CARRY TRADE -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Carry Trade Monitor</div><div class="ch-sub">Central Bank Rate Differentials vs Fed</div></div>
-      <div class="ch-toggles">
-        <button class="ch-tog" data-g="carry" data-rw="12" onclick="setR('carry',12)">1Y</button>
-        <button class="ch-tog" data-g="carry" data-rw="24" onclick="setR('carry',24)">2Y</button>
-        <button class="ch-tog active" data-g="carry" data-rw="36" onclick="setR('carry',36)">3Y</button>
-      </div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="carryChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item" style="cursor:pointer" onclick="togCarry('FED_ECB')" id="leg-carry-FED_ECB"><span class="legend-dot" style="background:var(--blu)"></span> Fed - ECB</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togCarry('FED_BOE')" id="leg-carry-FED_BOE"><span class="legend-dot" style="background:var(--cyan)"></span> Fed - BOE</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togCarry('FED_BOJ')" id="leg-carry-FED_BOJ"><span class="legend-dot" style="background:var(--red)"></span> Fed - BOJ</div>
-    </div>
-  </div>
-
   <!-- CORRELATION MATRIX -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Correlation Matrix</div><div class="ch-sub">90-Day Rolling &#183; Daily Returns</div></div></div>
@@ -205,9 +162,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Cross-Market Dashboard</div>
     <div class="explain-text">
-      <strong>Interest Rate Differential (IRD)</strong> compares real yields (nominal yield minus inflation) between countries. When a country offers higher real yields, capital flows in, strengthening its currency. The spread line anticipates forex moves &#8212; when the spread diverges from the exchange rate, a correction is likely. This is the institutional framework for directional forex bias.<br><br>
       <strong>DXY &amp; Major Pairs</strong> shows the Dollar Index alongside major forex pairs, normalized to 100 at the start of the selected window. This reveals relative strength and divergences. DXY typically moves inversely to EUR/USD (which represents ~57% of the index weight). When pairs that normally move together start diverging, it signals regime change or structural shifts.<br><br>
-      <strong>Carry Trade Monitor</strong> tracks the interest rate gap between central banks and the Fed. Capital flows from low-yield to high-yield currencies (carry trade). When the Fed rate is significantly above others (positive differential), the dollar attracts carry flows. Narrowing differentials signal potential dollar weakness. <strong>Key:</strong> rapid differential changes often precede major forex moves.<br><br>
       <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. <strong>Positive correlation</strong> means assets move together; <strong>negative</strong> means they move opposite. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), US10Y-Gold (real yield proxy), BTC-SPX (risk correlation). Changes from the previous period (arrows) signal regime transitions.
     </div>
   </div>
@@ -228,71 +183,45 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={ird:36,fx:104,carry:36};
-var irdPair='EURUSD';
-var irdLabels={EURUSD:'EUR/USD',GBPUSD:'GBP/USD',USDJPY:'USD/JPY'};
-var irdShow={spread:1,fx:1};
+var R={fx:104};
 var fxShow={DXY:1,EURUSD:1,GBPUSD:1,USDJPY:1,AUDUSD:1,USDCAD:1};
-var carryShow={FED_ECB:1,FED_BOE:1,FED_BOJ:1};
-var renderMap={ird:'renderIRD',fx:'renderFX',carry:'renderCarry'};
+var renderMap={fx:'renderFX'};
 
-function setIrdPair(p){irdPair=p;document.querySelectorAll('.ch-tog[data-g="irdp"]').forEach(function(b){b.classList.toggle('active',b.textContent===irdLabels[p])});document.getElementById('ird-title').innerHTML='Interest Rate Differential &#8212; '+irdLabels[p];document.getElementById('leg-ird-fx-label').textContent=irdLabels[p]+' Price';if(D)renderIRD()}
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
-function togIrd(k){irdShow[k]=irdShow[k]?0:1;document.getElementById('leg-ird-'+k).style.opacity=irdShow[k]?'1':'0.3';if(D)renderIRD()}
 function togFx(k){fxShow[k]=fxShow[k]?0:1;document.getElementById('leg-fx-'+k).style.opacity=fxShow[k]?'1':'0.3';if(D)renderFX()}
-function togCarry(k){carryShow[k]=carryShow[k]?0:1;document.getElementById('leg-carry-'+k).style.opacity=carryShow[k]?'1':'0.3';if(D)renderCarry()}
 
 function sl(a,n){return n>=a.length?a:a.slice(-n)}
+function round4(v){return Math.round(v*10000)/10000}
 var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 
-function renderAll(){renderCards();renderIRD();renderFX();renderCarry();renderCorrelation()}
+function renderAll(){renderCards();renderFX();renderCorrelation()}
 
-function renderCards(){
-  // DXY
-  var fx=D.forex.DXY;if(fx&&fx.values.length>1){
-    var n=fx.values.length,c=fx.values[n-1],p=fx.values[n-2],chg=((c-p)/p*100);
-    document.getElementById("sc-dxy-val").textContent=c.toFixed(2);
-    var e=document.getElementById("sc-dxy-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
-    document.getElementById("sc-dxy").className="status-card "+(chg>=0?"up":"dn");
-  }
-  // EUR/USD
-  var eu=D.forex.EURUSD;if(eu&&eu.values.length>1){
-    var n=eu.values.length,c=eu.values[n-1],p=eu.values[n-2],chg=((c-p)/p*100);
-    document.getElementById("sc-eur-val").textContent=c.toFixed(4);
-    var e=document.getElementById("sc-eur-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
-    document.getElementById("sc-eur").className="status-card "+(chg>=0?"up":"dn");
-  }
-  // IRD Spread
-  var ird=D.ird.EURUSD;if(ird&&ird.spread.length>1){
-    var n=ird.spread.length,c=ird.spread[n-1],p=ird.spread[n-2],chg=c-p;
-    document.getElementById("sc-ird-val").textContent=c.toFixed(2)+"%";
-    var e=document.getElementById("sc-ird-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
-    document.getElementById("sc-ird").className="status-card "+(chg>=0?"up":"dn");
-  }
-  // SPX-Gold Correlation
-  var co=D.correlation;if(co&&co.current){
-    var spxIdx=co.labels.indexOf('SPX'),goldIdx=co.labels.indexOf('Gold');
-    if(spxIdx>=0&&goldIdx>=0){
-      var cv=co.current[spxIdx][goldIdx],pv=co.previous[spxIdx][goldIdx],chg=cv-pv;
-      document.getElementById("sc-corr-val").textContent=cv.toFixed(2);
-      var e=document.getElementById("sc-corr-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2);e.className="sc-delta "+(chg>=0?"up":"dn");
-      document.getElementById("sc-corr").className="status-card neut";
-    }
-  }
-  if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
+function fxCard(id,data,decimals){
+  if(!data||data.values.length<2)return;
+  var n=data.values.length,c=data.values[n-1],p=data.values[n-2],chg=((c-p)/p*100);
+  document.getElementById(id+"-val").textContent=c.toFixed(decimals);
+  var e=document.getElementById(id+"-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2)+"%";e.className="sc-delta "+(chg>=0?"up":"dn");
+  document.getElementById(id).className="status-card "+(chg>=0?"up":"dn");
+}
+function corrCard(id,labels,current,previous,key1,key2){
+  var i1=labels.indexOf(key1),i2=labels.indexOf(key2);
+  if(i1<0||i2<0)return;
+  var cv=current[i1][i2],pv=previous[i1][i2],chg=cv-pv;
+  document.getElementById(id+"-val").textContent=cv.toFixed(2);
+  var e=document.getElementById(id+"-chg");e.textContent=(chg>=0?"+":"")+chg.toFixed(2);e.className="sc-delta "+(chg>=0?"up":"dn");
+  document.getElementById(id).className="status-card neut";
 }
 
-function renderIRD(){
-  var ird=D.ird[irdPair];if(!ird||!ird.dates.length)return;
-  var pLabel=irdLabels[irdPair];
-  var rw=R.ird,dates=sl(ird.dates,rw),ds=[];
-  if(irdShow.spread)ds.push({label:"IRD Spread",data:sl(ird.spread,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"y",spanGaps:true});
-  if(irdShow.fx)ds.push({label:pLabel,data:sl(ird.fxPrice,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"yR",spanGaps:true});
-  if(charts.ird)charts.ird.destroy();
-  var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})};
-  if(irdShow.fx)scales.yR={position:"right",grid:{display:false},ticks:{color:"#3b82f6",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(3)}}};
-  charts.ird=new Chart(document.getElementById("irdChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return pLabel+": "+c.parsed.y.toFixed(4);return"IRD Spread: "+c.parsed.y.toFixed(2)+"%"}}})},scales:scales}});
+function renderCards(){
+  fxCard("sc-dxy",D.forex.DXY,2);
+  fxCard("sc-eur",D.forex.EURUSD,4);
+  var co=D.correlation;
+  if(co&&co.current){
+    corrCard("sc-corr1",co.labels,co.current,co.previous,"SPX","Gold");
+    corrCard("sc-corr2",co.labels,co.current,co.previous,"BTC","SPX");
+  }
+  if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
 }
 
 function renderFX(){
@@ -300,7 +229,6 @@ function renderFX(){
   var colors={DXY:"#c8a84b",EURUSD:"#3b82f6",GBPUSD:"#06b6d4",USDJPY:"#ef4444",AUDUSD:"#22c55e",USDCAD:"#a78bfa"};
   var labels={DXY:"DXY",EURUSD:"EUR/USD",GBPUSD:"GBP/USD",USDJPY:"USD/JPY",AUDUSD:"AUD/USD",USDCAD:"USD/CAD"};
   var keys=["DXY","EURUSD","GBPUSD","USDJPY","AUDUSD","USDCAD"];
-  // Find common dates (use DXY as base)
   var baseDates=sl(forex.DXY.dates,rw);
   var ds=[];
   keys.forEach(function(k){
@@ -308,7 +236,6 @@ function renderFX(){
     var raw=forex[k],rawMap={};
     raw.dates.forEach(function(d,i){rawMap[d]=raw.values[i]});
     var vals=baseDates.map(function(d){return rawMap[d]||null});
-    // Normalize to 100
     var base=null;
     for(var i=0;i<vals.length;i++){if(vals[i]!=null){base=vals[i];break}}
     if(base)vals=vals.map(function(v){return v!=null?round4(v/base*100):null});
@@ -317,37 +244,14 @@ function renderFX(){
   if(charts.fx)charts.fx.destroy();
   charts.fx=new Chart(document.getElementById("fxChart").getContext("2d"),{type:"line",data:{labels:baseDates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}}),suggestedMin:95,suggestedMax:105})}}});
 }
-function round4(v){return Math.round(v*10000)/10000}
-
-function renderCarry(){
-  var carry=D.carry.differentials;if(!carry)return;
-  var rw=R.carry;
-  var colors={FED_ECB:"#3b82f6",FED_BOE:"#06b6d4",FED_BOJ:"#ef4444"};
-  var keys=["FED_ECB","FED_BOE","FED_BOJ"];
-  // Use FED_ECB dates as base
-  var base=carry.FED_ECB;if(!base||!base.dates.length)return;
-  var baseDates=sl(base.dates,rw);
-  var ds=[];
-  keys.forEach(function(k){
-    if(!carryShow[k]||!carry[k])return;
-    var raw=carry[k],rawMap={};
-    raw.dates.forEach(function(d,i){rawMap[d]=raw.values[i]});
-    var vals=baseDates.map(function(d){return rawMap[d]!=null?rawMap[d]:null});
-    ds.push({label:carry[k].label,data:vals,borderColor:colors[k],borderWidth:2,pointRadius:0,fill:false,tension:0,spanGaps:true});
-  });
-  ds.push({data:baseDates.map(function(){return 0}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false});
-  if(charts.carry)charts.carry.destroy();
-  charts.carry=new Chart(document.getElementById("carryChart").getContext("2d"),{type:"line",data:{labels:baseDates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<3},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)+"%"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
-}
 
 function renderCorrelation(){
   var co=D.correlation;if(!co||!co.labels)return;
   var labels=co.labels,cur=co.current,prev=co.previous,n=labels.length;
   function corrColor(v){
     if(v==null)return"var(--surf2)";
-    var r,g,b;
-    if(v>=0){r=Math.round(34+(1-v)*16);g=Math.round(197-(1-v)*147);b=Math.round(94-(1-v)*44);return"rgba("+r+","+g+","+b+","+Math.max(0.15,Math.abs(v)*0.6)+")"}
-    else{r=Math.round(239+v*189);g=Math.round(68+v*18);b=Math.round(68+v*18);return"rgba("+r+","+g+","+b+","+Math.max(0.15,Math.abs(v)*0.6)+")"}
+    if(v>=0)return"rgba(34,"+Math.round(197*v)+","+Math.round(94*v)+","+Math.max(0.15,v*0.6)+")";
+    return"rgba("+Math.round(239*(-v))+","+Math.round(68*(-v))+","+Math.round(68*(-v))+","+Math.max(0.15,(-v)*0.6)+")";
   }
   function arrow(c,p){var d=c-p;if(Math.abs(d)<0.03)return"";return d>0?" &#9650;":" &#9660;"}
   var html="<tr><th></th>";
@@ -356,8 +260,7 @@ function renderCorrelation(){
   for(var i=0;i<n;i++){
     html+="<tr><td class='lbl'>"+labels[i]+"</td>";
     for(var j=0;j<n;j++){
-      var v=cur[i][j],pv=prev[i][j];
-      var bg=corrColor(v);
+      var v=cur[i][j],pv=prev[i][j],bg=corrColor(v);
       var txt=i===j?"1.00":v.toFixed(2);
       var ar=i===j?"":arrow(v,pv);
       html+="<td style='background:"+bg+";color:var(--white)'>"+txt+ar+"</td>";
