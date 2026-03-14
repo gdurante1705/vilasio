@@ -167,39 +167,45 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="corr-wrap"><table class="corr-table" id="commodity-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
   </div>
 
-  <!-- COINTEGRATION: METALS + EQUITIES (dual row) -->
-  <div class="dual-row reveal">
-    <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">Metals Cointegration</div><div class="ch-sub">Normalized to 100 &#183; Divergences signal mean reversion</div></div>
-        <div class="ch-toggles">
-          <button class="ch-tog" data-g="cmet" data-rw="63" onclick="setR('cmet',63)">3M</button>
-          <button class="ch-tog" data-g="cmet" data-rw="130" onclick="setR('cmet',130)">6M</button>
-          <button class="ch-tog active" data-g="cmet" data-rw="260" onclick="setR('cmet',260)">1Y</button>
-        </div>
+  <!-- COINTEGRATION: METALS -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Metals Cointegration</div><div class="ch-sub">% Change from Start &#183; Divergences signal mean reversion</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="cmet" data-rw="5" onclick="setR('cmet',5)">1W</button>
+        <button class="ch-tog" data-g="cmet" data-rw="21" onclick="setR('cmet',21)">1M</button>
+        <button class="ch-tog" data-g="cmet" data-rw="63" onclick="setR('cmet',63)">3M</button>
+        <button class="ch-tog" data-g="cmet" data-rw="130" onclick="setR('cmet',130)">6M</button>
+        <button class="ch-tog active" data-g="cmet" data-rw="260" onclick="setR('cmet',260)">1Y</button>
       </div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="cmetChart"></canvas></div></div>
-      <div class="chart-legend" id="cmet-legend"></div>
     </div>
-    <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">Equities Cointegration</div><div class="ch-sub">Normalized to 100 &#183; Divergences signal leading moves</div></div>
-        <div class="ch-toggles">
-          <button class="ch-tog" data-g="ceq" data-rw="63" onclick="setR('ceq',63)">3M</button>
-          <button class="ch-tog" data-g="ceq" data-rw="130" onclick="setR('ceq',130)">6M</button>
-          <button class="ch-tog active" data-g="ceq" data-rw="260" onclick="setR('ceq',260)">1Y</button>
-        </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="cmetChart"></canvas></div></div>
+    <div class="chart-legend" id="cmet-legend"></div>
+  </div>
+
+  <!-- COINTEGRATION: EQUITIES -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Equities Cointegration</div><div class="ch-sub">% Change from Start &#183; Divergences signal leading moves</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="ceq" data-rw="5" onclick="setR('ceq',5)">1W</button>
+        <button class="ch-tog" data-g="ceq" data-rw="21" onclick="setR('ceq',21)">1M</button>
+        <button class="ch-tog" data-g="ceq" data-rw="63" onclick="setR('ceq',63)">3M</button>
+        <button class="ch-tog" data-g="ceq" data-rw="130" onclick="setR('ceq',130)">6M</button>
+        <button class="ch-tog active" data-g="ceq" data-rw="260" onclick="setR('ceq',260)">1Y</button>
       </div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="ceqChart"></canvas></div></div>
-      <div class="chart-legend" id="ceq-legend"></div>
     </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="ceqChart"></canvas></div></div>
+    <div class="chart-legend" id="ceq-legend"></div>
   </div>
 
   <!-- COINTEGRATION: CRYPTO -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Crypto Cointegration</div><div class="ch-sub">Normalized to 100 &#183; Divergences signal mean reversion or leading moves</div></div>
+      <div><div class="ch-title">Crypto Cointegration</div><div class="ch-sub">% Change from Start &#183; Divergences signal mean reversion or leading moves</div></div>
       <div class="ch-toggles">
+        <button class="ch-tog" data-g="ccr" data-rw="5" onclick="setR('ccr',5)">1W</button>
+        <button class="ch-tog" data-g="ccr" data-rw="21" onclick="setR('ccr',21)">1M</button>
         <button class="ch-tog" data-g="ccr" data-rw="63" onclick="setR('ccr',63)">3M</button>
         <button class="ch-tog" data-g="ccr" data-rw="130" onclick="setR('ccr',130)">6M</button>
         <button class="ch-tog active" data-g="ccr" data-rw="260" onclick="setR('ccr',260)">1Y</button>
@@ -311,7 +317,7 @@ function renderCS(){
   var rw=R.cs,dates=sl(cs.dates,rw),ds=[];
   cs.currencies.forEach(function(c){
     if(!csShow[c]||!cs.series[c])return;
-    ds.push({label:c,data:sl(cs.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+    ds.push({label:c,data:sl(cs.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0,spanGaps:true});
   });
   var leg=document.getElementById('cs-legend');
   if(!leg.children.length){
@@ -391,8 +397,9 @@ function renderCommodityTable(){
 var cointColors=['#c8a84b','#3b82f6','#06b6d4','#ef4444','#22c55e','#a78bfa','#f59e0b','#f0f1f5'];
 function renderCointChart(chartId,legendId,group,dataKey){
   var co=D.cointegration;if(!co||!co[dataKey]||!co[dataKey].dates||!co[dataKey].dates.length)return;
-  var c=co[dataKey],rw=R[group],dates=sl(c.dates,rw),keys=Object.keys(c.series),ds=[];
-  // Init show flags
+  var c=co[dataKey],rw=R[group],keys=Object.keys(c.series),ds=[];
+  // Slice dates and re-normalize from slice start (% change from window start)
+  var rawDates=sl(c.dates,rw);
   keys.forEach(function(k){if(cointShow[group][k]===undefined)cointShow[group][k]=1});
   // Build legend once
   var leg=document.getElementById(legendId);
@@ -407,10 +414,15 @@ function renderCointChart(chartId,legendId,group,dataKey){
   }
   keys.forEach(function(k,i){
     if(!cointShow[group][k])return;
-    ds.push({label:k,data:sl(c.series[k],rw),borderColor:cointColors[i%cointColors.length],borderWidth:i===0?2:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true});
+    var raw=sl(c.series[k],rw);
+    // Re-normalize: shift so first value = 0%
+    var base=null;
+    for(var j=0;j<raw.length;j++){if(raw[j]!=null){base=raw[j];break}}
+    var vals=base!=null?raw.map(function(v){return v!=null?Math.round((v-base)*100)/100:null}):raw;
+    ds.push({label:k,data:vals,borderColor:cointColors[i%cointColors.length],borderWidth:i===0?2:1.5,pointRadius:0,fill:false,tension:0,spanGaps:true});
   });
   if(charts[group])charts[group].destroy();
-  charts[group]=new Chart(document.getElementById(chartId).getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
+  charts[group]=new Chart(document.getElementById(chartId).getContext("2d"),{type:"line",data:{labels:rawDates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v>=0?"+":"")+v.toFixed(1)+"%"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return(v>=0?"+":"")+v.toFixed(0)+"%"}})})}}});
 }
 function renderCMet(){renderCointChart('cmetChart','cmet-legend','cmet','metals')}
 function renderCEq(){renderCointChart('ceqChart','ceq-legend','ceq','equities')}
