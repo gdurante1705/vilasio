@@ -149,8 +149,8 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <!-- MACRO REGIME OSCILLATOR -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank (12M SMA)</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button></div>
+      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank (12M Lookback)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button><button class="ch-tog" data-g="mo" data-rw="120" onclick="setR('mo',120)">10Y</button><button class="ch-tog" data-g="mo" data-rw="9999" onclick="setR('mo',9999)">MAX</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inflation Rank</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Unemployment Rank</div><div class="legend-item"><span class="legend-dot dashed"></span> 20 / 80 Thresholds</div></div>
@@ -300,7 +300,7 @@ function renderMorpheus(){
     {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
     {data:ir.map(function(){return 80}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:ir.map(function(){return 20}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
-    {data:ir.map(function(){return 50}),borderColor:"rgba(255,255,255,0.06)",borderWidth:1,pointRadius:0,fill:false}
+    {data:ir.map(function(){return 50}),borderColor:"rgba(255,255,255,0.10)",borderWidth:1,borderDash:[2,4],pointRadius:0,fill:false}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{min:0,max:100,ticks:Object.assign({},axO.ticks,{stepSize:20})})}}});
 }
 
