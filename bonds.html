@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bond &amp; Yield Monitor - Vilasio</title>
+<meta name="description" content="Bond & Yield Monitor by Vilasio — Treasury yields, yield curve, real yields, credit spreads, Fed Funds rate, and FOMC calendar for institutional macro analysis.">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;
+  --brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;
+  --white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;
+  --gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);
+  --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
+  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;
+  --cyan:#06b6d4;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:24px;height:24px;opacity:.9}
+.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white)}
+.nav-sep{color:var(--gray);margin:0 4px}
+.nav-page{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}
+.nav-link:hover{color:var(--white)}
+.hero{padding:88px 48px 24px}
+.hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+.pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
+.hero-h1{font-family:"Alata",sans-serif;font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:-1.5px;line-height:1.1;margin-top:6px}
+.hero-h1 em{font-style:normal;color:var(--gold2)}
+.hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:540px;margin-top:6px}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.curve-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap}
+.curve-badge.normal{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
+.curve-badge.inverted{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
+.curve-badge.flat{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
+.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
+.refresh-row{display:flex;align-items:center;gap:8px}
+.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);border:1px solid var(--brd2);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.refresh-btn:hover{color:var(--white);border-color:var(--brd3)}
+.refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
+.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}
+.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}
+.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}
+.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
+.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
+.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
+.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
+main{padding:0 48px 64px}
+.chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
+.chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
+.ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
+.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin-top:2px}
+.ch-toggles{display:flex;gap:3px}
+.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd2);color:var(--gray3);cursor:pointer;transition:all .2s}
+.ch-tog:hover{color:var(--white);border-color:var(--brd3)}
+.ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
+.chart-wrap{padding:12px 20px 16px}
+.chart-canvas-wrap{position:relative;height:340px}
+.chart-canvas-sm{position:relative;height:220px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
+.legend-item{display:flex;align-items:center;gap:5px;cursor:default}
+.legend-dot{width:7px;height:7px;border-radius:50%}
+.legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
+.dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
+/* FOMC Calendar */
+.fomc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:3px;padding:20px 28px}
+.fomc-card{background:var(--surf2);border:1px solid var(--brd2);padding:14px 16px;position:relative;overflow:hidden}
+.fomc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gray)}
+.fomc-card.next::before{background:var(--gold)}
+.fomc-card.past{opacity:0.4}
+.fomc-date{font-family:"Alata",sans-serif;font-size:14px;font-weight:400}
+.fomc-countdown{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:6px}
+.fomc-countdown.next{color:var(--gold)}
+.fomc-countdown.upcoming{color:var(--gray2)}
+.fomc-countdown.past{color:var(--gray)}
+.explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}
+.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
+.explain-text{font-size:12px;color:var(--gray2);line-height:1.8}
+.explain-text strong{color:var(--white);font-weight:500}
+.explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
+footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
+.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
+.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.dual-row{grid-template-columns:1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}.fomc-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
+    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Bond &amp; Yield Monitor</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="cot.html">COT Intelligence</a>
+    <a class="nav-link" href="liquidity.html">Liquidity</a>
+    <a class="nav-link" href="bonds.html">Bonds</a>
+    <a class="nav-link" href="blog.html">Insights</a>
+    <a class="nav-link" href="about.html">About</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag"><span class="pulse"></span> FRED Daily Data</div>
+      <h1 class="hero-h1">The absolute <em>thermometer</em>.</h1>
+      <p class="hero-desc">Treasury yields, yield curve shape, real yields, credit spreads, and Fed Funds rate &#8212; the bond market tells you where capital is going before anyone else.</p>
+    </div>
+    <div class="hero-badges">
+      <div class="curve-badge flat" id="curve-badge">LOADING</div>
+      <div class="refresh-row">
+        <div class="update-badge" id="update-badge">DATA: loading...</div>
+        <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">REFRESH</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="status-row reveal">
+    <div class="status-card neut" id="sc-10y"><div class="sc-label">10-Year Yield</div><div class="sc-val" id="sc-10y-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-10y-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
+    <div class="status-card neut" id="sc-spread"><div class="sc-label">2Y-10Y Spread</div><div class="sc-val" id="sc-spread-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-spread-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
+    <div class="status-card neut" id="sc-ff"><div class="sc-label">Fed Funds Rate</div><div class="sc-val" id="sc-ff-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ff-chg">&#8212;</span><span class="sc-note">Effective</span></div></div>
+    <div class="status-card neut" id="sc-hy"><div class="sc-label">HY Credit Spread</div><div class="sc-val" id="sc-hy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-hy-chg">&#8212;</span><span class="sc-note">W/W &#183; High = Stress</span></div></div>
+  </div>
+
+  <!-- YIELD CURVE (all maturities) -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Treasury Yields</div><div class="ch-sub">2Y &#183; 5Y &#183; 10Y &#183; 30Y</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="yld" data-rw="65" onclick="setR('yld',65)">3M</button><button class="ch-tog" data-g="yld" data-rw="130" onclick="setR('yld',130)">6M</button><button class="ch-tog" data-g="yld" data-rw="260" onclick="setR('yld',260)">1Y</button><button class="ch-tog" data-g="yld" data-rw="520" onclick="setR('yld',520)">2Y</button><button class="ch-tog active" data-g="yld" data-rw="780" onclick="setR('yld',780)">3Y</button></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="yieldChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> 2Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> 5Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y</div><div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> 30Y</div></div>
+  </div>
+
+  <!-- 2Y-10Y SPREAD -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">2Y-10Y Spread</div><div class="ch-sub">Inversion = Recession Signal</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="spreadChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Normal (positive)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inverted (negative)</div></div>
+  </div>
+
+  <!-- REAL YIELDS + BREAKEVEN -->
+  <div class="dual-row reveal">
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Real Yields (TIPS)</div><div class="ch-sub">Nominal &minus; Inflation</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="ry" data-rw="260" onclick="setR('ry',260)">1Y</button><button class="ch-tog" data-g="ry" data-rw="520" onclick="setR('ry',520)">2Y</button><button class="ch-tog active" data-g="ry" data-rw="780" onclick="setR('ry',780)">3Y</button></div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="realChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> 5Y Real</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y Real</div><div class="legend-item"><span class="legend-dot dashed"></span> Gold (inv. corr.)</div></div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Breakeven Inflation</div><div class="ch-sub">Market inflation expectations</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="be" data-rw="260" onclick="setR('be',260)">1Y</button><button class="ch-tog" data-g="be" data-rw="520" onclick="setR('be',520)">2Y</button><button class="ch-tog active" data-g="be" data-rw="780" onclick="setR('be',780)">3Y</button></div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="beChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> 5Y Breakeven</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y Breakeven</div></div>
+    </div>
+  </div>
+
+  <!-- CREDIT SPREADS + FED FUNDS -->
+  <div class="dual-row reveal">
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Credit Spreads</div><div class="ch-sub">IG vs HY OAS (bps)</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="cr" data-rw="260" onclick="setR('cr',260)">1Y</button><button class="ch-tog" data-g="cr" data-rw="520" onclick="setR('cr',520)">2Y</button><button class="ch-tog active" data-g="cr" data-rw="780" onclick="setR('cr',780)">3Y</button></div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="creditChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Investment Grade</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> High Yield</div></div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Effective + Target Range</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="ff" data-rw="260" onclick="setR('ff',260)">1Y</button><button class="ch-tog" data-g="ff" data-rw="520" onclick="setR('ff',520)">2Y</button><button class="ch-tog active" data-g="ff" data-rw="780" onclick="setR('ff',780)">3Y</button></div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="ffChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> Effective</div><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Target Upper</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Target Lower</div></div>
+    </div>
+  </div>
+
+  <!-- FOMC CALENDAR -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">FOMC Calendar 2026</div><div class="ch-sub">Federal Open Market Committee meetings</div></div></div>
+    <div class="fomc-grid" id="fomc-grid"></div>
+  </div>
+
+  <!-- EXPLANATION -->
+  <div class="explain-section reveal">
+    <div class="explain-title">How to read the Bond &amp; Yield Monitor</div>
+    <div class="explain-text">
+      The bond market is the <strong>absolute thermometer</strong> of the financial system. Yields anticipate rate decisions, reflect growth expectations, and signal risk appetite before equity markets react.<br><br>
+      <strong>Yield Curve</strong> shows the relationship between short-term and long-term rates. A <strong>normal curve</strong> (long rates above short rates) signals healthy growth expectations. An <strong>inverted curve</strong> (2Y above 10Y) has preceded every US recession since the 1970s. The <code>2Y-10Y spread</code> is the most watched inversion signal.<br><br>
+      <strong>Real Yields</strong> (TIPS) measure the return after inflation. They have a strong <strong>inverse correlation with Gold</strong> &#8212; when real yields fall, gold tends to rise as the opportunity cost of holding non-yielding assets drops.<br><br>
+      <strong>Credit Spreads</strong> measure the premium investors demand for corporate bonds over Treasuries. <strong>IG</strong> (Investment Grade) widening signals caution; <strong>HY</strong> (High Yield) spiking signals financial stress. Tight spreads = risk-on, wide spreads = risk-off.<br><br>
+      <strong>Fed Funds Rate</strong> is the overnight lending rate set by the Fed. The gap between the effective rate and the target range shows market stress. When effective drifts toward the upper bound, funding pressure is building.<br><br>
+      <strong>Key insight:</strong> when yields fall, the dollar tends to weaken and risk assets rise. When yields rise but the dollar falls simultaneously, it signals a <strong>credibility shock</strong> &#8212; markets losing confidence in the issuer rather than repricing growth.
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span></div>
+  <div style="display:flex;gap:28px">
+    <a href="privacy.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Privacy Policy</a>
+    <a href="terms.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Terms of Use</a>
+    <a href="cookie.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Cookie Policy</a>
+    <a href="contact.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Contact</a>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+</footer>
+<div class="disclaimer-bar"><div class="disclaimer-inner"><span class="disclaimer-label">Financial Disclaimer</span><p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p></div></div>
+
+<script>
+var API="https://vilasio-cot-backend.onrender.com";
+var D=null,charts={};
+/* Daily data: 3M~65, 6M~130, 1Y~260, 2Y~520, 3Y~780 business days */
+var R={yld:780,sp:780,ry:780,be:780,cr:780,ff:780};
+var renderMap={yld:'renderYields',sp:'renderSpread',ry:'renderReal',be:'renderBE',cr:'renderCredit',ff:'renderFF'};
+
+function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
+function fPct(v){return v==null?"\u2014":v.toFixed(2)+"%"}
+function fChgPct(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
+function fBps(v){return v==null?"\u2014":Math.round(v*100)+" bps"}
+function sl(a,n){return n>=a.length?a:a.slice(-n)}
+
+var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
+var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
+function pctOpts(){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
+
+function renderAll(){renderCards();renderYields();renderSpread();renderReal();renderBE();renderCredit();renderFF();renderFOMC()}
+
+function renderCards(){
+  var y=D.yields,n=y.dgs10.length;if(n<6)return;
+  var c10=y.dgs10[n-1],p10=y.dgs10[n-6],chg10=c10!=null&&p10!=null?c10-p10:null;
+  document.getElementById("sc-10y-val").textContent=fPct(c10);
+  var e10=document.getElementById("sc-10y-chg");e10.textContent=fChgPct(chg10);e10.className="sc-delta "+(chg10>=0?"up":"dn");
+  document.getElementById("sc-10y").className="status-card "+(chg10>=0?"up":"dn");
+
+  var sp=D.spread,sn=sp.values.length;
+  var csp=sp.values[sn-1],psp=sn>5?sp.values[sn-6]:null,chgsp=csp!=null&&psp!=null?csp-psp:null;
+  document.getElementById("sc-spread-val").textContent=csp!=null?csp.toFixed(2)+"%":"\u2014";
+  var esp=document.getElementById("sc-spread-chg");esp.textContent=fChgPct(chgsp);esp.className="sc-delta "+(chgsp>=0?"up":"dn");
+  document.getElementById("sc-spread").className="status-card "+(csp>=0?"up":"dn");
+
+  var ff=D.fedFunds,fn=ff.effective.length;
+  var cff=ff.effective[fn-1];
+  document.getElementById("sc-ff-val").textContent=fPct(cff);
+  var pff=fn>5?ff.effective[fn-6]:null,chgff=cff!=null&&pff!=null?cff-pff:null;
+  var eff=document.getElementById("sc-ff-chg");eff.textContent=fChgPct(chgff);eff.className="sc-delta "+(chgff!=null?(chgff>=0?"dn":"up"):"");
+  document.getElementById("sc-ff").className="status-card neut";
+
+  var hy=D.credit.hy,hn=hy.values.length;
+  var chy=hy.values[hn-1],phy=hn>5?hy.values[hn-6]:null,chghy=chy!=null&&phy!=null?chy-phy:null;
+  document.getElementById("sc-hy-val").textContent=chy!=null?chy.toFixed(2)+"%":"\u2014";
+  var ehy=document.getElementById("sc-hy-chg");ehy.textContent=fChgPct(chghy);ehy.className="sc-delta "+(chghy!=null?(chghy>=0?"dn":"up"):"");
+  document.getElementById("sc-hy").className="status-card "+(chghy!=null?(chghy<=0?"up":"dn"):"neut");
+
+  /* Curve badge */
+  var badge=document.getElementById("curve-badge");
+  if(csp!=null){
+    if(csp<-0.05){badge.textContent="CURVE INVERTED";badge.className="curve-badge inverted"}
+    else if(csp>0.1){badge.textContent="CURVE NORMAL";badge.className="curve-badge normal"}
+    else{badge.textContent="CURVE FLAT";badge.className="curve-badge flat"}
+  }
+  if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
+}
+
+function renderYields(){
+  var y=D.yields,rw=R.yld,dates=sl(y.dates,rw);
+  if(charts.yld)charts.yld.destroy();
+  charts.yld=new Chart(document.getElementById("yieldChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
+    {label:"2Y",data:sl(y.dgs2,rw),borderColor:"#06b6d4",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
+    {label:"5Y",data:sl(y.dgs5,rw),borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
+    {label:"10Y",data:sl(y.dgs10,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
+    {label:"30Y",data:sl(y.dgs30,rw),borderColor:"#a78bfa",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true}
+  ]},options:pctOpts()});
+}
+
+function renderSpread(){
+  var s=D.spread,rw=R.sp,dates=sl(s.dates,rw),vals=sl(s.values,rw);
+  if(charts.sp)charts.sp.destroy();
+  charts.sp=new Chart(document.getElementById("spreadChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[{
+    label:"2Y-10Y Spread",data:vals,
+    segment:{borderColor:function(c){return c.p1.parsed.y>=0?"#22c55e":"#ef4444"}},
+    backgroundColor:"rgba(255,255,255,0.02)",borderWidth:2,pointRadius:0,fill:true,tension:0.2,spanGaps:true
+  },{data:dates.map(function(){return 0}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){return"Spread: "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
+}
+
+function renderReal(){
+  var r=D.realYields,rw=R.ry,dates=sl(r.dates,rw);
+  var ds=[
+    {label:"5Y Real",data:sl(r.dfii5,rw),borderColor:"#06b6d4",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"y",spanGaps:true},
+    {label:"10Y Real",data:sl(r.dfii10,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.2,yAxisID:"y",spanGaps:true}
+  ];
+  var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})};
+  /* Gold overlay on right axis */
+  if(D.gold&&D.gold.dates.length){
+    var gMap={};D.gold.dates.forEach(function(d,i){gMap[d]=D.gold.values[i]});
+    var gData=dates.map(function(d){if(gMap[d])return gMap[d];for(var o=1;o<=7;o++){var dt=new Date(d);dt.setDate(dt.getDate()-o);var ck=dt.toISOString().slice(0,10);if(gMap[ck])return gMap[ck];dt=new Date(d);dt.setDate(dt.getDate()+o);ck=dt.toISOString().slice(0,10);if(gMap[ck])return gMap[ck]}return null});
+    ds.push({label:"Gold",data:gData,borderColor:"rgba(240,241,245,0.5)",borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false,tension:0.1,yAxisID:"yR",spanGaps:true});
+    scales.yR={position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return"$"+v.toFixed(0)}}};
+  }
+  if(charts.real)charts.real.destroy();
+  charts.real=new Chart(document.getElementById("realChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"Gold: $"+c.parsed.y.toFixed(0);return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:scales}});
+}
+
+function renderBE(){
+  var b=D.breakeven,rw=R.be,dates=sl(b.dates,rw);
+  if(charts.be)charts.be.destroy();
+  charts.be=new Chart(document.getElementById("beChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
+    {label:"5Y Breakeven",data:sl(b.t5yie,rw),borderColor:"#06b6d4",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,spanGaps:true},
+    {label:"10Y Breakeven",data:sl(b.t10yie,rw),borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.2,spanGaps:true}
+  ]},options:pctOpts()});
+}
+
+function renderCredit(){
+  var cr=D.credit,rw=R.cr;
+  var igD=sl(cr.ig.dates,rw),igV=sl(cr.ig.values,rw);
+  /* Align HY on IG dates */
+  var hyMap={};cr.hy.dates.forEach(function(d,i){hyMap[d]=cr.hy.values[i]});
+  var hyV=igD.map(function(d){return hyMap[d]!=null?hyMap[d]:null});
+  if(charts.cr)charts.cr.destroy();
+  charts.cr=new Chart(document.getElementById("creditChart").getContext("2d"),{type:"line",data:{labels:igD,datasets:[
+    {label:"IG OAS",data:igV,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.2,yAxisID:"y",spanGaps:true},
+    {label:"HY OAS",data:hyV,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.2,yAxisID:"yR",spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#3b82f6",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}},yR:{position:"right",grid:{display:false},ticks:{color:"#ef4444",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)+"%"}}}}}});
+}
+
+function renderFF(){
+  var f=D.fedFunds,rw=R.ff,dates=sl(f.dates,rw);
+  if(charts.ff)charts.ff.destroy();
+  charts.ff=new Chart(document.getElementById("ffChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
+    {label:"Effective",data:sl(f.effective,rw),borderColor:"#f0f1f5",borderWidth:2,pointRadius:0,fill:false,tension:0,spanGaps:true},
+    {label:"Target Upper",data:sl(f.upper,rw),borderColor:"rgba(34,197,94,0.6)",borderWidth:1,borderDash:[4,2],pointRadius:0,fill:false,tension:0,spanGaps:true},
+    {label:"Target Lower",data:sl(f.lower,rw),borderColor:"rgba(239,68,68,0.6)",borderWidth:1,borderDash:[4,2],pointRadius:0,fill:false,tension:0,spanGaps:true}
+  ]},options:pctOpts()});
+}
+
+function renderFOMC(){
+  var grid=document.getElementById("fomc-grid");grid.innerHTML="";
+  if(!D.fomc||!D.fomc.length)return;
+  D.fomc.forEach(function(m){
+    var card=document.createElement("div");
+    card.className="fomc-card"+(m.status==="next"?" next":"")+(m.status==="past"?" past":"");
+    var label=m.status==="past"?"COMPLETED":m.status==="next"?m.daysUntil+" DAYS":m.daysUntil+" DAYS";
+    card.innerHTML='<div class="fomc-date">'+m.date+'</div><div class="fomc-countdown '+m.status+'">'+label+'</div>';
+    grid.appendChild(card);
+  });
+}
+
+function refreshData(){
+  var btn=document.getElementById("refresh-btn");
+  btn.textContent="REFRESHING...";btn.classList.add("loading");
+  document.getElementById("update-badge").textContent="DATA: refreshing...";
+  fetch(API+"/api/bonds/refresh").then(function(r){return r.json()}).then(function(d){
+    if(d.status!=="ok"){btn.textContent="FAILED";setTimeout(function(){btn.textContent="REFRESH";btn.classList.remove("loading")},2000);return}
+    D=d;renderAll();btn.textContent="REFRESH";btn.classList.remove("loading");
+  }).catch(function(){btn.textContent="FAILED";setTimeout(function(){btn.textContent="REFRESH";btn.classList.remove("loading")},2000)});
+}
+
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
+document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
+(function(){fetch(API+"/api/bonds").then(function(r){return r.json()}).then(function(d){if(d.status!=="ok"){console.error("API error:",d.message);return}D=d;renderAll()}).catch(function(e){console.error("Bonds fetch failed:",e)})})();
+</script>
+</body>
+</html>
