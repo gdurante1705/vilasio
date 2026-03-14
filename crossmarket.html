@@ -158,12 +158,68 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="corr-subtitle">Compared to previous 90-day window &#8212; arrows show direction of change</div>
   </div>
 
+  <!-- CURRENCY STRENGTH -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Currency Strength Matrix</div><div class="ch-sub">Relative Strength Index &#183; Base 100</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="cs" data-rw="5" onclick="setR('cs',5)">1M</button>
+        <button class="ch-tog" data-g="cs" data-rw="13" onclick="setR('cs',13)">3M</button>
+        <button class="ch-tog" data-g="cs" data-rw="26" onclick="setR('cs',26)">6M</button>
+        <button class="ch-tog active" data-g="cs" data-rw="52" onclick="setR('cs',52)">1Y</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="csChart"></canvas></div></div>
+    <div class="chart-legend" id="cs-legend"></div>
+  </div>
+
+  <!-- SECTOR ROTATION -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Sector Rotation Heatmap</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance %</div></div></div>
+    <div class="corr-wrap"><table class="corr-table" id="sector-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
+  </div>
+
+  <!-- COMMODITY DASHBOARD -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Commodity Dashboard</div><div class="ch-sub">Futures Performance %</div></div></div>
+    <div class="corr-wrap"><table class="corr-table" id="commodity-table"><tbody><tr><td style="color:var(--gray2)">Loading...</td></tr></tbody></table></div>
+  </div>
+
+  <!-- SEASONALITY -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Seasonality</div><div class="ch-sub">Historical Avg vs Current Year &#183; Monthly Returns %</div></div>
+      <div class="ch-toggles" id="season-toggles"></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="seasonChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--gray2)"></span> Historical Avg</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Current Year</div></div>
+  </div>
+
+  <!-- VALUE VS GROWTH -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Value vs Growth</div><div class="ch-sub">IWD/IWF Ratio &#183; Rising = Value Outperforms</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="vg" data-rw="26" onclick="setR('vg',26)">6M</button>
+        <button class="ch-tog" data-g="vg" data-rw="52" onclick="setR('vg',52)">1Y</button>
+        <button class="ch-tog active" data-g="vg" data-rw="104" onclick="setR('vg',104)">2Y</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vgChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Value/Growth Ratio</div></div>
+  </div>
+
   <!-- EXPLANATION -->
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Cross-Market Dashboard</div>
     <div class="explain-text">
-      <strong>DXY &amp; Major Pairs</strong> shows the Dollar Index alongside major forex pairs, normalized to 100 at the start of the selected window. This reveals relative strength and divergences. DXY typically moves inversely to EUR/USD (which represents ~57% of the index weight). When pairs that normally move together start diverging, it signals regime change or structural shifts.<br><br>
-      <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. <strong>Positive correlation</strong> means assets move together; <strong>negative</strong> means they move opposite. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), US10Y-Gold (real yield proxy), BTC-SPX (risk correlation). Changes from the previous period (arrows) signal regime transitions.
+      <strong>DXY &amp; Major Pairs</strong> shows the Dollar Index alongside major forex pairs, normalized to 100 at the start of the selected window. DXY typically moves inversely to EUR/USD (~57% of index weight). Divergences between pairs that normally move together signal regime change.<br><br>
+      <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
+      <strong>Currency Strength</strong> measures relative performance of 8 major currencies across 12 forex pairs, normalized to base 100. When a currency line rises, it is strengthening vs all others. The spread between the strongest and weakest currencies defines the carry trade opportunity.<br><br>
+      <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
+      <strong>Commodity Dashboard</strong> shows performance across timeframes. Commodities correlate with the economic cycle: energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
+      <strong>Seasonality</strong> compares the average monthly return (10-year historical) with the current year. Deviations from seasonal patterns, especially when confirmed by COT positioning, create high-probability setups.<br><br>
+      <strong>Value vs Growth</strong> tracks the IWD/IWF ratio. Rising ratio = capital rotating into value stocks (financials, energy, industrials). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.
     </div>
   </div>
 </main>
@@ -183,19 +239,23 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={fx:104};
+var R={fx:104,cs:52,vg:104};
 var fxShow={DXY:1,EURUSD:1,GBPUSD:1,USDJPY:1,AUDUSD:1,USDCAD:1};
-var renderMap={fx:'renderFX'};
+var csShow={USD:1,EUR:1,GBP:1,JPY:1,AUD:1,CAD:1,CHF:1,NZD:1};
+var seasonAsset='SPX';
+var renderMap={fx:'renderFX',cs:'renderCS',vg:'renderVG'};
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togFx(k){fxShow[k]=fxShow[k]?0:1;document.getElementById('leg-fx-'+k).style.opacity=fxShow[k]?'1':'0.3';if(D)renderFX()}
+function togCs(k){csShow[k]=csShow[k]?0:1;document.getElementById('leg-cs-'+k).style.opacity=csShow[k]?'1':'0.3';if(D)renderCS()}
+function setSeason(k){seasonAsset=k;document.querySelectorAll('.ch-tog[data-g="season"]').forEach(function(b){b.classList.toggle('active',b.textContent===k)});if(D)renderSeason()}
 
 function sl(a,n){return n>=a.length?a:a.slice(-n)}
 function round4(v){return Math.round(v*10000)/10000}
 var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 
-function renderAll(){renderCards();renderFX();renderCorrelation()}
+function renderAll(){renderCards();renderFX();renderCorrelation();renderCS();renderSectorTable();renderCommodityTable();initSeasonToggles();renderSeason();renderVG()}
 
 function fxCard(id,data,decimals){
   if(!data||data.values.length<2)return;
@@ -268,6 +328,102 @@ function renderCorrelation(){
     html+="</tr>";
   }
   document.getElementById("corr-table").innerHTML=html;
+}
+
+/* --- CURRENCY STRENGTH --- */
+function renderCS(){
+  var cs=D.currencyStrength;if(!cs||!cs.dates||!cs.dates.length)return;
+  var ccyColors={USD:'#c8a84b',EUR:'#3b82f6',GBP:'#06b6d4',JPY:'#ef4444',AUD:'#22c55e',CAD:'#a78bfa',CHF:'#f59e0b',NZD:'#f0f1f5'};
+  var rw=R.cs,dates=sl(cs.dates,rw),ds=[];
+  cs.currencies.forEach(function(c){
+    if(!csShow[c]||!cs.series[c])return;
+    ds.push({label:c,data:sl(cs.series[c],rw),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true});
+  });
+  // Build legend once
+  var leg=document.getElementById('cs-legend');
+  if(!leg.children.length){
+    cs.currencies.forEach(function(c){
+      var el=document.createElement('div');el.className='legend-item';el.style.cursor='pointer';el.id='leg-cs-'+c;
+      el.onclick=function(){togCs(c)};
+      el.innerHTML='<span class="legend-dot" style="background:'+(ccyColors[c]||'#888')+'"></span> '+c;
+      leg.appendChild(el);
+    });
+  }
+  if(charts.cs)charts.cs.destroy();
+  charts.cs=new Chart(document.getElementById("csChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
+}
+
+/* --- HEATMAP TABLE HELPER --- */
+function heatColor(v){
+  if(v==null)return'var(--surf2)';
+  var abs=Math.min(Math.abs(v),15),intensity=abs/15*0.6+0.1;
+  if(v>=0)return'rgba(34,197,94,'+intensity+')';
+  return'rgba(239,68,68,'+intensity+')';
+}
+function fmtPct(v){return v==null?'\u2014':(v>=0?'+':'')+v.toFixed(1)+'%'}
+
+/* --- SECTOR ROTATION TABLE --- */
+function renderSectorTable(){
+  var s=D.sectorRotation;if(!s||!s.length)return;
+  var html='<tr><th style="text-align:left">Sector</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
+  s.forEach(function(r){
+    html+='<tr><td class="lbl">'+r.symbol+' '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
+    ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
+      var v=r[k];html+='<td style="background:'+heatColor(v)+';color:var(--white)">'+fmtPct(v)+'</td>';
+    });
+    html+='</tr>';
+  });
+  document.getElementById('sector-table').innerHTML=html;
+}
+
+/* --- COMMODITY TABLE --- */
+function renderCommodityTable(){
+  var c=D.commodities;if(!c||!c.table||!c.table.length)return;
+  var html='<tr><th style="text-align:left">Commodity</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
+  c.table.forEach(function(r){
+    html+='<tr><td class="lbl">'+r.symbol+' '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
+    ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
+      var v=r[k];html+='<td style="background:'+heatColor(v)+';color:var(--white)">'+fmtPct(v)+'</td>';
+    });
+    html+='</tr>';
+  });
+  document.getElementById('commodity-table').innerHTML=html;
+}
+
+/* --- SEASONALITY --- */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function initSeasonToggles(){
+  var s=D.seasonality;if(!s)return;
+  var el=document.getElementById('season-toggles');if(el.children.length)return;
+  var keys=Object.keys(s);
+  keys.forEach(function(k,i){
+    var btn=document.createElement('button');btn.className='ch-tog'+(i===0?' active':'');btn.dataset.g='season';btn.textContent=k;
+    btn.onclick=function(){setSeason(k)};
+    el.appendChild(btn);
+  });
+  if(keys.length)seasonAsset=keys[0];
+}
+function renderSeason(){
+  var s=D.seasonality;if(!s||!s[seasonAsset])return;
+  var d=s[seasonAsset];
+  if(charts.season)charts.season.destroy();
+  charts.season=new Chart(document.getElementById("seasonChart").getContext("2d"),{type:"bar",data:{labels:MONTHS,datasets:[
+    {label:"Historical Avg",data:d.historical,backgroundColor:"rgba(138,144,160,0.4)",borderColor:"#8a90a0",borderWidth:1},
+    {label:"Current Year",data:d.current,backgroundColor:"rgba(200,168,75,0.6)",borderColor:"#c8a84b",borderWidth:1}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v!=null?(v>=0?"+":"")+v.toFixed(2)+"%":"\u2014")}}})},scales:{x:axO,y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
+}
+
+/* --- VALUE VS GROWTH --- */
+function renderVG(){
+  var vg=D.valueGrowth;if(!vg||!vg.dates||!vg.dates.length)return;
+  var rw=R.vg,dates=sl(vg.dates,rw),ratio=sl(vg.ratio,rw);
+  if(charts.vg)charts.vg.destroy();
+  // Compute midline for annotation
+  var avg=ratio.reduce(function(a,b){return a+b},0)/ratio.length;
+  charts.vg=new Chart(document.getElementById("vgChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
+    {label:"Value/Growth",data:ratio,borderColor:"#c8a84b",borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
+    {data:dates.map(function(){return avg}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){return"Ratio: "+c.parsed.y.toFixed(4)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(3)}})})}}});
 }
 
 function refreshData(){
