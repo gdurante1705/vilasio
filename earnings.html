@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Earnings Intelligence - Vilasio</title>
+<meta name="description" content="Earnings Intelligence (PEAD) by Vilasio — Post-Earnings Announcement Drift scanner for institutional equity analysis.">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;--brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;--white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;--gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);--grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);--red:#ef4444;--red-dim:rgba(239,68,68,0.10);--amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--cyan:#06b6d4}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}.nav-logo{width:24px;height:24px;opacity:.9}.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white)}.nav-sep{color:var(--gray);margin:0 4px}.nav-page{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:24px}.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}.nav-link:hover{color:var(--white)}
+.hero{padding:88px 48px 24px}.hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}.pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
+.hero-h1{font-family:"Alata",sans-serif;font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:-1.5px;line-height:1.1;margin-top:6px}.hero-h1 em{font-style:normal;color:var(--gold2)}.hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:540px;margin-top:6px}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}.hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
+.refresh-row{display:flex;align-items:center;gap:8px}.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);border:1px solid var(--brd2);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}.refresh-btn:hover{color:var(--white);border-color:var(--brd3)}.refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
+.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}
+.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
+main{padding:0 48px 64px}
+.chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
+.chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}.ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin-top:2px}
+.tbl-wrap{padding:0 28px 16px;overflow-x:auto}
+.data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
+.data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2)}
+.data-table td{padding:8px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
+.data-table tr:hover td{background:var(--surf2)}
+.badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block}
+.badge.grn{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
+.badge.red{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
+.badge.blu{color:var(--blu);border:1px solid rgba(59,130,246,0.3);background:rgba(59,130,246,0.1)}
+.badge.gold{color:var(--gold);border:1px solid rgba(200,168,75,0.3);background:var(--gold-dim)}
+.badge.gray{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
+.regime-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:3px;padding:16px 28px}
+.regime-item{text-align:center;padding:12px 8px;border:1px solid var(--brd2);background:var(--surf2)}
+.regime-item.bullish{border-color:rgba(34,197,94,0.3);background:var(--grn-dim)}
+.regime-item.bearish{border-color:rgba(239,68,68,0.3);background:var(--red-dim)}
+.regime-label{font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:1px}
+.regime-label.bullish{color:var(--grn)}.regime-label.bearish{color:var(--red)}
+.regime-sub{font-family:"DM Mono",monospace;font-size:7px;color:var(--gray2);margin-top:4px;letter-spacing:1px}
+.explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}.explain-text{font-size:12px;color:var(--gray2);line-height:1.8}.explain-text strong{color:var(--white);font-weight:500}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
+footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
+.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.regime-grid{grid-template-columns:repeat(4,1fr)}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
+    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Earnings</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="cot.html">COT Intelligence</a>
+    <a class="nav-link" href="liquidity.html">Liquidity</a>
+    <a class="nav-link" href="bonds.html">Bonds</a>
+    <a class="nav-link" href="macro.html">Macro</a>
+    <a class="nav-link" href="crossmarket.html">Cross-Market</a>
+    <a class="nav-link" href="onchain.html">On-Chain</a>
+    <a class="nav-link" href="earnings.html">Earnings</a>
+    <a class="nav-link" href="blog.html">Insights</a>
+    <a class="nav-link" href="about.html">About</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag"><span class="pulse"></span> Finnhub Data &#183; NYSE &amp; NASDAQ</div>
+      <h1 class="hero-h1">Spot the <em>drift</em>.</h1>
+      <p class="hero-desc">Post-Earnings Announcement Drift scanner &#8212; identifies positive surprise stocks with valid entry setups based on gap analysis, sector trend, and risk/reward.</p>
+    </div>
+    <div class="hero-badges">
+      <div class="refresh-row">
+        <div class="update-badge" id="update-badge">DATA: loading...</div>
+        <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">REFRESH</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="status-row reveal">
+    <div class="status-card neut" id="sc-sig"><div class="sc-label">Active Signals</div><div class="sc-val" id="sc-sig-val">&#8212;</div><div class="sc-sub"><span class="sc-note">PEAD setups</span></div></div>
+    <div class="status-card neut" id="sc-surp"><div class="sc-label">Avg Surprise %</div><div class="sc-val" id="sc-surp-val">&#8212;</div><div class="sc-sub"><span class="sc-note">positive surprises</span></div></div>
+    <div class="status-card neut" id="sc-spx"><div class="sc-label">SPX Trend</div><div class="sc-val" id="sc-spx-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-spx-chg">&#8212;</span><span class="sc-note">vs SMA 10W</span></div></div>
+    <div class="status-card neut" id="sc-up"><div class="sc-label">Upcoming This Week</div><div class="sc-val" id="sc-up-val">&#8212;</div><div class="sc-sub"><span class="sc-note">earnings reports</span></div></div>
+  </div>
+
+  <!-- PEAD SIGNALS -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">PEAD Signal Scanner</div><div class="ch-sub">Positive Surprise &#183; Sector Trend Confirmed &#183; Entry / Stop / Target</div></div></div>
+    <div class="tbl-wrap"><table class="data-table" id="signals-table"><tr><td style="color:var(--gray2)">Loading signals...</td></tr></table></div>
+  </div>
+
+  <!-- UPCOMING EARNINGS -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Upcoming Earnings</div><div class="ch-sub">Next 14 Days &#183; NYSE &amp; NASDAQ &#183; 2.5B-250B Market Cap</div></div></div>
+    <div class="tbl-wrap"><table class="data-table" id="upcoming-table"><tr><td style="color:var(--gray2)">Loading calendar...</td></tr></table></div>
+  </div>
+
+  <!-- MARKET REGIME -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Market Regime</div><div class="ch-sub">SPX &amp; Sector ETFs vs SMA 10 Weekly</div></div></div>
+    <div class="regime-grid" id="regime-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading trends...</div></div>
+  </div>
+
+  <!-- EXPLANATION -->
+  <div class="explain-section reveal">
+    <div class="explain-title">How to read Earnings Intelligence</div>
+    <div class="explain-text">
+      <strong>PEAD (Post-Earnings Announcement Drift)</strong> is the tendency for a stock's price to continue drifting in the direction of the earnings surprise for 30-60 days after the announcement. This scanner identifies only <strong>long setups</strong> from positive surprises &#8212; we never short negative surprises.<br><br>
+      <strong>Setup Types:</strong> <strong>Breakout</strong> (gap &lt;3%) &#8212; price barely gaps, entry on breakout of earnings high. <strong>Test</strong> (gap 3-8%) &#8212; moderate gap, wait for test of earnings high. <strong>Zone Entry</strong> (gap &gt;8%) &#8212; large gap, entry if price returns to pre-gap level.<br><br>
+      <strong>Filters:</strong> Only NYSE &amp; NASDAQ stocks with 2.5B-250B market cap (the PEAD sweet spot). Sector ETF or SPX must be in uptrend (above SMA 10 weekly) &#8212; we don't go long against the trend. Only positive earnings surprises where price confirms (actual &gt; estimate).<br><br>
+      <strong>Risk Management:</strong> Entry at earnings candle high, stop at earnings candle low, target at 3:1 reward-to-risk. Hold period: up to 1 quarter (3 months). Gap filled = signal invalidated.
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span></div>
+  <div style="display:flex;gap:28px">
+    <a href="privacy.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Privacy Policy</a>
+    <a href="terms.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Terms of Use</a>
+    <a href="cookie.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Cookie Policy</a>
+    <a href="contact.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Contact</a>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+</footer>
+<div class="disclaimer-bar"><div class="disclaimer-inner"><span class="disclaimer-label">Financial Disclaimer</span><p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p></div></div>
+
+<script>
+var API="https://vilasio-cot-backend.onrender.com";
+var D=null;
+
+function fmtM(v){if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(0)+'M';return'$'+v}
+function fmtP(v){return v!=null?'$'+v.toFixed(2):'\u2014'}
+function fmtPct(v){return v!=null?(v>=0?'+':'')+v.toFixed(1)+'%':'\u2014'}
+function setupBadge(t){if(t==='breakout')return'<span class="badge grn">Breakout</span>';if(t==='test')return'<span class="badge blu">Test</span>';return'<span class="badge gold">Zone Entry</span>'}
+function trendBadge(t){return t==='bullish'?'<span class="badge grn">Bullish</span>':'<span class="badge red">Bearish</span>'}
+function heatColor(v){if(v==null)return'';var abs=Math.min(Math.abs(v),30),i=abs/30*0.5+0.1;return v>=0?'rgba(34,197,94,'+i+')':'rgba(239,68,68,'+i+')'}
+
+function renderAll(){renderCards();renderSignals();renderUpcoming();renderRegime()}
+
+function renderCards(){
+  var sigs=D.signals||[];
+  var active=sigs.filter(function(s){return s.isActive});
+  document.getElementById('sc-sig-val').textContent=active.length;
+  document.getElementById('sc-sig').className='status-card '+(active.length>0?'up':'neut');
+  if(sigs.length){var avg=sigs.reduce(function(a,s){return a+s.surprisePct},0)/sigs.length;document.getElementById('sc-surp-val').textContent='+'+avg.toFixed(1)+'%';document.getElementById('sc-surp').className='status-card up'}
+  var mt=D.marketTrend||{};if(mt.SPX){document.getElementById('sc-spx-val').textContent=mt.SPX.trend.toUpperCase();var e=document.getElementById('sc-spx-chg');e.textContent=(mt.SPX.pctVsSma>=0?'+':'')+mt.SPX.pctVsSma.toFixed(1)+'%';e.className='sc-delta '+(mt.SPX.trend==='bullish'?'up':'dn');document.getElementById('sc-spx').className='status-card '+(mt.SPX.trend==='bullish'?'up':'dn')}
+  var up=(D.upcoming||[]).filter(function(u){var d=new Date(u.date),now=new Date();return(d-now)<7*86400000&&(d-now)>=-86400000});
+  document.getElementById('sc-up-val').textContent=up.length;
+  if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
+}
+
+function renderSignals(){
+  var sigs=D.signals||[];
+  var el=document.getElementById('signals-table');
+  if(!sigs.length){el.innerHTML='<tr><td style="color:var(--gray2)">No active PEAD signals in the current window.</td></tr>';return}
+  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Date</th><th>Surprise</th><th>Gap</th><th>Setup</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th>Days</th><th>Sector</th><th>Status</th></tr></thead><tbody>';
+  sigs.forEach(function(s){
+    var status=s.isActive?'<span class="badge grn">Active</span>':'<span class="badge gray">Filled</span>';
+    html+='<tr>';
+    html+='<td style="color:var(--gold);font-weight:500">'+s.symbol+'</td>';
+    html+='<td>'+s.name+'</td>';
+    html+='<td>'+s.earningsDate+'</td>';
+    html+='<td style="background:'+heatColor(s.surprisePct)+'">'+fmtPct(s.surprisePct)+'</td>';
+    html+='<td>'+fmtPct(s.gapPct)+'</td>';
+    html+='<td>'+setupBadge(s.setupType)+'</td>';
+    html+='<td>'+fmtP(s.entryLevel)+'</td>';
+    html+='<td>'+fmtP(s.stopLevel)+'</td>';
+    html+='<td>'+fmtP(s.targetLevel)+'</td>';
+    html+='<td style="color:var(--gold)">1:'+s.riskReward.toFixed(0)+'</td>';
+    html+='<td>'+s.daysSinceEarnings+'d</td>';
+    html+='<td>'+trendBadge(s.sectorTrend)+'</td>';
+    html+='<td>'+status+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  el.innerHTML=html;
+}
+
+function renderUpcoming(){
+  var up=D.upcoming||[];
+  var el=document.getElementById('upcoming-table');
+  if(!up.length){el.innerHTML='<tr><td style="color:var(--gray2)">No upcoming earnings matching filters.</td></tr>';return}
+  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector</th><th>EPS Est.</th><th>Prev EPS</th><th>Prev Surprise</th></tr></thead><tbody>';
+  up.forEach(function(u){
+    html+='<tr>';
+    html+='<td>'+u.date+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+u.symbol+'</td>';
+    html+='<td>'+u.name+'</td>';
+    html+='<td>'+fmtM(u.marketCap)+'</td>';
+    html+='<td><span class="badge gray">'+u.sector+'</span></td>';
+    html+='<td>'+(u.epsEstimate!=null?u.epsEstimate.toFixed(2):'\u2014')+'</td>';
+    html+='<td>'+(u.previousEps!=null?u.previousEps.toFixed(2):'\u2014')+'</td>';
+    html+='<td style="background:'+heatColor(u.previousSurprise)+'">'+fmtPct(u.previousSurprise)+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  el.innerHTML=html;
+}
+
+function renderRegime(){
+  var mt=D.marketTrend||{};
+  var el=document.getElementById('regime-grid');
+  var order=['SPX','XLK','XLF','XLE','XLV','XLY','XLP','XLI','XLC','XLRE','XLB','XLU'];
+  var names={SPX:'S&P 500',XLK:'Technology',XLF:'Financials',XLE:'Energy',XLV:'Health Care',XLY:'Consumer Discret.',XLP:'Consumer Staples',XLI:'Industrials',XLC:'Comm. Services',XLRE:'Real Estate',XLB:'Materials',XLU:'Utilities'};
+  var html='';
+  order.forEach(function(k){
+    var d=mt[k];if(!d)return;
+    var t=d.trend;
+    html+='<div class="regime-item '+t+'">';
+    html+='<div class="regime-label '+t+'">'+k+'</div>';
+    html+='<div class="regime-sub">'+(names[k]||k)+'</div>';
+    html+='<div class="regime-sub">'+(d.pctVsSma>=0?'+':'')+d.pctVsSma.toFixed(1)+'%</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html||'<div style="color:var(--gray2)">No trend data available.</div>';
+}
+
+function refreshData(){
+  var btn=document.getElementById('refresh-btn');btn.textContent='REFRESHING...';btn.classList.add('loading');
+  document.getElementById('update-badge').textContent='DATA: refreshing...';
+  fetch(API+'/api/earnings/refresh').then(function(r){return r.json()}).then(function(d){
+    if(d.status!=='ok'){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000);return}
+    D=d;renderAll();btn.textContent='REFRESH';btn.classList.remove('loading');
+  }).catch(function(){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000)});
+}
+
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(e){obs.observe(e)});
+(function(){fetch(API+'/api/earnings').then(function(r){return r.json()}).then(function(d){if(d.status!=='ok'){console.error('API error:',d.message);return}D=d;renderAll()}).catch(function(e){console.error('Earnings fetch failed:',e)})})();
+</script>
+</body>
+</html>
