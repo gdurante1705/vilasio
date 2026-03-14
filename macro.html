@@ -98,19 +98,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 .disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
 .disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
 .disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-.cons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:3px;padding:16px 28px}
-.cons-card{background:var(--surf2);border:1px solid var(--brd2);padding:16px 20px;position:relative;overflow:hidden}
-.cons-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gray)}
-.cons-card.bullish::before{background:var(--grn)}.cons-card.bearish::before{background:var(--red)}
-.cons-q{font-size:12px;color:var(--white);line-height:1.5;font-weight:400}
-.cons-prob{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;margin-top:8px}
-.cons-prob.bullish{color:var(--grn)}.cons-prob.bearish{color:var(--red)}.cons-prob.neutral{color:var(--gray3)}
-.cons-meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
-.cons-vol{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--gray2);text-transform:uppercase}
-.cons-cat{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;border:1px solid rgba(200,168,75,0.2);padding:2px 8px}
-.cons-link{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--gray);text-decoration:none;text-transform:uppercase;margin-top:8px;display:inline-block}
-.cons-link:hover{color:var(--white)}
-@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.dual-row{grid-template-columns:1fr}.regime-card{grid-template-columns:1fr 1fr}.cons-grid{grid-template-columns:1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.dual-row{grid-template-columns:1fr}.regime-card{grid-template-columns:1fr 1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
 </style>
 </head>
 <body>
@@ -157,12 +145,6 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-ur"><div class="sc-label">Unemployment Rate</div><div class="sc-val" id="sc-ur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ur-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
     <div class="status-card neut" id="sc-nfp"><div class="sc-label">NFP Change (K)</div><div class="sc-val" id="sc-nfp-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-nfp-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
     <div class="status-card neut" id="sc-cpce"><div class="sc-label">Core PCE YoY</div><div class="sc-val" id="sc-cpce-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-cpce-chg">&#8212;</span><span class="sc-note">Fed's preferred &#183; Target 2%</span></div></div>
-  </div>
-
-  <!-- MARKET CONSENSUS -->
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Market Consensus</div><div class="ch-sub">Powered by Kalshi &#183; CFTC-Regulated Prediction Market</div></div></div>
-    <div class="cons-grid" id="consensus-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px">Loading prediction markets...</div></div>
   </div>
 
   <!-- MACRO REGIME OSCILLATOR -->
@@ -385,29 +367,9 @@ function refreshData(){
   }).catch(function(){btn.textContent="FAILED";setTimeout(function(){btn.textContent="REFRESH";btn.classList.remove("loading")},2000)});
 }
 
-function renderConsensus(markets){
-  var el=document.getElementById('consensus-grid');
-  if(!markets||!markets.length){el.innerHTML='<div style="color:var(--gray2);font-family:DM Mono,monospace;font-size:10px">No prediction markets available.</div>';return}
-  var html='';
-  markets.forEach(function(m){
-    var cls=m.probability>60?'bullish':m.probability<40?'bearish':'neutral';
-    var vol=m.volume>=1000000?(m.volume/1000000).toFixed(1)+'M':m.volume>=1000?(m.volume/1000).toFixed(0)+'K':m.volume;
-    html+='<div class="cons-card '+cls+'">';
-    html+='<div class="cons-q">'+m.question+'</div>';
-    html+='<div class="cons-prob '+cls+'">'+m.probability+'% YES</div>';
-    html+='<div class="cons-meta"><span class="cons-vol">Vol: $'+vol+'</span><span class="cons-cat">'+m.category+'</span></div>';
-    if(m.slug)html+='<a class="cons-link" href="https://kalshi.com/markets/'+m.slug+'" target="_blank" rel="noopener">View on Kalshi &#8599;</a>';
-    html+='</div>';
-  });
-  el.innerHTML=html;
-}
-
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
 document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
-(function(){
-  fetch(API+"/api/macro").then(function(r){return r.json()}).then(function(d){if(d.status!=="ok"){console.error("API error:",d.message);return}D=d;renderAll()}).catch(function(e){console.error("Macro fetch failed:",e)});
-  fetch(API+"/api/macro/consensus").then(function(r){return r.json()}).then(function(d){if(d.status==="ok")renderConsensus(d.markets)}).catch(function(e){console.error("Consensus fetch failed:",e)});
-})();
+(function(){fetch(API+"/api/macro").then(function(r){return r.json()}).then(function(d){if(d.status!=="ok"){console.error("API error:",d.message);return}D=d;renderAll()}).catch(function(e){console.error("Macro fetch failed:",e)})})();
 </script>
 </body>
 </html>
