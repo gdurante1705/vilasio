@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Liquidity Monitor - Vilasio</title>
+<meta name="description" content="Liquidity Monitor by Vilasio — Net Liquidity formula, Fed balance sheet, TGA, Reverse Repo, Money Supply tracking for institutional macro analysis.">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;
+  --brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;
+  --white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;
+  --gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);
+  --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
+  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;
+  --cyan:#06b6d4;--cyan-dim:rgba(6,182,212,0.10);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{width:24px;height:24px;opacity:.9}
+.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white)}
+.nav-sep{color:var(--gray);margin:0 4px}
+.nav-page{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}
+.nav-link:hover{color:var(--white)}
+.hero{padding:88px 48px 24px}
+.hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+.pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
+.hero-h1{font-family:"Alata",sans-serif;font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:-1.5px;line-height:1.1;margin-top:6px}
+.hero-h1 em{font-style:normal;color:var(--gold2)}
+.hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:540px;margin-top:6px}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.regime-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap}
+.regime-badge.qe{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
+.regime-badge.qt{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
+.regime-badge.neutral{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
+
+/* Status Cards */
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
+.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}
+.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.status-card.up::before{background:var(--grn)}
+.status-card.dn::before{background:var(--red)}
+.status-card.neut::before{background:var(--gray)}
+.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}
+.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
+.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
+.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
+.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
+
+/* Chart sections */
+main{padding:0 48px 64px}
+.chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
+.chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
+.ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
+.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin-top:2px}
+.ch-toggles{display:flex;gap:3px}
+.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd2);color:var(--gray3);cursor:pointer;transition:all .2s}
+.ch-tog:hover{color:var(--white);border-color:var(--brd3)}
+.ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
+.comp-tog{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;transition:all .2s}
+.comp-tog:hover{color:var(--white);border-color:var(--brd3)}
+.comp-tog.active{background:rgba(255,255,255,0.06);color:var(--white);border-color:var(--brd3)}
+.comp-tog.off{opacity:0.35}
+.chart-wrap{padding:12px 20px 16px}
+.chart-canvas-wrap{position:relative;height:340px}
+.chart-canvas-sm{position:relative;height:220px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
+.legend-item{display:flex;align-items:center;gap:5px;cursor:pointer;transition:opacity .2s}
+.legend-item:hover{opacity:1}
+.legend-item.off{opacity:0.3}
+.legend-dot{width:7px;height:7px;border-radius:50%}
+.legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
+
+/* Dual column */
+.dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
+
+/* Explain */
+.explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}
+.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
+.explain-text{font-size:12px;color:var(--gray2);line-height:1.8}
+.explain-text strong{color:var(--white);font-weight:500}
+.explain-formula{font-family:"DM Mono",monospace;font-size:13px;color:var(--gold);background:rgba(200,168,75,0.06);border:1px solid rgba(200,168,75,0.15);padding:12px 20px;margin:12px 0;display:inline-block}
+
+/* Loading */
+.loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,5,7,0.8);z-index:10}
+.loading-text{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);animation:pulse 1.5s ease infinite}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
+
+/* Footer */
+footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
+.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
+.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
+
+@media(max-width:768px){
+  nav{padding:12px 16px}
+  .hero{padding:76px 16px 16px}
+  main{padding:0 16px 40px}
+  .status-row{grid-template-columns:1fr 1fr}
+  .dual-row{grid-template-columns:1fr}
+  footer{padding:24px 16px;flex-direction:column}
+  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
+    <span class="nav-name">Vilasio</span>
+    <span class="nav-sep">&#183;</span>
+    <span class="nav-page">Liquidity Monitor</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="cot.html">COT Intelligence</a>
+    <a class="nav-link" href="liquidity.html">Liquidity</a>
+    <a class="nav-link" href="blog.html">Insights</a>
+    <a class="nav-link" href="about.html">About</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag"><span class="pulse"></span> FRED Weekly Data</div>
+      <h1 class="hero-h1">The hidden <em>fuel</em> behind every rally.</h1>
+      <p class="hero-desc">Net Liquidity tracking, Fed balance sheet decomposition, and money supply analysis &#8212; the macro variables that drive risk assets.</p>
+    </div>
+    <div class="regime-badge neutral" id="regime-badge">LOADING</div>
+  </div>
+</section>
+
+<main>
+  <!-- STATUS CARDS -->
+  <div class="status-row reveal" id="status-row">
+    <div class="status-card neut" id="sc-netliq">
+      <div class="sc-label">Net Liquidity</div>
+      <div class="sc-val" id="sc-netliq-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta" id="sc-netliq-chg">&#8212;</span><span class="sc-note">W/W</span></div>
+    </div>
+    <div class="status-card neut" id="sc-walcl">
+      <div class="sc-label">Fed Balance Sheet (WALCL)</div>
+      <div class="sc-val" id="sc-walcl-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta" id="sc-walcl-chg">&#8212;</span><span class="sc-note">W/W</span></div>
+    </div>
+    <div class="status-card neut" id="sc-tga">
+      <div class="sc-label">TGA Balance</div>
+      <div class="sc-val" id="sc-tga-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta" id="sc-tga-chg">&#8212;</span><span class="sc-note">W/W &#183; High = Drain</span></div>
+    </div>
+    <div class="status-card neut" id="sc-rrp">
+      <div class="sc-label">Reverse Repo (ON RRP)</div>
+      <div class="sc-val" id="sc-rrp-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta" id="sc-rrp-chg">&#8212;</span><span class="sc-note">W/W</span></div>
+    </div>
+  </div>
+
+  <!-- NET LIQUIDITY CHART -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div>
+        <div class="ch-title">Net Liquidity vs S&P 500</div>
+        <div class="ch-sub">WALCL &minus; TGA &minus; Reverse Repo</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="ch-toggles">
+          <button class="ch-tog" data-range="52" onclick="setRange(52)">1Y</button>
+          <button class="ch-tog" data-range="104" onclick="setRange(104)">2Y</button>
+          <button class="ch-tog active" data-range="156" onclick="setRange(156)">3Y</button>
+        </div>
+        <div style="display:flex;gap:3px;margin-left:8px">
+          <button class="comp-tog active" id="tog-sp" onclick="togComp('sp')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gray3);margin-right:3px"></span>S&P 500</button>
+          <button class="comp-tog" id="tog-walcl" onclick="togComp('walcl')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blu);margin-right:3px"></span>WALCL</button>
+          <button class="comp-tog" id="tog-tga" onclick="togComp('tga')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amb);margin-right:3px"></span>TGA</button>
+          <button class="comp-tog" id="tog-rrp" onclick="togComp('rrp')"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--violet);margin-right:3px"></span>RRP</button>
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netLiqChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div>
+      <div class="legend-item"><span class="legend-dot dashed"></span> S&P 500</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> WALCL</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--amb)"></span> TGA</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> RRP</div>
+    </div>
+  </div>
+
+  <!-- FED BALANCE SHEET + QE/QT -->
+  <div class="dual-row reveal">
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Fed Balance Sheet</div><div class="ch-sub">Treasury + MBS + Other</div></div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="bsChart"></canvas></div></div>
+      <div class="chart-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Treasury</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> MBS</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--gray)"></span> Other</div>
+      </div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">QE / QT Regime</div><div class="ch-sub">Weekly change in WALCL (Bn)</div></div>
+        <div style="text-align:right">
+          <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">13W Avg</div>
+          <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="qeqt-avg">&#8212;</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="qeqtChart"></canvas></div></div>
+      <div class="chart-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Expansion (QE)</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Contraction (QT)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESERVES + TGA -->
+  <div class="dual-row reveal">
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">Bank Reserves</div><div class="ch-sub">Reserve Balances with Federal Reserve</div></div>
+        <div style="text-align:right">
+          <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="res-current">&#8212;</div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--gray2)" id="res-sub">Latest</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="resChart"></canvas></div></div>
+    </div>
+    <div class="chart-section" style="margin-bottom:0">
+      <div class="chart-header">
+        <div><div class="ch-title">TGA Tracker</div><div class="ch-sub">Treasury General Account</div></div>
+        <div style="text-align:right">
+          <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="tga-current">&#8212;</div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--gray2)">High = Liquidity Drained</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="tgaChart"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- MONEY SUPPLY -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Money Supply</div><div class="ch-sub">M2 level + YoY growth rate</div></div>
+      <div style="text-align:right">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">M2 YoY</div>
+        <div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="m2yoy-current">&#8212;</div>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="m2Chart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> M2 Level (Bn)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> M2 YoY Growth %</div>
+    </div>
+  </div>
+
+  <!-- DEFICIT SPENDING -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Deficit Spending</div><div class="ch-sub">Monthly Federal Surplus / Deficit (Bn)</div></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="defChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Surplus</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Deficit</div>
+    </div>
+  </div>
+
+  <!-- EXPLANATION -->
+  <div class="explain-section reveal">
+    <div class="explain-title">How to read the Liquidity Monitor</div>
+    <div class="explain-text">
+      <strong>Net Liquidity</strong> is the single most important macro variable for risk assets. It measures how much money is actually available in the financial system.
+      <div class="explain-formula">Net Liquidity = WALCL &minus; TGA &minus; Reverse Repo</div>
+      <strong>WALCL</strong> (Fed Total Assets) is the source of liquidity &#8212; when the Fed buys bonds (QE), WALCL increases and liquidity rises. During QT, WALCL shrinks.<br><br>
+      <strong>TGA</strong> (Treasury General Account) is the government's checking account at the Fed. When TGA is high, cash is parked there instead of circulating &#8212; liquidity decreases. When TGA drains (government spending), liquidity is released into the system.<br><br>
+      <strong>Reverse Repo (ON RRP)</strong> is where institutions park excess cash overnight with the Fed. High RRP = cash sitting on the sidelines. As RRP declines, that cash re-enters markets.<br><br>
+      <strong>Key insight:</strong> S&P 500 and Net Liquidity are highly correlated over medium-term horizons. Divergences between the two often resolve with price catching up to liquidity. When Net Liquidity expands while S&P 500 lags &#8212; it tends to be a buying opportunity. When S&P 500 leads while liquidity contracts &#8212; caution is warranted.
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span>
+  </div>
+  <div style="display:flex;gap:28px">
+    <a href="privacy.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Privacy Policy</a>
+    <a href="terms.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Terms of Use</a>
+    <a href="cookie.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Cookie Policy</a>
+    <a href="contact.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Contact</a>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+</footer>
+<div class="disclaimer-bar">
+  <div class="disclaimer-inner">
+    <span class="disclaimer-label">Financial Disclaimer</span>
+    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
+  </div>
+</div>
+
+<script>
+var API="https://vilasio-cot-backend.onrender.com";
+var D=null, rangeWeeks=156;
+var compShow={sp:1,walcl:0,tga:0,rrp:0};
+var charts={};
+
+function fBn(v){
+  if(v==null)return"\u2014";
+  if(Math.abs(v)>=1000)return"$"+(v/1000).toFixed(2)+"T";
+  if(Math.abs(v)>=1)return"$"+v.toFixed(0)+"B";
+  return"$"+(v*1000).toFixed(0)+"M";
+}
+function fChg(v){
+  if(v==null)return"\u2014";
+  var s=v>=0?"+":"";
+  if(Math.abs(v)>=100)return s+(v/1000).toFixed(2)+"T";
+  if(Math.abs(v)>=1)return s+v.toFixed(1)+"B";
+  return s+(v*1000).toFixed(0)+"M";
+}
+function fPct(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
+function sliceLast(arr,n){return n>=arr.length?arr:arr.slice(-n)}
+
+/* Chart defaults */
+var axOpts={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8}}};
+var tipOpts={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
+
+function miniOpts(h){
+  return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+    plugins:{legend:{display:false},tooltip:tipOpts},
+    scales:{x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v>=1?v.toFixed(0)+"B":v.toFixed(1)}})})}};
+}
+
+function setRange(w){
+  rangeWeeks=w;
+  document.querySelectorAll(".ch-tog[data-range]").forEach(function(b){b.classList.toggle("active",parseInt(b.dataset.range)===w)});
+  if(D)renderAll();
+}
+function togComp(k){
+  compShow[k]=compShow[k]?0:1;
+  var b=document.getElementById("tog-"+k);
+  if(b){b.classList.toggle("active",!!compShow[k]);b.classList.toggle("off",!compShow[k])}
+  if(D)renderNetLiq();
+}
+
+/* ─── RENDER ──────────────────────────────────────────── */
+function renderAll(){
+  renderCards();
+  renderNetLiq();
+  renderBS();
+  renderQEQT();
+  renderReserves();
+  renderTGA();
+  renderM2();
+  renderDeficit();
+}
+
+function renderCards(){
+  var nl=D.netLiquidity, n=nl.netLiq.length;
+  if(n<2)return;
+  var cur=nl.netLiq[n-1],prev=nl.netLiq[n-2],chg=cur-prev;
+  document.getElementById("sc-netliq-val").textContent=fBn(cur);
+  var ce=document.getElementById("sc-netliq-chg");ce.textContent=fChg(chg);ce.className="sc-delta "+(chg>=0?"up":"dn");
+  document.getElementById("sc-netliq").className="status-card "+(chg>=0?"up":"dn");
+
+  var wc=nl.walcl[n-1],wp=nl.walcl[n-2],wchg=wc-wp;
+  document.getElementById("sc-walcl-val").textContent=fBn(wc);
+  var we=document.getElementById("sc-walcl-chg");we.textContent=fChg(wchg);we.className="sc-delta "+(wchg>=0?"up":"dn");
+  document.getElementById("sc-walcl").className="status-card "+(wchg>=0?"up":"dn");
+
+  var tc=nl.tga[n-1],tp=nl.tga[n-2],tchg=tc-tp;
+  document.getElementById("sc-tga-val").textContent=fBn(tc);
+  var te=document.getElementById("sc-tga-chg");te.textContent=fChg(tchg);te.className="sc-delta "+(tchg>=0?"dn":"up");/* TGA up=drain=bad */
+  document.getElementById("sc-tga").className="status-card "+(tchg<=0?"up":"dn");
+
+  var rc=nl.rrp[n-1],rp=nl.rrp[n-2],rchg=rc-rp;
+  document.getElementById("sc-rrp-val").textContent=fBn(rc);
+  var re=document.getElementById("sc-rrp-chg");re.textContent=fChg(rchg);re.className="sc-delta "+(rchg<=0?"up":"dn");/* RRP down=good */
+  document.getElementById("sc-rrp").className="status-card "+(rchg<=0?"up":"dn");
+
+  /* Regime badge */
+  var badge=document.getElementById("regime-badge");
+  var st=D.qeqt.status;
+  badge.textContent=st==="QE"?"EXPANDING (QE)":st==="QT"?"CONTRACTING (QT)":"NEUTRAL";
+  badge.className="regime-badge "+(st==="QE"?"qe":st==="QT"?"qt":"neutral");
+}
+
+function renderNetLiq(){
+  var nl=D.netLiquidity;
+  var dates=sliceLast(nl.dates,rangeWeeks);
+  var offset=nl.dates.length-dates.length;
+  var netData=sliceLast(nl.netLiq,rangeWeeks);
+
+  var ds=[{
+    label:"Net Liquidity",data:netData,
+    borderColor:"#22c55e",backgroundColor:"rgba(34,197,94,0.06)",
+    borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"
+  }];
+
+  if(compShow.walcl)ds.push({label:"WALCL",data:sliceLast(nl.walcl,rangeWeeks),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"});
+  if(compShow.tga)ds.push({label:"TGA",data:sliceLast(nl.tga,rangeWeeks),borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"});
+  if(compShow.rrp)ds.push({label:"RRP",data:sliceLast(nl.rrp,rangeWeeks),borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"});
+
+  var scales={
+    x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:10,maxRotation:0})}),
+    y:Object.assign({},axOpts,{position:"left",ticks:Object.assign({},axOpts.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v.toFixed(0)+"B"}})})
+  };
+
+  if(compShow.sp&&D.sp500&&D.sp500.dates.length){
+    /* Align S&P on net liq dates */
+    var spMap={};D.sp500.dates.forEach(function(d,i){spMap[d]=D.sp500.values[i]});
+    var spData=dates.map(function(d){
+      if(spMap[d])return spMap[d];
+      /* Find nearest */
+      for(var off=1;off<=7;off++){
+        var dt=new Date(d);dt.setDate(dt.getDate()-off);
+        var check=dt.toISOString().slice(0,10);
+        if(spMap[check])return spMap[check];
+        dt=new Date(d);dt.setDate(dt.getDate()+off);
+        check=dt.toISOString().slice(0,10);
+        if(spMap[check])return spMap[check];
+      }
+      return null;
+    });
+    ds.push({label:"S&P 500",data:spData,borderColor:"rgba(240,241,245,0.6)",borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});
+    scales.yP={position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(0)}}};
+  }
+
+  if(charts.netLiq)charts.netLiq.destroy();
+  charts.netLiq=new Chart(document.getElementById("netLiqChart").getContext("2d"),{
+    type:"line",data:{labels:dates,datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){
+        if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();
+        return c.dataset.label+": "+fBn(c.parsed.y);
+      }}})}
+    ,scales:scales}
+  });
+}
+
+function renderBS(){
+  var bs=D.balanceSheet;
+  var dates=sliceLast(bs.dates,rangeWeeks);
+  var offset=bs.dates.length-dates.length;
+  if(charts.bs)charts.bs.destroy();
+  charts.bs=new Chart(document.getElementById("bsChart").getContext("2d"),{
+    type:"line",data:{labels:dates,datasets:[
+      {label:"Treasury",data:sliceLast(bs.treasury,rangeWeeks),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.15)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+      {label:"MBS",data:sliceLast(bs.mbs,rangeWeeks),borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.15)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+      {label:"Other",data:sliceLast(bs.other,rangeWeeks),borderColor:"#5a6070",backgroundColor:"rgba(90,96,112,0.10)",borderWidth:1,pointRadius:0,fill:true,tension:0.3}
+    ]},options:miniOpts()
+  });
+}
+
+function renderQEQT(){
+  var q=D.qeqt;
+  var dates=sliceLast(q.dates,rangeWeeks);
+  var data=sliceLast(q.changes,rangeWeeks);
+  document.getElementById("qeqt-avg").textContent=fChg(q.avgWeekly)+"/wk";
+  document.getElementById("qeqt-avg").style.color=q.avgWeekly>=0?"var(--grn)":"var(--red)";
+  if(charts.qeqt)charts.qeqt.destroy();
+  charts.qeqt=new Chart(document.getElementById("qeqtChart").getContext("2d"),{
+    type:"bar",data:{labels:dates,datasets:[{
+      data:data,
+      backgroundColor:data.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),
+      borderColor:data.map(function(v){return v>=0?"#22c55e":"#ef4444"}),
+      borderWidth:1
+    }]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){return fChg(c.parsed.y)+" Bn"}}})},
+      scales:{x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return v.toFixed(0)+"B"}})})}
+    }
+  });
+}
+
+function renderReserves(){
+  var r=D.reserves;
+  if(!r||!r.dates.length)return;
+  var dates=sliceLast(r.dates,rangeWeeks);
+  var vals=sliceLast(r.values,rangeWeeks);
+  var n=r.values.length;
+  document.getElementById("res-current").textContent=fBn(r.values[n-1]);
+  if(charts.res)charts.res.destroy();
+  charts.res=new Chart(document.getElementById("resChart").getContext("2d"),{
+    type:"line",data:{labels:dates,datasets:[{
+      data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",
+      borderWidth:1.5,pointRadius:0,fill:true,tension:0.3
+    }]},options:miniOpts()
+  });
+}
+
+function renderTGA(){
+  var t=D.tga;
+  if(!t||!t.dates.length)return;
+  var dates=sliceLast(t.dates,rangeWeeks);
+  var vals=sliceLast(t.values,rangeWeeks);
+  var n=t.values.length;
+  document.getElementById("tga-current").textContent=fBn(t.values[n-1]);
+  if(charts.tga)charts.tga.destroy();
+  charts.tga=new Chart(document.getElementById("tgaChart").getContext("2d"),{
+    type:"line",data:{labels:dates,datasets:[{
+      data:vals,borderColor:"#f59e0b",backgroundColor:"rgba(245,158,11,0.06)",
+      borderWidth:1.5,pointRadius:0,fill:true,tension:0.3
+    }]},options:miniOpts()
+  });
+}
+
+function renderM2(){
+  var ms=D.moneySupply;
+  if(!ms)return;
+  var m2=ms.m2,yoy=ms.m2yoy;
+  var dates=sliceLast(m2.dates,Math.min(rangeWeeks,m2.dates.length));
+  var vals=sliceLast(m2.values,Math.min(rangeWeeks,m2.values.length));
+  /* Align YoY on m2 dates */
+  var yoyMap={};yoy.dates.forEach(function(d,i){yoyMap[d]=yoy.values[i]});
+  var yoyData=dates.map(function(d){return yoyMap[d]!=null?yoyMap[d]:null});
+  var n=yoy.values.length;
+  if(n>0){
+    var cv=yoy.values[n-1];
+    document.getElementById("m2yoy-current").textContent=fPct(cv);
+    document.getElementById("m2yoy-current").style.color=cv>=0?"var(--grn)":"var(--red)";
+  }
+  if(charts.m2)charts.m2.destroy();
+  charts.m2=new Chart(document.getElementById("m2Chart").getContext("2d"),{
+    type:"line",data:{labels:dates,datasets:[
+      {label:"M2",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"},
+      {label:"M2 YoY %",data:yoyData,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){
+        if(c.dataset.yAxisID==="yR")return"M2 YoY: "+fPct(c.parsed.y);
+        return"M2: "+fBn(c.parsed.y);
+      }}})},
+      scales:{
+        x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:8,maxRotation:0})}),
+        y:Object.assign({},axOpts,{position:"left",ticks:Object.assign({},axOpts.ticks,{callback:function(v){return fBn(v)}})}),
+        yR:{position:"right",grid:{display:false},ticks:{color:"#5a6070",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}}
+      }
+    }
+  });
+}
+
+function renderDeficit(){
+  var df=D.deficit;
+  if(!df||!df.dates.length)return;
+  var dates=sliceLast(df.dates,Math.min(36,df.dates.length));
+  var vals=sliceLast(df.values,Math.min(36,df.values.length));
+  if(charts.def)charts.def.destroy();
+  charts.def=new Chart(document.getElementById("defChart").getContext("2d"),{
+    type:"bar",data:{labels:dates,datasets:[{
+      data:vals,
+      backgroundColor:vals.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),
+      borderColor:vals.map(function(v){return v>=0?"#22c55e":"#ef4444"}),
+      borderWidth:1
+    }]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+      plugins:{legend:{display:false},tooltip:Object.assign({},tipOpts,{callbacks:{label:function(c){return fBn(c.parsed.y)}}})},
+      scales:{
+        x:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{maxTicksLimit:12,maxRotation:0})}),
+        y:Object.assign({},axOpts,{ticks:Object.assign({},axOpts.ticks,{callback:function(v){return fBn(v)}})})
+      }
+    }
+  });
+}
+
+/* ─── INIT ──────────────────────────────────────────── */
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
+document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
+
+(function init(){
+  fetch(API+"/api/liquidity").then(function(r){return r.json()}).then(function(data){
+    if(data.status!=="ok"){console.error("API error:",data.message);return}
+    D=data;
+    renderAll();
+  }).catch(function(e){
+    console.error("Liquidity fetch failed:",e);
+  });
+})();
+</script>
+</body>
+</html>
