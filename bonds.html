@@ -156,8 +156,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">2Y-10Y Spread</div><div class="ch-sub">Inversion = Recession Signal</div></div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="spreadChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Normal (positive)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inverted (negative)</div></div>
