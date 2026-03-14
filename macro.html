@@ -149,12 +149,8 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <!-- MACRO REGIME OSCILLATOR -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; <span id="mo-lb-label">12M LOOKBACK</span></div></div>
-      <div style="display:flex;gap:16px;align-items:center">
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">Rank</span><div class="ch-toggles"><button class="ch-tog active" data-g="molb" data-rw="12" onclick="setMoLB(12)">12M</button><button class="ch-tog" data-g="molb" data-rw="52" onclick="setMoLB(52)">52M</button></div></div>
-        <div style="width:1px;height:20px;background:var(--brd2)"></div>
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">View</span><div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button><button class="ch-tog" data-g="mo" data-rw="120" onclick="setR('mo',120)">10Y</button><button class="ch-tog" data-g="mo" data-rw="9999" onclick="setR('mo',9999)">MAX</button></div></div>
-      </div>
+      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank (52M Lookback)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button><button class="ch-tog" data-g="mo" data-rw="120" onclick="setR('mo',120)">10Y</button><button class="ch-tog" data-g="mo" data-rw="9999" onclick="setR('mo',9999)">MAX</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inflation Rank</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Unemployment Rank</div><div class="legend-item"><span class="legend-dot dashed"></span> 20 / 80 Thresholds</div></div>
@@ -249,11 +245,9 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36};
-var moLookback=12;
 var infShow={cpi:1,ccpi:1,pce:1,cpce:1,ppi:1};
 var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO'};
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
-function setMoLB(lb){moLookback=lb;document.querySelectorAll('.ch-tog[data-g="molb"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===lb)});if(D)renderMorpheus()}
 function togInf(k){infShow[k]=infShow[k]?0:1;var el=document.getElementById('leg-'+k);if(el)el.style.opacity=infShow[k]?'1':'0.3';if(D)renderInflation()}
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function fMon(d){if(!d)return d;var p=d.split('-');return MON[parseInt(p[1],10)-1]+' '+p[0]}
@@ -299,8 +293,7 @@ function renderCards(){
 
 function renderMorpheus(){
   var m=D.morpheus,rw=R.mo;
-  var irKey=moLookback===52?'infRank52':'infRank12',urKey=moLookback===52?'urRank52':'urRank12';
-  var rawIr=m[irKey]||m.infRank12,rawUr=m[urKey]||m.urRank12,rawDates=m.dates;
+  var rawIr=m.infRank52||m.infRank12,rawUr=m.urRank52||m.urRank12,rawDates=m.dates;
   // Find first index where BOTH ranks have valid (non-null) data
   var startIdx=0;
   for(var i=0;i<rawDates.length;i++){if(rawIr[i]!=null&&rawUr[i]!=null){startIdx=i;break}}
@@ -308,7 +301,6 @@ function renderMorpheus(){
   var trimD=rawDates.slice(startIdx),trimIr=rawIr.slice(startIdx),trimUr=rawUr.slice(startIdx);
   var dates=fMonArr(sl(trimD,rw)),ir=sl(trimIr,rw),ur=sl(trimUr,rw);
   var len=dates.length;
-  document.getElementById("mo-lb-label").textContent=moLookback+"M LOOKBACK";
   if(charts.mo)charts.mo.destroy();
   charts.mo=new Chart(document.getElementById("morphChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
     {label:"Inflation Rank",data:ir,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",borderWidth:2,pointRadius:0,fill:true,tension:0.3},
