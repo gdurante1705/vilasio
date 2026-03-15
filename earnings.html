@@ -145,6 +145,7 @@ function fmtP(v){return v!=null?'$'+v.toFixed(2):'\u2014'}
 function fmtPct(v){return v!=null?(v>=0?'+':'')+v.toFixed(1)+'%':'\u2014'}
 function setupBadge(t){if(t==='breakout')return'<span class="badge grn">Breakout</span>';if(t==='test')return'<span class="badge blu">Test</span>';return'<span class="badge gold">Zone Entry</span>'}
 function trendBadge(t){return t==='bullish'?'<span class="badge grn">Bullish</span>':'<span class="badge red">Bearish</span>'}
+function etfBadge(etf,mt){if(!etf)return'';var d=(mt||{})[etf];if(!d)return'<span class="badge gray">'+etf+'</span>';var c=d.trend==='bullish'?'grn':'red';var arrow=d.trend==='bullish'?'\u25B2':'\u25BC';return'<span class="badge '+c+'">'+etf+' '+arrow+'</span>'}
 function cautionBadge(valid){return valid===false?'<span class="badge" style="color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)">\u26A0 CAUTION</span>':''}
 function heatColor(v){if(v==null)return'';var abs=Math.min(Math.abs(v),30),i=abs/30*0.5+0.1;return v>=0?'rgba(34,197,94,'+i+')':'rgba(239,68,68,'+i+')'}
 
@@ -166,7 +167,8 @@ function renderSignals(){
   var sigs=D.signals||[];
   var el=document.getElementById('signals-table');
   if(!sigs.length){el.innerHTML='<tr><td style="color:var(--gray2)">No active PEAD signals in the current window.</td></tr>';return}
-  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Date</th><th>Surprise</th><th>Gap</th><th>Setup</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th>Days</th><th>Sector</th><th>Trend</th><th>Status</th></tr></thead><tbody>';
+  var mt=D.marketTrend||{};
+  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Date</th><th>Surprise</th><th>Gap</th><th>Setup</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th>Days</th><th>Sector / ETF</th><th>Trend</th><th>Status</th></tr></thead><tbody>';
   sigs.forEach(function(s){
     var status=s.isActive?'<span class="badge grn">Active</span>':'<span class="badge gray">Filled</span>';
     html+='<tr>';
@@ -181,7 +183,8 @@ function renderSignals(){
     html+='<td>'+fmtP(s.targetLevel)+'</td>';
     html+='<td style="color:var(--gold)">1:'+s.riskReward.toFixed(0)+'</td>';
     html+='<td>'+s.daysSinceEarnings+'d</td>';
-    html+='<td>'+trendBadge(s.sectorTrend)+' '+cautionBadge(s.trendValid)+'</td>';
+    html+='<td>'+s.sector+' '+etfBadge(s.sectorEtf,mt)+'</td>';
+    html+='<td>'+trendBadge(s.spxTrend)+' '+cautionBadge(s.trendValid)+'</td>';
     html+='<td>'+status+'</td>';
     html+='</tr>';
   });
@@ -193,17 +196,18 @@ function renderUpcoming(){
   var up=D.upcoming||[];
   var el=document.getElementById('upcoming-table');
   if(!up.length){el.innerHTML='<tr><td style="color:var(--gray2)">No upcoming earnings matching filters.</td></tr>';return}
-  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector</th><th>EPS Est.</th><th>Prev EPS</th><th>Prev Surprise</th></tr></thead><tbody>';
+  var mt=D.marketTrend||{};
+  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th><th>EPS Est.</th><th>Rev. Est.</th><th>Quarter</th></tr></thead><tbody>';
   up.forEach(function(u){
     html+='<tr>';
     html+='<td>'+u.date+'</td>';
     html+='<td style="color:var(--gold);font-weight:500">'+u.symbol+'</td>';
     html+='<td>'+u.name+'</td>';
     html+='<td>'+fmtM(u.marketCap)+'</td>';
-    html+='<td><span class="badge gray">'+u.sector+'</span></td>';
+    html+='<td>'+u.sector+' '+etfBadge(u.sectorEtf,mt)+'</td>';
     html+='<td>'+(u.epsEstimate!=null?u.epsEstimate.toFixed(2):'\u2014')+'</td>';
-    html+='<td>'+(u.previousEps!=null?u.previousEps.toFixed(2):'\u2014')+'</td>';
-    html+='<td style="background:'+heatColor(u.previousSurprise)+'">'+fmtPct(u.previousSurprise)+'</td>';
+    html+='<td>'+(u.revenueEstimate!=null?fmtM(u.revenueEstimate):'\u2014')+'</td>';
+    html+='<td>'+(u.quarter!=null&&u.year!=null?'Q'+u.quarter+' '+u.year:'\u2014')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
