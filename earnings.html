@@ -81,7 +81,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <section class="hero">
   <div class="hero-top">
     <div>
-      <div class="hero-tag"><span class="pulse"></span> FMP Data &#183; NYSE &amp; NASDAQ</div>
+      <div class="hero-tag"><span class="pulse"></span> Market Data &#183; NYSE &amp; NASDAQ</div>
       <h1 class="hero-h1">Spot the <em>drift</em>.</h1>
       <p class="hero-desc">Post-Earnings Announcement Drift scanner &#8212; identifies positive surprise stocks with valid entry setups based on gap analysis, sector trend, and risk/reward.</p>
     </div>
@@ -166,8 +166,7 @@ function renderCards(){
   document.getElementById('sc-sig').className='status-card '+(active.length>0?'up':'neut');
   if(sigs.length){var avg=sigs.reduce(function(a,s){return a+s.surprisePct},0)/sigs.length;document.getElementById('sc-surp-val').textContent='+'+avg.toFixed(1)+'%';document.getElementById('sc-surp').className='status-card up'}
   var mt=D.marketTrend||{};if(mt.SPX){document.getElementById('sc-spx-val').textContent=mt.SPX.trend.toUpperCase();var e=document.getElementById('sc-spx-chg');e.textContent=(mt.SPX.pctVsSma>=0?'+':'')+mt.SPX.pctVsSma.toFixed(1)+'%';e.className='sc-delta '+(mt.SPX.trend==='bullish'?'up':'dn');document.getElementById('sc-spx').className='status-card '+(mt.SPX.trend==='bullish'?'up':'dn')}
-  var now7=new Date();now7.setHours(0,0,0,0);var in7=new Date(now7.getTime()+7*86400000);var up=(D.upcoming||[]).filter(function(u){var d=new Date(u.date+'T00:00:00');return d>=now7&&d<=in7});
-  document.getElementById('sc-up-val').textContent=up.length;
+  document.getElementById('sc-up-val').textContent=(D.upcoming||[]).length;
   if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
 }
 
