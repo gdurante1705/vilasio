@@ -110,7 +110,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
   <!-- UPCOMING EARNINGS -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Upcoming Earnings</div><div class="ch-sub">Next 14 Days &#183; NYSE &amp; NASDAQ &#183; 10B-200B Market Cap</div></div></div>
+    <div class="chart-header"><div><div class="ch-title">Upcoming Earnings</div><div class="ch-sub">Next Week &#183; NYSE &amp; NASDAQ &#183; 10B-200B Market Cap &#183; Finviz</div></div></div>
     <div class="tbl-wrap"><table class="data-table" id="upcoming-table"><tr><td style="color:var(--gray2)">Loading calendar...</td></tr></table></div>
   </div>
 
@@ -233,17 +233,13 @@ function renderUpcoming(){
   var el=document.getElementById('upcoming-table');
   if(!up.length){el.innerHTML='<tr><td style="color:var(--gray2)">No upcoming earnings matching filters.</td></tr>';return}
   var mt=D.marketTrend||{};
-  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th><th>EPS Est.</th><th>Rev. Est.</th><th>Quarter</th></tr></thead><tbody>';
+  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th></tr></thead><tbody>';
   up.forEach(function(u){
     html+='<tr>';
-    html+='<td>'+u.date+'</td>';
     html+='<td style="color:var(--gold);font-weight:500">'+u.symbol+'</td>';
     html+='<td>'+u.name+'</td>';
-    html+='<td>'+fmtM(u.marketCap)+'</td>';
+    html+='<td>'+(u.marketCap?fmtM(u.marketCap):'\u2014')+'</td>';
     html+='<td>'+u.sector+' '+etfBadge(u.sectorEtf,mt)+'</td>';
-    html+='<td>'+(u.epsEstimate!=null?u.epsEstimate.toFixed(2):'\u2014')+'</td>';
-    html+='<td>'+(u.revenueEstimate!=null?fmtM(u.revenueEstimate):'\u2014')+'</td>';
-    html+='<td>'+(u.quarter!=null&&u.year!=null?'Q'+u.quarter+' '+u.year:'\u2014')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
