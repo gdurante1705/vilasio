@@ -118,7 +118,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="explain-text">
       <strong>PEAD (Post-Earnings Announcement Drift)</strong> is the tendency for a stock's price to continue drifting in the direction of the earnings surprise for 30-60 days after the announcement. This scanner identifies only <strong>long setups</strong> from positive surprises &#8212; we never short negative surprises.<br><br>
       <strong>Setup Types:</strong> <strong>Breakout</strong> (gap &lt;3%) &#8212; price barely gaps, entry on breakout of earnings high. <strong>Test</strong> (gap 3-8%) &#8212; moderate gap, wait for test of earnings high. <strong>Zone Entry</strong> (gap &gt;8%) &#8212; large gap, entry if price returns to pre-gap level.<br><br>
-      <strong>Filters:</strong> Only NYSE &amp; NASDAQ stocks with 2.5B-250B market cap (the PEAD sweet spot). Sector ETF or SPX must be in uptrend (above SMA 10 weekly) &#8212; we don't go long against the trend. Only positive earnings surprises where price confirms (actual &gt; estimate).<br><br>
+      <strong>Filters:</strong> Only NYSE &amp; NASDAQ stocks with 2.5B-250B market cap (the PEAD sweet spot). If at least one of Sector ETF or SPX is bullish (above SMA 10 weekly), the trend is confirmed. If both are bearish, the stock still appears but with a &#x26A0; CAUTION badge &#8212; you decide. Only positive earnings surprises where price confirms (actual &gt; estimate).<br><br>
       <strong>Risk Management:</strong> Entry at earnings candle high, stop at earnings candle low, target at 3:1 reward-to-risk. Hold period: up to 1 quarter (3 months). Gap filled = signal invalidated.
     </div>
   </div>
@@ -145,6 +145,7 @@ function fmtP(v){return v!=null?'$'+v.toFixed(2):'\u2014'}
 function fmtPct(v){return v!=null?(v>=0?'+':'')+v.toFixed(1)+'%':'\u2014'}
 function setupBadge(t){if(t==='breakout')return'<span class="badge grn">Breakout</span>';if(t==='test')return'<span class="badge blu">Test</span>';return'<span class="badge gold">Zone Entry</span>'}
 function trendBadge(t){return t==='bullish'?'<span class="badge grn">Bullish</span>':'<span class="badge red">Bearish</span>'}
+function cautionBadge(valid){return valid===false?'<span class="badge" style="color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)">\u26A0 CAUTION</span>':''}
 function heatColor(v){if(v==null)return'';var abs=Math.min(Math.abs(v),30),i=abs/30*0.5+0.1;return v>=0?'rgba(34,197,94,'+i+')':'rgba(239,68,68,'+i+')'}
 
 function renderAll(){renderCards();renderSignals();renderUpcoming();renderRegime()}
@@ -156,7 +157,7 @@ function renderCards(){
   document.getElementById('sc-sig').className='status-card '+(active.length>0?'up':'neut');
   if(sigs.length){var avg=sigs.reduce(function(a,s){return a+s.surprisePct},0)/sigs.length;document.getElementById('sc-surp-val').textContent='+'+avg.toFixed(1)+'%';document.getElementById('sc-surp').className='status-card up'}
   var mt=D.marketTrend||{};if(mt.SPX){document.getElementById('sc-spx-val').textContent=mt.SPX.trend.toUpperCase();var e=document.getElementById('sc-spx-chg');e.textContent=(mt.SPX.pctVsSma>=0?'+':'')+mt.SPX.pctVsSma.toFixed(1)+'%';e.className='sc-delta '+(mt.SPX.trend==='bullish'?'up':'dn');document.getElementById('sc-spx').className='status-card '+(mt.SPX.trend==='bullish'?'up':'dn')}
-  var up=(D.upcoming||[]).filter(function(u){var d=new Date(u.date),now=new Date();return(d-now)<7*86400000&&(d-now)>=-86400000});
+  var now7=new Date();now7.setHours(0,0,0,0);var in7=new Date(now7.getTime()+7*86400000);var up=(D.upcoming||[]).filter(function(u){var d=new Date(u.date+'T00:00:00');return d>=now7&&d<=in7});
   document.getElementById('sc-up-val').textContent=up.length;
   if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
 }
@@ -165,7 +166,7 @@ function renderSignals(){
   var sigs=D.signals||[];
   var el=document.getElementById('signals-table');
   if(!sigs.length){el.innerHTML='<tr><td style="color:var(--gray2)">No active PEAD signals in the current window.</td></tr>';return}
-  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Date</th><th>Surprise</th><th>Gap</th><th>Setup</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th>Days</th><th>Sector</th><th>Status</th></tr></thead><tbody>';
+  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Date</th><th>Surprise</th><th>Gap</th><th>Setup</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th>Days</th><th>Sector</th><th>Trend</th><th>Status</th></tr></thead><tbody>';
   sigs.forEach(function(s){
     var status=s.isActive?'<span class="badge grn">Active</span>':'<span class="badge gray">Filled</span>';
     html+='<tr>';
@@ -180,7 +181,7 @@ function renderSignals(){
     html+='<td>'+fmtP(s.targetLevel)+'</td>';
     html+='<td style="color:var(--gold)">1:'+s.riskReward.toFixed(0)+'</td>';
     html+='<td>'+s.daysSinceEarnings+'d</td>';
-    html+='<td>'+trendBadge(s.sectorTrend)+'</td>';
+    html+='<td>'+trendBadge(s.sectorTrend)+' '+cautionBadge(s.trendValid)+'</td>';
     html+='<td>'+status+'</td>';
     html+='</tr>';
   });
