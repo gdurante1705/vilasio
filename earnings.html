@@ -154,7 +154,7 @@ function fmtPct(v){return v!=null?(v>=0?'+':'')+v.toFixed(1)+'%':'\u2014'}
 function setupBadge(t){if(t==='breakout')return'<span class="badge grn">Breakout</span>';if(t==='test')return'<span class="badge blu">Test</span>';return'<span class="badge gold">Zone Entry</span>'}
 function trendBadge(t){return t==='bullish'?'<span class="badge grn">Bullish</span>':'<span class="badge red">Bearish</span>'}
 function etfBadge(etf,mt){if(!etf)return'';var d=(mt||{})[etf];if(!d)return'<span class="badge gray">'+etf+'</span>';var c=d.trend==='bullish'?'grn':'red';var arrow=d.trend==='bullish'?'\u25B2':'\u25BC';return'<span class="badge '+c+'">'+etf+' '+arrow+'</span>'}
-function cautionBadge(valid){return valid===false?'<span class="badge" style="color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)">\u26A0 CAUTION</span>':''}
+function cautionBadge(valid,hype){if(valid!==false)return'';if(hype)return'<span class="badge" style="color:var(--violet);border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.1)">HYPE</span>';return'<span class="badge" style="color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)">\u26A0 CAUTION</span>'}
 function heatColor(v){if(v==null)return'';var abs=Math.min(Math.abs(v),30),i=abs/30*0.5+0.1;return v>=0?'rgba(34,197,94,'+i+')':'rgba(239,68,68,'+i+')'}
 
 function renderAll(){renderCards();renderSignals();renderUpcoming();renderRegime()}
@@ -202,7 +202,7 @@ function renderSignals(){
     html+='<td style="color:var(--gold)">1:'+s.riskReward.toFixed(0)+'</td>';
     html+='<td>'+s.daysSinceEarnings+'d</td>';
     html+='<td>'+s.sector+' '+etfBadge(s.sectorEtf,mt)+'</td>';
-    html+='<td>'+trendBadge(s.spxTrend)+' '+cautionBadge(s.trendValid)+'</td>';
+    html+='<td>'+trendBadge(s.spxTrend)+' '+cautionBadge(s.trendValid,s.sectorHype)+'</td>';
     html+='<td>'+status+'</td>';
     html+='</tr>';
     // Expandable detail row
