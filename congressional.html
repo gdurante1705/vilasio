@@ -135,6 +135,8 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null;
 
+function fmtVal(v){if(!v)return'\u2014';var s=String(v).replace(/[$,]/g,'');var n=parseFloat(s);if(isNaN(n))return v;if(n>=1e9)return'$'+(n/1e9).toFixed(1)+'B';if(n>=1e6)return'$'+(n/1e6).toFixed(1)+'M';if(n>=1e3)return'$'+(n/1e3).toFixed(0)+'K';return'$'+n.toFixed(0)}
+function fmtShares(v){if(!v)return'\u2014';var s=String(v).replace(/,/g,'');var n=parseFloat(s);if(isNaN(n))return v;if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return String(Math.round(n))}
 function partyBadge(p){if(!p)return'';p=p.toUpperCase();if(p==='R'||p==='REPUBLICAN')return'<span class="badge red">R</span>';if(p==='D'||p==='DEMOCRAT'||p==='DEMOCRATIC')return'<span class="badge blu">D</span>';return'<span class="badge gray">'+p+'</span>'}
 function txnBadge(t){if(!t)return'';var u=t.toUpperCase();if(u.indexOf('PURCHASE')>=0||u.indexOf('BUY')>=0)return'<span class="badge grn">Buy</span>';if(u.indexOf('SALE')>=0||u.indexOf('SELL')>=0)return'<span class="badge red">Sale</span>';return'<span class="badge gray">'+t+'</span>'}
 function roleBadge(r){if(!r)return'';var u=r.toUpperCase();if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CHIEF')>=0)return'<span class="badge gold">'+r+'</span>';if(u.indexOf('DIRECTOR')>=0||u.indexOf('10%')>=0)return'<span class="badge violet">'+r+'</span>';return r}
@@ -191,8 +193,8 @@ function renderTopWeek(){
     html+='<td>'+i.owner+'</td>';
     html+='<td>'+roleBadge(i.relationship)+'</td>';
     html+='<td style="color:var(--gold);font-weight:500">'+i.ticker+'</td>';
-    html+='<td>'+i.value+'</td>';
-    html+='<td>'+i.shares+'</td>';
+    html+='<td>'+fmtVal(i.value)+'</td>';
+    html+='<td>'+fmtShares(i.shares)+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
@@ -211,8 +213,8 @@ function renderLatest(){
     html+='<td>'+i.owner+'</td>';
     html+='<td>'+roleBadge(i.relationship)+'</td>';
     html+='<td>'+txnBadge(i.transaction)+'</td>';
-    html+='<td>'+i.value+'</td>';
-    html+='<td>'+i.shares+'</td>';
+    html+='<td>'+fmtVal(i.value)+'</td>';
+    html+='<td>'+fmtShares(i.shares)+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
