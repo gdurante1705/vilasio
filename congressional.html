@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Earnings Intelligence - Vilasio</title>
-<meta name="description" content="Earnings Intelligence (PEAD) by Vilasio — Post-Earnings Announcement Drift scanner for institutional equity analysis.">
+<title>Congressional Positioning - Vilasio</title>
+<meta name="description" content="Congressional Positioning by Vilasio — Track insider trades from corporate executives and members of Congress.">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -36,33 +36,19 @@ main{padding:0 48px 64px}
 .badge.blu{color:var(--blu);border:1px solid rgba(59,130,246,0.3);background:rgba(59,130,246,0.1)}
 .badge.gold{color:var(--gold);border:1px solid rgba(200,168,75,0.3);background:var(--gold-dim)}
 .badge.gray{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
-.regime-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:3px;padding:16px 28px}
-.regime-item{text-align:center;padding:12px 8px;border:1px solid var(--brd2);background:var(--surf2)}
-.regime-item.bullish{border-color:rgba(34,197,94,0.3);background:var(--grn-dim)}
-.regime-item.bearish{border-color:rgba(239,68,68,0.3);background:var(--red-dim)}
-.regime-label{font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:1px}
-.regime-label.bullish{color:var(--grn)}.regime-label.bearish{color:var(--red)}
-.regime-sub{font-family:"DM Mono",monospace;font-size:7px;color:var(--gray2);margin-top:4px;letter-spacing:1px}
+.badge.violet{color:var(--violet);border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.1)}
 .explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}.explain-text{font-size:12px;color:var(--gray2);line-height:1.8}.explain-text strong{color:var(--white);font-weight:500}
-.sig-row{cursor:pointer}.sig-row:hover td{background:var(--surf2)}
-.detail-row td{padding:0!important;border-bottom:1px solid var(--brd)}
-.detail-wrap{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.detail-row.open .detail-wrap{max-height:300px}
-.detail-inner{background:rgba(255,255,255,0.03);padding:16px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 24px}
-.detail-item .dl{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:3px}
-.detail-item .dv{font-family:"DM Mono",monospace;font-size:11px;color:var(--white)}
-@media(max-width:768px){.detail-inner{grid-template-columns:repeat(2,1fr)}}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
 .disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.regime-grid{grid-template-columns:repeat(4,1fr)}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
 </style>
 </head>
 <body>
 <nav>
   <a class="nav-brand" href="index.html">
     <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
-    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Earnings</span>
+    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Congressional</span>
   </a>
   <div class="nav-right">
     <a class="nav-link" href="index.html">Home</a>
@@ -82,9 +68,9 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <section class="hero">
   <div class="hero-top">
     <div>
-      <div class="hero-tag"><span class="pulse"></span> Market Data &#183; NYSE &amp; NASDAQ</div>
-      <h1 class="hero-h1">Spot the <em>drift</em>.</h1>
-      <p class="hero-desc">Post-Earnings Announcement Drift scanner &#8212; identifies positive surprise stocks with valid entry setups based on gap analysis, sector trend, and risk/reward.</p>
+      <div class="hero-tag"><span class="pulse"></span> Finnhub &#183; Finviz Data</div>
+      <h1 class="hero-h1">Follow the <em>money</em>.</h1>
+      <p class="hero-desc">Track insider trades from corporate executives and members of Congress &#8212; the ultimate smart money signal.</p>
     </div>
     <div class="hero-badges">
       <div class="refresh-row">
@@ -97,38 +83,38 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
 <main>
   <div class="status-row reveal">
-    <div class="status-card neut" id="sc-sig"><div class="sc-label">Active Signals</div><div class="sc-val" id="sc-sig-val">&#8212;</div><div class="sc-sub"><span class="sc-note">PEAD setups</span></div></div>
-    <div class="status-card neut" id="sc-surp"><div class="sc-label">Avg Surprise %</div><div class="sc-val" id="sc-surp-val">&#8212;</div><div class="sc-sub"><span class="sc-note">positive surprises</span></div></div>
-    <div class="status-card neut" id="sc-spx"><div class="sc-label">SPX Trend</div><div class="sc-val" id="sc-spx-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-spx-chg">&#8212;</span><span class="sc-note">vs SMA 10W</span></div></div>
-    <div class="status-card neut" id="sc-up"><div class="sc-label">Upcoming This Week</div><div class="sc-val" id="sc-up-val">&#8212;</div><div class="sc-sub"><span class="sc-note">earnings reports</span></div></div>
+    <div class="status-card neut" id="sc-net"><div class="sc-label">Congress Net Sentiment</div><div class="sc-val" id="sc-net-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-net-ratio">&#8212;</span><span class="sc-note">buy vs sell</span></div></div>
+    <div class="status-card neut" id="sc-big"><div class="sc-label">Top Insider Buy</div><div class="sc-val" id="sc-big-val">&#8212;</div><div class="sc-sub"><span class="sc-note" id="sc-big-who">&#8212;</span></div></div>
+    <div class="status-card neut" id="sc-cnt"><div class="sc-label">Congressional Trades</div><div class="sc-val" id="sc-cnt-val">&#8212;</div><div class="sc-sub"><span class="sc-note">last 30 days</span></div></div>
+    <div class="status-card neut" id="sc-ovr"><div class="sc-label">Smart Money Overlap</div><div class="sc-val" id="sc-ovr-val">&#8212;</div><div class="sc-sub"><span class="sc-note">PEAD + insider buy</span></div></div>
   </div>
 
-  <!-- PEAD SIGNALS -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">PEAD Signal Scanner</div><div class="ch-sub">Positive Surprise &#183; Sector Trend Confirmed &#183; Entry / Stop / Target</div></div></div>
-    <div class="tbl-wrap"><table class="data-table" id="signals-table"><tr><td style="color:var(--gray2)">Loading signals...</td></tr></table></div>
+    <div class="chart-header"><div><div class="ch-title">Congressional Trades</div><div class="ch-sub">Last 30 Days &#183; STOCK Act Disclosures</div></div></div>
+    <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--gray2)">Loading congressional trades...</td></tr></table></div>
   </div>
 
-  <!-- UPCOMING EARNINGS -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Upcoming Earnings</div><div class="ch-sub">Next Week &#183; NYSE &amp; NASDAQ &#183; 10B-200B Market Cap &#183; Finviz</div></div></div>
-    <div class="tbl-wrap"><table class="data-table" id="upcoming-table"><tr><td style="color:var(--gray2)">Loading calendar...</td></tr></table></div>
+    <div class="chart-header"><div><div class="ch-title">Top Insider Buys This Week</div><div class="ch-sub">Open Market Purchases &#183; CEO / CFO / Director</div></div></div>
+    <div class="tbl-wrap"><table class="data-table" id="topweek-table"><tr><td style="color:var(--gray2)">Loading insider buys...</td></tr></table></div>
   </div>
 
-  <!-- MARKET REGIME -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Market Regime</div><div class="ch-sub">SPX &amp; Sector ETFs vs SMA 10 Weekly</div></div></div>
-    <div class="regime-grid" id="regime-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading trends...</div></div>
+    <div class="chart-header"><div><div class="ch-title">Latest Insider Activity</div><div class="ch-sub">SEC Form 4 Filings &#183; All Transactions</div></div></div>
+    <div class="tbl-wrap"><table class="data-table" id="latest-table"><tr><td style="color:var(--gray2)">Loading insider activity...</td></tr></table></div>
   </div>
 
-  <!-- EXPLANATION -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Smart Money Overlap</div><div class="ch-sub">Stocks with PEAD Signal + Insider / Congressional Buy</div></div></div>
+    <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--gray2)">Loading overlap...</td></tr></table></div>
+  </div>
+
   <div class="explain-section reveal">
-    <div class="explain-title">How to read Earnings Intelligence</div>
+    <div class="explain-title">How to read Congressional Positioning</div>
     <div class="explain-text">
-      <strong>PEAD (Post-Earnings Announcement Drift)</strong> is the tendency for a stock's price to continue drifting in the direction of the earnings surprise for 30-60 days after the announcement. This scanner identifies only <strong>long setups</strong> from positive surprises &#8212; we never short negative surprises.<br><br>
-      <strong>Setup Types:</strong> <strong>Breakout</strong> (gap &lt;3%) &#8212; price barely gaps, entry on breakout of earnings high. <strong>Test</strong> (gap 3-8%) &#8212; moderate gap, wait for test of earnings high. <strong>Zone Entry</strong> (gap &gt;8%) &#8212; large gap, entry if price returns to pre-gap level.<br><br>
-      <strong>Filters:</strong> Only NYSE &amp; NASDAQ stocks with 10B-200B market cap (the PEAD sweet spot). If at least one of Sector ETF or SPX is bullish (above SMA 10 weekly), the trend is confirmed. If both are bearish, the stock still appears but with a &#x26A0; CAUTION badge &#8212; you decide. Only positive earnings surprises where price confirms (actual &gt; estimate).<br><br>
-      <strong>Risk Management:</strong> Entry at earnings candle high, stop at earnings candle low, target at 3:1 reward-to-risk. Hold period: up to 1 quarter (3 months). Gap filled = signal invalidated.
+      <strong>Congressional Trades:</strong> Under the STOCK Act (2012), members of Congress must disclose stock trades within 45 days. Studies show congressional portfolios consistently outperform the market by 4-10% annually. Purchases are especially informative &#8212; when a senator buys a stock, they may have insights from committee briefings, regulatory previews, or policy changes.<br><br>
+      <strong>Insider Trading (Form 4):</strong> Corporate insiders (CEO, CFO, directors, 10%+ shareholders) must file SEC Form 4 within 2 business days of any trade. <strong>Open market purchases</strong> are the strongest signal &#8212; insiders spending their own money means high conviction. Ignore option exercises and planned sales (Rule 10b5-1). A CEO buying $5M+ of their own stock is one of the most reliable bullish indicators.<br><br>
+      <strong>Smart Money Overlap:</strong> When a stock shows BOTH a positive earnings surprise (PEAD signal from Tool 7) AND insider/congressional buying, it represents maximum conviction. The earnings surprise confirms fundamentals, and the insider buying confirms that those closest to the company believe in the trajectory. This is the highest-confidence setup in our system.
     </div>
   </div>
 </main>
@@ -149,126 +135,112 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null;
 
-function fmtM(v){if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(0)+'M';return'$'+v}
-function fmtP(v){return v!=null?'$'+v.toFixed(2):'\u2014'}
-function fmtPct(v){return v!=null?(v>=0?'+':'')+v.toFixed(1)+'%':'\u2014'}
-function setupBadge(t){if(t==='breakout')return'<span class="badge gray">Breakout</span>';if(t==='test')return'<span class="badge gray">Test</span>';return'<span class="badge gray">Zone</span>'}
-function trendBadge(t){return t==='bullish'?'<span class="badge grn">Bullish</span>':'<span class="badge red">Bearish</span>'}
-function etfBadge(etf,mt){if(!etf)return'';var d=(mt||{})[etf];if(!d)return'<span class="badge gray">'+etf+'</span>';var c=d.trend==='bullish'?'grn':'red';var arrow=d.trend==='bullish'?'\u25B2':'\u25BC';return'<span class="badge '+c+'">'+etf+' '+arrow+'</span>'}
-function cautionBadge(valid,hype){if(valid!==false)return'';if(hype)return'<span class="badge" style="color:var(--violet);border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.1)">HYPE</span>';return'<span class="badge" style="color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)">\u26A0 CAUTION</span>'}
-function heatColor(v){if(v==null)return'';var abs=Math.min(Math.abs(v),30),i=abs/30*0.5+0.1;return v>=0?'rgba(34,197,94,'+i+')':'rgba(239,68,68,'+i+')'}
+function partyBadge(p){if(!p)return'';p=p.toUpperCase();if(p==='R'||p==='REPUBLICAN')return'<span class="badge red">R</span>';if(p==='D'||p==='DEMOCRAT'||p==='DEMOCRATIC')return'<span class="badge blu">D</span>';return'<span class="badge gray">'+p+'</span>'}
+function txnBadge(t){if(!t)return'';var u=t.toUpperCase();if(u.indexOf('PURCHASE')>=0||u.indexOf('BUY')>=0)return'<span class="badge grn">Buy</span>';if(u.indexOf('SALE')>=0||u.indexOf('SELL')>=0)return'<span class="badge red">Sale</span>';return'<span class="badge gray">'+t+'</span>'}
+function roleBadge(r){if(!r)return'';var u=r.toUpperCase();if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CHIEF')>=0)return'<span class="badge gold">'+r+'</span>';if(u.indexOf('DIRECTOR')>=0||u.indexOf('10%')>=0)return'<span class="badge violet">'+r+'</span>';return r}
 
-function renderAll(){renderCards();renderSignals();renderUpcoming();renderRegime()}
+function renderAll(){renderCards();renderCongress();renderTopWeek();renderLatest();renderOverlap()}
 
 function renderCards(){
-  var sigs=D.signals||[];
-  var active=sigs.filter(function(s){return s.isActive});
-  document.getElementById('sc-sig-val').textContent=active.length;
-  document.getElementById('sc-sig').className='status-card '+(active.length>0?'up':'neut');
-  if(sigs.length){var avg=sigs.reduce(function(a,s){return a+s.surprisePct},0)/sigs.length;document.getElementById('sc-surp-val').textContent='+'+avg.toFixed(1)+'%';document.getElementById('sc-surp').className='status-card up'}
-  var mt=D.marketTrend||{};if(mt.SPX){document.getElementById('sc-spx-val').textContent=mt.SPX.trend.toUpperCase();var e=document.getElementById('sc-spx-chg');e.textContent=(mt.SPX.pctVsSma>=0?'+':'')+mt.SPX.pctVsSma.toFixed(1)+'%';e.className='sc-delta '+(mt.SPX.trend==='bullish'?'up':'dn');document.getElementById('sc-spx').className='status-card '+(mt.SPX.trend==='bullish'?'up':'dn')}
-  document.getElementById('sc-up-val').textContent=(D.upcoming||[]).length;
+  var st=D.stats||{};
+  document.getElementById('sc-net-val').textContent=(st.netSentiment||'--').toUpperCase();
+  var cls=st.netSentiment==='bullish'?'up':(st.netSentiment==='bearish'?'dn':'neut');
+  document.getElementById('sc-net').className='status-card '+cls;
+  document.getElementById('sc-net-ratio').textContent=st.congressBuys+' buys / '+st.congressSells+' sells';
+  document.getElementById('sc-net-ratio').className='sc-delta '+cls;
+  var big=st.biggestInsiderBuy||{};
+  document.getElementById('sc-big-val').textContent=big.ticker||'\u2014';
+  document.getElementById('sc-big').className='status-card '+(big.ticker?'up':'neut');
+  document.getElementById('sc-big-who').textContent=big.owner?(big.owner+' \u00B7 '+big.value):'No data';
+  document.getElementById('sc-cnt-val').textContent=st.totalTrades||0;
+  document.getElementById('sc-cnt').className='status-card '+(st.totalTrades>0?'up':'neut');
+  var ovr=(D.smartMoneyOverlap||[]).length;
+  document.getElementById('sc-ovr-val').textContent=ovr;
+  document.getElementById('sc-ovr').className='status-card '+(ovr>0?'gold':'neut');
   if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
 }
 
-var _openDetail=null;
-function toggleDetail(id){
-  var row=document.getElementById(id);
-  if(!row)return;
-  if(_openDetail&&_openDetail!==row){_openDetail.classList.remove('open')}
-  row.classList.toggle('open');
-  _openDetail=row.classList.contains('open')?row:null;
-}
-function detailItem(label,val){return'<div class="detail-item"><div class="dl">'+label+'</div><div class="dv">'+val+'</div></div>'}
-function renderSignals(){
-  var sigs=D.signals||[];
-  var el=document.getElementById('signals-table');
-  if(!sigs.length){el.innerHTML='<tr><td style="color:var(--gray2)">No active PEAD signals in the current window.</td></tr>';return}
-  var mt=D.marketTrend||{};
-  var cols=14;
-  var html='<thead><tr><th>Symbol</th><th>Company</th><th>Date</th><th>Surprise</th><th>Gap</th><th>Setup</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th>Days</th><th>Sector / ETF</th><th>Trend</th><th>Status</th></tr></thead><tbody>';
-  sigs.forEach(function(s,i){
-    var status=s.isActive?'<span class="badge grn">Active</span>':'<span class="badge gray">Filled</span>';
-    var rid='sig-detail-'+i;
-    html+='<tr class="sig-row" onclick="toggleDetail(\''+rid+'\')">';
-    html+='<td style="color:var(--gold);font-weight:500">'+s.symbol+'</td>';
-    html+='<td>'+s.name+'</td>';
-    html+='<td>'+s.earningsDate+'</td>';
-    html+='<td style="background:'+heatColor(s.surprisePct)+'">'+fmtPct(s.surprisePct)+'</td>';
-    html+='<td>'+fmtPct(s.gapPct)+'</td>';
-    html+='<td>'+setupBadge(s.setupType)+'</td>';
-    html+='<td>'+fmtP(s.entryLevel)+'</td>';
-    html+='<td>'+fmtP(s.stopLevel)+'</td>';
-    html+='<td>'+fmtP(s.targetLevel)+'</td>';
-    html+='<td style="color:var(--gold)">1:'+s.riskReward.toFixed(0)+'</td>';
-    html+='<td>'+s.daysSinceEarnings+'d</td>';
-    html+='<td>'+s.sector+' '+etfBadge(s.sectorEtf,mt)+'</td>';
-    html+='<td>'+trendBadge(s.spxTrend)+' '+cautionBadge(s.trendValid,s.sectorHype)+'</td>';
-    html+='<td>'+status+'</td>';
-    html+='</tr>';
-    // Expandable detail row
-    var gapLabel=s.gapType==='small'?'Small (<3%)':s.gapType==='moderate'?'Moderate (3-8%)':'Large (>8%)';
-    html+='<tr class="detail-row" id="'+rid+'"><td colspan="'+cols+'">';
-    html+='<div class="detail-wrap"><div class="detail-inner">';
-    html+=detailItem('Pre-Close',fmtP(s.preClose));
-    html+=detailItem('Post-Open',fmtP(s.postOpen));
-    html+=detailItem('Current Price',fmtP(s.currentPrice));
-    html+=detailItem('Gap',fmtPct(s.gapPct)+' &middot; '+gapLabel);
-    html+=detailItem('Drift',fmtPct(s.driftPct));
-    html+=detailItem('Gap Filled',s.gapFilled?'<span style="color:var(--red)">Yes</span>':'<span style="color:var(--grn)">No</span>');
-    html+=detailItem('Days Since Earnings',s.daysSinceEarnings+'d');
-    html+=detailItem('Market Cap',s.marketCap?fmtM(s.marketCap):'\u2014');
-    html+=detailItem('Sector Trend',etfBadge(s.sectorEtf,mt));
-    html+=detailItem('SPX Trend',trendBadge(s.spxTrend));
-    html+='</div></div>';
-    html+='</td></tr>';
-  });
-  html+='</tbody>';
-  el.innerHTML=html;
-  _openDetail=null;
-}
-
-function renderUpcoming(){
-  var up=D.upcoming||[];
-  var el=document.getElementById('upcoming-table');
-  if(!up.length){el.innerHTML='<tr><td style="color:var(--gray2)">No upcoming earnings matching filters.</td></tr>';return}
-  var mt=D.marketTrend||{};
-  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th></tr></thead><tbody>';
-  up.forEach(function(u){
+function renderCongress(){
+  var trades=D.congressTrades||[];
+  var el=document.getElementById('congress-table');
+  if(!trades.length){el.innerHTML='<tr><td style="color:var(--gray2)">No congressional trades found.</td></tr>';return}
+  var html='<thead><tr><th>Date</th><th>Member</th><th>Party</th><th>Chamber</th><th>Symbol</th><th>Transaction</th><th>Amount</th></tr></thead><tbody>';
+  trades.forEach(function(t){
     html+='<tr>';
-    html+='<td>'+(u.date||'\u2014')+'</td>';
-    html+='<td style="color:var(--gold);font-weight:500">'+u.symbol+'</td>';
-    html+='<td>'+u.name+'</td>';
-    html+='<td>'+(u.marketCap?fmtM(u.marketCap):'\u2014')+'</td>';
-    html+='<td>'+u.sector+' '+etfBadge(u.sectorEtf,mt)+'</td>';
+    html+='<td>'+t.date+'</td>';
+    html+='<td>'+t.name+'</td>';
+    html+='<td>'+partyBadge(t.party)+'</td>';
+    html+='<td>'+t.chamber+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+t.symbol+'</td>';
+    html+='<td>'+txnBadge(t.transaction)+'</td>';
+    html+='<td>'+t.amount+(t.amountTo?' - '+t.amountTo:'')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
   el.innerHTML=html;
 }
 
-function renderRegime(){
-  var mt=D.marketTrend||{};
-  var el=document.getElementById('regime-grid');
-  var order=['SPX','XLK','XLF','XLE','XLV','XLY','XLP','XLI','XLC','XLRE','XLB','XLU'];
-  var names={SPX:'S&P 500',XLK:'Technology',XLF:'Financials',XLE:'Energy',XLV:'Health Care',XLY:'Consumer Discret.',XLP:'Consumer Staples',XLI:'Industrials',XLC:'Comm. Services',XLRE:'Real Estate',XLB:'Materials',XLU:'Utilities'};
-  var html='';
-  order.forEach(function(k){
-    var d=mt[k];if(!d)return;
-    var t=d.trend;
-    html+='<div class="regime-item '+t+'">';
-    html+='<div class="regime-label '+t+'">'+k+'</div>';
-    html+='<div class="regime-sub">'+(names[k]||k)+'</div>';
-    html+='<div class="regime-sub">'+(d.pctVsSma>=0?'+':'')+d.pctVsSma.toFixed(1)+'%</div>';
-    html+='</div>';
+function renderTopWeek(){
+  var ins=D.insiderTopWeek||[];
+  var el=document.getElementById('topweek-table');
+  if(!ins.length){el.innerHTML='<tr><td style="color:var(--gray2)">No insider buys this week.</td></tr>';return}
+  var html='<thead><tr><th>Date</th><th>Insider</th><th>Role</th><th>Ticker</th><th>Value</th><th>Shares</th></tr></thead><tbody>';
+  ins.forEach(function(i){
+    html+='<tr>';
+    html+='<td>'+i.date+'</td>';
+    html+='<td>'+i.owner+'</td>';
+    html+='<td>'+roleBadge(i.relationship)+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+i.ticker+'</td>';
+    html+='<td>'+i.value+'</td>';
+    html+='<td>'+i.shares+'</td>';
+    html+='</tr>';
   });
-  el.innerHTML=html||'<div style="color:var(--gray2)">No trend data available.</div>';
+  html+='</tbody>';
+  el.innerHTML=html;
+}
+
+function renderLatest(){
+  var ins=D.insiderLatest||[];
+  var el=document.getElementById('latest-table');
+  if(!ins.length){el.innerHTML='<tr><td style="color:var(--gray2)">No recent insider activity.</td></tr>';return}
+  var html='<thead><tr><th>Date</th><th>Ticker</th><th>Owner</th><th>Role</th><th>Transaction</th><th>Value</th><th>Shares</th></tr></thead><tbody>';
+  ins.forEach(function(i){
+    html+='<tr>';
+    html+='<td>'+i.date+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+i.ticker+'</td>';
+    html+='<td>'+i.owner+'</td>';
+    html+='<td>'+roleBadge(i.relationship)+'</td>';
+    html+='<td>'+txnBadge(i.transaction)+'</td>';
+    html+='<td>'+i.value+'</td>';
+    html+='<td>'+i.shares+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  el.innerHTML=html;
+}
+
+function renderOverlap(){
+  var ovr=D.smartMoneyOverlap||[];
+  var el=document.getElementById('overlap-table');
+  if(!ovr.length){el.innerHTML='<tr><td style="color:var(--gray2)">No overlap between PEAD signals and insider/congressional buys.</td></tr>';return}
+  var html='<thead><tr><th>Symbol</th><th>Signal Sources</th></tr></thead><tbody>';
+  ovr.forEach(function(o){
+    var badges=o.sources.map(function(s){
+      if(s==='pead')return'<span class="badge grn">PEAD</span>';
+      if(s==='insider')return'<span class="badge gold">Insider Buy</span>';
+      if(s==='congress')return'<span class="badge violet">Congress Buy</span>';
+      return'<span class="badge gray">'+s+'</span>';
+    }).join(' ');
+    html+='<tr><td style="color:var(--gold);font-weight:500">'+o.symbol+'</td><td>'+badges+'</td></tr>';
+  });
+  html+='</tbody>';
+  el.innerHTML=html;
 }
 
 function refreshData(){
   var btn=document.getElementById('refresh-btn');btn.textContent='REFRESHING...';btn.classList.add('loading');
   document.getElementById('update-badge').textContent='DATA: refreshing...';
-  fetch(API+'/api/earnings/refresh').then(function(r){return r.json()}).then(function(d){
+  fetch(API+'/api/congressional/refresh').then(function(r){return r.json()}).then(function(d){
     if(d.status!=='ok'){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000);return}
     D=d;renderAll();btn.textContent='REFRESH';btn.classList.remove('loading');
   }).catch(function(){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000)});
@@ -276,7 +248,7 @@ function refreshData(){
 
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(function(e){obs.observe(e)});
-(function(){fetch(API+'/api/earnings').then(function(r){return r.json()}).then(function(d){if(d.status!=='ok'){console.error('API error:',d.message);return}D=d;renderAll()}).catch(function(e){console.error('Earnings fetch failed:',e)})})();
+(function(){fetch(API+'/api/congressional').then(function(r){return r.json()}).then(function(d){if(d.status!=='ok'){console.error('API error:',d.message);return}D=d;renderAll()}).catch(function(e){console.error('Congressional fetch failed:',e)})})();
 </script>
 </body>
 </html>
