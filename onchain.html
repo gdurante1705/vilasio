@@ -17,13 +17,9 @@
   --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
   --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
   --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--cyan:#06b6d4;
-  --bp:#3b82f6;--bp-bg:rgba(59,130,246,0.06);
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:"Inter",sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo{width:24px;height:24px;opacity:.9}
@@ -33,11 +29,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-right{display:flex;align-items:center;gap:24px}
 .nav-link{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}
 .nav-link:hover{color:var(--white)}
-.nav-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;background:var(--white);color:var(--bg);padding:8px 18px;text-decoration:none;transition:all .3s}
-.nav-btn:hover{background:var(--gold2)}
-
-/* HERO */
-.hero{padding:88px 48px 24px 48px}
+.hero{padding:88px 48px 24px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
 .pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
@@ -46,28 +38,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-h1 em{font-style:italic;color:var(--gold)}
 .hero-desc{font-size:13px;color:var(--gray2);margin-top:8px;max-width:560px;line-height:1.6}
 .update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);background:var(--surf2);border:1px solid var(--brd2);padding:6px 14px}
-
-/* MAIN */
-main{padding:0 48px 64px 48px}
-
-/* DASHBOARD CARDS */
+main{padding:0 48px 64px}
 .dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
 .dash-card{background:var(--surf);border:1px solid var(--brd2);padding:16px 20px;transition:border-color .3s}
 .dash-card:hover{border-color:var(--brd3)}
 .dc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}
 .dc-value{font-family:"Syne",sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px}
 .dc-zone{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-top:4px;padding:2px 8px;display:inline-block}
-.dc-zone.grn{color:var(--grn);background:var(--grn-dim)}
-.dc-zone.red{color:var(--red);background:var(--red-dim)}
-.dc-zone.amb{color:var(--amb);background:rgba(245,158,11,0.10)}
-.dc-zone.blu{color:var(--blu);background:rgba(59,130,246,0.10)}
-.dc-zone.gray{color:var(--gray2);background:rgba(90,96,112,0.10)}
+.dc-zone.grn{color:var(--grn);background:var(--grn-dim)}.dc-zone.red{color:var(--red);background:var(--red-dim)}.dc-zone.amb{color:var(--amb);background:rgba(245,158,11,0.10)}.dc-zone.blu{color:var(--blu);background:rgba(59,130,246,0.10)}.dc-zone.gray{color:var(--gray2);background:rgba(90,96,112,0.10)}
 .dc-sub{font-family:"DM Mono",monospace;font-size:8px;color:var(--gray);margin-top:6px}
-
-/* CHART SECTIONS */
 .chart-section{margin-bottom:20px}
-.chart-section .reveal{opacity:0;transform:translateY(16px);transition:all .6s ease}
-.chart-section .reveal.visible{opacity:1;transform:none}
+.reveal{opacity:0;transform:translateY(16px);transition:all .6s ease}.reveal.visible{opacity:1;transform:none}
 .cs-card{background:var(--surf);border:1px solid var(--brd2)}
 .cs-header{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 24px 12px}
 .cs-title{font-family:"Syne",sans-serif;font-size:16px;font-weight:700;letter-spacing:-0.5px}
@@ -86,11 +67,7 @@ main{padding:0 48px 64px 48px}
 .lg-dot{width:8px;height:3px;border-radius:1px}
 .cs-note{padding:10px 24px 16px;border-top:1px solid var(--brd);font-size:11px;color:var(--gray2);line-height:1.7}
 .cs-note strong{color:var(--white);font-weight:500}
-
-/* DUAL CHARTS ROW */
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-
-/* HOW TO READ */
 .how-section{margin-top:32px}
 .how-card{background:var(--surf);border:1px solid var(--brd2);padding:28px 32px}
 .how-title{font-family:"Syne",sans-serif;font-size:20px;font-weight:700;margin-bottom:16px}
@@ -99,63 +76,40 @@ main{padding:0 48px 64px 48px}
 .how-item-title{font-family:"Syne",sans-serif;font-size:13px;font-weight:700;margin-bottom:8px}
 .how-item-body{font-size:12px;color:var(--gray2);line-height:1.7}
 .how-item-body strong{color:var(--white);font-weight:500}
-.how-threshold{display:flex;align-items:center;gap:6px;margin-top:6px;font-family:"DM Mono",monospace;font-size:8px}
-.how-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-
-/* LOADING */
 .loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,10,16,0.7);z-index:5;font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2)}
 .loading-overlay.hidden{display:none}
-
-/* FOOTER */
 footer{padding:36px 48px;border-top:1px solid var(--brd2);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
-.foot-brand{display:flex;align-items:center;gap:8px}
-.foot-logo{width:18px;height:18px;opacity:.7}
 .foot-name{font-family:"Syne",sans-serif;font-size:13px;font-weight:600;color:var(--gray2)}
 .foot-copy{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;color:var(--gray)}
-.foot-disclaimer{font-size:10px;color:var(--gray);max-width:600px;margin-top:4px}
 .disclaimer-bar{padding:20px 48px;border-top:1px solid var(--brd);background:var(--surf)}
 .disclaimer-inner{max-width:900px;margin:0 auto}
 .disclaimer-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--amb);display:block;margin-bottom:8px}
 .disclaimer-inner p{font-size:10px;color:var(--gray);line-height:1.7}
 .disclaimer-inner strong{color:var(--gray2);font-weight:500}
-
-/* ERROR STATE */
-.err-msg{padding:40px 24px;text-align:center;font-family:"DM Mono",monospace;font-size:10px;color:var(--red)}
-
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .dash-grid{grid-template-columns:repeat(2,1fr)}
-  .dual-row{grid-template-columns:1fr}
-  .how-grid{grid-template-columns:1fr}
-}
-@media(max-width:768px){
-  nav{padding:12px 16px}
-  .hero{padding:76px 16px 16px}
-  main{padding:0 16px 40px}
-  .hero-h1{font-size:26px}
-  .dash-grid{grid-template-columns:1fr 1fr}
-  footer{padding:24px 16px}
-  .disclaimer-bar{padding:16px}
-}
-@media(max-width:480px){
-  .dash-grid{grid-template-columns:1fr}
-}
+@media(max-width:1024px){.dash-grid{grid-template-columns:repeat(2,1fr)}.dual-row{grid-template-columns:1fr}.how-grid{grid-template-columns:1fr}}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.hero-h1{font-size:26px}.dash-grid{grid-template-columns:1fr 1fr}footer{padding:24px 16px}.disclaimer-bar{padding:16px}}
+@media(max-width:480px){.dash-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <nav>
   <a class="nav-brand" href="index.html">
-    <img class="nav-logo" src="logo.png" alt="V">
-    <span class="nav-name">Vilasio</span>
-    <span class="nav-sep">&#183;</span>
-    <span class="nav-page">On-Chain Intelligence</span>
+    <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
+    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">On-Chain Intelligence</span>
   </a>
   <div class="nav-right">
     <a class="nav-link" href="index.html">Home</a>
-    <a class="nav-link" href="cot.html">COT</a>
+    <a class="nav-link" href="cot.html">COT Intelligence</a>
+    <a class="nav-link" href="liquidity.html">Liquidity</a>
+    <a class="nav-link" href="bonds.html">Bonds</a>
+    <a class="nav-link" href="macro.html">Macro</a>
+    <a class="nav-link" href="crossmarket.html">Cross-Market</a>
+    <a class="nav-link" href="onchain.html">On-Chain</a>
+    <a class="nav-link" href="earnings.html">Earnings</a>
+    <a class="nav-link" href="congressional.html">Congressional</a>
     <a class="nav-link" href="blog.html">Insights</a>
-    <a class="nav-btn" href="contact.html">Contact</a>
+    <a class="nav-link" href="about.html">About</a>
   </div>
 </nav>
 
@@ -164,7 +118,7 @@ footer{padding:36px 48px;border-top:1px solid var(--brd2);display:flex;flex-dire
     <div>
       <div class="hero-tag"><span class="pulse"></span> Bitcoin On-Chain Analytics</div>
       <h1 class="hero-h1">Read the <em>blockchain</em>, not the noise.</h1>
-      <p class="hero-desc">Institutional-grade on-chain metrics — MVRV, Puell Multiple, SOPR, cycle oscillators and holder analysis. Identify accumulation zones and distribution tops before the crowd.</p>
+      <p class="hero-desc">Institutional-grade on-chain metrics &#8212; MVRV, Puell Multiple, SOPR, cycle oscillators and holder analysis. Identify accumulation zones and distribution tops before the crowd.</p>
     </div>
     <div class="update-badge" id="update-badge">LOADING DATA...</div>
   </div>
@@ -172,677 +126,159 @@ footer{padding:36px 48px;border-top:1px solid var(--brd2);display:flex;flex-dire
 
 <main>
 
-<!-- DASHBOARD CARDS -->
-<div class="dash-grid" id="dash-grid">
-  <div class="dash-card">
-    <div class="dc-label">MVRV Ratio</div>
-    <div class="dc-value" id="dc-mvrv">—</div>
-    <div class="dc-zone gray" id="dc-mvrv-zone">Loading</div>
-    <div class="dc-sub">Market Value vs Realized Value</div>
-  </div>
-  <div class="dash-card">
-    <div class="dc-label">Puell Multiple</div>
-    <div class="dc-value" id="dc-puell">—</div>
-    <div class="dc-zone gray" id="dc-puell-zone">Loading</div>
-    <div class="dc-sub">Miner Revenue Benchmark</div>
-  </div>
-  <div class="dash-card">
-    <div class="dc-label">SOPR</div>
-    <div class="dc-value" id="dc-sopr">—</div>
-    <div class="dc-zone gray" id="dc-sopr-zone">Loading</div>
-    <div class="dc-sub">Spent Output Profit Ratio</div>
-  </div>
-  <div class="dash-card">
-    <div class="dc-label">Fear &amp; Greed</div>
-    <div class="dc-value" id="dc-fg">—</div>
-    <div class="dc-zone gray" id="dc-fg-zone">Loading</div>
-    <div class="dc-sub">Market Sentiment Index</div>
-  </div>
+<div class="dash-grid">
+  <div class="dash-card"><div class="dc-label">MVRV Ratio</div><div class="dc-value" id="dc-mvrv">&#8212;</div><div class="dc-zone gray" id="dc-mvrv-zone">Loading</div><div class="dc-sub">Market Value vs Realized Value</div></div>
+  <div class="dash-card"><div class="dc-label">Puell Multiple</div><div class="dc-value" id="dc-puell">&#8212;</div><div class="dc-zone gray" id="dc-puell-zone">Loading</div><div class="dc-sub">Miner Revenue Benchmark</div></div>
+  <div class="dash-card"><div class="dc-label">SOPR</div><div class="dc-value" id="dc-sopr">&#8212;</div><div class="dc-zone gray" id="dc-sopr-zone">Loading</div><div class="dc-sub">Spent Output Profit Ratio</div></div>
+  <div class="dash-card"><div class="dc-label">Fear &amp; Greed</div><div class="dc-value" id="dc-fg">&#8212;</div><div class="dc-zone gray" id="dc-fg-zone">Loading</div><div class="dc-sub">Market Sentiment Index</div></div>
 </div>
 
-<!-- BTC PRICE HEADER -->
 <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:12px 20px;background:var(--surf);border:1px solid var(--brd2)">
   <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2)">BTC/USD</div>
-  <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px" id="btc-price">—</div>
-  <div style="font-family:'DM Mono',monospace;font-size:9px" id="btc-change">—</div>
+  <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px" id="btc-price">&#8212;</div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px" id="btc-change">&#8212;</div>
 </div>
 
-<!-- ==================== CHART SECTIONS ==================== -->
+<!-- 1. MVRV --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">MVRV Ratio</div><div class="cs-sub">Market Value vs Realized Value &#8212; Premium / Discount Benchmark</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="mvrv">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="mvrv">2Y</button><button class="tf-btn" data-tf="all" data-chart="mvrv">ALL</button></div></div><div class="cs-latest" id="mvrv-latest"></div><div class="cs-chart-wrap"><canvas id="chart-mvrv"></canvas><div class="loading-overlay" id="load-mvrv">Loading MVRV...</div></div><div class="cs-legend" id="leg-mvrv"></div><div class="cs-note"><strong>How to read:</strong> MVRV &gt; 3.5 &#8594; overvalued (consider partial profit). 2.0&#8211;3.5 &#8594; premium zone. 1.0&#8211;2.0 &#8594; fair value. &lt; 1.0 &#8594; <strong>discount &#8212; accumulation zone</strong>.</div></div></div>
 
-<!-- 1. MVRV RATIO -->
-<div class="chart-section" id="sec-mvrv">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">MVRV Ratio</div><div class="cs-sub">Market Value vs Realized Value — Premium / Discount Benchmark</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="mvrv">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="mvrv">2Y</button><button class="tf-btn" data-tf="all" data-chart="mvrv">ALL</button></div>
-  </div>
-  <div class="cs-latest" id="mvrv-latest"></div>
-  <div class="cs-chart-wrap"><canvas id="chart-mvrv"></canvas><div class="loading-overlay" id="load-mvrv">Loading MVRV...</div></div>
-  <div class="cs-legend" id="leg-mvrv"></div>
-  <div class="cs-note"><strong>How to read:</strong> MVRV &gt; 3.5 → overvalued (consider partial profit). MVRV 2.0–3.5 → premium zone. MVRV 1.0–2.0 → fair value. MVRV &lt; 1.0 → <strong>discount — accumulation zone</strong>. When the market value significantly exceeds what holders paid on average, it signals potential distribution.</div>
-</div></div>
+<!-- 2. PUELL --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">Puell Multiple</div><div class="cs-sub">Miner Revenue vs 365-Day Average &#8212; Profitability Benchmark</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="puell">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="puell">2Y</button><button class="tf-btn" data-tf="all" data-chart="puell">ALL</button></div></div><div class="cs-latest" id="puell-latest"></div><div class="cs-chart-wrap"><canvas id="chart-puell"></canvas><div class="loading-overlay" id="load-puell">Loading Puell...</div></div><div class="cs-legend" id="leg-puell"></div><div class="cs-note"><strong>How to read:</strong> &gt; 4.0 &#8594; extreme miner profit &#8212; <strong>top signal</strong>. 0.5&#8211;1.5 &#8594; normal. &lt; 0.5 &#8594; <strong>miner capitulation &#8212; bottom signal</strong>.</div></div></div>
 
-<!-- 2. PUELL MULTIPLE -->
-<div class="chart-section" id="sec-puell">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">Puell Multiple</div><div class="cs-sub">Miner Revenue vs 365-Day Average — Profitability Benchmark</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="puell">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="puell">2Y</button><button class="tf-btn" data-tf="all" data-chart="puell">ALL</button></div>
-  </div>
-  <div class="cs-latest" id="puell-latest"></div>
-  <div class="cs-chart-wrap"><canvas id="chart-puell"></canvas><div class="loading-overlay" id="load-puell">Loading Puell...</div></div>
-  <div class="cs-legend" id="leg-puell"></div>
-  <div class="cs-note"><strong>How to read:</strong> Puell &gt; 4.0 → extreme miner profit — <strong>top signal</strong>. 1.5–4.0 → high profitability. 0.5–1.5 → normal. Puell &lt; 0.5 → <strong>miner capitulation — bottom signal</strong>. When miners earn significantly more than their annual average, they tend to sell, creating supply pressure.</div>
-</div></div>
+<!-- 3. PI CYCLE --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">Pi Cycle Top Indicator</div><div class="cs-sub">Moving Average Convergence &#8212; Exhaustion Signal</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="picycle">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="picycle">2Y</button><button class="tf-btn" data-tf="all" data-chart="picycle">ALL</button></div></div><div class="cs-latest" id="picycle-latest"></div><div class="cs-chart-wrap"><canvas id="chart-picycle"></canvas><div class="loading-overlay" id="load-picycle">Loading Pi Cycle...</div></div><div class="cs-legend" id="leg-picycle"></div><div class="cs-note"><strong>How to read:</strong> When the short-term MA crosses above the long-term MA, it signals ~80% probability of market exhaustion. Historical accuracy for cycle tops has been remarkably high.</div></div></div>
 
-<!-- 3. PI CYCLE TOP -->
-<div class="chart-section" id="sec-picycle">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">Pi Cycle Top Indicator</div><div class="cs-sub">Moving Average Convergence — Exhaustion Signal</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="picycle">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="picycle">2Y</button><button class="tf-btn" data-tf="all" data-chart="picycle">ALL</button></div>
-  </div>
-  <div class="cs-latest" id="picycle-latest"></div>
-  <div class="cs-chart-wrap"><canvas id="chart-picycle"></canvas><div class="loading-overlay" id="load-picycle">Loading Pi Cycle...</div></div>
-  <div class="cs-legend" id="leg-picycle"></div>
-  <div class="cs-note"><strong>How to read:</strong> When the short-term moving average crosses above the long-term MA, it signals ~80% probability of market exhaustion and an imminent correction. Historical accuracy for identifying cycle tops has been remarkably high. Watch for convergence as a <strong>profit-taking trigger</strong>.</div>
-</div></div>
+<!-- 4. SOPR --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">SOPR</div><div class="cs-sub">Spent Output Profit Ratio &#8212; Profit / Loss Realization</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="sopr">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="sopr">2Y</button><button class="tf-btn" data-tf="all" data-chart="sopr">ALL</button></div></div><div class="cs-latest" id="sopr-latest"></div><div class="cs-chart-wrap"><canvas id="chart-sopr"></canvas><div class="loading-overlay" id="load-sopr">Loading SOPR...</div></div><div class="cs-legend" id="leg-sopr"></div><div class="cs-note"><strong>How to read:</strong> &gt; 1.05 &#8594; profit taking. 0.95&#8211;1.05 &#8594; neutral. &lt; 0.95 &#8594; <strong>loss selling &#8212; potential bottom</strong>. SOPR=1.0 acts as support in bull markets.</div></div></div>
 
-<!-- 4. SOPR -->
-<div class="chart-section" id="sec-sopr">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">SOPR</div><div class="cs-sub">Spent Output Profit Ratio — Profit / Loss Realization</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="sopr">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="sopr">2Y</button><button class="tf-btn" data-tf="all" data-chart="sopr">ALL</button></div>
-  </div>
-  <div class="cs-latest" id="sopr-latest"></div>
-  <div class="cs-chart-wrap"><canvas id="chart-sopr"></canvas><div class="loading-overlay" id="load-sopr">Loading SOPR...</div></div>
-  <div class="cs-legend" id="leg-sopr"></div>
-  <div class="cs-note"><strong>How to read:</strong> SOPR &gt; 1.05 → holders are taking profit. SOPR 0.95–1.05 → neutral zone. SOPR &lt; 0.95 → <strong>loss selling — potential bottom</strong>. The SOPR=1.0 line acts as support during bull markets (holders refuse to sell at a loss) and resistance during bear markets.</div>
-</div></div>
-
-<!-- 5/6: STH-MVRV + LTH-MVRV (dual) -->
-<div class="dual-row">
-<div class="chart-section" id="sec-sth-mvrv" style="margin-bottom:0">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">STH-MVRV Momentum</div><div class="cs-sub">Short-Term Holder — Leverage Strategy</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="sth_mvrv">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="sth_mvrv">2Y</button><button class="tf-btn" data-tf="all" data-chart="sth_mvrv">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap" style="height:280px"><canvas id="chart-sth_mvrv"></canvas><div class="loading-overlay" id="load-sth_mvrv">Loading STH-MVRV...</div></div>
-  <div class="cs-note"><strong>Positive momentum cross</strong> = powerful accumulation conditions OR pressure zone. Used for leveraged momentum strategy — capturing the explosive price move.</div>
-</div></div>
-<div class="chart-section" id="sec-lth-mvrv" style="margin-bottom:0">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">LTH-MVRV Z-Score</div><div class="cs-sub">Long-Term Holder — Wyckoff Accumulation</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="lth_mvrv">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="lth_mvrv">2Y</button><button class="tf-btn" data-tf="all" data-chart="lth_mvrv">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap" style="height:280px"><canvas id="chart-lth_mvrv"></canvas><div class="loading-overlay" id="load-lth_mvrv">Loading LTH-MVRV...</div></div>
-  <div class="cs-note"><strong>Green zone</strong> = bearish trend but discount. Deviation at <strong>-0.8 (blue)</strong> = confirmed Wyckoff accumulation exit. Sequence <strong>green → blue = momentum explosion</strong>.</div>
-</div></div>
+<!-- 5/6. STH + LTH dual --><div class="dual-row">
+<div class="chart-section" style="margin-bottom:0"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">STH-MVRV Momentum</div><div class="cs-sub">Short-Term Holder &#8212; Leverage Strategy</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="sth_mvrv">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="sth_mvrv">2Y</button><button class="tf-btn" data-tf="all" data-chart="sth_mvrv">ALL</button></div></div><div class="cs-chart-wrap" style="height:280px"><canvas id="chart-sth_mvrv"></canvas><div class="loading-overlay" id="load-sth_mvrv">Loading STH-MVRV...</div></div><div class="cs-note"><strong>Positive momentum cross</strong> = powerful accumulation conditions. Used for leveraged momentum strategy.</div></div></div>
+<div class="chart-section" style="margin-bottom:0"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">LTH-MVRV Z-Score</div><div class="cs-sub">Long-Term Holder &#8212; Wyckoff Accumulation</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="lth_mvrv">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="lth_mvrv">2Y</button><button class="tf-btn" data-tf="all" data-chart="lth_mvrv">ALL</button></div></div><div class="cs-chart-wrap" style="height:280px"><canvas id="chart-lth_mvrv"></canvas><div class="loading-overlay" id="load-lth_mvrv">Loading LTH-MVRV...</div></div><div class="cs-note"><strong>Green zone</strong> = bearish but discount. Deviation at <strong>-0.8</strong> = confirmed Wyckoff accumulation exit. Sequence green &#8594; blue = <strong>momentum explosion</strong>.</div></div></div>
 </div>
 
-<!-- 7. NVT PRICE MODEL -->
-<div class="chart-section" id="sec-nvt">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">NVT Price Model</div><div class="cs-sub">Network Value vs Transaction Value — Fair Value Benchmark</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="nvt">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="nvt">2Y</button><button class="tf-btn" data-tf="all" data-chart="nvt">ALL</button></div>
-  </div>
-  <div class="cs-latest" id="nvt-latest"></div>
-  <div class="cs-chart-wrap"><canvas id="chart-nvt"></canvas><div class="loading-overlay" id="load-nvt">Loading NVT...</div></div>
-  <div class="cs-legend" id="leg-nvt"></div>
-  <div class="cs-note"><strong>How to read:</strong> Divergence between high network value and low price = strong buy signal. Focus on the <strong>Coinblocks NVT Price 90-day</strong>. When NVT drops while price rises → fair value return is imminent.</div>
-</div></div>
+<!-- 7. NVT --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">NVT Price Model</div><div class="cs-sub">Network Value vs Transaction Value &#8212; Fair Value Benchmark</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="nvt">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="nvt">2Y</button><button class="tf-btn" data-tf="all" data-chart="nvt">ALL</button></div></div><div class="cs-latest" id="nvt-latest"></div><div class="cs-chart-wrap"><canvas id="chart-nvt"></canvas><div class="loading-overlay" id="load-nvt">Loading NVT...</div></div><div class="cs-legend" id="leg-nvt"></div><div class="cs-note"><strong>How to read:</strong> Divergence between high network value and low price = strong buy signal. When NVT drops while price rises &#8594; fair value return is imminent.</div></div></div>
 
-<!-- 8. NET REALIZED P/L -->
-<div class="chart-section" id="sec-net-pnl">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">Net Realized Profit / Loss</div><div class="cs-sub">Aggregate Holder Profit &amp; Loss — Market Emotion Gauge</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="net_pnl">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="net_pnl">2Y</button><button class="tf-btn" data-tf="all" data-chart="net_pnl">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap"><canvas id="chart-net_pnl"></canvas><div class="loading-overlay" id="load-net_pnl">Loading Net P/L...</div></div>
-  <div class="cs-note"><strong>How to read:</strong> Represents the average trader's survival struggle — net realized profit or loss across the network. Large realized losses = <strong>capitulation (potential bottom)</strong>. Large realized profits = <strong>euphoria (potential top)</strong>.</div>
-</div></div>
+<!-- 8. NET P/L --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">Net Realized Profit / Loss</div><div class="cs-sub">Aggregate Holder Profit &amp; Loss &#8212; Market Emotion Gauge</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="net_pnl">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="net_pnl">2Y</button><button class="tf-btn" data-tf="all" data-chart="net_pnl">ALL</button></div></div><div class="cs-chart-wrap"><canvas id="chart-net_pnl"></canvas><div class="loading-overlay" id="load-net_pnl">Loading Net P/L...</div></div><div class="cs-note"><strong>How to read:</strong> Large realized losses = <strong>capitulation (potential bottom)</strong>. Large realized profits = <strong>euphoria (potential top)</strong>.</div></div></div>
 
-<!-- 9. CYCLE OSCILLATORS -->
-<div class="chart-section" id="sec-cycle-osc">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">Cycle Extreme Oscillators</div><div class="cs-sub">Multi-Metric Confluence — 4-Year Cycle Discount Points</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="cycle_osc">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="cycle_osc">2Y</button><button class="tf-btn" data-tf="all" data-chart="cycle_osc">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap"><canvas id="chart-cycle_osc"></canvas><div class="loading-overlay" id="load-cycle_osc">Loading Oscillators...</div></div>
-  <div class="cs-note"><strong>How to read:</strong> Blue lines mark cyclical discount points — buying opportunities that repeat approximately every <strong>4 years</strong>. These represent confluence of multiple on-chain metrics reaching extreme oversold conditions simultaneously.</div>
-</div></div>
+<!-- 9. CYCLE OSC --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">Cycle Extreme Oscillators</div><div class="cs-sub">Multi-Metric Confluence &#8212; 4-Year Cycle Discount Points</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="cycle_osc">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="cycle_osc">2Y</button><button class="tf-btn" data-tf="all" data-chart="cycle_osc">ALL</button></div></div><div class="cs-chart-wrap"><canvas id="chart-cycle_osc"></canvas><div class="loading-overlay" id="load-cycle_osc">Loading Oscillators...</div></div><div class="cs-note"><strong>How to read:</strong> Blue lines mark cyclical discount points &#8212; buying opportunities that repeat approximately every <strong>4 years</strong>.</div></div></div>
 
-<!-- 10. HODL WAVES -->
-<div class="chart-section" id="sec-hodl">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">HODL Waves</div><div class="cs-sub">Supply Age Distribution — Holder Conviction Mapping</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="hodl">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="hodl">2Y</button><button class="tf-btn" data-tf="all" data-chart="hodl">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap"><canvas id="chart-hodl"></canvas><div class="loading-overlay" id="load-hodl">Loading HODL Waves...</div></div>
-  <div class="cs-legend" id="leg-hodl"></div>
-  <div class="cs-note"><strong>How to read:</strong> The "belly" expands during discount (accumulation) and contracts during premium (distribution). In the short-term bands, retail does the opposite — buying tops and selling bottoms. <strong>Track the long-term holders for true trend direction.</strong></div>
-</div></div>
+<!-- 10. HODL WAVES --><div class="chart-section"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">HODL Waves</div><div class="cs-sub">Supply Age Distribution &#8212; Holder Conviction Mapping</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="hodl">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="hodl">2Y</button><button class="tf-btn" data-tf="all" data-chart="hodl">ALL</button></div></div><div class="cs-chart-wrap"><canvas id="chart-hodl"></canvas><div class="loading-overlay" id="load-hodl">Loading HODL Waves...</div></div><div class="cs-legend" id="leg-hodl"></div><div class="cs-note"><strong>How to read:</strong> The &#8220;belly&#8221; expands during accumulation and contracts during distribution. <strong>Track long-term holders for true trend direction.</strong></div></div></div>
 
-<!-- 11/12: DIFFICULTY + SUPPLY LTH/STH (dual) -->
-<div class="dual-row">
-<div class="chart-section" id="sec-diff" style="margin-bottom:0">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">Difficulty / Issuance</div><div class="cs-sub">Mining Premium Pricing Model</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="diff_iss">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="diff_iss">2Y</button><button class="tf-btn" data-tf="all" data-chart="diff_iss">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap" style="height:280px"><canvas id="chart-diff_iss"></canvas><div class="loading-overlay" id="load-diff_iss">Loading Difficulty...</div></div>
-  <div class="cs-note">When BTC price is above the last standard deviation of the model → <strong>premium pricing</strong>. Buy when price is below the dashed line (cost basis).</div>
-</div></div>
-<div class="chart-section" id="sec-supply" style="margin-bottom:0">
-<div class="cs-card reveal">
-  <div class="cs-header">
-    <div><div class="cs-title">Supply LTH vs STH</div><div class="cs-sub">Long-Term vs Short-Term Holder Breakdown</div></div>
-    <div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="supply_lthsth">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="supply_lthsth">2Y</button><button class="tf-btn" data-tf="all" data-chart="supply_lthsth">ALL</button></div>
-  </div>
-  <div class="cs-chart-wrap" style="height:280px"><canvas id="chart-supply_lthsth"></canvas><div class="loading-overlay" id="load-supply_lthsth">Loading Supply...</div></div>
-  <div class="cs-note">Trend comes from large holders. Trigger comes from small holders. When institutional slope declines → <strong>profit-taking underway</strong>. Retail losses = liquidity for informed participants.</div>
-</div></div>
+<!-- 11/12. DIFF + SUPPLY dual --><div class="dual-row">
+<div class="chart-section" style="margin-bottom:0"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">Difficulty / Issuance</div><div class="cs-sub">Mining Premium Pricing Model</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="diff_iss">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="diff_iss">2Y</button><button class="tf-btn" data-tf="all" data-chart="diff_iss">ALL</button></div></div><div class="cs-chart-wrap" style="height:280px"><canvas id="chart-diff_iss"></canvas><div class="loading-overlay" id="load-diff_iss">Loading Difficulty...</div></div><div class="cs-note">Price above the model&#8217;s last standard deviation &#8594; <strong>premium pricing</strong>. Buy below the dashed line (cost basis).</div></div></div>
+<div class="chart-section" style="margin-bottom:0"><div class="cs-card reveal"><div class="cs-header"><div><div class="cs-title">Supply LTH vs STH</div><div class="cs-sub">Long-Term vs Short-Term Holder Breakdown</div></div><div class="cs-controls"><button class="tf-btn" data-tf="1y" data-chart="supply_lthsth">1Y</button><button class="tf-btn active" data-tf="2y" data-chart="supply_lthsth">2Y</button><button class="tf-btn" data-tf="all" data-chart="supply_lthsth">ALL</button></div></div><div class="cs-chart-wrap" style="height:280px"><canvas id="chart-supply_lthsth"></canvas><div class="loading-overlay" id="load-supply_lthsth">Loading Supply...</div></div><div class="cs-note">Institutional slope decline &#8594; <strong>profit-taking underway</strong>. Retail losses = liquidity for informed participants.</div></div></div>
 </div>
 
-<!-- HOW TO READ THIS PAGE -->
-<div class="how-section">
-<div class="how-card">
-  <div class="how-title">How To Read This Page</div>
-  <div class="how-grid">
-    <div class="how-item">
-      <div class="how-item-title">Cycle Positioning</div>
-      <div class="how-item-body">Bitcoin operates on ~4-year cycles driven by halvings. On-chain metrics help identify where we are in the cycle: <strong>accumulation</strong> (bottom), <strong>markup</strong> (early bull), <strong>distribution</strong> (top), and <strong>markdown</strong> (bear). The Cycle Oscillators and MVRV are your primary positioning tools.</div>
-    </div>
-    <div class="how-item">
-      <div class="how-item-title">Buy &amp; Hold vs Momentum</div>
-      <div class="how-item-body">For <strong>buy &amp; hold</strong>, use MVRV, Puell, and Cycle Oscillators to find deep discount zones. For <strong>momentum trades</strong>, use STH-MVRV crosses and LTH-MVRV Z-Score sequences (green → blue = explosion). Pi Cycle Top tells you when to start taking profit.</div>
-    </div>
-    <div class="how-item">
-      <div class="how-item-title">Signal Confluence</div>
-      <div class="how-item-body">No single metric is a trading signal. Look for <strong>confluence</strong> across multiple indicators: MVRV in discount + Puell at capitulation + SOPR below 0.95 + Fear &amp; Greed in extreme fear = strong accumulation signal. Use the dashboard cards for a quick confluence check.</div>
-    </div>
-    <div class="how-item">
-      <div class="how-item-title">Holder Analysis</div>
-      <div class="how-item-body">HODL Waves and Supply LTH/STH reveal <strong>who is accumulating and who is distributing</strong>. Institutions set the trend direction; retail provides the trigger. When institutional holders are distributing while retail buys aggressively, a correction is likely. The Net Realized P/L captures the aggregate emotion.</div>
-    </div>
-  </div>
-</div>
-</div>
+<div class="how-section"><div class="how-card reveal"><div class="how-title">How To Read This Page</div><div class="how-grid">
+  <div class="how-item"><div class="how-item-title">Cycle Positioning</div><div class="how-item-body">Bitcoin operates on ~4-year cycles driven by halvings. On-chain metrics identify where we are: <strong>accumulation</strong> (bottom), <strong>markup</strong> (early bull), <strong>distribution</strong> (top), <strong>markdown</strong> (bear). MVRV and Cycle Oscillators are your primary positioning tools.</div></div>
+  <div class="how-item"><div class="how-item-title">Buy &amp; Hold vs Momentum</div><div class="how-item-body">For <strong>buy &amp; hold</strong>, use MVRV, Puell, and Cycle Oscillators to find deep discount zones. For <strong>momentum trades</strong>, use STH-MVRV crosses and LTH-MVRV Z-Score sequences (green &#8594; blue = explosion). Pi Cycle Top tells you when to start taking profit.</div></div>
+  <div class="how-item"><div class="how-item-title">Signal Confluence</div><div class="how-item-body">No single metric is a trading signal. Look for <strong>confluence</strong>: MVRV in discount + Puell at capitulation + SOPR below 0.95 + extreme fear = strong accumulation signal. Use the dashboard cards for a quick confluence check.</div></div>
+  <div class="how-item"><div class="how-item-title">Holder Analysis</div><div class="how-item-body">HODL Waves and Supply LTH/STH reveal <strong>who is accumulating and who is distributing</strong>. Institutions set the trend; retail provides the trigger. When institutional holders distribute while retail buys aggressively, a correction is likely.</div></div>
+</div></div></div>
 
 </main>
 
 <footer>
-  <div class="foot-brand"><img class="foot-logo" src="logo.png" alt="V"><span class="foot-name">Vilasio</span></div>
+  <span class="foot-name">Vilasio</span>
   <div class="foot-copy">&#169; 2026 Vilasio &#183; On-Chain Intelligence</div>
-  <div class="foot-disclaimer">On-chain data updated daily. Not financial advice.</div>
 </footer>
-
-<div class="disclaimer-bar">
-  <div class="disclaimer-inner">
-    <span class="disclaimer-label">Financial Disclaimer</span>
-    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
-  </div>
-</div>
+<div class="disclaimer-bar"><div class="disclaimer-inner"><span class="disclaimer-label">Financial Disclaimer</span><p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p></div></div>
 
 <script>
-/* ===== CONFIG ===== */
 var API="https://vilasio-cot-backend.onrender.com";
-var charts={};
-var allData={base:null,adv:null};
-var currentTF={};
-
-/* Color palette for series */
+var charts={};var allData={base:null,adv:null};var currentTF={};
 var COLORS=["#c8a84b","#3b82f6","#22c55e","#ef4444","#f59e0b","#a78bfa","#06b6d4","#f472b6","#84cc16","#fb923c","#e879f9","#38bdf8"];
-
-/* Metric configs: maps chart key to backend metric + display options */
 var METRICS={
-  mvrv:{key:"coc_mvrv",zones:[{y:3.5,c:"rgba(239,68,68,0.08)",label:"Overvalued"},{y:1.0,c:"rgba(34,197,94,0.08)",label:"Discount"}],refLines:[{y:3.5,c:"#ef4444",dash:[4,4]},{y:2.0,c:"#f59e0b",dash:[4,4]},{y:1.0,c:"#22c55e",dash:[4,4]}]},
+  mvrv:{key:"coc_mvrv",refLines:[{y:3.5,c:"#ef4444",dash:[4,4]},{y:2.0,c:"#f59e0b",dash:[4,4]},{y:1.0,c:"#22c55e",dash:[4,4]}]},
   puell:{key:"coc_puell",refLines:[{y:4.0,c:"#ef4444",dash:[4,4]},{y:0.5,c:"#22c55e",dash:[4,4]}]},
   picycle:{key:"coc_picycle",yLog:true},
   sopr:{key:"coc_sopr",refLines:[{y:1.0,c:"#ffffff40",dash:[6,3]},{y:1.05,c:"#ef4444",dash:[3,3]},{y:0.95,c:"#22c55e",dash:[3,3]}]},
-  sth_mvrv:{key:"coc_sth_mvrv"},
-  lth_mvrv:{key:"coc_lth_mvrv"},
-  nvt:{key:"coc_nvt",yLog:true},
-  net_pnl:{key:"coc_net_pnl"},
-  cycle_osc:{key:"coc_cycle_osc"},
-  hodl:{key:"coc_hodl",stacked:true},
-  diff_iss:{key:"coc_diff_iss",yLog:true},
-  supply_lthsth:{key:"coc_supply_lthsth"}
+  sth_mvrv:{key:"coc_sth_mvrv"},lth_mvrv:{key:"coc_lth_mvrv"},
+  nvt:{key:"coc_nvt",yLog:true},net_pnl:{key:"coc_net_pnl"},
+  cycle_osc:{key:"coc_cycle_osc"},hodl:{key:"coc_hodl",stacked:true},
+  diff_iss:{key:"coc_diff_iss",yLog:true},supply_lthsth:{key:"coc_supply_lthsth"}
 };
 
-/* ===== HELPERS ===== */
-function fmtNum(n,dec){if(n==null||isNaN(n))return"—";dec=dec||2;if(Math.abs(n)>=1e9)return(n/1e9).toFixed(1)+"B";if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(1)+"K";return parseFloat(n).toFixed(dec)}
-function fmtPrice(n){if(n==null)return"—";return"$"+Number(n).toLocaleString("en-US",{maximumFractionDigits:0})}
+function fmtNum(n,dec){if(n==null||isNaN(n))return"\u2014";dec=dec||2;if(Math.abs(n)>=1e9)return(n/1e9).toFixed(1)+"B";if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(1)+"K";return parseFloat(n).toFixed(dec)}
+function fmtPrice(n){if(n==null)return"\u2014";return"$"+Number(n).toLocaleString("en-US",{maximumFractionDigits:0})}
 
-/* Filter dates by timeframe */
 function filterByTF(dates,values,tf){
   if(tf==="all"||!dates||!dates.length)return{dates:dates,values:values};
-  var now=new Date();
   var cutoff=new Date();
-  if(tf==="1y")cutoff.setFullYear(now.getFullYear()-1);
-  else if(tf==="2y")cutoff.setFullYear(now.getFullYear()-2);
+  if(tf==="1y")cutoff.setFullYear(cutoff.getFullYear()-1);
+  else if(tf==="2y")cutoff.setFullYear(cutoff.getFullYear()-2);
   else return{dates:dates,values:values};
-  var ci=0;
-  for(var i=0;i<dates.length;i++){if(new Date(dates[i])>=cutoff){ci=i;break}}
+  var ci=0;for(var i=0;i<dates.length;i++){if(new Date(dates[i])>=cutoff){ci=i;break}}
   return{dates:dates.slice(ci),values:values.slice(ci)};
 }
-
-/* Downsample for performance */
-function downsample(arr,max){
-  if(!arr||arr.length<=max)return arr;
-  var step=Math.ceil(arr.length/max);
-  var out=[];
-  for(var i=0;i<arr.length;i+=step)out.push(arr[i]);
-  if(out[out.length-1]!==arr[arr.length-1])out.push(arr[arr.length-1]);
-  return out;
-}
-
-/* Get last non-null value from array */
-function lastVal(arr){
-  if(!arr)return null;
-  for(var i=arr.length-1;i>=0;i--){if(arr[i]!=null&&!isNaN(arr[i]))return arr[i]}
-  return null;
-}
-
-/* ===== FETCH DATA ===== */
-function fetchWithRetry(url,retries,delay){
-  return new Promise(function(ok,no){
-    var a=0;
-    function go(){
-      Promise.race([
-        fetch(url),
-        new Promise(function(_,r){setTimeout(function(){r(new Error("timeout"))},30000)})
-      ]).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json()})
-      .then(ok)
-      .catch(function(e){a++;if(a<=retries)setTimeout(go,delay*a);else no(e)});
-    }
-    go();
-  });
-}
+function downsample(arr,max){if(!arr||arr.length<=max)return arr;var step=Math.ceil(arr.length/max);var out=[];for(var i=0;i<arr.length;i+=step)out.push(arr[i]);if(out[out.length-1]!==arr[arr.length-1])out.push(arr[arr.length-1]);return out}
+function lastVal(arr){if(!arr)return null;for(var i=arr.length-1;i>=0;i--){if(arr[i]!=null&&!isNaN(arr[i]))return arr[i]}return null}
 
 function loadAll(){
-  var p1=fetchWithRetry(API+"/api/onchain",3,5000).then(function(d){allData.base=d;updateBase()}).catch(function(e){console.warn("Base onchain failed:",e)});
-  var p2=fetchWithRetry(API+"/api/onchain/advanced",3,5000).then(function(d){allData.adv=d;updateAdvanced()}).catch(function(e){console.warn("Advanced onchain failed:",e);showAdvError()});
-  Promise.all([p1,p2]).then(function(){
-    document.getElementById("update-badge").textContent="DATA LOADED";
-  }).catch(function(){
-    document.getElementById("update-badge").textContent="PARTIAL DATA";
-  });
+  var p1=fetch(API+"/api/onchain").then(function(r){return r.json()}).then(function(d){allData.base=d;updateBase()}).catch(function(e){console.warn("Base onchain failed:",e)});
+  var p2=fetch(API+"/api/onchain/advanced").then(function(r){return r.json()}).then(function(d){allData.adv=d;updateAdvanced()}).catch(function(e){console.warn("Advanced onchain failed:",e);showAdvError()});
+  Promise.all([p1,p2]).then(function(){document.getElementById("update-badge").textContent="DATA LOADED"}).catch(function(){document.getElementById("update-badge").textContent="PARTIAL DATA"});
 }
 
-/* ===== UPDATE BASE DATA (Fear & Greed, BTC price, basic MVRV) ===== */
 function updateBase(){
   var d=allData.base;if(!d)return;
-  /* BTC Price */
-  if(d.btc_price!=null){
-    document.getElementById("btc-price").textContent=fmtPrice(d.btc_price);
-    var chg=d.btc_change_24h;
-    var el=document.getElementById("btc-change");
-    if(chg!=null){
-      el.textContent=(chg>=0?"+":"")+parseFloat(chg).toFixed(2)+"%";
-      el.style.color=chg>=0?"var(--grn)":"var(--red)";
-    }
-  }
-  /* Fear & Greed */
-  if(d.fear_greed!=null){
-    var fg=d.fear_greed;
-    document.getElementById("dc-fg").textContent=fg;
-    var fgEl=document.getElementById("dc-fg-zone");
-    if(fg<=25){fgEl.textContent="EXTREME FEAR";fgEl.className="dc-zone grn"}
-    else if(fg<=40){fgEl.textContent="FEAR";fgEl.className="dc-zone grn"}
-    else if(fg<=60){fgEl.textContent="NEUTRAL";fgEl.className="dc-zone amb"}
-    else if(fg<=75){fgEl.textContent="GREED";fgEl.className="dc-zone red"}
-    else{fgEl.textContent="EXTREME GREED";fgEl.className="dc-zone red"}
-  }
+  if(d.btc_price!=null){document.getElementById("btc-price").textContent=fmtPrice(d.btc_price);var chg=d.btc_change_24h;var el=document.getElementById("btc-change");if(chg!=null){el.textContent=(chg>=0?"+":"")+parseFloat(chg).toFixed(2)+"%";el.style.color=chg>=0?"var(--grn)":"var(--red)"}}
+  if(d.fear_greed!=null){var fg=d.fear_greed;document.getElementById("dc-fg").textContent=fg;var fgEl=document.getElementById("dc-fg-zone");if(fg<=25){fgEl.textContent="EXTREME FEAR";fgEl.className="dc-zone grn"}else if(fg<=40){fgEl.textContent="FEAR";fgEl.className="dc-zone grn"}else if(fg<=60){fgEl.textContent="NEUTRAL";fgEl.className="dc-zone amb"}else if(fg<=75){fgEl.textContent="GREED";fgEl.className="dc-zone red"}else{fgEl.textContent="EXTREME GREED";fgEl.className="dc-zone red"}}
 }
 
-/* ===== UPDATE ADVANCED DATA (12 metrics from CheckOnChain) ===== */
 function updateAdvanced(){
-  var d=allData.adv;if(!d)return;
-  
-  /* Update dashboard cards with latest values */
-  updateDashCard("mvrv",d);
-  updateDashCard("puell",d);
-  updateDashCard("sopr",d);
-  
-  /* Build all charts */
-  Object.keys(METRICS).forEach(function(ck){
-    currentTF[ck]="2y";
-    buildChart(ck,d);
-  });
+  var d=allData.adv;if(!d||!d.metrics)return;
+  updateDashCard("mvrv",d.metrics);updateDashCard("puell",d.metrics);updateDashCard("sopr",d.metrics);
+  Object.keys(METRICS).forEach(function(ck){currentTF[ck]="2y";buildChart(ck,d.metrics)});
 }
 
-function updateDashCard(metric,d){
-  var cfg=METRICS[metric];
-  var mdata=d[cfg.key];
-  if(!mdata)return;
-  
-  /* Find latest value - try the "latest" field first, then scan series */
-  var val=null;
-  if(mdata.latest){
-    /* Find the main metric series in latest */
-    var keys=Object.keys(mdata.latest);
-    for(var i=0;i<keys.length;i++){
-      var k=keys[i].toLowerCase();
-      if(k===metric||k.indexOf(metric)>=0){val=mdata.latest[keys[i]];break}
-    }
-    /* If not found by name, try common names */
-    if(val==null){
-      ["MVRV","Puell Multiple","SOPR","Puell","Price"].forEach(function(n){
-        if(val==null&&mdata.latest[n]!=null)val=mdata.latest[n];
-      });
-    }
-  }
-  
-  /* Fallback: scan series for latest value */
-  if(val==null&&mdata.series){
-    var skeys=Object.keys(mdata.series);
-    for(var i=0;i<skeys.length;i++){
-      var sn=skeys[i].toLowerCase();
-      if(sn===metric||sn.indexOf(metric)>=0||sn==="mvrv"||sn==="puell multiple"||sn==="sopr"){
-        val=lastVal(mdata.series[skeys[i]]);
-        break;
-      }
-    }
-    /* Still null? Use the first non-Price series */
-    if(val==null){
-      for(var i=0;i<skeys.length;i++){
-        if(skeys[i].toLowerCase()!=="price"&&skeys[i]!==""){
-          val=lastVal(mdata.series[skeys[i]]);
-          if(val!=null)break;
-        }
-      }
-    }
-  }
-  
+function updateDashCard(metric,metrics){
+  var cfg=METRICS[metric];var mdata=metrics[cfg.key];if(!mdata||!mdata.latest)return;
+  var val=null;var keys=Object.keys(mdata.latest);
+  for(var i=0;i<keys.length;i++){var k=keys[i].toLowerCase();if(k.indexOf(metric)>=0||k==="mvrv"||k==="puell multiple"||k==="sopr"){val=mdata.latest[keys[i]];break}}
+  if(val==null&&keys.length){for(var i=0;i<keys.length;i++){if(keys[i].toLowerCase()!=="price"){val=mdata.latest[keys[i]];break}}}
   if(val==null)return;
-  
-  var el=document.getElementById("dc-"+metric);
-  var zEl=document.getElementById("dc-"+metric+"-zone");
-  if(!el||!zEl)return;
-  
+  var el=document.getElementById("dc-"+metric);var zEl=document.getElementById("dc-"+metric+"-zone");if(!el||!zEl)return;
   el.textContent=fmtNum(val,metric==="sopr"?4:2);
-  
-  /* Zone classification */
-  if(metric==="mvrv"){
-    if(val>3.5){zEl.textContent="OVERVALUED";zEl.className="dc-zone red"}
-    else if(val>2.0){zEl.textContent="PREMIUM";zEl.className="dc-zone amb"}
-    else if(val>1.0){zEl.textContent="FAIR VALUE";zEl.className="dc-zone blu"}
-    else{zEl.textContent="DISCOUNT";zEl.className="dc-zone grn"}
-  }else if(metric==="puell"){
-    if(val>4.0){zEl.textContent="EXTREME PROFIT";zEl.className="dc-zone red"}
-    else if(val>1.5){zEl.textContent="HIGH";zEl.className="dc-zone amb"}
-    else if(val>0.5){zEl.textContent="NORMAL";zEl.className="dc-zone blu"}
-    else{zEl.textContent="CAPITULATION";zEl.className="dc-zone grn"}
-  }else if(metric==="sopr"){
-    if(val>1.05){zEl.textContent="PROFIT TAKING";zEl.className="dc-zone red"}
-    else if(val>0.95){zEl.textContent="NEUTRAL";zEl.className="dc-zone blu"}
-    else{zEl.textContent="LOSS SELLING";zEl.className="dc-zone grn"}
-  }
+  if(metric==="mvrv"){if(val>3.5){zEl.textContent="OVERVALUED";zEl.className="dc-zone red"}else if(val>2.0){zEl.textContent="PREMIUM";zEl.className="dc-zone amb"}else if(val>1.0){zEl.textContent="FAIR VALUE";zEl.className="dc-zone blu"}else{zEl.textContent="DISCOUNT";zEl.className="dc-zone grn"}}
+  else if(metric==="puell"){if(val>4.0){zEl.textContent="EXTREME PROFIT";zEl.className="dc-zone red"}else if(val>1.5){zEl.textContent="HIGH";zEl.className="dc-zone amb"}else if(val>0.5){zEl.textContent="NORMAL";zEl.className="dc-zone blu"}else{zEl.textContent="CAPITULATION";zEl.className="dc-zone grn"}}
+  else if(metric==="sopr"){if(val>1.05){zEl.textContent="PROFIT TAKING";zEl.className="dc-zone red"}else if(val>0.95){zEl.textContent="NEUTRAL";zEl.className="dc-zone blu"}else{zEl.textContent="LOSS SELLING";zEl.className="dc-zone grn"}}
 }
 
-/* ===== BUILD CHART ===== */
-function buildChart(ck,d){
-  var cfg=METRICS[ck];
-  var mdata=d[cfg.key];
-  if(!mdata||!mdata.dates||!mdata.series){
-    hideLoading(ck);
-    return;
-  }
-  
-  var dates=mdata.dates;
-  var series=mdata.series;
-  var sNames=Object.keys(series);
-  
-  /* Filter empty-name series */
-  sNames=sNames.filter(function(n){return n!==""});
-  
+function buildChart(ck,metrics){
+  var cfg=METRICS[ck];var mdata=metrics[cfg.key];
+  if(!mdata||!mdata.dates||!mdata.series){hideLoading(ck);return}
+  var dates=mdata.dates;var series=mdata.series;var sNames=Object.keys(series).filter(function(n){return n!==""});
   if(!sNames.length){hideLoading(ck);return}
-  
-  /* Apply timeframe filter */
-  var tf=currentTF[ck]||"2y";
-  var maxPts=800;
-  
-  /* Build datasets */
-  var datasets=[];
-  var filteredDates=null;
-  
+  var tf=currentTF[ck]||"2y";var maxPts=800;var datasets=[];var filteredDates=null;
   sNames.forEach(function(name,idx){
-    var raw=series[name];
-    var filtered=filterByTF(dates,raw,tf);
+    var raw=series[name];var filtered=filterByTF(dates,raw,tf);
     if(!filteredDates)filteredDates=downsample(filtered.dates,maxPts);
     var vals=downsample(filtered.values,maxPts);
-    
-    var color=COLORS[idx%COLORS.length];
-    var isPriceSeries=name.toLowerCase()==="price"||name.toLowerCase().indexOf("price")===0;
-    
-    var ds={
-      label:name,
-      data:vals,
-      borderColor:color,
-      backgroundColor:cfg.stacked?(color+"40"):("transparent"),
-      borderWidth:isPriceSeries?1.5:1.5,
-      pointRadius:0,
-      pointHitRadius:8,
-      tension:0.3,
-      fill:cfg.stacked?true:false,
-      yAxisID:isPriceSeries?"yPrice":"y"
-    };
-    
-    /* Make price series use right axis and be more subtle */
-    if(isPriceSeries){
-      ds.borderColor="#ffffff30";
-      ds.borderWidth=1;
-      ds.borderDash=[3,3];
-    }
-    
+    var color=COLORS[idx%COLORS.length];var isPr=name.toLowerCase()==="price"||name.toLowerCase().indexOf("price")===0;
+    var ds={label:name,data:vals,borderColor:isPr?"#ffffff30":color,backgroundColor:cfg.stacked?(color+"40"):"transparent",borderWidth:isPr?1:1.5,pointRadius:0,pointHitRadius:8,tension:0.3,fill:!!cfg.stacked,yAxisID:isPr?"yPrice":"y"};
+    if(isPr){ds.borderDash=[3,3]}
     datasets.push(ds);
   });
-  
   if(!filteredDates){hideLoading(ck);return}
-  
-  /* Destroy old chart */
   if(charts[ck]){charts[ck].destroy();charts[ck]=null}
-  
-  var canvas=document.getElementById("chart-"+ck);
-  if(!canvas)return;
-  var ctx=canvas.getContext("2d");
-  
-  /* Annotation plugin for reference lines */
-  var hasPriceAxis=datasets.some(function(ds){return ds.yAxisID==="yPrice"});
-  
-  var scales={
-    x:{
-      type:"category",
-      grid:{color:"#ffffff06"},
-      ticks:{
-        color:"#5a6070",
-        font:{family:"DM Mono",size:7},
-        maxTicksLimit:8,
-        maxRotation:0
-      }
-    },
-    y:{
-      position:"left",
-      type:cfg.yLog?"logarithmic":"linear",
-      grid:{color:"#ffffff06"},
-      ticks:{
-        color:"#5a6070",
-        font:{family:"DM Mono",size:7},
-        callback:function(v){return fmtNum(v)}
-      },
-      stacked:cfg.stacked||false
-    }
-  };
-  
-  if(hasPriceAxis){
-    scales.yPrice={
-      position:"right",
-      type:"logarithmic",
-      grid:{display:false},
-      ticks:{
-        color:"#5a607060",
-        font:{family:"DM Mono",size:7},
-        callback:function(v){return fmtPrice(v)}
-      }
-    };
-  }
-  
-  /* Reference line annotations */
-  var annotations={};
-  if(cfg.refLines){
-    cfg.refLines.forEach(function(rl,i){
-      annotations["ref"+i]={
-        type:"line",
-        yMin:rl.y,yMax:rl.y,
-        borderColor:rl.c,
-        borderWidth:1,
-        borderDash:rl.dash||[],
-        yScaleID:"y"
-      };
-    });
-  }
-  
-  charts[ck]=new Chart(ctx,{
-    type:"line",
-    data:{labels:filteredDates,datasets:datasets},
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      interaction:{mode:"index",intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:"rgba(15,15,22,0.95)",
-          titleFont:{family:"DM Mono",size:9},
-          bodyFont:{family:"DM Mono",size:8},
-          borderColor:"rgba(255,255,255,0.1)",
-          borderWidth:1,
-          padding:10,
-          callbacks:{
-            label:function(ctx){
-              var v=ctx.parsed.y;
-              if(v==null)return null;
-              var lbl=ctx.dataset.label||"";
-              if(lbl.toLowerCase().indexOf("price")>=0)return lbl+": "+fmtPrice(v);
-              return lbl+": "+fmtNum(v,4);
-            }
-          }
-        },
-        annotation:{annotations:annotations}
-      },
-      scales:scales
-    }
-  });
-  
-  /* Build legend */
-  buildLegend(ck,datasets);
-  
-  /* Update latest values display */
-  updateLatest(ck,sNames,series,dates);
-  
-  hideLoading(ck);
+  var canvas=document.getElementById("chart-"+ck);if(!canvas)return;
+  var hasPr=datasets.some(function(ds){return ds.yAxisID==="yPrice"});
+  var scales={x:{type:"category",grid:{color:"#ffffff06"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},maxTicksLimit:8,maxRotation:0}},y:{position:"left",type:cfg.yLog?"logarithmic":"linear",grid:{color:"#ffffff06"},ticks:{color:"#5a6070",font:{family:"DM Mono",size:7},callback:function(v){return fmtNum(v)}},stacked:!!cfg.stacked}};
+  if(hasPr){scales.yPrice={position:"right",type:"logarithmic",grid:{display:false},ticks:{color:"#5a607060",font:{family:"DM Mono",size:7},callback:function(v){return fmtPrice(v)}}}}
+  var annotations={};if(cfg.refLines){cfg.refLines.forEach(function(rl,i){annotations["ref"+i]={type:"line",yMin:rl.y,yMax:rl.y,borderColor:rl.c,borderWidth:1,borderDash:rl.dash||[],yScaleID:"y"}})}
+  charts[ck]=new Chart(canvas.getContext("2d"),{type:"line",data:{labels:filteredDates,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"rgba(15,15,22,0.95)",titleFont:{family:"DM Mono",size:9},bodyFont:{family:"DM Mono",size:8},borderColor:"rgba(255,255,255,0.1)",borderWidth:1,padding:10,callbacks:{label:function(ctx){var v=ctx.parsed.y;if(v==null)return null;var l=ctx.dataset.label||"";if(l.toLowerCase().indexOf("price")>=0)return l+": "+fmtPrice(v);return l+": "+fmtNum(v,4)}}},annotation:{annotations:annotations}},scales:scales}});
+  buildLegend(ck,datasets);updateLatest(ck,sNames,series,dates);hideLoading(ck);
 }
 
-function buildLegend(ck,datasets){
-  var el=document.getElementById("leg-"+ck);
-  if(!el)return;
-  el.innerHTML="";
-  datasets.forEach(function(ds){
-    if(!ds.label)return;
-    var item=document.createElement("div");
-    item.className="lg-item";
-    item.innerHTML='<div class="lg-dot" style="background:'+ds.borderColor+'"></div> '+ds.label;
-    el.appendChild(item);
-  });
-}
+function buildLegend(ck,datasets){var el=document.getElementById("leg-"+ck);if(!el)return;el.innerHTML="";datasets.forEach(function(ds){if(!ds.label)return;var d=document.createElement("div");d.className="lg-item";d.innerHTML='<div class="lg-dot" style="background:'+ds.borderColor+'"></div> '+ds.label;el.appendChild(d)})}
+function updateLatest(ck,sNames,series,dates){var el=document.getElementById(ck+"-latest");if(!el)return;el.innerHTML="";sNames.forEach(function(name){var v=lastVal(series[name]);if(v==null)return;var isPr=name.toLowerCase().indexOf("price")>=0;var s=document.createElement("span");s.className="cs-lat-item";s.innerHTML=name+": <strong>"+(isPr?fmtPrice(v):fmtNum(v,4))+"</strong>";el.appendChild(s)})}
+function hideLoading(ck){var el=document.getElementById("load-"+ck);if(el)el.classList.add("hidden")}
+function showAdvError(){Object.keys(METRICS).forEach(function(ck){var el=document.getElementById("load-"+ck);if(el){el.textContent="Failed to load";el.style.color="var(--red)"}})}
 
-function updateLatest(ck,sNames,series,dates){
-  var el=document.getElementById(ck+"-latest");
-  if(!el)return;
-  el.innerHTML="";
-  sNames.forEach(function(name){
-    var v=lastVal(series[name]);
-    if(v==null)return;
-    var isPr=name.toLowerCase().indexOf("price")>=0;
-    var span=document.createElement("span");
-    span.className="cs-lat-item";
-    span.innerHTML=name+": <strong>"+(isPr?fmtPrice(v):fmtNum(v,4))+"</strong>";
-    el.appendChild(span);
-  });
-}
-
-function hideLoading(ck){
-  var el=document.getElementById("load-"+ck);
-  if(el)el.classList.add("hidden");
-}
-
-function showAdvError(){
-  Object.keys(METRICS).forEach(function(ck){
-    var el=document.getElementById("load-"+ck);
-    if(el){el.textContent="Failed to load data";el.style.color="var(--red)"}
-  });
-}
-
-/* ===== TIMEFRAME BUTTONS ===== */
-document.querySelectorAll(".tf-btn").forEach(function(btn){
-  btn.addEventListener("click",function(){
-    var ck=this.dataset.chart;
-    var tf=this.dataset.tf;
-    if(!ck||!tf)return;
-    /* Update active state */
-    this.parentElement.querySelectorAll(".tf-btn").forEach(function(b){b.classList.remove("active")});
-    this.classList.add("active");
-    currentTF[ck]=tf;
-    if(allData.adv)buildChart(ck,allData.adv);
-  });
-});
-
-/* ===== INTERSECTION OBSERVER ===== */
-var obs=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")});
-},{threshold:0.1});
+document.querySelectorAll(".tf-btn").forEach(function(btn){btn.addEventListener("click",function(){var ck=this.dataset.chart;var tf=this.dataset.tf;if(!ck||!tf)return;this.parentElement.querySelectorAll(".tf-btn").forEach(function(b){b.classList.remove("active")});this.classList.add("active");currentTF[ck]=tf;if(allData.adv&&allData.adv.metrics)buildChart(ck,allData.adv.metrics)})});
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
 document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
 
-/* ===== CHART.JS ANNOTATION PLUGIN (minimal) ===== */
-/* Register a simple annotation plugin for reference lines */
-var annotationPlugin={
-  id:"annotation",
-  afterDraw:function(chart){
-    var opts=chart.options.plugins.annotation;
-    if(!opts||!opts.annotations)return;
-    var ctx=chart.ctx;
-    var yScale=chart.scales.y;
-    if(!yScale)return;
-    var area=chart.chartArea;
-    Object.keys(opts.annotations).forEach(function(key){
-      var ann=opts.annotations[key];
-      if(ann.type!=="line")return;
-      var yPx=yScale.getPixelForValue(ann.yMin);
-      if(yPx<area.top||yPx>area.bottom)return;
-      ctx.save();
-      ctx.beginPath();
-      ctx.strokeStyle=ann.borderColor||"#fff";
-      ctx.lineWidth=ann.borderWidth||1;
-      if(ann.borderDash)ctx.setLineDash(ann.borderDash);
-      ctx.moveTo(area.left,yPx);
-      ctx.lineTo(area.right,yPx);
-      ctx.stroke();
-      ctx.restore();
-    });
-  }
-};
-Chart.register(annotationPlugin);
+/* Annotation plugin for reference lines */
+Chart.register({id:"annotation",afterDraw:function(chart){var opts=chart.options.plugins.annotation;if(!opts||!opts.annotations)return;var ctx=chart.ctx;var yScale=chart.scales.y;if(!yScale)return;var area=chart.chartArea;Object.keys(opts.annotations).forEach(function(key){var ann=opts.annotations[key];if(ann.type!=="line")return;var yPx=yScale.getPixelForValue(ann.yMin);if(yPx<area.top||yPx>area.bottom)return;ctx.save();ctx.beginPath();ctx.strokeStyle=ann.borderColor||"#fff";ctx.lineWidth=ann.borderWidth||1;if(ann.borderDash)ctx.setLineDash(ann.borderDash);ctx.moveTo(area.left,yPx);ctx.lineTo(area.right,yPx);ctx.stroke();ctx.restore()})}});
 
-/* ===== INIT ===== */
 loadAll();
 </script>
 </body>
