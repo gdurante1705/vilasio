@@ -28,6 +28,8 @@ main{padding:0 48px 64px}
 .tbl-wrap{padding:0 28px 16px;overflow-x:auto}
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
 .data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2);cursor:default}
+.data-table th[onclick]{cursor:pointer;user-select:none;transition:color .2s}
+.data-table th[onclick]:hover{color:var(--gold)}
 .data-table td{padding:7px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
 .data-table tr:hover td{background:var(--surf2)}
 .data-table tr:nth-child(even) td{background:rgba(255,255,255,0.015)}
@@ -117,7 +119,16 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
         <option value="all">All Transactions</option>
         <option value="buy">Buy Transactions</option>
         <option value="sale">Sale Transactions</option>
+        <option value="proposed">Proposed Sales</option>
       </select>
+    </div>
+    <div style="padding:0 28px 8px">
+      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none'" style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);cursor:pointer">Transaction Legend &#9662;</div>
+      <div style="display:none;gap:16px;align-items:center;flex-wrap:wrap;padding:8px 0">
+        <span><span class="badge grn" style="font-size:7px">BUY</span> <span style="font-size:8px;color:var(--gray2)">Open market purchase &#8212; strongest signal</span></span>
+        <span><span class="badge red" style="font-size:7px">SALE</span> <span style="font-size:8px;color:var(--gray2)">Direct market sale</span></span>
+        <span><span class="badge amb" style="font-size:7px">PROPOSED SALE</span> <span style="font-size:8px;color:var(--gray2)">Pre-planned (Rule 10b5-1) &#8212; weak signal</span></span>
+      </div>
     </div>
     <div class="tbl-wrap"><table class="data-table" id="insider-table"><tr><td style="color:var(--gray2)">Loading insider trades...</td></tr></table></div>
   </div>
@@ -129,7 +140,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       <div id="congress-source" style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)"></div>
     </div>
     <div style="padding:8px 28px">
-      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--gray2);padding:10px 14px;border:1px solid var(--brd2);background:var(--surf2)">&#9432; Senate disclosures coming soon &#8212; source under maintenance. Showing House PTR filings below.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--gray2);padding:10px 14px;border:1px solid var(--brd2);background:var(--surf2)">&#9432; Each row is a Periodic Transaction Report (PTR) filed under the STOCK Act. Click &#8220;View PDF&#8221; to see actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently are the most active traders to monitor. Senate disclosures temporarily unavailable.</div>
     </div>
     <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--gray2)">Loading congressional filings...</td></tr></table></div>
   </div>
@@ -143,7 +154,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   <div class="explain-section reveal">
     <div class="explain-title">How to read this page</div>
     <div class="explain-text">
-      <strong>Insider Trading (Form 4):</strong> Corporate insiders (CEO, CFO, directors, 10%+ shareholders) must file SEC Form 4 within 2 business days of any trade. <strong>Open market purchases</strong> are the strongest signal &#8212; insiders spending their own money means high conviction. Option exercises are routine compensation events. A CEO buying $5M+ of their own stock is one of the most reliable bullish indicators.<br><br>
+      <strong>Insider Trading (Form 4):</strong> Corporate insiders (CEO, CFO, directors, 10%+ shareholders) must file SEC Form 4 within 2 business days of any trade. <strong>Open market purchases</strong> are the strongest signal &#8212; insiders spending their own money means high conviction. Option exercises are routine compensation events and are filtered out. A CEO buying $5M+ of their own stock is one of the most reliable bullish indicators.<br><br>
       <strong>House Financial Disclosures:</strong> Under the STOCK Act (2012), members of Congress must disclose stock trades within 45 days. PTR (Periodic Transaction Report) filings are available as PDFs from the House Clerk. Click "View PDF" to see the actual disclosure document with trade details.<br><br>
       <strong>Smart Money Overlap:</strong> When a stock shows BOTH a positive earnings surprise (PEAD signal) AND insider buying, it represents maximum conviction. The earnings surprise confirms fundamentals, and the insider buying confirms that those closest to the company believe in the trajectory.
     </div>
@@ -166,27 +177,28 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API='https://vilasio-cot-backend.onrender.com';
 var D=null;
 var currentTab='latest';
+var sortCol=null;
+var sortAsc=true;
+var houseSortCol='date';
+var houseSortAsc=false;
 
 function fmtNum(v){if(!v||v==='nan'||v==='None')return'\u2014';var s=String(v).replace(/[$,]/g,'');var n=parseFloat(s);if(isNaN(n))return v;return n.toLocaleString('en-US')}
 function fmtMoney(v){if(!v||v==='nan'||v==='None')return'\u2014';var s=String(v).replace(/[$,]/g,'');var n=parseFloat(s);if(isNaN(n))return v;return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmtVal(v){if(!v||v==='nan'||v==='None')return'\u2014';var s=String(v).replace(/[$,]/g,'');var n=parseFloat(s);if(isNaN(n))return v;if(n>=1e9)return'$'+(n/1e9).toFixed(1)+'B';if(n>=1e6)return'$'+(n/1e6).toFixed(1)+'M';if(n>=1e3)return'$'+(n/1e3).toFixed(0)+'K';return'$'+n.toFixed(0)}
 
+function isOptionExercise(t){var u=(t||'').toUpperCase();return u.indexOf('OPTION')>=0||u.indexOf('EXERCISE')>=0}
 function txnClass(t){
-  if(!t)return'';
-  var u=t.toUpperCase();
+  if(!t)return'';var u=t.toUpperCase();
   if(u.indexOf('PURCHASE')>=0||u.indexOf('BUY')>=0)return'buy';
   if(u.indexOf('PROPOSED')>=0)return'proposed';
   if(u.indexOf('SALE')>=0||u.indexOf('SELL')>=0)return'sale';
-  if(u.indexOf('OPTION')>=0||u.indexOf('EXERCISE')>=0)return'option';
   return'';
 }
 function txnBadge(t){
-  if(!t)return'';
-  var cls=txnClass(t);
+  if(!t)return'';var cls=txnClass(t);
   if(cls==='buy')return'<span class="badge grn">'+t+'</span>';
   if(cls==='sale')return'<span class="badge red">'+t+'</span>';
   if(cls==='proposed')return'<span class="badge amb">'+t+'</span>';
-  if(cls==='option')return'<span class="badge gray">'+t+'</span>';
   return'<span class="badge gray">'+t+'</span>';
 }
 function ownerClass(t){
@@ -194,7 +206,6 @@ function ownerClass(t){
   if(cls==='buy')return'owner-buy';
   if(cls==='sale')return'owner-sale';
   if(cls==='proposed')return'owner-proposed';
-  if(cls==='option')return'owner-option';
   return'';
 }
 function roleBadge(r){if(!r)return'';var u=r.toUpperCase();if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CHIEF')>=0)return'<span class="badge gold">'+r+'</span>';if(u.indexOf('DIRECTOR')>=0||u.indexOf('10%')>=0)return'<span class="badge violet">'+r+'</span>';if(u.indexOf('VP')>=0||u.indexOf('PRESIDENT')>=0)return'<span class="badge blu">'+r+'</span>';return'<span style="color:var(--gray3)">'+r+'</span>'}
@@ -208,7 +219,7 @@ function getTabData(){
 }
 
 function switchTab(tab){
-  currentTab=tab;
+  currentTab=tab;sortCol=null;sortAsc=true;
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===tab)});
   document.getElementById('insider-filter').value='all';
   renderInsiderTable();
@@ -216,18 +227,75 @@ function switchTab(tab){
 
 function applyFilter(){renderInsiderTable()}
 
+function sortInsider(col){
+  if(sortCol===col)sortAsc=!sortAsc;
+  else{sortCol=col;sortAsc=true}
+  renderInsiderTable();
+}
+
+function sortHouse(col){
+  if(houseSortCol===col)houseSortAsc=!houseSortAsc;
+  else{houseSortCol=col;houseSortAsc=true}
+  renderCongress();
+}
+
+function thSort(label,col,sc,sa){
+  var arrow=sc===col?(sa?' \u25B2':' \u25BC'):'';
+  var cls=sc===col?'color:var(--gold)':'';
+  return'<th onclick="sortInsider(\''+col+'\')" style="'+cls+'">'+label+arrow+'</th>';
+}
+
+function thSortH(label,col){
+  var arrow=houseSortCol===col?(houseSortAsc?' \u25B2':' \u25BC'):'';
+  var cls=houseSortCol===col?'color:var(--gold)':'';
+  return'<th onclick="sortHouse(\''+col+'\')" style="'+cls+'">'+label+arrow+'</th>';
+}
+
+var numCols=['cost','shares','value','sharesTotal'];
+function sortRows(arr,col,asc){
+  if(!col)return arr;
+  var copy=arr.slice();
+  var isNum=numCols.indexOf(col)>=0;
+  copy.sort(function(a,b){
+    var va=a[col]||'';var vb=b[col]||'';
+    if(isNum){va=parseFloat(String(va).replace(/[$,]/g,''))||0;vb=parseFloat(String(vb).replace(/[$,]/g,''))||0}
+    if(va<vb)return asc?-1:1;
+    if(va>vb)return asc?1:-1;
+    return 0;
+  });
+  return copy;
+}
+
 function renderInsiderTable(){
-  var trades=getTabData();
+  var raw=getTabData();
+  // Always filter out Option Exercise
+  var trades=raw.filter(function(t){return!isOptionExercise(t.transaction)});
   var filter=document.getElementById('insider-filter').value;
   var el=document.getElementById('insider-table');
   if(!trades.length){el.innerHTML='<tr><td style="color:var(--gray2);padding:20px 6px">No insider trades available for this view.</td></tr>';document.getElementById('insider-count').textContent='0 trades';return}
 
   var filtered=trades;
-  if(filter==='buy')filtered=trades.filter(function(t){var c=txnClass(t.transaction);return c==='buy'});
-  if(filter==='sale')filtered=trades.filter(function(t){var c=txnClass(t.transaction);return c==='sale'||c==='proposed'});
+  if(filter==='buy')filtered=trades.filter(function(t){return txnClass(t.transaction)==='buy'});
+  if(filter==='sale')filtered=trades.filter(function(t){return txnClass(t.transaction)==='sale'});
+  if(filter==='proposed')filtered=trades.filter(function(t){return txnClass(t.transaction)==='proposed'});
+
+  // Sort
+  filtered=sortRows(filtered,sortCol,sortAsc);
+
   document.getElementById('insider-count').textContent=filtered.length+' of '+trades.length+' trades';
 
-  var html='<thead><tr><th>Ticker</th><th>Owner</th><th>Relationship</th><th>Date</th><th>Transaction</th><th>Cost</th><th>#Shares</th><th>Value ($)</th><th>#Shares Total</th><th>SEC Form 4</th></tr></thead><tbody>';
+  var html='<thead><tr>';
+  html+=thSort('Ticker','ticker',sortCol,sortAsc);
+  html+=thSort('Owner','owner',sortCol,sortAsc);
+  html+=thSort('Relationship','relationship',sortCol,sortAsc);
+  html+=thSort('Date','date',sortCol,sortAsc);
+  html+=thSort('Transaction','transaction',sortCol,sortAsc);
+  html+=thSort('Cost','cost',sortCol,sortAsc);
+  html+=thSort('#Shares','shares',sortCol,sortAsc);
+  html+=thSort('Value ($)','value',sortCol,sortAsc);
+  html+=thSort('#Shares Total','sharesTotal',sortCol,sortAsc);
+  html+=thSort('SEC Form 4','secForm4',sortCol,sortAsc);
+  html+='</tr></thead><tbody>';
   filtered.forEach(function(t){
     var oc=ownerClass(t.transaction);
     html+='<tr>';
@@ -273,7 +341,17 @@ function renderCongress(){
   if(!trades.length){el.innerHTML='<tr><td style="color:var(--gray2);padding:20px 6px">No House PTR filings found.</td></tr>';return}
   var src=ct.sources||[];
   if(src.length)document.getElementById('congress-source').textContent='Source: '+src.join(', ');
-  var html='<thead><tr><th>Filing Date</th><th>Representative</th><th>State</th><th>Filing</th><th>Document</th></tr></thead><tbody>';
+
+  // Sort
+  trades=sortRows(trades,houseSortCol,houseSortAsc);
+
+  var html='<thead><tr>';
+  html+=thSortH('Filing Date','date');
+  html+=thSortH('Representative','name');
+  html+=thSortH('State','state');
+  html+=thSortH('Filing','filing_type');
+  html+='<th>Document</th>';
+  html+='</tr></thead><tbody>';
   trades.forEach(function(t){
     var pdfLink='';
     if(t.pdf_url){pdfLink='<a href="'+t.pdf_url+'" target="_blank" rel="noopener" class="badge gold" style="text-decoration:none;font-size:8px;cursor:pointer">View PDF</a>'}
