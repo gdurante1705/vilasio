@@ -82,7 +82,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <section class="hero">
   <div class="hero-top">
     <div>
-      <div class="hero-tag"><span class="pulse"></span> Finviz &#183; SEC Form 4 &#183; House Clerk</div>
+      <div class="hero-tag"><span class="pulse"></span> Insider Filings &#183; Congressional Disclosures</div>
       <h1 class="hero-h1">Follow the <em>money</em>.</h1>
       <p class="hero-desc">Track insider trades from corporate executives and members of Congress &#8212; the ultimate smart money signal.</p>
     </div>
@@ -100,7 +100,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-net"><div class="sc-label">Insider Sentiment</div><div class="sc-val" id="sc-net-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-net-ratio">&#8212;</span><span class="sc-note">buy vs sell</span></div></div>
     <div class="status-card neut" id="sc-big"><div class="sc-label">Top Insider Buy</div><div class="sc-val" id="sc-big-val">&#8212;</div><div class="sc-sub"><span class="sc-note" id="sc-big-who">&#8212;</span></div></div>
     <div class="status-card neut" id="sc-cnt"><div class="sc-label">House PTR Filings</div><div class="sc-val" id="sc-cnt-val">&#8212;</div><div class="sc-sub"><span class="sc-note">2026 disclosures</span></div></div>
-    <div class="status-card neut" id="sc-ovr"><div class="sc-label">Smart Money Overlap</div><div class="sc-val" id="sc-ovr-val">&#8212;</div><div class="sc-sub"><span class="sc-note">PEAD + insider buy</span></div></div>
+    <div class="status-card neut" id="sc-ovr"><div class="sc-label">Signal Confluence</div><div class="sc-val" id="sc-ovr-val">&#8212;</div><div class="sc-sub"><span class="sc-note">earnings + insider buy</span></div></div>
   </div>
 
   <!-- INSIDER TRADING (Finviz-style with tabs) -->
@@ -147,16 +147,36 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
   <!-- SMART MONEY OVERLAP -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Smart Money Overlap</div><div class="ch-sub">Stocks with PEAD Signal + Insider Buy</div></div></div>
+    <div class="chart-header"><div><div class="ch-title">Signal Confluence</div><div class="ch-sub">Stocks with Earnings Signal + Insider Buy</div></div></div>
     <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--gray2)">Loading overlap...</td></tr></table></div>
   </div>
 
   <div class="explain-section reveal">
     <div class="explain-title">How to read this page</div>
     <div class="explain-text">
-      <strong>Insider Trading (Form 4):</strong> Corporate insiders (CEO, CFO, directors, 10%+ shareholders) must file SEC Form 4 within 2 business days of any trade. <strong>Open market purchases</strong> are the strongest signal &#8212; insiders spending their own money means high conviction. Option exercises are routine compensation events and are filtered out. A CEO buying $5M+ of their own stock is one of the most reliable bullish indicators.<br><br>
-      <strong>House Financial Disclosures:</strong> Under the STOCK Act (2012), members of Congress must disclose stock trades within 45 days. PTR (Periodic Transaction Report) filings are available as PDFs from the House Clerk. Click "View PDF" to see the actual disclosure document with trade details.<br><br>
-      <strong>Smart Money Overlap:</strong> When a stock shows BOTH a positive earnings surprise (PEAD signal) AND insider buying, it represents maximum conviction. The earnings surprise confirms fundamentals, and the insider buying confirms that those closest to the company believe in the trajectory.
+      <strong>1. Insider Open Market Buys &#8212; The Strongest Signal</strong><br>
+      When a CEO, CFO, or Director buys shares on the open market with their own money, it is one of the most reliable bullish indicators available. These individuals have the deepest knowledge of a company&#8217;s future prospects. Focus on: purchases over $100K, C-suite buyers (CEO/CFO), and cluster buys &#8212; multiple insiders buying the same stock within days. Option exercises are filtered out automatically as they represent routine compensation events, not conviction.<br><br>
+
+      <strong>2. How to Filter the Noise</strong><br>
+      Not all insider trades carry equal weight. Use the filter dropdown to isolate what matters:<br>
+      &#8226; <strong>Buy Transactions</strong>: The primary signal. Open market purchases show genuine conviction &#8212; insiders risking their own capital.<br>
+      &#8226; <strong>Sale Transactions</strong>: Less informative. Insiders sell for many reasons &#8212; taxes, diversification, personal needs. Only significant if a CEO sells an unusually large position unexpectedly.<br>
+      &#8226; <strong>Proposed Sales</strong>: Pre-planned sales filed in advance. These are scheduled months ahead and carry almost no signal value.<br>
+      Sort by Value ($) descending to find the largest conviction bets. Sort by Date to see the most recent activity first.<br><br>
+
+      <strong>3. Signal Confluence &#8212; Maximum Conviction Setup</strong><br>
+      The most powerful signal on this page is when a stock appears in BOTH the Earnings Intelligence tool (positive earnings surprise with bullish price reaction) AND in the insider buy table. This dual confirmation means: the company beat expectations AND those closest to the company are buying with their own money. This represents institutional-grade conviction. Check the Signal Confluence section below for any active overlaps.<br><br>
+
+      <strong>4. House Financial Disclosures &#8212; Congressional Trading</strong><br>
+      Under the STOCK Act (2012), members of Congress must disclose stock trades within 45 days. Each row shows a Periodic Transaction Report (PTR) filing. Click &#8220;View PDF&#8221; to see the actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently &#8212; those with 5+ filings in recent months &#8212; are the most active traders to monitor. Research shows congressional portfolios consistently outperform broad market indices, suggesting informational advantages from committee work and policy visibility.<br><br>
+
+      <strong>5. Connecting the Dots &#8212; The Vilasio Framework</strong><br>
+      This page is one piece of the institutional positioning puzzle. Combine insider data with other Vilasio tools for maximum edge:<br>
+      &#8226; <strong>COT Intelligence</strong>: If institutional positioning is net long on an index AND insiders are buying stocks in that sector, the confluence is strong.<br>
+      &#8226; <strong>Macro Dashboard</strong>: Insider buys during an expansion regime carry more weight than during stagnation or contraction.<br>
+      &#8226; <strong>Cross-Market Analysis</strong>: Check if the sector trend confirms the insider&#8217;s bet. Sector bullish + insider buy = optimal alignment.<br>
+      &#8226; <strong>Earnings Intelligence</strong>: Earnings surprise + insider buy = the highest-confidence setup in our system (see Signal Confluence above).<br>
+      The goal is not to blindly follow insiders, but to use their trades as one confirmation layer within a multi-factor institutional framework.
     </div>
   </div>
 </main>
@@ -272,7 +292,7 @@ function renderInsiderTable(){
   var trades=raw.filter(function(t){return!isOptionExercise(t.transaction)});
   var filter=document.getElementById('insider-filter').value;
   var el=document.getElementById('insider-table');
-  if(!trades.length){el.innerHTML='<tr><td style="color:var(--gray2);padding:20px 6px">No insider trades available for this view.</td></tr>';document.getElementById('insider-count').textContent='0 trades';return}
+  if(!trades.length){var msg=currentTab==='topowner'?'No 10% owner trades reported this week. This view shows trades by shareholders owning 10%+ of a company \u2014 data refreshes weekly.':'No insider trades available for this view.';el.innerHTML='<tr><td style="color:var(--gray2);padding:20px 6px">'+msg+'</td></tr>';document.getElementById('insider-count').textContent='0 trades';return}
 
   var filtered=trades;
   if(filter==='buy')filtered=trades.filter(function(t){return txnClass(t.transaction)==='buy'});
@@ -372,11 +392,11 @@ function renderCongress(){
 function renderOverlap(){
   var ovr=D.smartMoneyOverlap||[];
   var el=document.getElementById('overlap-table');
-  if(!ovr.length){el.innerHTML='<tr><td style="color:var(--gray2)">No overlap between PEAD signals and insider buys.</td></tr>';return}
+  if(!ovr.length){el.innerHTML='<tr><td style="color:var(--gray2)">No signal confluence detected. This section activates when a stock has both an earnings signal and insider buying.</td></tr>';return}
   var html='<thead><tr><th>Symbol</th><th>Signal Sources</th></tr></thead><tbody>';
   ovr.forEach(function(o){
     var badges=o.sources.map(function(s){
-      if(s==='pead')return'<span class="badge grn">PEAD</span>';
+      if(s==='pead')return'<span class="badge grn">Earnings Signal</span>';
       if(s==='insider')return'<span class="badge gold">Insider Buy</span>';
       return'<span class="badge gray">'+s+'</span>';
     }).join(' ');
