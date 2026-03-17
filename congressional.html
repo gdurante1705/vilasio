@@ -89,8 +89,21 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-ovr"><div class="sc-label">Smart Money Overlap</div><div class="sc-val" id="sc-ovr-val">&#8212;</div><div class="sc-sub"><span class="sc-note">PEAD + insider buy</span></div></div>
   </div>
 
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Congressional Trades</div><div class="ch-sub">Last 30 Days &#183; STOCK Act Disclosures</div></div></div>
+  <div class="chart-section reveal" id="congress-section">
+    <div class="chart-header">
+      <div><div class="ch-title">Congressional Trades</div><div class="ch-sub">Last 30 Days &#183; STOCK Act Disclosures</div></div>
+      <div id="congress-source" style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)"></div>
+    </div>
+    <div id="congress-stats-row" class="status-row" style="padding:12px 28px 0;display:none">
+      <div class="status-card neut" style="padding:14px 18px"><div class="sc-label">Total Trades</div><div class="sc-val" id="ct-total">0</div></div>
+      <div class="status-card up" style="padding:14px 18px"><div class="sc-label">Purchases</div><div class="sc-val" id="ct-buys" style="color:var(--grn)">0</div></div>
+      <div class="status-card dn" style="padding:14px 18px"><div class="sc-label">Sales</div><div class="sc-val" id="ct-sells" style="color:var(--red)">0</div></div>
+      <div class="status-card neut" style="padding:14px 18px"><div class="sc-label">Unique Politicians</div><div class="sc-val" id="ct-pols">0</div></div>
+    </div>
+    <div id="congress-toptickers" style="padding:8px 28px;display:none">
+      <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:6px">Top Tickers</div>
+      <div id="ct-tickers-list" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+    </div>
     <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--gray2)">Loading congressional trades...</td></tr></table></div>
   </div>
 
@@ -162,20 +175,45 @@ function renderCards(){
   if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
 }
 
+function chamberBadge(c){if(!c)return'';if(c==='Senate')return'<span class="badge blu">Senate</span>';if(c==='House')return'<span class="badge grn">House</span>';return'<span class="badge gray">'+c+'</span>'}
+
 function renderCongress(){
-  var trades=D.congressTrades||[];
+  var ct=D.congressional_trades||{};
+  var trades=ct.trades||(D.congressTrades||[]);
   var el=document.getElementById('congress-table');
-  if(!trades.length){el.innerHTML='<tr><td style="color:var(--gray2);padding:20px 6px">Congressional trades temporarily unavailable &#8212; data source rate limited. Insider trades below are fully operational.</td></tr>';return}
-  var html='<thead><tr><th>Date</th><th>Member</th><th>Party</th><th>Chamber</th><th>Symbol</th><th>Transaction</th><th>Amount</th></tr></thead><tbody>';
+  if(!trades.length){el.innerHTML='<tr><td style="color:var(--gray2);padding:20px 6px">No congressional trades found for the last 30 days. Insider trades below are fully operational.</td></tr>';return}
+  // Stats cards
+  var cts=ct.stats||{};
+  if(cts.total_trades){
+    document.getElementById('congress-stats-row').style.display='grid';
+    document.getElementById('ct-total').textContent=cts.total_trades;
+    document.getElementById('ct-buys').textContent=cts.purchases||0;
+    document.getElementById('ct-sells').textContent=cts.sales||0;
+    document.getElementById('ct-pols').textContent=cts.unique_politicians||0;
+  }
+  // Top tickers
+  var tt=ct.top_tickers||[];
+  if(tt.length){
+    document.getElementById('congress-toptickers').style.display='block';
+    var th='';tt.forEach(function(t){th+='<span class="badge gold" style="font-size:8px">'+t.ticker+' ('+t.count+')</span> '});
+    document.getElementById('ct-tickers-list').innerHTML=th;
+  }
+  // Source label
+  var src=ct.sources||[];
+  if(src.length)document.getElementById('congress-source').textContent='Source: '+src.join(', ');
+  // Table
+  var html='<thead><tr><th>Date</th><th>Politician</th><th>Chamber</th><th>Ticker</th><th>Type</th><th>Amount</th><th>Asset</th></tr></thead><tbody>';
   trades.forEach(function(t){
+    var sym=t.symbol||t.ticker||'';
+    var name=t.name||t.politician||'';
     html+='<tr>';
-    html+='<td>'+t.date+'</td>';
-    html+='<td>'+t.name+'</td>';
-    html+='<td>'+partyBadge(t.party)+'</td>';
-    html+='<td>'+t.chamber+'</td>';
-    html+='<td style="color:var(--gold);font-weight:500">'+t.symbol+'</td>';
-    html+='<td>'+txnBadge(t.transaction)+'</td>';
-    html+='<td>'+t.amount+(t.amountTo?' - '+t.amountTo:'')+'</td>';
+    html+='<td>'+(t.date||'')+'</td>';
+    html+='<td>'+name+'</td>';
+    html+='<td>'+chamberBadge(t.chamber)+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+sym+'</td>';
+    html+='<td>'+txnBadge(t.transaction||t.type||'')+'</td>';
+    html+='<td>'+(t.amount||'')+'</td>';
+    html+='<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">'+(t.asset||t.asset_description||'')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
