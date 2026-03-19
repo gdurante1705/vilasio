@@ -256,10 +256,10 @@ var NAME_MAP={
 
 function gprLevel(v){if(v==null)return{label:'N/A',cls:'gray'};if(v<80)return{label:'LOW',cls:'grn'};if(v<=120)return{label:'ELEVATED',cls:'amb'};if(v<=200)return{label:'HIGH',cls:'red'};return{label:'EXTREME',cls:'extreme'}}
 function gprCardClass(v){if(v==null)return'neut';if(v<80)return'up';if(v<=120)return'warn';if(v<=200)return'dn';return'dn'}
-function mapFill(v){if(v==null||v<1)return'#1a1a28';if(v<20)return'#1a4a2e';if(v<50)return'#2d6b3f';if(v<80)return'#7a6520';if(v<120)return'#9a7a1a';if(v<200)return'#8b2020';return'#c02020'}
-function heatColor(v){if(v==null||v<1)return'var(--surf2)';if(v<20)return'rgba(34,197,94,0.12)';if(v<80)return'rgba(245,158,11,0.12)';if(v<200)return'rgba(239,68,68,0.15)';return'rgba(220,38,38,0.25)'}
-function heatBorder(v){if(v==null||v<1)return'var(--brd2)';if(v<20)return'rgba(34,197,94,0.3)';if(v<80)return'rgba(245,158,11,0.3)';if(v<200)return'rgba(239,68,68,0.3)';return'rgba(220,38,38,0.5)'}
-function heatTopColor(v){if(v==null||v<1)return'var(--gray)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
+function mapFill(v,hasData){if(v==null&&!hasData)return'#1a1a28';if(v==null||v<1)return'#131f18';if(v<20)return'#1a4a2e';if(v<50)return'#2d6b3f';if(v<80)return'#7a6520';if(v<120)return'#9a7a1a';if(v<200)return'#8b2020';return'#c02020'}
+function heatColor(v){if(v==null)return'var(--surf2)';if(v<1)return'rgba(34,197,94,0.06)';if(v<20)return'rgba(34,197,94,0.12)';if(v<80)return'rgba(245,158,11,0.12)';if(v<200)return'rgba(239,68,68,0.15)';return'rgba(220,38,38,0.25)'}
+function heatBorder(v){if(v==null)return'var(--brd2)';if(v<1)return'rgba(34,197,94,0.15)';if(v<20)return'rgba(34,197,94,0.3)';if(v<80)return'rgba(245,158,11,0.3)';if(v<200)return'rgba(239,68,68,0.3)';return'rgba(220,38,38,0.5)'}
+function heatTopColor(v){if(v==null)return'var(--gray)';if(v<1)return'rgba(34,197,94,0.4)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
 function fmtChg(v){if(v==null)return'\u2014';return(v>=0?'+':'')+v.toFixed(1)}
 function fmtEvtChg(c,p){if(c==null||p==null)return{text:'\u2014',cls:''};var d=c-p;return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'}}
 var _ttOpts={backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1,titleFont:{family:'"DM Mono",monospace',size:9},bodyFont:{family:'"DM Mono",monospace',size:10}};
@@ -370,13 +370,13 @@ function renderWorldMap(){
       var n=resolveGprName(f.properties.name);
       var c=countries[n];
       if(!c&&f.properties.name&&f.properties.name!=='Antarctica')_unmatched.push(f.properties.name);
-      return c?mapFill(c.latest):'#1a1a28';
+      return c?mapFill(c.latest,true):mapFill(null,false);
     })
     .on('mousemove',function(ev,f){
       var n=resolveGprName(f.properties.name);
       var c=countries[n];
       tooltip.querySelector('.tt-name').textContent=f.properties.name;
-      tooltip.querySelector('.tt-val').textContent=c?'GPR '+c.latest.toFixed(1):'No data';
+      tooltip.querySelector('.tt-val').textContent=c?(c.latest>0?'GPR '+c.latest.toFixed(1):'Low Risk'):'No data';
       tooltip.style.display='block';
       tooltip.style.left=(ev.clientX+14)+'px';
       tooltip.style.top=(ev.clientY-32)+'px';
