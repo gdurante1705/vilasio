@@ -231,22 +231,17 @@ var _range=0,_riskSort='score',_selectedCountry=null;
 var _worldTopo=null; // cached TopoJSON
 
 // Name mapping: TopoJSON name → GPR data name
+// TopoJSON name → GPR data name
 var NAME_MAP={
-'United States of America':'USA','United States':'USA',
-'Russian Federation':'Russia','Korea, Republic of':'South Korea','Republic of Korea':'South Korea',
-"Korea, Dem. People's Rep.":'North Korea',"Dem. People's Republic of Korea":'North Korea',
-'Iran, Islamic Rep.':'Iran','Iran (Islamic Republic of)':'Iran',
-'Syrian Arab Republic':'Syria','Syrian Arab Rep.':'Syria',
-'Venezuela, RB':'Venezuela','Venezuela (Bolivarian Republic of)':'Venezuela',
-"Lao People's Democratic Republic":'Laos',"Lao PDR":'Laos',
-'Viet Nam':'Vietnam','Côte d\'Ivoire':'Ivory Coast',"Cote d'Ivoire":'Ivory Coast',
-'Congo, Dem. Rep.':'DRC','Dem. Rep. Congo':'DRC','Democratic Republic of the Congo':'DRC',
-'Czech Republic':'Czechia','Bosnia and Herzegovina':'Bosnia','Bosnia and Herz.':'Bosnia',
-'North Macedonia':'Macedonia','Republic of North Macedonia':'Macedonia',
-'Saudi Arabia':'Saudi Arabia','Dominican Rep.':'Dominican Republic',
-'United Kingdom':'UK','S. Sudan':'South Sudan','Central African Rep.':'Central African Republic',
-'Eq. Guinea':'Equatorial Guinea','eSwatini':'Eswatini','W. Sahara':'Western Sahara',
-'Solomon Is.':'Solomon Islands','Falkland Is.':'Falkland Islands'
+'United States of America':'USA',
+'United Kingdom':'UK',
+'Dem. Rep. Congo':'DRC',
+'Bosnia and Herz.':'Bosnia',
+'Dominican Rep.':'Dominican Republic',
+'S. Sudan':'South Sudan',
+'United Arab Emirates':'UAE',
+"C\u00f4te d'Ivoire":'Ivory Coast',
+"Cote d'Ivoire":'Ivory Coast'
 };
 
 function gprLevel(v){if(v==null)return{label:'N/A',cls:'gray'};if(v<80)return{label:'LOW',cls:'grn'};if(v<=120)return{label:'ELEVATED',cls:'amb'};if(v<=200)return{label:'HIGH',cls:'red'};return{label:'EXTREME',cls:'extreme'}}
@@ -304,6 +299,7 @@ function renderWorldMap(){
   var path=d3.geoPath().projection(projection);
   var land=topojson.feature(_worldTopo,_worldTopo.objects.countries);
   var tooltip=document.getElementById('map-tooltip');
+  var _unmatched=[];
   svg.selectAll('path.country')
     .data(land.features)
     .enter().append('path')
@@ -312,6 +308,7 @@ function renderWorldMap(){
     .attr('fill',function(f){
       var n=resolveGprName(f.properties.name);
       var c=countries[n];
+      if(!c&&f.properties.name&&f.properties.name!=='Antarctica')_unmatched.push(f.properties.name);
       return c?mapFill(c.latest):'#1a1a28';
     })
     .on('mousemove',function(ev,f){
@@ -328,6 +325,7 @@ function renderWorldMap(){
       var n=resolveGprName(f.properties.name);
       if(countries[n])selectCountry(n);
     });
+  if(_unmatched.length)console.log('No GPR match for:',_unmatched.join(', '));
 }
 
 function renderHeatmap(){
