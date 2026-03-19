@@ -4,20 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Geopolitical Risk Intelligence - Vilasio</title>
-<meta name="description" content="Geopolitical Risk Intelligence by Vilasio — GPR Index measuring global tensions through newspaper analysis since 1985. Country-level risk mapping for 19 economies.">
+<meta name="description" content="Geopolitical Risk Intelligence by Vilasio — AI-GPR Index measuring global tensions from 1960 to present. Country-level risk mapping for 120+ economies.">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;
-  --brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;
-  --white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;
-  --gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);
-  --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
-  --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
-  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--cyan:#06b6d4;
-}
+:root{--bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;--brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;--white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;--gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);--grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);--red:#ef4444;--red-dim:rgba(239,68,68,0.10);--amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--cyan:#06b6d4}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
@@ -29,7 +23,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
 .refresh-row{display:flex;align-items:center;gap:8px}.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);border:1px solid var(--brd2);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}.refresh-btn:hover{color:var(--white);border-color:var(--brd3)}.refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
-.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}.status-card.warn::before{background:var(--amb)}.status-card.extreme::before{background:#dc2626}
+.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}.status-card.warn::before{background:var(--amb)}
 .sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
 main{padding:0 48px 64px}
 .chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
@@ -44,25 +38,23 @@ main{padding:0 48px 64px}
 .badge.amb{color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)}
 .badge.extreme{color:#dc2626;border:1px solid rgba(220,38,38,0.3);background:rgba(220,38,38,0.1)}
 .badge.gray{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
+/* D3 World Map */
+.map-wrap{padding:8px 16px 16px}
+#world-map{width:100%;background:#07070c;border:1px solid var(--brd)}
+#world-map path.country{stroke:rgba(255,255,255,0.08);stroke-width:0.5;cursor:pointer;transition:opacity .15s}
+#world-map path.country:hover{stroke:rgba(255,255,255,0.4);stroke-width:1;opacity:0.85}
+#world-map path.country.selected{stroke:var(--gold);stroke-width:1.5}
+.map-tooltip{position:fixed;z-index:200;background:#111118;border:1px solid var(--brd2);padding:8px 12px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px}
+.map-tooltip .tt-name{color:var(--gold);font-weight:500;margin-bottom:2px}
+.map-tooltip .tt-val{color:var(--white)}
 /* Heatmap grid */
 .heat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:3px;padding:16px 28px}
 .heat-cell{background:var(--surf2);border:1px solid var(--brd2);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .heat-cell:hover{border-color:var(--brd3);transform:translateY(-1px)}
 .heat-cell.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(200,168,75,0.15)}
-.heat-cell::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
 .heat-name{font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
 .heat-score{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;line-height:1}
 .heat-change{font-family:"DM Mono",monospace;font-size:8px;margin-top:4px}
-/* Tile map */
-.tile-map-wrap{padding:16px 28px}
-.tile-map{position:relative;width:100%;aspect-ratio:2.2/1;background:#07070c;border:1px solid var(--brd)}
-.tile{position:absolute;cursor:pointer;transition:all .15s;border:1px solid rgba(255,255,255,0.06)}
-.tile:hover{z-index:10;filter:brightness(1.4);border-color:rgba(255,255,255,0.3)}
-.tile.selected{z-index:11;border-color:var(--gold);box-shadow:0 0 10px rgba(200,168,75,0.3)}
-.tile-label{position:absolute;font-family:"DM Mono",monospace;font-size:6px;letter-spacing:0.5px;color:rgba(255,255,255,0.7);pointer-events:none;text-align:center;width:100%;top:50%;transform:translateY(-50%);line-height:1;text-shadow:0 0 3px rgba(0,0,0,0.8)}
-.tile-tooltip{position:fixed;z-index:200;background:#111118;border:1px solid var(--brd2);padding:8px 12px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px}
-.tile-tooltip .tt-name{color:var(--gold);font-weight:500;margin-bottom:2px}
-.tile-tooltip .tt-val{color:var(--white)}
 /* Country detail panel */
 .country-panel{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px;max-height:0;overflow:hidden;transition:max-height .5s ease}
 .country-panel.open{max-height:420px}
@@ -78,7 +70,7 @@ main{padding:0 48px 64px}
 .role-bar{height:14px;border-radius:2px;min-width:2px;transition:width .3s}
 .role-val{font-family:"DM Mono",monospace;font-size:9px;color:var(--white);min-width:35px}
 .cp-chart-wrap{flex:1;min-width:0;height:200px}
-/* Top risks table */
+/* Table */
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
 .data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2)}
 .data-table td{padding:8px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
@@ -132,7 +124,6 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 </section>
 
 <main>
-  <!-- DASHBOARD CARDS -->
   <div class="status-row reveal">
     <div class="status-card neut" id="sc-gpr"><div class="sc-label">AI-GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
     <div class="status-card neut" id="sc-mil"><div class="sc-label">Military Conflict</div><div class="sc-val" id="sc-mil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-mil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
@@ -140,11 +131,11 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
   </div>
 
-  <!-- TILE MAP -->
+  <!-- D3 WORLD MAP -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">World Risk Map</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
-    <div class="tile-map-wrap"><div class="tile-map" id="tile-map"></div></div>
-    <div class="tile-tooltip" id="tile-tooltip"><div class="tt-name"></div><div class="tt-val"></div></div>
+    <div class="map-wrap"><svg id="world-map"></svg></div>
+    <div class="map-tooltip" id="map-tooltip"><div class="tt-name"></div><div class="tt-val"></div></div>
   </div>
 
   <!-- COUNTRY DETAIL PANEL -->
@@ -167,13 +158,13 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
   </div>
 
-  <!-- COUNTRY HEATMAP (list view) -->
+  <!-- COUNTRY HEATMAP (grid view) -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Country Risk Grid</div><div class="ch-sub">Top 50 Countries &#183; Alternative View</div></div></div>
     <div class="heat-grid" id="heat-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
   </div>
 
-  <!-- GPR GLOBAL CHART (Monthly) -->
+  <!-- GPR MONTHLY CHART -->
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">AI-GPR Index History</div><div class="ch-sub">Monthly &#183; 1960 to Present</div></div>
@@ -190,11 +181,9 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
   </div>
 
-  <!-- GPR DAILY ZOOM (last 365 days) -->
+  <!-- GPR DAILY ZOOM -->
   <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Daily GPR &#8212; Last 12 Months</div><div class="ch-sub">Daily Resolution &#183; AI-GPR Index</div></div>
-    </div>
+    <div class="chart-header"><div><div class="ch-title">Daily GPR &#8212; Last 12 Months</div><div class="ch-sub">Daily Resolution &#183; AI-GPR Index</div></div></div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="dailyChart"></canvas></div></div>
   </div>
 
@@ -216,8 +205,8 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="explain-text">
       The <strong>GPR Index</strong> counts the share of newspaper articles discussing geopolitical tensions, threats, and acts in major global publications. It is normalized so that <strong>100 = historical average</strong>.<br><br>
       <strong>Risk Levels:</strong> <strong>Low</strong> (&lt;80) &#8212; calm period, risk-on favored. <strong>Elevated</strong> (80-120) &#8212; normal tensions, standard positioning. <strong>High</strong> (120-200) &#8212; significant stress, consider hedging. <strong>Extreme</strong> (&gt;200) &#8212; crisis-level, strong risk-off (gold, treasuries, USD, VIX up).<br><br>
-      <strong>Trading Implications:</strong> GPR spikes are correlated with equity drawdowns, gold rallies, and flight-to-safety in treasuries. A sustained GPR above 150 historically leads to 2-5% S&amp;P 500 underperformance over the following quarter. The <strong>Threats</strong> sub-index captures escalation rhetoric; the <strong>Acts</strong> sub-index captures actual military or terrorist events &#8212; acts tend to have a larger and more immediate market impact.<br><br>
-      <strong>Country-Level:</strong> Country GPR measures how often a specific country appears in geopolitical risk articles. Spikes in country GPR often precede sanctions, military action, or trade disruptions &#8212; directly impacting FX, country ETFs, and commodity flows tied to that region.
+      <strong>Trading Implications:</strong> GPR spikes are correlated with equity drawdowns, gold rallies, and flight-to-safety in treasuries. A sustained GPR above 150 historically leads to 2-5% S&amp;P 500 underperformance over the following quarter.<br><br>
+      <strong>Country-Level:</strong> Country GPR measures how often a specific country appears in geopolitical risk articles. The <strong>Initiator</strong> role means the country is the source of tension; <strong>Respondent</strong> means it is the target; <strong>Spillover</strong> captures indirect exposure.
     </div>
   </div>
 </main>
@@ -237,150 +226,108 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null;
-var _chart=null;
-var _dailyChart=null;
-var _range=0;
-var _riskSort='score';
-var _selectedCountry=null;
+var _chart=null,_dailyChart=null,_countryChart=null;
+var _range=0,_riskSort='score',_selectedCountry=null;
+var _worldTopo=null; // cached TopoJSON
 
-function gprLevel(v){
-  if(v==null)return{label:'N/A',cls:'gray'};
-  if(v<80)return{label:'LOW',cls:'grn'};
-  if(v<=120)return{label:'ELEVATED',cls:'amb'};
-  if(v<=200)return{label:'HIGH',cls:'red'};
-  return{label:'EXTREME',cls:'extreme'};
-}
-function gprCardClass(v){
-  if(v==null)return'neut';
-  if(v<80)return'up';
-  if(v<=120)return'warn';
-  if(v<=200)return'dn';
-  return'dn';
-}
-function heatColor(v){
-  if(v==null||v<1)return'var(--surf2)';
-  if(v<20)return'rgba(34,197,94,0.12)';
-  if(v<80)return'rgba(245,158,11,0.12)';
-  if(v<200)return'rgba(239,68,68,0.15)';
-  return'rgba(220,38,38,0.25)';
-}
-function heatBorder(v){
-  if(v==null||v<1)return'var(--brd2)';
-  if(v<20)return'rgba(34,197,94,0.3)';
-  if(v<80)return'rgba(245,158,11,0.3)';
-  if(v<200)return'rgba(239,68,68,0.3)';
-  return'rgba(220,38,38,0.5)';
-}
-function heatTopColor(v){
-  if(v==null||v<1)return'var(--gray)';
-  if(v<20)return'var(--grn)';
-  if(v<80)return'var(--amb)';
-  if(v<200)return'var(--red)';
-  return'#dc2626';
-}
-function fmtChg(v){
-  if(v==null)return'\u2014';
-  return(v>=0?'+':'')+v.toFixed(1);
-}
-function fmtEvtChg(cur,prev){
-  if(cur==null||prev==null)return{text:'\u2014',cls:''};
-  var d=cur-prev;
-  return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'};
-}
+// Name mapping: TopoJSON name → GPR data name
+var NAME_MAP={
+'United States of America':'USA','United States':'USA',
+'Russian Federation':'Russia','Korea, Republic of':'South Korea','Republic of Korea':'South Korea',
+"Korea, Dem. People's Rep.":'North Korea',"Dem. People's Republic of Korea":'North Korea',
+'Iran, Islamic Rep.':'Iran','Iran (Islamic Republic of)':'Iran',
+'Syrian Arab Republic':'Syria','Syrian Arab Rep.':'Syria',
+'Venezuela, RB':'Venezuela','Venezuela (Bolivarian Republic of)':'Venezuela',
+"Lao People's Democratic Republic":'Laos',"Lao PDR":'Laos',
+'Viet Nam':'Vietnam','Côte d\'Ivoire':'Ivory Coast',"Cote d'Ivoire":'Ivory Coast',
+'Congo, Dem. Rep.':'DRC','Dem. Rep. Congo':'DRC','Democratic Republic of the Congo':'DRC',
+'Czech Republic':'Czechia','Bosnia and Herzegovina':'Bosnia','Bosnia and Herz.':'Bosnia',
+'North Macedonia':'Macedonia','Republic of North Macedonia':'Macedonia',
+'Saudi Arabia':'Saudi Arabia','Dominican Rep.':'Dominican Republic',
+'United Kingdom':'UK','S. Sudan':'South Sudan','Central African Rep.':'Central African Republic',
+'Eq. Guinea':'Equatorial Guinea','eSwatini':'Eswatini','W. Sahara':'Western Sahara',
+'Solomon Is.':'Solomon Islands','Falkland Is.':'Falkland Islands'
+};
 
-var _countryChart=null;
+function gprLevel(v){if(v==null)return{label:'N/A',cls:'gray'};if(v<80)return{label:'LOW',cls:'grn'};if(v<=120)return{label:'ELEVATED',cls:'amb'};if(v<=200)return{label:'HIGH',cls:'red'};return{label:'EXTREME',cls:'extreme'}}
+function gprCardClass(v){if(v==null)return'neut';if(v<80)return'up';if(v<=120)return'warn';if(v<=200)return'dn';return'dn'}
+function mapFill(v){if(v==null||v<1)return'#1a1a28';if(v<20)return'#1a4a2e';if(v<50)return'#2d6b3f';if(v<80)return'#7a6520';if(v<120)return'#9a7a1a';if(v<200)return'#8b2020';return'#c02020'}
+function heatColor(v){if(v==null||v<1)return'var(--surf2)';if(v<20)return'rgba(34,197,94,0.12)';if(v<80)return'rgba(245,158,11,0.12)';if(v<200)return'rgba(239,68,68,0.15)';return'rgba(220,38,38,0.25)'}
+function heatBorder(v){if(v==null||v<1)return'var(--brd2)';if(v<20)return'rgba(34,197,94,0.3)';if(v<80)return'rgba(245,158,11,0.3)';if(v<200)return'rgba(239,68,68,0.3)';return'rgba(220,38,38,0.5)'}
+function heatTopColor(v){if(v==null||v<1)return'var(--gray)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
+function fmtChg(v){if(v==null)return'\u2014';return(v>=0?'+':'')+v.toFixed(1)}
+function fmtEvtChg(c,p){if(c==null||p==null)return{text:'\u2014',cls:''};var d=c-p;return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'}}
 var _ttOpts={backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1,titleFont:{family:'"DM Mono",monospace',size:9},bodyFont:{family:'"DM Mono",monospace',size:10}};
 var _xOpts={ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}};
 var _yOpts={ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:9}},grid:{color:'#ffffff06'}};
-var _zonePlugin={id:'zones',beforeDraw:function(chart){var yA=chart.scales.y;var c=chart.ctx;var l=chart.chartArea.left;var r=chart.chartArea.right;var y80=yA.getPixelForValue(80);var yB=yA.getPixelForValue(yA.min);if(y80>chart.chartArea.top){c.fillStyle='rgba(34,197,94,0.04)';c.fillRect(l,y80,r-l,yB-y80)}var y200=yA.getPixelForValue(200);var yT=yA.getPixelForValue(yA.max);if(y200<yB){c.fillStyle='rgba(239,68,68,0.04)';c.fillRect(l,yT,r-l,y200-yT)}}};
+var _zonePlugin={id:'zones',beforeDraw:function(ch){var yA=ch.scales.y,c=ch.ctx,l=ch.chartArea.left,r=ch.chartArea.right;var y80=yA.getPixelForValue(80),yB=yA.getPixelForValue(yA.min);if(y80>ch.chartArea.top){c.fillStyle='rgba(34,197,94,0.04)';c.fillRect(l,y80,r-l,yB-y80)}var y200=yA.getPixelForValue(200),yT=yA.getPixelForValue(yA.max);if(y200<yB){c.fillStyle='rgba(239,68,68,0.04)';c.fillRect(l,yT,r-l,y200-yT)}}};
 
-// Tile map layout — approximate geographic positions (x%, y%, w%, h%)
-var TILE_LAYOUT={
-'USA':[3,22,9,6],'Canada':[3,14,9,6],'Mexico':[5,30,5,5],'Cuba':[12,30,3,3],'Guatemala':[8,33,3,3],'Honduras':[8,36,3,3],'El Salvador':[8,39,3,3],'Nicaragua':[11,36,3,3],'Costa Rica':[11,39,3,3],'Panama':[14,39,3,3],
-'Colombia':[14,42,4,4],'Venezuela':[18,38,4,4],'Ecuador':[11,42,3,4],'Peru':[14,46,4,5],'Brazil':[18,42,8,8],'Bolivia':[14,51,4,4],'Chile':[14,55,3,6],'Argentina':[17,55,4,6],'Dominican Republic':[15,30,3,3],
-'UK':[40,14,3,4],'Ireland':[37,14,3,4],'France':[40,22,4,4],'Spain':[37,26,4,4],'Portugal':[34,26,3,4],'Germany':[44,18,4,4],'Italy':[44,26,3,5],'Netherlands':[44,14,3,4],'Belgium':[41,18,3,4],'Switzerland':[44,22,3,4],
-'Austria':[47,22,4,3],'Poland':[48,14,4,4],'Czechia':[48,18,4,4],'Hungary':[52,22,3,3],'Romania':[55,22,4,3],'Bulgaria':[55,25,4,3],'Greece':[52,28,3,4],'Croatia':[49,25,3,3],'Serbia':[52,25,3,3],'Bosnia':[49,28,3,3],
-'Albania':[49,31,3,3],'Macedonia':[52,31,3,3],'Lithuania':[52,10,4,4],'Latvia':[52,6,4,4],'Estonia':[52,2,4,4],'Sweden':[47,2,4,8],'Norway':[43,2,4,8],'Denmark':[44,10,3,4],'Finland':[51,2,4,4],
-'Turkey':[55,28,6,4],'Cyprus':[55,32,3,3],
-'Russia':[56,2,18,14],'Ukraine':[56,16,6,5],'Belarus':[52,14,4,4],'Georgia':[62,18,3,3],'Armenia':[62,21,3,3],'Azerbaijan':[65,21,3,3],
-'Morocco':[37,34,4,3],'Algeria':[41,34,4,4],'Tunisia':[45,33,3,3],'Libya':[48,34,4,4],'Egypt':[52,34,4,4],'Sudan':[56,38,4,4],'South Sudan':[56,42,4,3],'Nigeria':[45,42,4,4],'Ghana':[41,42,4,3],'Ivory Coast':[41,45,4,3],
-'Kenya':[60,42,4,4],'Uganda':[60,38,4,4],'Ethiopia':[60,34,4,4],'Somalia':[64,38,4,4],'Tanzania':[60,46,4,4],'DRC':[56,45,4,4],'Rwanda':[56,49,4,3],'Burundi':[56,52,4,3],'Angola':[52,49,4,4],
-'South Africa':[52,56,5,5],'Zimbabwe':[56,55,4,4],'Mozambique':[60,53,4,4],'Zambia':[56,49,4,4],'Namibia':[48,56,4,4],'Mali':[41,38,4,4],'Liberia':[37,42,4,3],'Sierra Leone':[37,39,4,3],'Guinea':[37,45,4,3],
-'Saudi Arabia':[61,28,5,5],'Iran':[66,24,6,5],'Iraq':[61,24,5,4],'Syria':[58,24,3,4],'Israel':[58,28,3,4],'Palestine':[58,32,3,3],'Jordan':[58,35,3,3],'Lebanon':[55,35,3,3],'Kuwait':[66,29,3,3],'UAE':[69,32,4,3],'Qatar':[66,32,3,3],'Bahrain':[69,29,3,3],'Yemen':[63,33,4,4],
-'India':[72,26,6,8],'Pakistan':[68,18,5,6],'Afghanistan':[68,14,5,4],'Bangladesh':[78,30,3,4],'Sri Lanka':[75,38,3,3],'Myanmar':[78,26,3,5],'Thailand':[81,30,3,5],'Cambodia':[84,32,3,3],'Vietnam':[84,28,3,5],'Laos':[81,26,3,4],'Malaysia':[81,38,4,3],'Indonesia':[81,42,8,4],'Philippines':[87,28,3,5],
-'China':[74,10,10,10],'North Korea':[84,12,3,4],'South Korea':[84,16,3,4],'Japan':[87,12,3,8],'Taiwan':[84,22,3,3],'Hong Kong':[84,25,3,3],
-'Uzbekistan':[68,8,5,4],'Australia':[84,48,8,8],'New Zealand':[92,56,4,5]
-};
+function resolveGprName(topoName){return NAME_MAP[topoName]||topoName}
 
-function tileColor(v){
-  if(v==null||v<1)return'#1a1a28';
-  if(v<20)return'rgba(34,197,94,0.35)';
-  if(v<50)return'rgba(34,197,94,0.55)';
-  if(v<80)return'rgba(245,158,11,0.45)';
-  if(v<120)return'rgba(245,158,11,0.65)';
-  if(v<200)return'rgba(239,68,68,0.55)';
-  return'rgba(220,38,38,0.75)';
-}
-
-function renderAll(){renderCards();renderTileMap();renderHeatmap();renderMonthlyChart();renderDailyChart();renderRisks()}
+function renderAll(){renderCards();renderWorldMap();renderHeatmap();renderMonthlyChart();renderDailyChart();renderRisks()}
 
 function renderCards(){
-  var g=D.gpr||{};
-  var vals=g.values||[];
-  var oil=g.oil||[];
+  var g=D.gpr||{},vals=g.values||[],oil=g.oil||[];
   var latest=vals.length?vals[vals.length-1]:null;
-  var prev=vals.length>=2?vals[vals.length-2]:null;
   var lv=gprLevel(latest);
   document.getElementById('sc-gpr-val').textContent=latest!=null?latest.toFixed(1):'\u2014';
   document.getElementById('sc-gpr-badge').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
   document.getElementById('sc-gpr').className='status-card '+gprCardClass(latest);
-  // Event type cards
-  var el=D.evtLatest||{};var ep=D.evtPrev||{};
-  var mil=el.military_conflict;var milP=ep.military_conflict;
+  var el=D.evtLatest||{},ep=D.evtPrev||{};
+  var mil=el.military_conflict,milP=ep.military_conflict;
   document.getElementById('sc-mil-val').textContent=mil!=null?mil.toFixed(1):'\u2014';
   var mc=fmtEvtChg(mil,milP);document.getElementById('sc-mil-chg').textContent=mc.text;document.getElementById('sc-mil-chg').className='sc-delta '+mc.cls;
   document.getElementById('sc-mil').className='status-card '+gprCardClass(mil);
-  var ter=el.terrorism;var terP=ep.terrorism;
+  var ter=el.terrorism,terP=ep.terrorism;
   document.getElementById('sc-ter-val').textContent=ter!=null?ter.toFixed(1):'\u2014';
   var tc=fmtEvtChg(ter,terP);document.getElementById('sc-ter-chg').textContent=tc.text;document.getElementById('sc-ter-chg').className='sc-delta '+tc.cls;
   document.getElementById('sc-ter').className='status-card '+gprCardClass(ter);
-  var oilV=oil.length?oil[oil.length-1]:null;var oilP=oil.length>=2?oil[oil.length-2]:null;
+  var oilV=oil.length?oil[oil.length-1]:null,oilP=oil.length>=2?oil[oil.length-2]:null;
   document.getElementById('sc-oil-val').textContent=oilV!=null?oilV.toFixed(1):'\u2014';
   var oc=fmtEvtChg(oilV,oilP);document.getElementById('sc-oil-chg').textContent=oc.text;document.getElementById('sc-oil-chg').className='sc-delta '+oc.cls;
   document.getElementById('sc-oil').className='status-card '+gprCardClass(oilV);
   if(D.lastDate)document.getElementById('update-badge').textContent='DATA: '+D.lastDate;
 }
 
-function renderTileMap(){
+function renderWorldMap(){
+  if(!_worldTopo||!D)return;
   var countries=D.countries||{};
-  var el=document.getElementById('tile-map');
-  var tooltip=document.getElementById('tile-tooltip');
-  var html='';
-  Object.keys(TILE_LAYOUT).forEach(function(name){
-    var pos=TILE_LAYOUT[name];
-    var c=countries[name];
-    var v=c?c.latest:null;
-    var bg=tileColor(v);
-    var esc=name.replace(/'/g,"\\'");
-    var sel=name===_selectedCountry?' selected':'';
-    var lbl=name.length>6?name.substring(0,5)+'.':name;
-    html+='<div class="tile'+sel+'" data-name="'+esc+'" style="left:'+pos[0]+'%;top:'+pos[1]+'%;width:'+pos[2]+'%;height:'+pos[3]+'%;background:'+bg+'" onclick="selectCountry(\''+esc+'\')">';
-    html+='<span class="tile-label">'+lbl+'</span></div>';
-  });
-  el.innerHTML=html;
-  // Tooltip
-  el.addEventListener('mousemove',function(e){
-    var t=e.target.closest('.tile');
-    if(!t){tooltip.style.display='none';return}
-    var name=t.getAttribute('data-name');
-    var c=countries[name];
-    tooltip.querySelector('.tt-name').textContent=name;
-    tooltip.querySelector('.tt-val').textContent=c?'GPR '+c.latest.toFixed(1):'No data';
-    tooltip.style.display='block';
-    tooltip.style.left=(e.clientX+12)+'px';
-    tooltip.style.top=(e.clientY-30)+'px';
-  });
-  el.addEventListener('mouseleave',function(){tooltip.style.display='none'});
+  var svg=d3.select('#world-map');
+  svg.selectAll('*').remove();
+  var wrap=document.querySelector('.map-wrap');
+  var w=wrap.clientWidth-32;
+  var h=Math.round(w*0.5);
+  svg.attr('viewBox','0 0 '+w+' '+h).attr('width',w).attr('height',h);
+  // Background
+  svg.append('rect').attr('width',w).attr('height',h).attr('fill','#07070c');
+  var projection=d3.geoNaturalEarth1().fitSize([w,h],{type:'Sphere'});
+  var path=d3.geoPath().projection(projection);
+  var land=topojson.feature(_worldTopo,_worldTopo.objects.countries);
+  var tooltip=document.getElementById('map-tooltip');
+  svg.selectAll('path.country')
+    .data(land.features)
+    .enter().append('path')
+    .attr('class',function(f){var n=resolveGprName(f.properties.name);return'country'+(n===_selectedCountry?' selected':'')})
+    .attr('d',path)
+    .attr('fill',function(f){
+      var n=resolveGprName(f.properties.name);
+      var c=countries[n];
+      return c?mapFill(c.latest):'#1a1a28';
+    })
+    .on('mousemove',function(ev,f){
+      var n=resolveGprName(f.properties.name);
+      var c=countries[n];
+      tooltip.querySelector('.tt-name').textContent=f.properties.name;
+      tooltip.querySelector('.tt-val').textContent=c?'GPR '+c.latest.toFixed(1):'No data';
+      tooltip.style.display='block';
+      tooltip.style.left=(ev.clientX+14)+'px';
+      tooltip.style.top=(ev.clientY-32)+'px';
+    })
+    .on('mouseleave',function(){tooltip.style.display='none'})
+    .on('click',function(ev,f){
+      var n=resolveGprName(f.properties.name);
+      if(countries[n])selectCountry(n);
+    });
 }
 
 function renderHeatmap(){
@@ -389,8 +336,7 @@ function renderHeatmap(){
   var keys=Object.keys(countries).sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
   var html='';
   keys.forEach(function(k){
-    var c=countries[k];
-    var v=c.latest;
+    var c=countries[k],v=c.latest;
     var esc=k.replace(/'/g,"\\'");
     html+='<div class="heat-cell'+(k===_selectedCountry?' selected':'')+'" onclick="selectCountry(\''+esc+'\')" style="background:'+heatColor(v)+';border-color:'+heatBorder(v)+'">';
     html+='<div style="position:absolute;top:0;left:0;right:0;height:2px;background:'+heatTopColor(v)+'"></div>';
@@ -404,127 +350,61 @@ function renderHeatmap(){
 
 function selectCountry(key){
   var panel=document.getElementById('country-panel');
-  if(_selectedCountry===key){
-    _selectedCountry=null;
-    panel.classList.remove('open');
-    if(_countryChart){_countryChart.destroy();_countryChart=null}
-    renderTileMap();renderHeatmap();return;
-  }
+  if(_selectedCountry===key){_selectedCountry=null;panel.classList.remove('open');if(_countryChart){_countryChart.destroy();_countryChart=null}renderWorldMap();renderHeatmap();return}
   _selectedCountry=key;
   var c=(D.countries||{})[key];
   if(!c){panel.classList.remove('open');return}
   var lv=gprLevel(c.latest);
   document.getElementById('cp-name').textContent=c.name;
   document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
-  var chgEl=document.getElementById('cp-change');
-  chgEl.textContent=fmtChg(c.change)+' M/M';
-  chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
+  var chgEl=document.getElementById('cp-change');chgEl.textContent=fmtChg(c.change)+' M/M';chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
   document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-  // Role bars
-  var total=Math.max((c.initiator||0)+(c.respondent||0)+(c.spillover||0),0.1);
   var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,0.1);
-  document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);
-  document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);
-  document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
+  document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
   document.getElementById('cp-bar-init').style.width=Math.round((c.initiator||0)/maxBar*80)+'px';
   document.getElementById('cp-bar-resp').style.width=Math.round((c.respondent||0)/maxBar*80)+'px';
   document.getElementById('cp-bar-spill').style.width=Math.round((c.spillover||0)/maxBar*80)+'px';
   panel.classList.add('open');
-  // Country chart
   if(_countryChart){_countryChart.destroy();_countryChart=null}
   var s=c.series;
   if(s&&s.dates&&s.dates.length){
     var ctx=document.getElementById('countryChart');
-    _countryChart=new Chart(ctx,{
-      type:'line',
-      data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:_xOpts,y:_yOpts}}
-    });
+    _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:_xOpts,y:_yOpts}}});
   }
-  renderTileMap();renderHeatmap();
+  renderWorldMap();renderHeatmap();
 }
 
-function setRange(months){
-  _range=months;
-  document.querySelectorAll('.ch-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-rw'))===months)});
-  renderMonthlyChart();
-}
+function setRange(m){_range=m;document.querySelectorAll('.ch-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-rw'))===m)});renderMonthlyChart()}
 
 function renderMonthlyChart(){
-  var g=D.gpr||{};
-  var dates=g.dates||[];
-  var vals=g.values||[];
-  var oil=g.oil||[];
+  var g=D.gpr||{},dates=g.dates||[],vals=g.values||[],oil=g.oil||[];
   var start=_range>0?Math.max(0,dates.length-_range):0;
-  var d=dates.slice(start);
-  var v1=vals.slice(start);
-  var v2=oil.slice(start);
+  var d=dates.slice(start),v1=vals.slice(start),v2=oil.slice(start);
   if(_chart){_chart.destroy();_chart=null}
-  var ctx=document.getElementById('gprChart');
-  if(!ctx)return;
-  _chart=new Chart(ctx,{
-    type:'line',
-    data:{labels:d,datasets:[
-      {label:'AI-GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:'y'},
-      {label:'Oil/Energy',data:v2,borderColor:'#06b6d4',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3,yAxisID:'y2'}
-    ]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:_ttOpts},
-      scales:{x:_xOpts,y:_yOpts,y2:{position:'right',ticks:{color:'#06b6d4',font:{family:'"DM Mono",monospace',size:8}},grid:{display:false}}}
-    },
-    plugins:[_zonePlugin]
-  });
+  var ctx=document.getElementById('gprChart');if(!ctx)return;
+  _chart=new Chart(ctx,{type:'line',data:{labels:d,datasets:[
+    {label:'AI-GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:'y'},
+    {label:'Oil/Energy',data:v2,borderColor:'#06b6d4',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3,yAxisID:'y2'}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:_xOpts,y:_yOpts,y2:{position:'right',ticks:{color:'#06b6d4',font:{family:'"DM Mono",monospace',size:8}},grid:{display:false}}}},plugins:[_zonePlugin]});
 }
 
 function renderDailyChart(){
-  var g=D.gpr||{};
-  var dates=g.dailyDates||[];
-  var vals=g.dailyValues||[];
+  var g=D.gpr||{},dates=g.dailyDates||[],vals=g.dailyValues||[];
   if(_dailyChart){_dailyChart.destroy();_dailyChart=null}
-  var ctx=document.getElementById('dailyChart');
-  if(!ctx||!dates.length)return;
-  _dailyChart=new Chart(ctx,{
-    type:'line',
-    data:{labels:dates,datasets:[
-      {label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:1,pointRadius:0,fill:true,tension:0.2}
-    ]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:_ttOpts},
-      scales:{x:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}},y:_yOpts}
-    },
-    plugins:[_zonePlugin]
-  });
+  var ctx=document.getElementById('dailyChart');if(!ctx||!dates.length)return;
+  _dailyChart=new Chart(ctx,{type:'line',data:{labels:dates,datasets:[{label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:1,pointRadius:0,fill:true,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}},y:_yOpts}},plugins:[_zonePlugin]});
 }
 
-function sortRisks(mode){
-  _riskSort=mode;
-  document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});
-  renderRisks();
-}
+function sortRisks(mode){_riskSort=mode;document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});renderRisks()}
 function renderRisks(){
   var risks=(D.topRisks||[]).slice();
-  if(_riskSort==='change'){risks.sort(function(a,b){return Math.abs(b.change||0)-Math.abs(a.change||0)})}
-  else{risks.sort(function(a,b){return(b.gpr||0)-(a.gpr||0)})}
+  if(_riskSort==='change')risks.sort(function(a,b){return Math.abs(b.change||0)-Math.abs(a.change||0)});
+  else risks.sort(function(a,b){return(b.gpr||0)-(a.gpr||0)});
   var el=document.getElementById('risks-table');
   if(!risks.length){el.innerHTML='<tr><td style="color:var(--gray2)">No risk data available.</td></tr>';return}
   var html='<thead><tr><th>#</th><th>Country</th><th>GPR Score</th><th>M/M Change</th><th>Level</th></tr></thead><tbody>';
-  risks.forEach(function(r,i){
-    var lv=gprLevel(r.gpr);
-    var chgColor=r.change!=null&&r.change>=0?'var(--red)':'var(--grn)';
-    html+='<tr>';
-    html+='<td style="color:var(--gray)">'+(i+1)+'</td>';
-    html+='<td style="color:var(--gold);font-weight:500">'+r.name+'</td>';
-    html+='<td>'+r.gpr.toFixed(1)+'</td>';
-    html+='<td style="color:'+chgColor+'">'+fmtChg(r.change)+'</td>';
-    html+='<td><span class="badge '+lv.cls+'">'+lv.label+'</span></td>';
-    html+='</tr>';
-  });
-  html+='</tbody>';
-  el.innerHTML=html;
+  risks.forEach(function(r,i){var lv=gprLevel(r.gpr);var cc=r.change!=null&&r.change>=0?'var(--red)':'var(--grn)';html+='<tr><td style="color:var(--gray)">'+(i+1)+'</td><td style="color:var(--gold);font-weight:500">'+r.name+'</td><td>'+r.gpr.toFixed(1)+'</td><td style="color:'+cc+'">'+fmtChg(r.change)+'</td><td><span class="badge '+lv.cls+'">'+lv.label+'</span></td></tr>'});
+  el.innerHTML=html+'</tbody>';
 }
 
 function refreshData(){
@@ -538,12 +418,17 @@ function refreshData(){
 
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(function(e){obs.observe(e)});
-(function(){
-  fetch(API+'/api/geopolitical').then(function(r){return r.json()}).then(function(d){
-    if(d.status!=='ok'){console.error('GPR API error:',d.message);return}
-    D=d;renderAll();
-  }).catch(function(e){console.error('GPR fetch failed:',e)});
-})();
+
+// Load TopoJSON + GPR data in parallel
+Promise.all([
+  fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(r){return r.json()}),
+  fetch(API+'/api/geopolitical').then(function(r){return r.json()})
+]).then(function(results){
+  _worldTopo=results[0];
+  var d=results[1];
+  if(d.status!=='ok'){console.error('GPR API error:',d.message);return}
+  D=d;renderAll();
+}).catch(function(e){console.error('Init failed:',e)});
 </script>
 </body>
 </html>
