@@ -53,14 +53,31 @@ main{padding:0 48px 64px}
 .heat-name{font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
 .heat-score{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;line-height:1}
 .heat-change{font-family:"DM Mono",monospace;font-size:8px;margin-top:4px}
+/* Tile map */
+.tile-map-wrap{padding:16px 28px}
+.tile-map{position:relative;width:100%;aspect-ratio:2.2/1;background:#07070c;border:1px solid var(--brd)}
+.tile{position:absolute;cursor:pointer;transition:all .15s;border:1px solid rgba(255,255,255,0.06)}
+.tile:hover{z-index:10;filter:brightness(1.4);border-color:rgba(255,255,255,0.3)}
+.tile.selected{z-index:11;border-color:var(--gold);box-shadow:0 0 10px rgba(200,168,75,0.3)}
+.tile-label{position:absolute;font-family:"DM Mono",monospace;font-size:6px;letter-spacing:0.5px;color:rgba(255,255,255,0.7);pointer-events:none;text-align:center;width:100%;top:50%;transform:translateY(-50%);line-height:1;text-shadow:0 0 3px rgba(0,0,0,0.8)}
+.tile-tooltip{position:fixed;z-index:200;background:#111118;border:1px solid var(--brd2);padding:8px 12px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px}
+.tile-tooltip .tt-name{color:var(--gold);font-weight:500;margin-bottom:2px}
+.tile-tooltip .tt-val{color:var(--white)}
 /* Country detail panel */
-.country-panel{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px;max-height:0;overflow:hidden;transition:max-height .4s ease}
-.country-panel.open{max-height:200px}
-.country-inner{padding:24px 28px;display:flex;align-items:center;gap:32px}
+.country-panel{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px;max-height:0;overflow:hidden;transition:max-height .5s ease}
+.country-panel.open{max-height:420px}
+.country-inner{padding:24px 28px;display:flex;gap:24px}
+.cp-info{display:flex;flex-direction:column;gap:12px;min-width:200px}
 .cp-name{font-family:"Alata",sans-serif;font-size:22px;font-weight:400}
 .cp-score{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;color:var(--gold)}
 .cp-change{font-family:"DM Mono",monospace;font-size:12px;font-weight:500}
 .cp-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:4px}
+.cp-roles{display:flex;flex-direction:column;gap:6px;min-width:180px}
+.role-bar-wrap{display:flex;align-items:center;gap:8px}
+.role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--gray2);width:70px;text-align:right}
+.role-bar{height:14px;border-radius:2px;min-width:2px;transition:width .3s}
+.role-val{font-family:"DM Mono",monospace;font-size:9px;color:var(--white);min-width:35px}
+.cp-chart-wrap{flex:1;min-width:0;height:200px}
 /* Top risks table */
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
 .data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2)}
@@ -74,7 +91,7 @@ main{padding:0 48px 64px}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
 .disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.heat-grid{grid-template-columns:repeat(3,1fr)}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.heat-grid{grid-template-columns:repeat(3,1fr)}.country-inner{flex-direction:column}.cp-chart-wrap{height:160px;width:100%}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
 </style>
 </head>
 <body>
@@ -123,23 +140,37 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
   </div>
 
-  <!-- COUNTRY HEATMAP -->
+  <!-- TILE MAP -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Country Risk Heatmap</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
-    <div class="heat-grid" id="heat-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
+    <div class="chart-header"><div><div class="ch-title">World Risk Map</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
+    <div class="tile-map-wrap"><div class="tile-map" id="tile-map"></div></div>
+    <div class="tile-tooltip" id="tile-tooltip"><div class="tt-name"></div><div class="tt-val"></div></div>
   </div>
 
   <!-- COUNTRY DETAIL PANEL -->
   <div class="country-panel" id="country-panel">
     <div class="country-inner">
-      <div><div class="cp-label">Country</div><div class="cp-name" id="cp-name">&#8212;</div></div>
-      <div><div class="cp-label">GPR Score</div><div class="cp-score" id="cp-score">&#8212;</div></div>
-      <div><div class="cp-label">M/M Change</div><div class="cp-change" id="cp-change">&#8212;</div></div>
-      <div><div class="cp-label">Risk Level</div><div id="cp-level">&#8212;</div></div>
-      <div><div class="cp-label">Initiator</div><div class="cp-change" id="cp-init" style="color:var(--red)">&#8212;</div></div>
-      <div><div class="cp-label">Respondent</div><div class="cp-change" id="cp-resp" style="color:var(--amb)">&#8212;</div></div>
-      <div><div class="cp-label">Spillover</div><div class="cp-change" id="cp-spill" style="color:var(--blu)">&#8212;</div></div>
+      <div class="cp-info">
+        <div><div class="cp-label">Country</div><div class="cp-name" id="cp-name">&#8212;</div></div>
+        <div style="display:flex;gap:24px;align-items:flex-end">
+          <div><div class="cp-label">GPR Score</div><div class="cp-score" id="cp-score">&#8212;</div></div>
+          <div><div class="cp-label">M/M Change</div><div class="cp-change" id="cp-change">&#8212;</div></div>
+          <div><div class="cp-label">Level</div><div id="cp-level">&#8212;</div></div>
+        </div>
+        <div class="cp-roles">
+          <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar" id="cp-bar-init" style="background:var(--red)"></div><span class="role-val" id="cp-init">0</span></div>
+          <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar" id="cp-bar-resp" style="background:var(--amb)"></div><span class="role-val" id="cp-resp">0</span></div>
+          <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar" id="cp-bar-spill" style="background:var(--blu)"></div><span class="role-val" id="cp-spill">0</span></div>
+        </div>
+      </div>
+      <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
     </div>
+  </div>
+
+  <!-- COUNTRY HEATMAP (list view) -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Country Risk Grid</div><div class="ch-sub">Top 50 Countries &#183; Alternative View</div></div></div>
+    <div class="heat-grid" id="heat-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
   </div>
 
   <!-- GPR GLOBAL CHART (Monthly) -->
@@ -257,12 +288,41 @@ function fmtEvtChg(cur,prev){
   return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'};
 }
 
+var _countryChart=null;
 var _ttOpts={backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1,titleFont:{family:'"DM Mono",monospace',size:9},bodyFont:{family:'"DM Mono",monospace',size:10}};
 var _xOpts={ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}};
 var _yOpts={ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:9}},grid:{color:'#ffffff06'}};
 var _zonePlugin={id:'zones',beforeDraw:function(chart){var yA=chart.scales.y;var c=chart.ctx;var l=chart.chartArea.left;var r=chart.chartArea.right;var y80=yA.getPixelForValue(80);var yB=yA.getPixelForValue(yA.min);if(y80>chart.chartArea.top){c.fillStyle='rgba(34,197,94,0.04)';c.fillRect(l,y80,r-l,yB-y80)}var y200=yA.getPixelForValue(200);var yT=yA.getPixelForValue(yA.max);if(y200<yB){c.fillStyle='rgba(239,68,68,0.04)';c.fillRect(l,yT,r-l,y200-yT)}}};
 
-function renderAll(){renderCards();renderHeatmap();renderMonthlyChart();renderDailyChart();renderRisks()}
+// Tile map layout — approximate geographic positions (x%, y%, w%, h%)
+var TILE_LAYOUT={
+'USA':[3,22,9,6],'Canada':[3,14,9,6],'Mexico':[5,30,5,5],'Cuba':[12,30,3,3],'Guatemala':[8,33,3,3],'Honduras':[8,36,3,3],'El Salvador':[8,39,3,3],'Nicaragua':[11,36,3,3],'Costa Rica':[11,39,3,3],'Panama':[14,39,3,3],
+'Colombia':[14,42,4,4],'Venezuela':[18,38,4,4],'Ecuador':[11,42,3,4],'Peru':[14,46,4,5],'Brazil':[18,42,8,8],'Bolivia':[14,51,4,4],'Chile':[14,55,3,6],'Argentina':[17,55,4,6],'Dominican Republic':[15,30,3,3],
+'UK':[40,14,3,4],'Ireland':[37,14,3,4],'France':[40,22,4,4],'Spain':[37,26,4,4],'Portugal':[34,26,3,4],'Germany':[44,18,4,4],'Italy':[44,26,3,5],'Netherlands':[44,14,3,4],'Belgium':[41,18,3,4],'Switzerland':[44,22,3,4],
+'Austria':[47,22,4,3],'Poland':[48,14,4,4],'Czechia':[48,18,4,4],'Hungary':[52,22,3,3],'Romania':[55,22,4,3],'Bulgaria':[55,25,4,3],'Greece':[52,28,3,4],'Croatia':[49,25,3,3],'Serbia':[52,25,3,3],'Bosnia':[49,28,3,3],
+'Albania':[49,31,3,3],'Macedonia':[52,31,3,3],'Lithuania':[52,10,4,4],'Latvia':[52,6,4,4],'Estonia':[52,2,4,4],'Sweden':[47,2,4,8],'Norway':[43,2,4,8],'Denmark':[44,10,3,4],'Finland':[51,2,4,4],
+'Turkey':[55,28,6,4],'Cyprus':[55,32,3,3],
+'Russia':[56,2,18,14],'Ukraine':[56,16,6,5],'Belarus':[52,14,4,4],'Georgia':[62,18,3,3],'Armenia':[62,21,3,3],'Azerbaijan':[65,21,3,3],
+'Morocco':[37,34,4,3],'Algeria':[41,34,4,4],'Tunisia':[45,33,3,3],'Libya':[48,34,4,4],'Egypt':[52,34,4,4],'Sudan':[56,38,4,4],'South Sudan':[56,42,4,3],'Nigeria':[45,42,4,4],'Ghana':[41,42,4,3],'Ivory Coast':[41,45,4,3],
+'Kenya':[60,42,4,4],'Uganda':[60,38,4,4],'Ethiopia':[60,34,4,4],'Somalia':[64,38,4,4],'Tanzania':[60,46,4,4],'DRC':[56,45,4,4],'Rwanda':[56,49,4,3],'Burundi':[56,52,4,3],'Angola':[52,49,4,4],
+'South Africa':[52,56,5,5],'Zimbabwe':[56,55,4,4],'Mozambique':[60,53,4,4],'Zambia':[56,49,4,4],'Namibia':[48,56,4,4],'Mali':[41,38,4,4],'Liberia':[37,42,4,3],'Sierra Leone':[37,39,4,3],'Guinea':[37,45,4,3],
+'Saudi Arabia':[61,28,5,5],'Iran':[66,24,6,5],'Iraq':[61,24,5,4],'Syria':[58,24,3,4],'Israel':[58,28,3,4],'Palestine':[58,32,3,3],'Jordan':[58,35,3,3],'Lebanon':[55,35,3,3],'Kuwait':[66,29,3,3],'UAE':[69,32,4,3],'Qatar':[66,32,3,3],'Bahrain':[69,29,3,3],'Yemen':[63,33,4,4],
+'India':[72,26,6,8],'Pakistan':[68,18,5,6],'Afghanistan':[68,14,5,4],'Bangladesh':[78,30,3,4],'Sri Lanka':[75,38,3,3],'Myanmar':[78,26,3,5],'Thailand':[81,30,3,5],'Cambodia':[84,32,3,3],'Vietnam':[84,28,3,5],'Laos':[81,26,3,4],'Malaysia':[81,38,4,3],'Indonesia':[81,42,8,4],'Philippines':[87,28,3,5],
+'China':[74,10,10,10],'North Korea':[84,12,3,4],'South Korea':[84,16,3,4],'Japan':[87,12,3,8],'Taiwan':[84,22,3,3],'Hong Kong':[84,25,3,3],
+'Uzbekistan':[68,8,5,4],'Australia':[84,48,8,8],'New Zealand':[92,56,4,5]
+};
+
+function tileColor(v){
+  if(v==null||v<1)return'#1a1a28';
+  if(v<20)return'rgba(34,197,94,0.35)';
+  if(v<50)return'rgba(34,197,94,0.55)';
+  if(v<80)return'rgba(245,158,11,0.45)';
+  if(v<120)return'rgba(245,158,11,0.65)';
+  if(v<200)return'rgba(239,68,68,0.55)';
+  return'rgba(220,38,38,0.75)';
+}
+
+function renderAll(){renderCards();renderTileMap();renderHeatmap();renderMonthlyChart();renderDailyChart();renderRisks()}
 
 function renderCards(){
   var g=D.gpr||{};
@@ -291,6 +351,38 @@ function renderCards(){
   if(D.lastDate)document.getElementById('update-badge').textContent='DATA: '+D.lastDate;
 }
 
+function renderTileMap(){
+  var countries=D.countries||{};
+  var el=document.getElementById('tile-map');
+  var tooltip=document.getElementById('tile-tooltip');
+  var html='';
+  Object.keys(TILE_LAYOUT).forEach(function(name){
+    var pos=TILE_LAYOUT[name];
+    var c=countries[name];
+    var v=c?c.latest:null;
+    var bg=tileColor(v);
+    var esc=name.replace(/'/g,"\\'");
+    var sel=name===_selectedCountry?' selected':'';
+    var lbl=name.length>6?name.substring(0,5)+'.':name;
+    html+='<div class="tile'+sel+'" data-name="'+esc+'" style="left:'+pos[0]+'%;top:'+pos[1]+'%;width:'+pos[2]+'%;height:'+pos[3]+'%;background:'+bg+'" onclick="selectCountry(\''+esc+'\')">';
+    html+='<span class="tile-label">'+lbl+'</span></div>';
+  });
+  el.innerHTML=html;
+  // Tooltip
+  el.addEventListener('mousemove',function(e){
+    var t=e.target.closest('.tile');
+    if(!t){tooltip.style.display='none';return}
+    var name=t.getAttribute('data-name');
+    var c=countries[name];
+    tooltip.querySelector('.tt-name').textContent=name;
+    tooltip.querySelector('.tt-val').textContent=c?'GPR '+c.latest.toFixed(1):'No data';
+    tooltip.style.display='block';
+    tooltip.style.left=(e.clientX+12)+'px';
+    tooltip.style.top=(e.clientY-30)+'px';
+  });
+  el.addEventListener('mouseleave',function(){tooltip.style.display='none'});
+}
+
 function renderHeatmap(){
   var countries=D.countries||{};
   var el=document.getElementById('heat-grid');
@@ -312,7 +404,12 @@ function renderHeatmap(){
 
 function selectCountry(key){
   var panel=document.getElementById('country-panel');
-  if(_selectedCountry===key){_selectedCountry=null;panel.classList.remove('open');renderHeatmap();return}
+  if(_selectedCountry===key){
+    _selectedCountry=null;
+    panel.classList.remove('open');
+    if(_countryChart){_countryChart.destroy();_countryChart=null}
+    renderTileMap();renderHeatmap();return;
+  }
   _selectedCountry=key;
   var c=(D.countries||{})[key];
   if(!c){panel.classList.remove('open');return}
@@ -323,11 +420,28 @@ function selectCountry(key){
   chgEl.textContent=fmtChg(c.change)+' M/M';
   chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
   document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-  document.getElementById('cp-init').textContent=c.initiator!=null?c.initiator.toFixed(1):'\u2014';
-  document.getElementById('cp-resp').textContent=c.respondent!=null?c.respondent.toFixed(1):'\u2014';
-  document.getElementById('cp-spill').textContent=c.spillover!=null?c.spillover.toFixed(1):'\u2014';
+  // Role bars
+  var total=Math.max((c.initiator||0)+(c.respondent||0)+(c.spillover||0),0.1);
+  var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,0.1);
+  document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);
+  document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);
+  document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
+  document.getElementById('cp-bar-init').style.width=Math.round((c.initiator||0)/maxBar*80)+'px';
+  document.getElementById('cp-bar-resp').style.width=Math.round((c.respondent||0)/maxBar*80)+'px';
+  document.getElementById('cp-bar-spill').style.width=Math.round((c.spillover||0)/maxBar*80)+'px';
   panel.classList.add('open');
-  renderHeatmap();
+  // Country chart
+  if(_countryChart){_countryChart.destroy();_countryChart=null}
+  var s=c.series;
+  if(s&&s.dates&&s.dates.length){
+    var ctx=document.getElementById('countryChart');
+    _countryChart=new Chart(ctx,{
+      type:'line',
+      data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:_xOpts,y:_yOpts}}
+    });
+  }
+  renderTileMap();renderHeatmap();
 }
 
 function setRange(months){
