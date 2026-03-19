@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Geopolitical Risk Intelligence - Vilasio</title>
+<meta name="description" content="Geopolitical Risk Intelligence by Vilasio — GPR Index measuring global tensions through newspaper analysis since 1985. Country-level risk mapping for 19 economies.">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;
+  --brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;
+  --white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;
+  --gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);
+  --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
+  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--cyan:#06b6d4;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}.nav-logo{width:24px;height:24px;opacity:.9}.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white)}.nav-sep{color:var(--gray);margin:0 4px}.nav-page{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:24px}.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}.nav-link:hover{color:var(--white)}
+.hero{padding:88px 48px 24px}.hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}.pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
+.hero-h1{font-family:"Alata",sans-serif;font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:-1.5px;line-height:1.1;margin-top:6px}.hero-h1 em{font-style:normal;color:var(--gold2)}.hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:540px;margin-top:6px}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}.hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
+.refresh-row{display:flex;align-items:center;gap:8px}.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);border:1px solid var(--brd2);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}.refresh-btn:hover{color:var(--white);border-color:var(--brd3)}.refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
+.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}.status-card.warn::before{background:var(--amb)}.status-card.extreme::before{background:#dc2626}
+.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
+main{padding:0 48px 64px}
+.chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
+.chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}.ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin-top:2px}
+.ch-toggles{display:flex;gap:3px}.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd2);color:var(--gray3);cursor:pointer;transition:all .2s}.ch-tog:hover{color:var(--white);border-color:var(--brd3)}.ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
+.chart-wrap{padding:12px 20px 16px}.chart-canvas-wrap{position:relative;height:340px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
+.legend-item{display:flex;align-items:center;gap:5px;cursor:default}.legend-dot{width:7px;height:7px;border-radius:50%}
+.badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block}
+.badge.grn{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
+.badge.red{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
+.badge.amb{color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)}
+.badge.extreme{color:#dc2626;border:1px solid rgba(220,38,38,0.3);background:rgba(220,38,38,0.1)}
+.badge.gray{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
+/* Heatmap grid */
+.heat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:3px;padding:16px 28px}
+.heat-cell{background:var(--surf2);border:1px solid var(--brd2);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.heat-cell:hover{border-color:var(--brd3);transform:translateY(-1px)}
+.heat-cell.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(200,168,75,0.15)}
+.heat-cell::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.heat-name{font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.heat-score{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;line-height:1}
+.heat-change{font-family:"DM Mono",monospace;font-size:8px;margin-top:4px}
+/* Country detail panel */
+.country-panel{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px;max-height:0;overflow:hidden;transition:max-height .4s ease}
+.country-panel.open{max-height:200px}
+.country-inner{padding:24px 28px;display:flex;align-items:center;gap:32px}
+.cp-name{font-family:"Alata",sans-serif;font-size:22px;font-weight:400}
+.cp-score{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;color:var(--gold)}
+.cp-change{font-family:"DM Mono",monospace;font-size:12px;font-weight:500}
+.cp-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:4px}
+/* Top risks table */
+.data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
+.data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2)}
+.data-table td{padding:8px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
+.data-table tr:hover td{background:var(--surf2)}
+.tbl-wrap{padding:0 28px 16px;overflow-x:auto}
+.sort-btn{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;transition:all .2s}
+.sort-btn:hover{border-color:var(--gray);color:var(--gray)}
+.sort-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+.explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}.explain-text{font-size:12px;color:var(--gray2);line-height:1.8}.explain-text strong{color:var(--white);font-weight:500}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
+footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
+.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
+@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.heat-grid{grid-template-columns:repeat(3,1fr)}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
+    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Geopolitical</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="cot.html">COT Intelligence</a>
+    <a class="nav-link" href="liquidity.html">Liquidity</a>
+    <a class="nav-link" href="bonds.html">Bonds</a>
+    <a class="nav-link" href="macro.html">Macro</a>
+    <a class="nav-link" href="crossmarket.html">Cross-Market</a>
+    <a class="nav-link" href="earnings.html">Earnings</a>
+    <a class="nav-link" href="congressional.html">Congressional</a>
+    <a class="nav-link" href="geopolitical.html">Geopolitical</a>
+    <a class="nav-link" href="blog.html">Insights</a>
+    <a class="nav-link" href="about.html">About</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag"><span class="pulse"></span> Geopolitical Risk Monitor</div>
+      <h1 class="hero-h1">See the world through <em>risk</em>.</h1>
+      <p class="hero-desc">Geopolitical Risk Index by Caldara &amp; Iacoviello &#8212; measuring global tensions through newspaper analysis since 1985. Country-level risk mapping for 19 economies.</p>
+    </div>
+    <div class="hero-badges">
+      <div class="refresh-row">
+        <div class="update-badge" id="update-badge">DATA: loading...</div>
+        <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">REFRESH</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- DASHBOARD CARDS -->
+  <div class="status-row reveal">
+    <div class="status-card neut" id="sc-gpr"><div class="sc-label">GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
+    <div class="status-card neut" id="sc-gpt"><div class="sc-label">GPR Threats</div><div class="sc-val" id="sc-gpt-val">&#8212;</div><div class="sc-sub"><span class="sc-note">threat sub-index</span></div></div>
+    <div class="status-card neut" id="sc-gpa"><div class="sc-label">GPR Acts</div><div class="sc-val" id="sc-gpa-val">&#8212;</div><div class="sc-sub"><span class="sc-note">acts sub-index</span></div></div>
+    <div class="status-card neut" id="sc-top"><div class="sc-label">Highest Risk</div><div class="sc-val" id="sc-top-val">&#8212;</div><div class="sc-sub"><span class="sc-note" id="sc-top-note">&#8212;</span></div></div>
+  </div>
+
+  <!-- COUNTRY HEATMAP -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">Country Risk Heatmap</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
+    <div class="heat-grid" id="heat-grid"><div style="color:var(--gray2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
+  </div>
+
+  <!-- COUNTRY DETAIL PANEL -->
+  <div class="country-panel" id="country-panel">
+    <div class="country-inner">
+      <div><div class="cp-label">Country</div><div class="cp-name" id="cp-name">&#8212;</div></div>
+      <div><div class="cp-label">GPR Score</div><div class="cp-score" id="cp-score">&#8212;</div></div>
+      <div><div class="cp-label">M/M Change</div><div class="cp-change" id="cp-change">&#8212;</div></div>
+      <div><div class="cp-label">Risk Level</div><div id="cp-level">&#8212;</div></div>
+    </div>
+  </div>
+
+  <!-- GPR GLOBAL CHART -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">GPR Index History</div><div class="ch-sub">Monthly &#183; Global Geopolitical Risk</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-rw="60" onclick="setRange(60)">5Y</button>
+        <button class="ch-tog" data-rw="120" onclick="setRange(120)">10Y</button>
+        <button class="ch-tog active" data-rw="0" onclick="setRange(0)">ALL</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="gprChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> GPR</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Threats</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Acts</div>
+    </div>
+  </div>
+
+  <!-- TOP RISKS TABLE -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Top Risk Countries</div><div class="ch-sub">Ranked by GPR Score</div></div>
+      <div style="display:flex;gap:4px">
+        <button class="sort-btn active" data-sort="score" onclick="sortRisks('score')">BY SCORE</button>
+        <button class="sort-btn" data-sort="change" onclick="sortRisks('change')">BY CHANGE</button>
+      </div>
+    </div>
+    <div class="tbl-wrap"><table class="data-table" id="risks-table"><tr><td style="color:var(--gray2)">Loading risks...</td></tr></table></div>
+  </div>
+
+  <!-- HOW TO READ -->
+  <div class="explain-section reveal">
+    <div class="explain-title">How to read Geopolitical Risk</div>
+    <div class="explain-text">
+      The <strong>GPR Index</strong> counts the share of newspaper articles discussing geopolitical tensions, threats, and acts in major global publications. It is normalized so that <strong>100 = historical average</strong>.<br><br>
+      <strong>Risk Levels:</strong> <strong>Low</strong> (&lt;80) &#8212; calm period, risk-on favored. <strong>Elevated</strong> (80-120) &#8212; normal tensions, standard positioning. <strong>High</strong> (120-200) &#8212; significant stress, consider hedging. <strong>Extreme</strong> (&gt;200) &#8212; crisis-level, strong risk-off (gold, treasuries, USD, VIX up).<br><br>
+      <strong>Trading Implications:</strong> GPR spikes are correlated with equity drawdowns, gold rallies, and flight-to-safety in treasuries. A sustained GPR above 150 historically leads to 2-5% S&amp;P 500 underperformance over the following quarter. The <strong>Threats</strong> sub-index captures escalation rhetoric; the <strong>Acts</strong> sub-index captures actual military or terrorist events &#8212; acts tend to have a larger and more immediate market impact.<br><br>
+      <strong>Country-Level:</strong> Country GPR measures how often a specific country appears in geopolitical risk articles. Spikes in country GPR often precede sanctions, military action, or trade disruptions &#8212; directly impacting FX, country ETFs, and commodity flows tied to that region.
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span></div>
+  <div style="display:flex;gap:28px">
+    <a href="privacy.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Privacy Policy</a>
+    <a href="terms.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Terms of Use</a>
+    <a href="cookie.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Cookie Policy</a>
+    <a href="contact.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Contact</a>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+</footer>
+<div class="disclaimer-bar"><div class="disclaimer-inner"><span class="disclaimer-label">Financial Disclaimer</span><p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p></div></div>
+
+<script>
+var API="https://vilasio-cot-backend.onrender.com";
+var D=null;
+var _chart=null;
+var _range=0;
+var _riskSort='score';
+var _selectedCountry=null;
+
+function gprLevel(v){
+  if(v==null)return{label:'N/A',cls:'gray'};
+  if(v<80)return{label:'LOW',cls:'grn'};
+  if(v<=120)return{label:'ELEVATED',cls:'amb'};
+  if(v<=200)return{label:'HIGH',cls:'red'};
+  return{label:'EXTREME',cls:'extreme'};
+}
+function gprCardClass(v){
+  if(v==null)return'neut';
+  if(v<80)return'up';
+  if(v<=120)return'neut';
+  if(v<=200)return'dn';
+  return'dn';
+}
+function heatColor(v){
+  if(v==null)return'var(--surf2)';
+  if(v<80)return'rgba(34,197,94,0.12)';
+  if(v<=120)return'rgba(245,158,11,0.12)';
+  if(v<=200)return'rgba(239,68,68,0.15)';
+  return'rgba(220,38,38,0.25)';
+}
+function heatBorder(v){
+  if(v==null)return'var(--brd2)';
+  if(v<80)return'rgba(34,197,94,0.3)';
+  if(v<=120)return'rgba(245,158,11,0.3)';
+  if(v<=200)return'rgba(239,68,68,0.3)';
+  return'rgba(220,38,38,0.5)';
+}
+function heatTopColor(v){
+  if(v==null)return'var(--gray)';
+  if(v<80)return'var(--grn)';
+  if(v<=120)return'var(--amb)';
+  if(v<=200)return'var(--red)';
+  return'#dc2626';
+}
+function fmtChg(v){
+  if(v==null)return'\u2014';
+  return(v>=0?'+':'')+v.toFixed(1);
+}
+
+function renderAll(){renderCards();renderHeatmap();renderChart();renderRisks()}
+
+function renderCards(){
+  var g=D.gpr||{};
+  var gpr=g.gpr||[];
+  var gpt=g.gpt||[];
+  var gpa=g.gpa||[];
+  var latest=gpr.length?gpr[gpr.length-1]:null;
+  var latestT=gpt.length?gpt[gpt.length-1]:null;
+  var latestA=gpa.length?gpa[gpa.length-1]:null;
+  var lv=gprLevel(latest);
+  document.getElementById('sc-gpr-val').textContent=latest!=null?latest.toFixed(1):'\u2014';
+  document.getElementById('sc-gpr-badge').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
+  document.getElementById('sc-gpr').className='status-card '+gprCardClass(latest);
+  document.getElementById('sc-gpt-val').textContent=latestT!=null?latestT.toFixed(1):'\u2014';
+  document.getElementById('sc-gpt').className='status-card '+gprCardClass(latestT);
+  document.getElementById('sc-gpa-val').textContent=latestA!=null?latestA.toFixed(1):'\u2014';
+  document.getElementById('sc-gpa').className='status-card '+gprCardClass(latestA);
+  var top=(D.topRisks||[])[0];
+  if(top){
+    document.getElementById('sc-top-val').textContent=top.name;
+    document.getElementById('sc-top-note').textContent='GPR '+top.gpr.toFixed(1);
+    document.getElementById('sc-top').className='status-card dn';
+  }
+  if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
+}
+
+function renderHeatmap(){
+  var countries=D.countries||{};
+  var el=document.getElementById('heat-grid');
+  var codes=Object.keys(countries).sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
+  var html='';
+  codes.forEach(function(code){
+    var c=countries[code];
+    var v=c.latest;
+    var lv=gprLevel(v);
+    html+='<div class="heat-cell'+(code===_selectedCountry?' selected':'')+'" onclick="selectCountry(\''+code+'\')" style="background:'+heatColor(v)+';border-color:'+heatBorder(v)+'">';
+    html+='<div style="position:absolute;top:0;left:0;right:0;height:2px;background:'+heatTopColor(v)+'"></div>';
+    html+='<div class="heat-name" style="color:'+heatTopColor(v)+'">'+code+' &#183; '+c.name+'</div>';
+    html+='<div class="heat-score">'+(v!=null?v.toFixed(1):'\u2014')+'</div>';
+    html+='<div class="heat-change" style="color:'+(c.change!=null&&c.change>=0?'var(--red)':'var(--grn)')+'">'+fmtChg(c.change)+' M/M</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html||'<div style="color:var(--gray2)">No country data available.</div>';
+}
+
+function selectCountry(code){
+  var panel=document.getElementById('country-panel');
+  if(_selectedCountry===code){
+    _selectedCountry=null;
+    panel.classList.remove('open');
+    renderHeatmap();
+    return;
+  }
+  _selectedCountry=code;
+  var c=(D.countries||{})[code];
+  if(!c){panel.classList.remove('open');return}
+  var lv=gprLevel(c.latest);
+  document.getElementById('cp-name').textContent=c.name;
+  document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
+  var chgEl=document.getElementById('cp-change');
+  chgEl.textContent=fmtChg(c.change)+' M/M';
+  chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
+  document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
+  panel.classList.add('open');
+  renderHeatmap();
+}
+
+function setRange(months){
+  _range=months;
+  document.querySelectorAll('.ch-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-rw'))===months)});
+  renderChart();
+}
+
+function renderChart(){
+  var g=D.gpr||{};
+  var dates=g.dates||[];
+  var gpr=g.gpr||[];
+  var gpt=g.gpt||[];
+  var gpa=g.gpa||[];
+  var start=_range>0?Math.max(0,dates.length-_range):0;
+  var d=dates.slice(start);
+  var v1=gpr.slice(start);
+  var v2=gpt.slice(start);
+  var v3=gpa.slice(start);
+  if(_chart){_chart.destroy();_chart=null}
+  var ctx=document.getElementById('gprChart');
+  if(!ctx)return;
+  _chart=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:d,
+      datasets:[
+        {label:'GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+        {label:'Threats',data:v2,borderColor:'#3b82f6',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3},
+        {label:'Acts',data:v3,borderColor:'#ef4444',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1,titleFont:{family:'"DM Mono",monospace',size:9},bodyFont:{family:'"DM Mono",monospace',size:10}}
+      },
+      scales:{
+        x:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}},
+        y:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:9}},grid:{color:'#ffffff06'}}
+      }
+    },
+    plugins:[{
+      id:'zones',
+      beforeDraw:function(chart){
+        var yAxis=chart.scales.y;
+        var ctx2=chart.ctx;
+        var left=chart.chartArea.left;
+        var right=chart.chartArea.right;
+        // Green zone <80
+        var y80=yAxis.getPixelForValue(80);
+        var yBot=yAxis.getPixelForValue(yAxis.min);
+        if(y80>chart.chartArea.top){
+          ctx2.fillStyle='rgba(34,197,94,0.04)';
+          ctx2.fillRect(left,y80,right-left,yBot-y80);
+        }
+        // Red zone >200
+        var y200=yAxis.getPixelForValue(200);
+        var yTop=yAxis.getPixelForValue(yAxis.max);
+        if(y200<yBot){
+          ctx2.fillStyle='rgba(239,68,68,0.04)';
+          ctx2.fillRect(left,yTop,right-left,y200-yTop);
+        }
+      }
+    }]
+  });
+}
+
+function sortRisks(mode){
+  _riskSort=mode;
+  document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});
+  renderRisks();
+}
+function renderRisks(){
+  var risks=(D.topRisks||[]).slice();
+  if(_riskSort==='change'){risks.sort(function(a,b){return Math.abs(b.change||0)-Math.abs(a.change||0)})}
+  else{risks.sort(function(a,b){return(b.gpr||0)-(a.gpr||0)})}
+  var el=document.getElementById('risks-table');
+  if(!risks.length){el.innerHTML='<tr><td style="color:var(--gray2)">No risk data available.</td></tr>';return}
+  var html='<thead><tr><th>#</th><th>Country</th><th>GPR Score</th><th>M/M Change</th><th>Level</th></tr></thead><tbody>';
+  risks.forEach(function(r,i){
+    var lv=gprLevel(r.gpr);
+    var chgColor=r.change!=null&&r.change>=0?'var(--red)':'var(--grn)';
+    html+='<tr>';
+    html+='<td style="color:var(--gray)">'+(i+1)+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+r.code+' &#183; '+r.name+'</td>';
+    html+='<td>'+r.gpr.toFixed(1)+'</td>';
+    html+='<td style="color:'+chgColor+'">'+fmtChg(r.change)+'</td>';
+    html+='<td><span class="badge '+lv.cls+'">'+lv.label+'</span></td>';
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  el.innerHTML=html;
+}
+
+function refreshData(){
+  var btn=document.getElementById('refresh-btn');btn.textContent='REFRESHING...';btn.classList.add('loading');
+  document.getElementById('update-badge').textContent='DATA: refreshing...';
+  fetch(API+'/api/geopolitical/refresh').then(function(r){return r.json()}).then(function(d){
+    if(d.status!=='ok'){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000);return}
+    D=d;renderAll();btn.textContent='REFRESH';btn.classList.remove('loading');
+  }).catch(function(){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000)});
+}
+
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(e){obs.observe(e)});
+(function(){
+  fetch(API+'/api/geopolitical').then(function(r){return r.json()}).then(function(d){
+    if(d.status!=='ok'){console.error('GPR API error:',d.message);return}
+    D=d;renderAll();
+  }).catch(function(e){console.error('GPR fetch failed:',e)});
+})();
+</script>
+</body>
+</html>
