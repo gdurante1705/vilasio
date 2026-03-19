@@ -103,7 +103,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div>
       <div class="hero-tag"><span class="pulse"></span> Geopolitical Risk Monitor</div>
       <h1 class="hero-h1">See the world through <em>risk</em>.</h1>
-      <p class="hero-desc">Geopolitical Risk Index by Caldara &amp; Iacoviello &#8212; measuring global tensions through newspaper analysis since 1985. Country-level risk mapping for 19 economies.</p>
+      <p class="hero-desc">AI-GPR Index by Caldara, Iacoviello &amp; Tong &#8212; AI-powered geopolitical risk measurement from 1960 to present, daily updates. Country-level risk mapping for 120+ economies.</p>
     </div>
     <div class="hero-badges">
       <div class="refresh-row">
@@ -117,10 +117,10 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 <main>
   <!-- DASHBOARD CARDS -->
   <div class="status-row reveal">
-    <div class="status-card neut" id="sc-gpr"><div class="sc-label">GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
-    <div class="status-card neut" id="sc-gpt"><div class="sc-label">GPR Threats</div><div class="sc-val" id="sc-gpt-val">&#8212;</div><div class="sc-sub"><span class="sc-note">threat sub-index</span></div></div>
-    <div class="status-card neut" id="sc-gpa"><div class="sc-label">GPR Acts</div><div class="sc-val" id="sc-gpa-val">&#8212;</div><div class="sc-sub"><span class="sc-note">acts sub-index</span></div></div>
-    <div class="status-card neut" id="sc-top"><div class="sc-label">Highest Risk</div><div class="sc-val" id="sc-top-val">&#8212;</div><div class="sc-sub"><span class="sc-note" id="sc-top-note">&#8212;</span></div></div>
+    <div class="status-card neut" id="sc-gpr"><div class="sc-label">AI-GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
+    <div class="status-card neut" id="sc-mil"><div class="sc-label">Military Conflict</div><div class="sc-val" id="sc-mil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-mil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card neut" id="sc-ter"><div class="sc-label">Terrorism</div><div class="sc-val" id="sc-ter-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ter-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
   </div>
 
   <!-- COUNTRY HEATMAP -->
@@ -136,13 +136,16 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
       <div><div class="cp-label">GPR Score</div><div class="cp-score" id="cp-score">&#8212;</div></div>
       <div><div class="cp-label">M/M Change</div><div class="cp-change" id="cp-change">&#8212;</div></div>
       <div><div class="cp-label">Risk Level</div><div id="cp-level">&#8212;</div></div>
+      <div><div class="cp-label">Initiator</div><div class="cp-change" id="cp-init" style="color:var(--red)">&#8212;</div></div>
+      <div><div class="cp-label">Respondent</div><div class="cp-change" id="cp-resp" style="color:var(--amb)">&#8212;</div></div>
+      <div><div class="cp-label">Spillover</div><div class="cp-change" id="cp-spill" style="color:var(--blu)">&#8212;</div></div>
     </div>
   </div>
 
-  <!-- GPR GLOBAL CHART -->
+  <!-- GPR GLOBAL CHART (Monthly) -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">GPR Index History</div><div class="ch-sub">Monthly &#183; Global Geopolitical Risk</div></div>
+      <div><div class="ch-title">AI-GPR Index History</div><div class="ch-sub">Monthly &#183; 1960 to Present</div></div>
       <div class="ch-toggles">
         <button class="ch-tog" data-rw="60" onclick="setRange(60)">5Y</button>
         <button class="ch-tog" data-rw="120" onclick="setRange(120)">10Y</button>
@@ -151,10 +154,17 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="gprChart"></canvas></div></div>
     <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> GPR</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Threats</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Acts</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> AI-GPR</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> Oil / Energy</div>
     </div>
+  </div>
+
+  <!-- GPR DAILY ZOOM (last 365 days) -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Daily GPR &#8212; Last 12 Months</div><div class="ch-sub">Daily Resolution &#183; AI-GPR Index</div></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="dailyChart"></canvas></div></div>
   </div>
 
   <!-- TOP RISKS TABLE -->
@@ -197,6 +207,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null;
 var _chart=null;
+var _dailyChart=null;
 var _range=0;
 var _riskSort='score';
 var _selectedCountry=null;
@@ -211,75 +222,87 @@ function gprLevel(v){
 function gprCardClass(v){
   if(v==null)return'neut';
   if(v<80)return'up';
-  if(v<=120)return'neut';
+  if(v<=120)return'warn';
   if(v<=200)return'dn';
   return'dn';
 }
 function heatColor(v){
-  if(v==null)return'var(--surf2)';
-  if(v<80)return'rgba(34,197,94,0.12)';
-  if(v<=120)return'rgba(245,158,11,0.12)';
-  if(v<=200)return'rgba(239,68,68,0.15)';
+  if(v==null||v<1)return'var(--surf2)';
+  if(v<20)return'rgba(34,197,94,0.12)';
+  if(v<80)return'rgba(245,158,11,0.12)';
+  if(v<200)return'rgba(239,68,68,0.15)';
   return'rgba(220,38,38,0.25)';
 }
 function heatBorder(v){
-  if(v==null)return'var(--brd2)';
-  if(v<80)return'rgba(34,197,94,0.3)';
-  if(v<=120)return'rgba(245,158,11,0.3)';
-  if(v<=200)return'rgba(239,68,68,0.3)';
+  if(v==null||v<1)return'var(--brd2)';
+  if(v<20)return'rgba(34,197,94,0.3)';
+  if(v<80)return'rgba(245,158,11,0.3)';
+  if(v<200)return'rgba(239,68,68,0.3)';
   return'rgba(220,38,38,0.5)';
 }
 function heatTopColor(v){
-  if(v==null)return'var(--gray)';
-  if(v<80)return'var(--grn)';
-  if(v<=120)return'var(--amb)';
-  if(v<=200)return'var(--red)';
+  if(v==null||v<1)return'var(--gray)';
+  if(v<20)return'var(--grn)';
+  if(v<80)return'var(--amb)';
+  if(v<200)return'var(--red)';
   return'#dc2626';
 }
 function fmtChg(v){
   if(v==null)return'\u2014';
   return(v>=0?'+':'')+v.toFixed(1);
 }
+function fmtEvtChg(cur,prev){
+  if(cur==null||prev==null)return{text:'\u2014',cls:''};
+  var d=cur-prev;
+  return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'};
+}
 
-function renderAll(){renderCards();renderHeatmap();renderChart();renderRisks()}
+var _ttOpts={backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1,titleFont:{family:'"DM Mono",monospace',size:9},bodyFont:{family:'"DM Mono",monospace',size:10}};
+var _xOpts={ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}};
+var _yOpts={ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:9}},grid:{color:'#ffffff06'}};
+var _zonePlugin={id:'zones',beforeDraw:function(chart){var yA=chart.scales.y;var c=chart.ctx;var l=chart.chartArea.left;var r=chart.chartArea.right;var y80=yA.getPixelForValue(80);var yB=yA.getPixelForValue(yA.min);if(y80>chart.chartArea.top){c.fillStyle='rgba(34,197,94,0.04)';c.fillRect(l,y80,r-l,yB-y80)}var y200=yA.getPixelForValue(200);var yT=yA.getPixelForValue(yA.max);if(y200<yB){c.fillStyle='rgba(239,68,68,0.04)';c.fillRect(l,yT,r-l,y200-yT)}}};
+
+function renderAll(){renderCards();renderHeatmap();renderMonthlyChart();renderDailyChart();renderRisks()}
 
 function renderCards(){
   var g=D.gpr||{};
-  var gpr=g.gpr||[];
-  var gpt=g.gpt||[];
-  var gpa=g.gpa||[];
-  var latest=gpr.length?gpr[gpr.length-1]:null;
-  var latestT=gpt.length?gpt[gpt.length-1]:null;
-  var latestA=gpa.length?gpa[gpa.length-1]:null;
+  var vals=g.values||[];
+  var oil=g.oil||[];
+  var latest=vals.length?vals[vals.length-1]:null;
+  var prev=vals.length>=2?vals[vals.length-2]:null;
   var lv=gprLevel(latest);
   document.getElementById('sc-gpr-val').textContent=latest!=null?latest.toFixed(1):'\u2014';
   document.getElementById('sc-gpr-badge').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
   document.getElementById('sc-gpr').className='status-card '+gprCardClass(latest);
-  document.getElementById('sc-gpt-val').textContent=latestT!=null?latestT.toFixed(1):'\u2014';
-  document.getElementById('sc-gpt').className='status-card '+gprCardClass(latestT);
-  document.getElementById('sc-gpa-val').textContent=latestA!=null?latestA.toFixed(1):'\u2014';
-  document.getElementById('sc-gpa').className='status-card '+gprCardClass(latestA);
-  var top=(D.topRisks||[])[0];
-  if(top){
-    document.getElementById('sc-top-val').textContent=top.name;
-    document.getElementById('sc-top-note').textContent='GPR '+top.gpr.toFixed(1);
-    document.getElementById('sc-top').className='status-card dn';
-  }
-  if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
+  // Event type cards
+  var el=D.evtLatest||{};var ep=D.evtPrev||{};
+  var mil=el.military_conflict;var milP=ep.military_conflict;
+  document.getElementById('sc-mil-val').textContent=mil!=null?mil.toFixed(1):'\u2014';
+  var mc=fmtEvtChg(mil,milP);document.getElementById('sc-mil-chg').textContent=mc.text;document.getElementById('sc-mil-chg').className='sc-delta '+mc.cls;
+  document.getElementById('sc-mil').className='status-card '+gprCardClass(mil);
+  var ter=el.terrorism;var terP=ep.terrorism;
+  document.getElementById('sc-ter-val').textContent=ter!=null?ter.toFixed(1):'\u2014';
+  var tc=fmtEvtChg(ter,terP);document.getElementById('sc-ter-chg').textContent=tc.text;document.getElementById('sc-ter-chg').className='sc-delta '+tc.cls;
+  document.getElementById('sc-ter').className='status-card '+gprCardClass(ter);
+  var oilV=oil.length?oil[oil.length-1]:null;var oilP=oil.length>=2?oil[oil.length-2]:null;
+  document.getElementById('sc-oil-val').textContent=oilV!=null?oilV.toFixed(1):'\u2014';
+  var oc=fmtEvtChg(oilV,oilP);document.getElementById('sc-oil-chg').textContent=oc.text;document.getElementById('sc-oil-chg').className='sc-delta '+oc.cls;
+  document.getElementById('sc-oil').className='status-card '+gprCardClass(oilV);
+  if(D.lastDate)document.getElementById('update-badge').textContent='DATA: '+D.lastDate;
 }
 
 function renderHeatmap(){
   var countries=D.countries||{};
   var el=document.getElementById('heat-grid');
-  var codes=Object.keys(countries).sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
+  var keys=Object.keys(countries).sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
   var html='';
-  codes.forEach(function(code){
-    var c=countries[code];
+  keys.forEach(function(k){
+    var c=countries[k];
     var v=c.latest;
-    var lv=gprLevel(v);
-    html+='<div class="heat-cell'+(code===_selectedCountry?' selected':'')+'" onclick="selectCountry(\''+code+'\')" style="background:'+heatColor(v)+';border-color:'+heatBorder(v)+'">';
+    var esc=k.replace(/'/g,"\\'");
+    html+='<div class="heat-cell'+(k===_selectedCountry?' selected':'')+'" onclick="selectCountry(\''+esc+'\')" style="background:'+heatColor(v)+';border-color:'+heatBorder(v)+'">';
     html+='<div style="position:absolute;top:0;left:0;right:0;height:2px;background:'+heatTopColor(v)+'"></div>';
-    html+='<div class="heat-name" style="color:'+heatTopColor(v)+'">'+code+' &#183; '+c.name+'</div>';
+    html+='<div class="heat-name" style="color:'+heatTopColor(v)+'">'+c.name+'</div>';
     html+='<div class="heat-score">'+(v!=null?v.toFixed(1):'\u2014')+'</div>';
     html+='<div class="heat-change" style="color:'+(c.change!=null&&c.change>=0?'var(--red)':'var(--grn)')+'">'+fmtChg(c.change)+' M/M</div>';
     html+='</div>';
@@ -287,16 +310,11 @@ function renderHeatmap(){
   el.innerHTML=html||'<div style="color:var(--gray2)">No country data available.</div>';
 }
 
-function selectCountry(code){
+function selectCountry(key){
   var panel=document.getElementById('country-panel');
-  if(_selectedCountry===code){
-    _selectedCountry=null;
-    panel.classList.remove('open');
-    renderHeatmap();
-    return;
-  }
-  _selectedCountry=code;
-  var c=(D.countries||{})[code];
+  if(_selectedCountry===key){_selectedCountry=null;panel.classList.remove('open');renderHeatmap();return}
+  _selectedCountry=key;
+  var c=(D.countries||{})[key];
   if(!c){panel.classList.remove('open');return}
   var lv=gprLevel(c.latest);
   document.getElementById('cp-name').textContent=c.name;
@@ -305,6 +323,9 @@ function selectCountry(code){
   chgEl.textContent=fmtChg(c.change)+' M/M';
   chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
   document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
+  document.getElementById('cp-init').textContent=c.initiator!=null?c.initiator.toFixed(1):'\u2014';
+  document.getElementById('cp-resp').textContent=c.respondent!=null?c.respondent.toFixed(1):'\u2014';
+  document.getElementById('cp-spill').textContent=c.spillover!=null?c.spillover.toFixed(1):'\u2014';
   panel.classList.add('open');
   renderHeatmap();
 }
@@ -312,68 +333,56 @@ function selectCountry(code){
 function setRange(months){
   _range=months;
   document.querySelectorAll('.ch-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-rw'))===months)});
-  renderChart();
+  renderMonthlyChart();
 }
 
-function renderChart(){
+function renderMonthlyChart(){
   var g=D.gpr||{};
   var dates=g.dates||[];
-  var gpr=g.gpr||[];
-  var gpt=g.gpt||[];
-  var gpa=g.gpa||[];
+  var vals=g.values||[];
+  var oil=g.oil||[];
   var start=_range>0?Math.max(0,dates.length-_range):0;
   var d=dates.slice(start);
-  var v1=gpr.slice(start);
-  var v2=gpt.slice(start);
-  var v3=gpa.slice(start);
+  var v1=vals.slice(start);
+  var v2=oil.slice(start);
   if(_chart){_chart.destroy();_chart=null}
   var ctx=document.getElementById('gprChart');
   if(!ctx)return;
   _chart=new Chart(ctx,{
     type:'line',
-    data:{
-      labels:d,
-      datasets:[
-        {label:'GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
-        {label:'Threats',data:v2,borderColor:'#3b82f6',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3},
-        {label:'Acts',data:v3,borderColor:'#ef4444',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3}
-      ]
-    },
+    data:{labels:d,datasets:[
+      {label:'AI-GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:'y'},
+      {label:'Oil/Energy',data:v2,borderColor:'#06b6d4',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3,yAxisID:'y2'}
+    ]},
     options:{
       responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1,titleFont:{family:'"DM Mono",monospace',size:9},bodyFont:{family:'"DM Mono",monospace',size:10}}
-      },
-      scales:{
-        x:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}},
-        y:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:9}},grid:{color:'#ffffff06'}}
-      }
+      plugins:{legend:{display:false},tooltip:_ttOpts},
+      scales:{x:_xOpts,y:_yOpts,y2:{position:'right',ticks:{color:'#06b6d4',font:{family:'"DM Mono",monospace',size:8}},grid:{display:false}}}
     },
-    plugins:[{
-      id:'zones',
-      beforeDraw:function(chart){
-        var yAxis=chart.scales.y;
-        var ctx2=chart.ctx;
-        var left=chart.chartArea.left;
-        var right=chart.chartArea.right;
-        // Green zone <80
-        var y80=yAxis.getPixelForValue(80);
-        var yBot=yAxis.getPixelForValue(yAxis.min);
-        if(y80>chart.chartArea.top){
-          ctx2.fillStyle='rgba(34,197,94,0.04)';
-          ctx2.fillRect(left,y80,right-left,yBot-y80);
-        }
-        // Red zone >200
-        var y200=yAxis.getPixelForValue(200);
-        var yTop=yAxis.getPixelForValue(yAxis.max);
-        if(y200<yBot){
-          ctx2.fillStyle='rgba(239,68,68,0.04)';
-          ctx2.fillRect(left,yTop,right-left,y200-yTop);
-        }
-      }
-    }]
+    plugins:[_zonePlugin]
+  });
+}
+
+function renderDailyChart(){
+  var g=D.gpr||{};
+  var dates=g.dailyDates||[];
+  var vals=g.dailyValues||[];
+  if(_dailyChart){_dailyChart.destroy();_dailyChart=null}
+  var ctx=document.getElementById('dailyChart');
+  if(!ctx||!dates.length)return;
+  _dailyChart=new Chart(ctx,{
+    type:'line',
+    data:{labels:dates,datasets:[
+      {label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:1,pointRadius:0,fill:true,tension:0.2}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:_ttOpts},
+      scales:{x:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'#ffffff06'}},y:_yOpts}
+    },
+    plugins:[_zonePlugin]
   });
 }
 
@@ -394,7 +403,7 @@ function renderRisks(){
     var chgColor=r.change!=null&&r.change>=0?'var(--red)':'var(--grn)';
     html+='<tr>';
     html+='<td style="color:var(--gray)">'+(i+1)+'</td>';
-    html+='<td style="color:var(--gold);font-weight:500">'+r.code+' &#183; '+r.name+'</td>';
+    html+='<td style="color:var(--gold);font-weight:500">'+r.name+'</td>';
     html+='<td>'+r.gpr.toFixed(1)+'</td>';
     html+='<td style="color:'+chgColor+'">'+fmtChg(r.change)+'</td>';
     html+='<td><span class="badge '+lv.cls+'">'+lv.label+'</span></td>';
