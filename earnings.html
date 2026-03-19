@@ -6,6 +6,7 @@
 <title>Earnings Intelligence - Vilasio</title>
 <meta name="description" content="Earnings Intelligence (PEAD) by Vilasio — Post-Earnings Announcement Drift scanner for institutional equity analysis.">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;--brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;--white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;--gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);--grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);--red:#ef4444;--red-dim:rgba(239,68,68,0.10);--amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--cyan:#06b6d4}
@@ -55,6 +56,17 @@ main{padding:0 48px 64px}
 .detail-item .dl{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:3px}
 .detail-item .dv{font-family:"DM Mono",monospace;font-size:11px;color:var(--white)}
 @media(max-width:768px){.detail-inner{grid-template-columns:repeat(2,1fr)}}
+.up-row{cursor:pointer}.up-row:hover td{background:var(--surf2)}
+.up-detail td{padding:0!important;border-bottom:1px solid var(--brd)}
+.up-detail-wrap{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.up-detail.open .up-detail-wrap{max-height:320px}
+.up-detail-inner{background:rgba(255,255,255,0.03);padding:16px 24px;display:flex;align-items:center;gap:24px}
+.up-chart-box{width:340px;min-width:260px;height:180px}
+.up-chart-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}
+.up-chart-empty{font-family:"DM Mono",monospace;font-size:10px;color:var(--gray);padding:40px 0;text-align:center}
+.analyst-cell{display:flex;flex-direction:column;gap:2px}
+.analyst-tp{font-family:"DM Mono",monospace;font-size:8px;color:var(--gray3)}
+.analyst-n{font-family:"DM Mono",monospace;font-size:7px;color:var(--gray);letter-spacing:1px}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
 .disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
@@ -235,10 +247,49 @@ function renderSignals(){
 }
 
 var _upSort='date';
+var _upOpen=null;
+var _upCharts={};
 function sortUpcoming(mode){
-  _upSort=mode;
+  _upSort=mode;_upOpen=null;_upCharts={};
   document.querySelectorAll('.up-sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});
   renderUpcoming();
+}
+function analystBadge(r){
+  if(!r)return'<span class="badge gray">\u2014</span>';
+  var m={'strong_buy':['STRONG BUY','grn'],'buy':['BUY','grn'],'hold':['HOLD','gold'],'underperform':['SELL','red'],'sell':['SELL','red'],'strong_sell':['STRONG SELL','red']};
+  var p=m[r]||[r.toUpperCase(),'gray'];
+  return'<span class="badge '+p[1]+'">'+p[0]+'</span>';
+}
+function toggleUpcoming(sym,rid){
+  var row=document.getElementById(rid);
+  if(!row)return;
+  if(_upOpen&&_upOpen!==row){_upOpen.classList.remove('open');var oldId=_upOpen.id;if(_upCharts[oldId]){_upCharts[oldId].destroy();delete _upCharts[oldId]}}
+  row.classList.toggle('open');
+  if(row.classList.contains('open')){
+    _upOpen=row;
+    var cid='up-canvas-'+sym;
+    var wrap=document.getElementById('up-hist-'+sym);
+    if(wrap)wrap.innerHTML='<div class="up-chart-label">Loading EPS history...</div>';
+    fetch(API+'/api/earnings/history?symbol='+sym).then(function(r){return r.json()}).then(function(d){
+      if(!wrap)return;
+      if(d.status!=='ok'||!d.quarters||!d.quarters.length){wrap.innerHTML='<div class="up-chart-empty">No earnings history available</div>';return}
+      var q=d.quarters.slice().reverse();
+      var labels=q.map(function(x){return x.date||'?'});
+      var actuals=q.map(function(x){return x.epsActual});
+      var estimates=q.map(function(x){return x.epsEstimate});
+      var colors=q.map(function(x){return(x.epsActual!=null&&x.epsEstimate!=null&&x.epsActual>x.epsEstimate)?'rgba(34,197,94,0.8)':'rgba(239,68,68,0.8)'});
+      wrap.innerHTML='<div class="up-chart-label">EPS Actual vs Estimate (last 4Q)</div><canvas id="'+cid+'" style="width:100%;height:150px"></canvas>';
+      var ctx=document.getElementById(cid);
+      if(!ctx)return;
+      _upCharts[rid]=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[
+        {label:'Actual',data:actuals,backgroundColor:colors,borderWidth:0,barPercentage:0.5,categoryPercentage:0.7},
+        {label:'Estimate',data:estimates,backgroundColor:'rgba(255,255,255,0.15)',borderColor:'rgba(255,255,255,0.3)',borderWidth:1,borderDash:[3,3],barPercentage:0.5,categoryPercentage:0.7,type:'bar'}
+      ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{color:'#8a90a0',font:{family:'"DM Mono",monospace',size:8},boxWidth:10,padding:8}},tooltip:{backgroundColor:'#111118',titleColor:'#c0c4d0',bodyColor:'#f0f1f5',borderColor:'#ffffff12',borderWidth:1}},scales:{x:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8}},grid:{display:false}},y:{ticks:{color:'#5a6070',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'#ffffff08'}}}}});
+    }).catch(function(){if(wrap)wrap.innerHTML='<div class="up-chart-empty">Failed to load history</div>'});
+  }else{
+    if(_upCharts[rid]){_upCharts[rid].destroy();delete _upCharts[rid]}
+    _upOpen=null;
+  }
 }
 function renderUpcoming(){
   var up=(D.upcoming||[]).slice();
@@ -247,18 +298,25 @@ function renderUpcoming(){
   if(_upSort==='mcap'){up.sort(function(a,b){return(b.marketCap||0)-(a.marketCap||0)})}
   else{up.sort(function(a,b){var da=a.date||'zzzz',db=b.date||'zzzz';return da<db?-1:da>db?1:(b.marketCap||0)-(a.marketCap||0)})}
   var mt=D.marketTrend||{};
-  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th></tr></thead><tbody>';
-  up.forEach(function(u){
-    html+='<tr>';
+  var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th><th>Analyst</th></tr></thead><tbody>';
+  up.forEach(function(u,i){
+    var rid='up-detail-'+i;
+    html+='<tr class="up-row" onclick="toggleUpcoming(\''+u.symbol+'\',\''+rid+'\')">';
     html+='<td>'+(u.date||'\u2014')+'</td>';
     html+='<td style="color:var(--gold);font-weight:500">'+u.symbol+'</td>';
     html+='<td>'+u.name+'</td>';
     html+='<td>'+(u.marketCap?fmtM(u.marketCap):'\u2014')+'</td>';
     html+='<td>'+u.sector+' '+etfBadge(u.sectorEtf,mt)+'</td>';
+    html+='<td><div class="analyst-cell">'+analystBadge(u.analystRating);
+    if(u.targetPrice)html+='<span class="analyst-tp">TP $'+u.targetPrice.toFixed(2)+'</span>';
+    if(u.numberOfAnalysts)html+='<span class="analyst-n">'+u.numberOfAnalysts+' analysts</span>';
+    html+='</div></td>';
     html+='</tr>';
+    html+='<tr class="up-detail" id="'+rid+'"><td colspan="6"><div class="up-detail-wrap"><div class="up-detail-inner"><div class="up-chart-box" id="up-hist-'+u.symbol+'"><div class="up-chart-empty">Click to load EPS history</div></div></div></div></td></tr>';
   });
   html+='</tbody>';
   el.innerHTML=html;
+  _upOpen=null;_upCharts={};
 }
 
 function renderRegime(){
