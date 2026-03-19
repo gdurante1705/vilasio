@@ -70,6 +70,10 @@ main{padding:0 48px 64px}
 .role-bar{height:14px;border-radius:2px;min-width:2px;transition:width .3s}
 .role-val{font-family:"DM Mono",monospace;font-size:9px;color:var(--white);min-width:35px}
 .cp-chart-wrap{flex:1;min-width:0;height:200px}
+.cp-macro{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.macro-item{background:var(--surf2);border:1px solid var(--brd2);padding:8px 10px}
+.macro-label{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:3px}
+.macro-val{font-family:"Alata",sans-serif;font-size:14px;font-weight:400}
 /* Table */
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
 .data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2)}
@@ -152,6 +156,12 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
           <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar" id="cp-bar-init" style="background:var(--red)"></div><span class="role-val" id="cp-init">0</span></div>
           <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar" id="cp-bar-resp" style="background:var(--amb)"></div><span class="role-val" id="cp-resp">0</span></div>
           <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar" id="cp-bar-spill" style="background:var(--blu)"></div><span class="role-val" id="cp-spill">0</span></div>
+        </div>
+        <div class="cp-macro" id="cp-macro">
+          <div class="macro-item"><div class="macro-label">GDP Growth</div><div class="macro-val" id="mc-gdp">&#8212;</div></div>
+          <div class="macro-item"><div class="macro-label">Inflation</div><div class="macro-val" id="mc-cpi">&#8212;</div></div>
+          <div class="macro-item"><div class="macro-label">Unemployment</div><div class="macro-val" id="mc-unemp">&#8212;</div></div>
+          <div class="macro-item"><div class="macro-label">Interest Rate</div><div class="macro-val" id="mc-rate">&#8212;</div></div>
         </div>
       </div>
       <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
@@ -259,6 +269,57 @@ var _zonePlugin={id:'zones',beforeDraw:function(ch){var yA=ch.scales.y,c=ch.ctx,
 
 function resolveGprName(topoName){return NAME_MAP[topoName]||topoName}
 
+// GPR country name → ISO2 code for World Bank API
+var ISO2_MAP={
+'USA':'US','UK':'GB','Russia':'RU','China':'CN','India':'IN','Brazil':'BR','France':'FR','Germany':'DE',
+'Japan':'JP','Italy':'IT','Canada':'CA','Australia':'AU','Spain':'ES','Mexico':'MX','Indonesia':'ID',
+'Turkey':'TR','Saudi Arabia':'SA','Iran':'IR','Israel':'IL','Ukraine':'UA','South Korea':'KR',
+'North Korea':'KP','Pakistan':'PK','Egypt':'EG','Iraq':'IQ','Syria':'SY','Afghanistan':'AF',
+'Nigeria':'NG','South Africa':'ZA','Argentina':'AR','Colombia':'CO','Venezuela':'VE','Chile':'CL',
+'Peru':'PE','Poland':'PL','Netherlands':'NL','Belgium':'BE','Switzerland':'CH','Austria':'AT',
+'Sweden':'SE','Norway':'NO','Denmark':'DK','Finland':'FI','Greece':'GR','Portugal':'PT',
+'Ireland':'IE','Czechia':'CZ','Romania':'RO','Hungary':'HU','Bulgaria':'BG','Serbia':'RS',
+'Croatia':'HR','Bosnia':'BA','Albania':'AL','Macedonia':'MK','Estonia':'EE','Latvia':'LV',
+'Lithuania':'LT','Georgia':'GE','Armenia':'AM','Azerbaijan':'AZ','Belarus':'BY',
+'UAE':'AE','Qatar':'QA','Kuwait':'KW','Bahrain':'BH','Jordan':'JO','Lebanon':'LB',
+'Yemen':'YE','Thailand':'TH','Vietnam':'VN','Malaysia':'MY','Philippines':'PH','Singapore':'SG',
+'Taiwan':'TW','Bangladesh':'BD','Sri Lanka':'LK','Myanmar':'MM','Cambodia':'KH','Laos':'LA',
+'Kenya':'KE','Ethiopia':'ET','Tanzania':'TZ','Uganda':'UG','Ghana':'GH','Morocco':'MA',
+'Algeria':'DZ','Tunisia':'TN','Libya':'LY','Sudan':'SD','South Sudan':'SS','Somalia':'SO',
+'DRC':'CD','Angola':'AO','Mozambique':'MZ','Zimbabwe':'ZW','Zambia':'ZM','Namibia':'NA',
+'Cuba':'CU','Dominican Republic':'DO','Panama':'PA','Costa Rica':'CR','Ecuador':'EC',
+'Bolivia':'BO','Paraguay':'PY','Uruguay':'UY','Guatemala':'GT','Honduras':'HN',
+'El Salvador':'SV','Nicaragua':'NI','Haiti':'HT','Jamaica':'JM','Uzbekistan':'UZ',
+'New Zealand':'NZ','Palestine':'PS','Cyprus':'CY','Mali':'ML','Niger':'NE','Chad':'TD',
+'Ivory Coast':'CI','Guinea':'GN','Sierra Leone':'SL','Liberia':'LR','Eritrea':'ER',
+'Rwanda':'RW','Burundi':'BI','Mongolia':'MN','Nepal':'NP'
+};
+
+function fetchMacro(gprName){
+  var iso=ISO2_MAP[gprName];
+  ['mc-gdp','mc-cpi','mc-unemp','mc-rate'].forEach(function(id){document.getElementById(id).textContent='\u2026'});
+  if(!iso)return;
+  var indicators=[
+    {id:'mc-gdp',code:'NY.GDP.MKTP.KD.ZG',suffix:'%'},
+    {id:'mc-cpi',code:'FP.CPI.TOTL.ZG',suffix:'%'},
+    {id:'mc-unemp',code:'SL.UEM.TOTL.ZS',suffix:'%'},
+    {id:'mc-rate',code:'FR.INR.RINR',suffix:'%'}
+  ];
+  indicators.forEach(function(ind){
+    fetch('https://api.worldbank.org/v2/country/'+iso+'/indicator/'+ind.code+'?format=json&per_page=1&mrv=1')
+      .then(function(r){return r.json()})
+      .then(function(d){
+        var el=document.getElementById(ind.id);
+        if(d&&d[1]&&d[1][0]&&d[1][0].value!=null){
+          el.textContent=d[1][0].value.toFixed(1)+ind.suffix;
+          el.style.color=ind.id==='mc-gdp'?(d[1][0].value>=0?'var(--grn)':'var(--red)'):
+                         ind.id==='mc-cpi'?(d[1][0].value>5?'var(--red)':d[1][0].value>3?'var(--amb)':'var(--grn)'):
+                         ind.id==='mc-unemp'?(d[1][0].value>10?'var(--red)':d[1][0].value>6?'var(--amb)':'var(--grn)'):'var(--white)';
+        }else{el.textContent='\u2014';el.style.color='var(--gray2)'}
+      }).catch(function(){document.getElementById(ind.id).textContent='\u2014'});
+  });
+}
+
 function renderAll(){renderCards();renderWorldMap();renderHeatmap();renderMonthlyChart();renderDailyChart();renderRisks()}
 
 function renderCards(){
@@ -362,6 +423,7 @@ function selectCountry(key){
   document.getElementById('cp-bar-init').style.width=Math.round((c.initiator||0)/maxBar*80)+'px';
   document.getElementById('cp-bar-resp').style.width=Math.round((c.respondent||0)/maxBar*80)+'px';
   document.getElementById('cp-bar-spill').style.width=Math.round((c.spillover||0)/maxBar*80)+'px';
+  fetchMacro(key);
   panel.classList.add('open');
   if(_countryChart){_countryChart.destroy();_countryChart=null}
   var s=c.series;
