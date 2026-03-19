@@ -30,6 +30,9 @@ main{padding:0 48px 64px}
 .data-table th{padding:8px 6px;font-weight:400;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd2)}
 .data-table td{padding:8px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
 .data-table tr:hover td{background:var(--surf2)}
+.up-sort-btn{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd2);color:var(--gray2);cursor:pointer;transition:all .2s}
+.up-sort-btn:hover{border-color:var(--gray);color:var(--gray)}
+.up-sort-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
 .badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block}
 .badge.grn{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
 .badge.red{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
@@ -99,7 +102,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
     <div class="status-card neut" id="sc-sig"><div class="sc-label">Active Signals</div><div class="sc-val" id="sc-sig-val">&#8212;</div><div class="sc-sub"><span class="sc-note">PEAD setups</span></div></div>
     <div class="status-card neut" id="sc-surp"><div class="sc-label">Avg Surprise %</div><div class="sc-val" id="sc-surp-val">&#8212;</div><div class="sc-sub"><span class="sc-note">positive surprises</span></div></div>
     <div class="status-card neut" id="sc-spx"><div class="sc-label">SPX Trend</div><div class="sc-val" id="sc-spx-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-spx-chg">&#8212;</span><span class="sc-note">vs SMA 10W</span></div></div>
-    <div class="status-card neut" id="sc-up"><div class="sc-label">Upcoming This Week</div><div class="sc-val" id="sc-up-val">&#8212;</div><div class="sc-sub"><span class="sc-note">earnings reports</span></div></div>
+    <div class="status-card neut" id="sc-up"><div class="sc-label">Upcoming Earnings</div><div class="sc-val" id="sc-up-val">&#8212;</div><div class="sc-sub"><span class="sc-note">earnings reports</span></div></div>
   </div>
 
   <!-- PEAD SIGNALS -->
@@ -110,7 +113,11 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
   <!-- UPCOMING EARNINGS -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Upcoming Earnings</div><div class="ch-sub">Next Week &#183; NYSE &amp; NASDAQ &#183; 10B-200B Market Cap &#183; Finviz</div></div></div>
+    <div class="chart-header"><div><div class="ch-title">Upcoming Earnings</div><div class="ch-sub">This &amp; Next Week &#183; NYSE &amp; NASDAQ &#183; $10B+ Market Cap</div></div>
+    <div style="display:flex;gap:4px" id="up-sort-bar">
+      <button class="up-sort-btn active" data-sort="date" onclick="sortUpcoming('date')">BY DATE</button>
+      <button class="up-sort-btn" data-sort="mcap" onclick="sortUpcoming('mcap')">BY MARKET CAP</button>
+    </div></div>
     <div class="tbl-wrap"><table class="data-table" id="upcoming-table"><tr><td style="color:var(--gray2)">Loading calendar...</td></tr></table></div>
   </div>
 
@@ -227,10 +234,18 @@ function renderSignals(){
   _openDetail=null;
 }
 
+var _upSort='date';
+function sortUpcoming(mode){
+  _upSort=mode;
+  document.querySelectorAll('.up-sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});
+  renderUpcoming();
+}
 function renderUpcoming(){
-  var up=D.upcoming||[];
+  var up=(D.upcoming||[]).slice();
   var el=document.getElementById('upcoming-table');
   if(!up.length){el.innerHTML='<tr><td style="color:var(--gray2)">No upcoming earnings matching filters.</td></tr>';return}
+  if(_upSort==='mcap'){up.sort(function(a,b){return(b.marketCap||0)-(a.marketCap||0)})}
+  else{up.sort(function(a,b){var da=a.date||'zzzz',db=b.date||'zzzz';return da<db?-1:da>db?1:(b.marketCap||0)-(a.marketCap||0)})}
   var mt=D.marketTrend||{};
   var html='<thead><tr><th>Date</th><th>Symbol</th><th>Company</th><th>Market Cap</th><th>Sector / ETF</th></tr></thead><tbody>';
   up.forEach(function(u){
