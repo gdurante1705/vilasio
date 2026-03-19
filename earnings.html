@@ -275,7 +275,7 @@ function refreshData(){
 
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(function(e){obs.observe(e)});
-(function(){fetch(API+'/api/earnings').then(function(r){return r.json()}).then(function(d){if(d.status!=='ok'){console.error('API error:',d.message);return}D=d;renderAll()}).catch(function(e){console.error('Earnings fetch failed:',e)})})();
+(function(){fetch(API+'/api/earnings').then(function(r){return r.json()}).then(function(d){if(d.status!=='ok'){console.error('API error:',d.message);return}D=d;renderAll();if(!(d.upcoming&&d.upcoming.length)){console.log('Upcoming empty, retrying with /refresh...');fetch(API+'/api/earnings/refresh').then(function(r2){return r2.json()}).then(function(d2){if(d2.status==='ok'&&d2.upcoming&&d2.upcoming.length){D=d2;renderAll()}}).catch(function(){})}}).catch(function(e){console.error('Earnings fetch failed:',e)})})();
 </script>
 </body>
 </html>
