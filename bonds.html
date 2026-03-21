@@ -511,57 +511,44 @@ var fedViewCount=8;
 function renderFedTimeline(){
   var f=D.fedFunds,el=document.getElementById("fed-table-body");
   if(!f||!f.dates||!f.upper)return;
-  /* Build rate lookup from fed funds data */
-  var rateLookup={};
-  for(var i=0;i<f.dates.length;i++){
-    if(f.upper[i]!=null&&f.lower[i]!=null) rateLookup[f.dates[i]]={upper:f.upper[i],lower:f.lower[i],effective:f.effective[i]};
-  }
-  /* Find rate on or just before a given date */
-  function getRateAt(dt){
-    if(rateLookup[dt]) return rateLookup[dt];
-    /* Walk backwards to find nearest prior date */
-    var sorted=f.dates.filter(function(d){return d<=dt&&rateLookup[d]});
-    if(sorted.length>0) return rateLookup[sorted[sorted.length-1]];
-    return null;
-  }
-  /* Collect ALL FOMC meeting dates (from backend fomc data + historical from rate changes) */
-  var fomcDates=[];
-  /* Add 2025 and earlier FOMC dates by detecting rate change dates */
-  var seenDates={};
-  var prevUpper=null;
+  /* Step 1: detect all rate changes with NEW rate (post-decision) */
+  var changes=[];
+  var prevU=null,prevL=null;
   for(var i=0;i<f.dates.length;i++){
     var u=f.upper[i],lo=f.lower[i];
     if(u==null||lo==null)continue;
-    if(prevUpper!=null&&(u!==prevUpper)){
-      fomcDates.push(f.dates[i]);
-      seenDates[f.dates[i]]=true;
+    if(prevU!=null&&u!==prevU){
+      var bps=Math.round((u-prevU)*100);
+      changes.push({date:f.dates[i],upper:u,lower:lo,chgBps:bps,type:bps<0?"cut":"hike"});
     }
-    prevUpper=u;
+    prevU=u;prevL=lo;
   }
-  /* Add 2026 FOMC dates from backend */
+  /* Step 2: add 2026 FOMC HOLD dates */
   if(D.fomc){
     var today=new Date().toISOString().slice(0,10);
+    var changeDates={};changes.forEach(function(c){changeDates[c.date]=true});
+    /* Get current rate (latest known) */
+    var curU=null,curL=null;
+    for(var j=f.dates.length-1;j>=0;j--){
+      if(f.upper[j]!=null){curU=f.upper[j];curL=f.lower[j];break}
+    }
     for(var k=0;k<D.fomc.length;k++){
       var fd=D.fomc[k].date;
-      if(fd<=today&&!seenDates[fd]){fomcDates.push(fd);seenDates[fd]=true}
+      if(fd>today)continue;
+      /* Check if this FOMC date already has a rate change nearby (±2 days) */
+      var hasChange=false;
+      for(var c=0;c<changes.length;c++){
+        var diff=Math.abs((new Date(changes[c].date)-new Date(fd))/(86400000));
+        if(diff<=2){hasChange=true;break}
+      }
+      if(!hasChange){
+        changes.push({date:fd,upper:curU,lower:curL,chgBps:0,type:"hold"});
+      }
     }
   }
-  /* Sort all dates and build decisions */
-  fomcDates.sort();
-  var decisions=[];
-  var prevRate=null;
-  for(var m=0;m<fomcDates.length;m++){
-    var dt=fomcDates[m];
-    var rate=getRateAt(dt);
-    if(!rate)continue;
-    var chgBps=0,type="hold";
-    if(prevRate){
-      chgBps=Math.round((rate.upper-prevRate.upper)*100);
-      type=chgBps<0?"cut":chgBps>0?"hike":"hold";
-    }
-    decisions.push({date:dt,upper:rate.upper,lower:rate.lower,effective:rate.effective,chgBps:chgBps,type:type});
-    prevRate=rate;
-  }
+  /* Sort by date */
+  changes.sort(function(a,b){return a.date<b.date?-1:1});
+  var decisions=changes;
   /* Reverse so most recent is first */
   decisions.reverse();
   /* Show last 8 */
