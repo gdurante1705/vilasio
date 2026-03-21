@@ -211,7 +211,7 @@ main{padding:0 48px 64px 120px}
 .rel-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);width:40px;flex-shrink:0}
 .rel-val{font-family:"Roboto Slab",serif;font-size:13px;font-weight:400;min-width:80px}
 .rel-bar-center-track{flex:1;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;position:relative;overflow:hidden}
-.rel-bar-mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1)}
+.rel-bar-mid{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:rgba(255,255,255,0.35);border-radius:1px;z-index:1}
 .rel-bar-fill{position:absolute;top:0;height:100%;border-radius:3px;transition:width .4s ease,left .4s ease}
 .rel-delta{font-family:"DM Mono",monospace;font-size:11px;min-width:70px;text-align:right}
 .rel-delta.up{color:var(--grn)}.rel-delta.dn{color:var(--red)}.rel-delta.flat{color:var(--t2)}
@@ -398,7 +398,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="release-half">
       <div class="bento-pair">
         <div class="bento-card"><div class="bento-label" style="color:var(--bp)">BP NET POSITION</div><div class="bento-val" id="rel-bp-net">&#8212;</div><span style="display:none" id="rel-bp-long"></span><span style="display:none" id="rel-bp-short"></span></div>
-        <div class="bento-card"><div class="bento-label">W/W CHANGE BP</div><div class="bento-val" id="rel-bp-net-chg">&#8212;</div><span style="display:none" id="rel-bp-long-chg"></span><span style="display:none" id="rel-bp-short-chg"></span></div>
+        <div class="bento-card"><div class="bento-label">WEEKLY CHANGE BP</div><div class="bento-val" id="rel-bp-net-chg">&#8212;</div><span style="display:none" id="rel-bp-long-chg"></span><span style="display:none" id="rel-bp-short-chg"></span></div>
       </div>
       <div class="rel-col-card">
         <div class="rel-col-label" style="color:var(--bp)">Non-Commercial &#8212; Big Players</div>
@@ -410,7 +410,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="release-half">
       <div class="bento-pair">
         <div class="bento-card"><div class="bento-label" style="color:var(--gold)">DL NET POSITION</div><div class="bento-val" id="rel-dl-net">&#8212;</div><span style="display:none" id="rel-dl-long"></span><span style="display:none" id="rel-dl-short"></span></div>
-        <div class="bento-card"><div class="bento-label">W/W CHANGE DL</div><div class="bento-val" id="rel-dl-net-chg">&#8212;</div><span style="display:none" id="rel-dl-long-chg"></span><span style="display:none" id="rel-dl-short-chg"></span></div>
+        <div class="bento-card"><div class="bento-label">WEEKLY CHANGE DL</div><div class="bento-val" id="rel-dl-net-chg">&#8212;</div><span style="display:none" id="rel-dl-long-chg"></span><span style="display:none" id="rel-dl-short-chg"></span></div>
       </div>
       <div class="rel-col-card">
         <div class="rel-col-label" style="color:var(--gold)">Commercial &#8212; Dealers</div>
