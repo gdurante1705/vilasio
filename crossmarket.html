@@ -686,11 +686,11 @@ function renderVixSpx(){
   /* Dual axis chart: SPX + VIX inverted */
   if(vs.dates&&vs.dates.length){
     var ds=[
-      {label:"S&P 500",data:vs.spx,borderColor:"var(--white)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"ySpx",spanGaps:true},
-      {label:"VIX",data:vs.vix,borderColor:"var(--red)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"yVix",spanGaps:true}
+      {label:"S&P 500",data:vs.spx,borderColor:"#f0f0f0",backgroundColor:"transparent",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"ySpx",spanGaps:true},
+      {label:"VIX",data:vs.vix,borderColor:"#ef4444",backgroundColor:"transparent",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yVix",spanGaps:true}
     ];
     if(charts.vixSpx)charts.vixSpx.destroy();
-    charts.vixSpx=new Chart(document.getElementById("vixSpxChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),ySpx:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}},yVix:{position:"right",reverse:true,grid:{display:false},ticks:{color:"var(--red)",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}}}}});
+    charts.vixSpx=new Chart(document.getElementById("vixSpxChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),ySpx:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#f0f0f0",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}},yVix:{position:"right",reverse:true,grid:{display:false},ticks:{color:"#ef4444",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}}}}});
   }
   /* Correlation chart */
   if(vs.dates&&vs.correlation30d&&vs.correlation30d.length){
