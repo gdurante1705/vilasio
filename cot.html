@@ -82,7 +82,7 @@ nav{
   flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
 }
 .nav-mobile-menu.open{display:flex}
-.scroll-top{position:fixed;bottom:24px;right:24px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
+.scroll-top{position:fixed;bottom:24px;right:12px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
 .scroll-top.show{opacity:1;pointer-events:auto}
 .scroll-top:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
 .scroll-top svg{width:16px;height:16px;stroke:var(--t1);fill:none;stroke-width:2}
@@ -90,7 +90,7 @@ nav{
 .nav-mobile-menu a:hover{color:var(--white)}
 
 /* ─── HERO ─── */
-.hero{padding:88px 48px 24px 120px}
+.hero{padding:88px 48px 24px 128px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
 .pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
@@ -111,8 +111,10 @@ nav{
 .hm-content.collapsed{max-height:0}
 /* Sector selector */
 .hm-sector-bar{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.hm-sector-select{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);background:none;border:1px solid var(--card-border);border-radius:100px;padding:6px 14px;cursor:pointer;transition:all .2s;appearance:none;-webkit-appearance:none}
-.hm-sector-select:hover{border-color:var(--card-border-hover);color:var(--white)}
+.hm-sector-wrap{position:relative;display:inline-block}
+.hm-sector-select{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--white);background:var(--card);border:1px solid var(--card-border);border-radius:100px;padding:7px 32px 7px 14px;cursor:pointer;transition:all .2s;appearance:none;-webkit-appearance:none}
+.hm-sector-select:hover,.hm-sector-select:focus{border-color:var(--gold);outline:none}
+.hm-sector-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:8px;color:var(--gold)}
 .hm-sector-select option{background:var(--bg);color:var(--white);font-family:"DM Mono",monospace;font-size:10px}
 .hm-group{display:none}.hm-group.visible{display:block}
 .hm-group-label{display:none}
@@ -185,7 +187,7 @@ nav{
 .flow-foot-dot{width:7px;height:3px;border-radius:1px}
 
 /* ─── DETAIL BENTO GRID ─── */
-main{padding:0 48px 64px 120px}
+main{padding:0 48px 64px 128px}
 .detail-section{margin-top:24px}
 .det-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
 .det-market{}
@@ -309,21 +311,21 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 
 /* ─── STICKY SIDEBAR ─── */
-.sticky-bar{position:fixed;top:60px;left:0;bottom:0;z-index:98;width:72px;background:rgba(12,12,16,0.97);backdrop-filter:blur(16px);border-right:1px solid var(--brd);display:flex;flex-direction:column;align-items:center;padding:0}
+.sticky-bar{position:fixed;top:60px;left:0;bottom:0;z-index:98;width:80px;background:rgba(12,12,16,0.97);backdrop-filter:blur(16px);border-right:1px solid var(--brd);display:flex;flex-direction:column;align-items:center;padding:0}
 .sticky-arrow{width:100%;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t1);transition:color .2s;flex-shrink:0;background:rgba(12,12,16,0.98)}
 .sticky-arrow.top{border-bottom:1px solid var(--brd)}
 .sticky-arrow.bot{border-top:1px solid var(--brd)}
 .sticky-arrow:hover{color:var(--white)}
 .sticky-scroll{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1;scrollbar-width:none;-ms-overflow-style:none;padding:4px 5px;width:100%;align-items:center}
 .sticky-scroll::-webkit-scrollbar{display:none}
-.sticky-pill{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:0.5px;padding:5px 2px;background:var(--surf);border:1px solid var(--brd);color:var(--white);cursor:pointer;white-space:nowrap;transition:all .2s;width:62px;text-align:center;line-height:1.2;border-radius:6px}
+.sticky-pill{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:0.5px;padding:6px 4px;background:var(--surf);border:1px solid var(--brd);color:var(--white);cursor:pointer;white-space:nowrap;transition:all .2s;width:70px;text-align:center;line-height:1.3;border-radius:8px}
 .sticky-pill:hover{color:var(--white);border-color:var(--card-border-hover)}
 .sticky-pill.active{background:var(--white);color:var(--bg);border-color:var(--white)}
-.sticky-pill .sp-sym{display:block;font-weight:500;font-size:9px}
-.sticky-pill .sp-chg{display:block;font-size:5px;margin-top:1px}
+.sticky-pill .sp-sym{display:block;font-weight:500;font-size:10px}
+.sticky-pill .sp-chg{display:block;font-size:7px;margin-top:2px}
 .sticky-pill .sp-chg.up{color:var(--grn)}.sticky-pill .sp-chg.dn{color:var(--red)}
 .sticky-pill.active .sp-chg.up{color:#166534}.sticky-pill.active .sp-chg.dn{color:#991b1b}
-.sticky-cat-sep{font-family:"DM Mono",monospace;font-size:5px;letter-spacing:1px;text-transform:uppercase;color:var(--t1);padding:3px 0 1px;width:62px;text-align:center;border-top:1px solid var(--brd);margin-top:2px}
+.sticky-cat-sep{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);padding:5px 0 2px;width:70px;text-align:center;border-top:1px solid var(--brd);margin-top:3px}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:960px){
@@ -384,7 +386,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div>
 
 <!-- HERO -->
-<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div style="display:flex;align-items:center;gap:8px"><div class="update-badge" id="update-badge">REPORT: loading...</div><button id="cot-refresh-btn" onclick="refreshCOT()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px">REFRESH</button></div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div class="hm-sector-bar"><select class="hm-sector-select" id="hm-sector-select" onchange="switchSector(this.value)"></select></div><div id="heatmap-area"></div></div></section>
+<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div style="display:flex;align-items:center;gap:8px"><div class="update-badge" id="update-badge">REPORT: loading...</div><button id="cot-refresh-btn" onclick="refreshCOT()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px">REFRESH</button></div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div class="hm-sector-bar"><div class="hm-sector-wrap"><select class="hm-sector-select" id="hm-sector-select" onchange="switchSector(this.value)"></select><span class="hm-sector-arrow">&#9660;</span></div></div><div id="heatmap-area"></div></div></section>
 <main>
 
 <!-- DETAIL SECTION — Bento Grid -->
