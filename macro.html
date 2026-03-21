@@ -151,13 +151,6 @@ main{padding:0 48px 64px}
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .dual-row .chart-section{margin-bottom:0}
 
-/* ─── REGIME CARD ─── */
-.regime-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;position:relative;overflow:hidden}
-.regime-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.regime-phase{padding:16px;border:1px solid var(--brd);border-radius:var(--r-xs);text-align:center;opacity:0.3;transition:all .3s}
-.regime-phase.active{opacity:1;border-color:var(--gold);background:rgba(200,168,75,0.04)}
-.rp-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;margin-bottom:6px}
-.rp-desc{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);line-height:1.5}
 
 /* ─── MACRO REGIME SECTION ─── */
 .regime-section{display:grid;grid-template-columns:280px 1fr;gap:16px;margin-bottom:16px}
@@ -241,7 +234,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   main{padding:0 16px 40px}
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
-  .regime-card{grid-template-columns:1fr 1fr}
+
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
@@ -320,14 +313,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inflation Rank</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Unemployment Rank</div><div class="legend-item"><span class="legend-dot dashed"></span> 20 / 80 Thresholds</div></div>
-  </div>
-
-  <!-- 4-REGIME MODEL -->
-  <div class="regime-card reveal" id="regime-grid">
-    <div class="regime-phase" id="rp-expansion"><div class="rp-name" style="color:var(--grn)">Expansion</div><div class="rp-desc">Growth &#8593; Inflation &#8593;<br>Equities, Commodities</div></div>
-    <div class="regime-phase" id="rp-reflation"><div class="rp-name" style="color:var(--cyan)">Reflation</div><div class="rp-desc">Growth &#8593; Inflation &#8595;<br>Tech, Growth, Bonds</div></div>
-    <div class="regime-phase" id="rp-stagnation"><div class="rp-name" style="color:var(--amb)">Stagnation</div><div class="rp-desc">Growth &#8595; Inflation &#8593;<br>Gold, Energy, Commodities</div></div>
-    <div class="regime-phase" id="rp-slowdown"><div class="rp-name" style="color:var(--red)">Slowdown</div><div class="rp-desc">Growth &#8595; Inflation &#8595;<br>Bonds, Cash, Defensive</div></div>
   </div>
 
   <!-- MACRO REGIME QUADRANT -->
@@ -481,7 +466,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pOpts(cb){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:cb||function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderMorpheus();renderRegime();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO()}
+function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO()}
 
 function renderCards(){
   var inf=D.inflation.cpiYoY,n=inf.values.length;if(n<2)return;
@@ -530,13 +515,6 @@ function renderMorpheus(){
     {data:Array(len).fill(20),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:Array(len).fill(50),borderColor:"rgba(255,255,255,0.10)",borderWidth:1,borderDash:[2,4],pointRadius:0,fill:false}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{min:0,max:100,ticks:Object.assign({},axO.ticks,{stepSize:20})})}}});
-}
-
-function renderRegime(){
-  var rg=D.regime.toLowerCase();
-  ['expansion','reflation','stagnation','slowdown'].forEach(function(p){
-    var el=document.getElementById('rp-'+p);if(el)el.classList.toggle('active',p===rg);
-  });
 }
 
 var regimeColors={EXPANSION:'#22c55e',REFLATION:'#c8a84b',STAGNATION:'#ef4444',SLOWDOWN:'#5b8af0'};
