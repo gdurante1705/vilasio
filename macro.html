@@ -192,13 +192,16 @@ main{padding:0 48px 64px}
   .regime-q-cell{min-height:80px;padding:14px 10px}
 }
 
-/* ─── EXPLAIN SECTION ─── */
-.explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden}
-.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
-.explain-text{font-size:12px;color:var(--t1);line-height:1.8}
-.explain-text strong{color:var(--white);font-weight:500}
-.explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -313,6 +316,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inflation Rank</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Unemployment Rank</div><div class="legend-item"><span class="legend-dot dashed"></span> 20 / 80 Thresholds</div></div>
+    <div style="padding:0 28px 16px">
+      <div class="chart-explain">
+        <button class="chart-explain-toggle" onclick="togExplain(this)">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+          How to read this chart
+        </button>
+        <div class="chart-explain-content">
+          <p>The <strong>Morpheus chart</strong> shows the inflation-unemployment trade-off (Phillips Curve). Percentile rankings over 12-month and 52-month windows reveal where current conditions sit relative to history. When inflation is ranked high and unemployment ranked low, expect hawkish Fed policy (rate hikes). When inflation is ranked low and unemployment ranked high, expect dovish policy (rate cuts). The crossover points often signal regime changes.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- MACRO REGIME QUADRANT -->
@@ -354,6 +368,15 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Stagnation</div>
       <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> Slowdown</div>
     </div>
+    <div class="chart-explain">
+      <button class="chart-explain-toggle" onclick="togExplain(this)">
+        <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+        How to read this chart
+      </button>
+      <div class="chart-explain-content">
+        <p>The macro regime is determined by two forces: <strong>growth</strong> (measured by NFP employment data) and <strong>inflation</strong> (CPI YoY). In <strong>Expansion</strong> (growth up, inflation up), equities and commodities perform best. In <strong>Reflation</strong> (growth up, inflation down), tech, growth stocks and bonds outperform. In <strong>Stagnation</strong> (growth down, inflation up), gold, energy and cash are defensive. In <strong>Slowdown</strong> (growth down, inflation down), bonds and defensive sectors lead. The timeline shows how the regime has shifted over the past 36 months.</p>
+      </div>
+    </div>
   </div>
 
   <!-- INFLATION MONITOR -->
@@ -371,6 +394,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="legend-item" style="cursor:pointer" onclick="togInf('ppi')" id="leg-ppi"><span class="legend-dot" style="background:var(--violet)"></span> PPI</div>
       <div class="legend-item"><span class="legend-dot dashed"></span> 2% Target</div>
     </div>
+    <div style="padding:0 28px 16px">
+      <div class="chart-explain">
+        <button class="chart-explain-toggle" onclick="togExplain(this)">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+          How to read this chart
+        </button>
+        <div class="chart-explain-content">
+          <p><strong>CPI</strong> measures price changes in a fixed basket of consumer goods. <strong>Core CPI</strong> excludes food and energy (volatile items) for a cleaner trend. <strong>PCE</strong> is the Fed's preferred inflation gauge &#8212; it uses variable weighting and broader coverage. When CPI and PCE diverge, PCE matters more for Fed policy. <strong>PPI</strong> measures producer prices &#8212; it's a leading indicator since producer cost increases eventually pass through to consumers.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- LABOR MARKET -->
@@ -381,6 +415,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
         <div class="ch-toggles"><button class="ch-tog" data-g="ur" data-rw="6" onclick="setR('ur',6)">6M</button><button class="ch-tog" data-g="ur" data-rw="12" onclick="setR('ur',12)">1Y</button><button class="ch-tog" data-g="ur" data-rw="36" onclick="setR('ur',36)">3Y</button><button class="ch-tog active" data-g="ur" data-rw="60" onclick="setR('ur',60)">5Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="urChart"></canvas></div></div>
+      <div style="padding:0 20px 12px">
+        <div class="chart-explain">
+          <button class="chart-explain-toggle" onclick="togExplain(this)">
+            <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+            How to read this chart
+          </button>
+          <div class="chart-explain-content">
+            <p><strong>NFP</strong> (Non-Farm Payrolls) shows monthly job creation &#8212; positive NFP means economic growth. <strong>Unemployment Rate</strong> is a lagging indicator &#8212; it confirms what has already happened. Initial Jobless Claims (ICSA) is a leading indicator &#8212; rising claims signal economic deterioration before other data catches up. JOLTS (Job Openings) measures labor demand &#8212; falling openings precede rising unemployment. When the focus is on inflation, watch CPI/PCE. When the focus shifts to employment, these labor metrics become the primary market movers.</p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="chart-section">
       <div class="chart-header">
@@ -388,6 +433,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
         <div class="ch-toggles"><button class="ch-tog" data-g="nfp" data-rw="6" onclick="setR('nfp',6)">6M</button><button class="ch-tog" data-g="nfp" data-rw="12" onclick="setR('nfp',12)">1Y</button><button class="ch-tog" data-g="nfp" data-rw="24" onclick="setR('nfp',24)">2Y</button><button class="ch-tog active" data-g="nfp" data-rw="36" onclick="setR('nfp',36)">3Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="nfpChart"></canvas></div></div>
+      <div style="padding:0 20px 12px">
+        <div class="chart-explain">
+          <button class="chart-explain-toggle" onclick="togExplain(this)">
+            <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+            How to read this chart
+          </button>
+          <div class="chart-explain-content">
+            <p><strong>NFP</strong> (Non-Farm Payrolls) shows monthly job creation &#8212; positive NFP means economic growth. <strong>Unemployment Rate</strong> is a lagging indicator &#8212; it confirms what has already happened. Initial Jobless Claims (ICSA) is a leading indicator &#8212; rising claims signal economic deterioration before other data catches up. JOLTS (Job Openings) measures labor demand &#8212; falling openings precede rising unemployment. When the focus is on inflation, watch CPI/PCE. When the focus shifts to employment, these labor metrics become the primary market movers.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -398,6 +454,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
         <div class="ch-toggles"><button class="ch-tog" data-g="ic" data-rw="26" onclick="setR('ic',26)">6M</button><button class="ch-tog" data-g="ic" data-rw="52" onclick="setR('ic',52)">1Y</button><button class="ch-tog active" data-g="ic" data-rw="104" onclick="setR('ic',104)">2Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="icChart"></canvas></div></div>
+      <div style="padding:0 20px 12px">
+        <div class="chart-explain">
+          <button class="chart-explain-toggle" onclick="togExplain(this)">
+            <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+            How to read this chart
+          </button>
+          <div class="chart-explain-content">
+            <p><strong>NFP</strong> (Non-Farm Payrolls) shows monthly job creation &#8212; positive NFP means economic growth. <strong>Unemployment Rate</strong> is a lagging indicator &#8212; it confirms what has already happened. <strong>Initial Jobless Claims</strong> (ICSA) is a leading indicator &#8212; rising claims signal economic deterioration before other data catches up. <strong>JOLTS</strong> (Job Openings) measures labor demand &#8212; falling openings precede rising unemployment. When the focus is on inflation, watch CPI/PCE. When the focus shifts to employment, these labor metrics become the primary market movers.</p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="chart-section">
       <div class="chart-header">
@@ -405,20 +472,20 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
         <div class="ch-toggles"><button class="ch-tog" data-g="jo" data-rw="6" onclick="setR('jo',6)">6M</button><button class="ch-tog" data-g="jo" data-rw="12" onclick="setR('jo',12)">1Y</button><button class="ch-tog" data-g="jo" data-rw="24" onclick="setR('jo',24)">2Y</button><button class="ch-tog active" data-g="jo" data-rw="36" onclick="setR('jo',36)">3Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="joChart"></canvas></div></div>
+      <div style="padding:0 20px 12px">
+        <div class="chart-explain">
+          <button class="chart-explain-toggle" onclick="togExplain(this)">
+            <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+            How to read this chart
+          </button>
+          <div class="chart-explain-content">
+            <p><strong>NFP</strong> (Non-Farm Payrolls) shows monthly job creation &#8212; positive NFP means economic growth. <strong>Unemployment Rate</strong> is a lagging indicator &#8212; it confirms what has already happened. <strong>Initial Jobless Claims</strong> (ICSA) is a leading indicator &#8212; rising claims signal economic deterioration before other data catches up. <strong>JOLTS</strong> (Job Openings) measures labor demand &#8212; falling openings precede rising unemployment. When the focus is on inflation, watch CPI/PCE. When the focus shifts to employment, these labor metrics become the primary market movers.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- EXPLANATION -->
-  <div class="explain-section reveal">
-    <div class="explain-title">How to read the Macro Regime Dashboard</div>
-    <div class="explain-text">
-      The macro regime defines the <strong>directional bias</strong> before any technical setup. Understanding where we are in the economic cycle determines which asset classes to favor and which to avoid.<br><br>
-      <strong>Macro Regime Oscillator</strong> measures the trade-off between inflation and unemployment using percent ranks over 12 monthly releases. When <strong>Unemployment rank &gt;80 and Inflation rank &lt;20</strong>, a <strong>dovish switch</strong> is imminent &#8212; the Fed will cut rates, dollar weakens, equities rally. When <strong>Inflation rank &gt;80 and Unemployment rank &lt;20</strong>, a <strong>hawkish switch</strong> is coming &#8212; rates rise, dollar strengthens, growth stocks suffer.<br><br>
-      <strong>The 4-Regime Model</strong> classifies the cycle based on growth direction (NFP trend) and inflation direction (CPI YoY trend): <strong>Expansion</strong> (both rising &#8212; equities, commodities), <strong>Reflation</strong> (growth up, inflation down &#8212; tech, bonds), <strong>Stagnation</strong> (growth down, inflation up &#8212; gold, energy), <strong>Slowdown</strong> (both falling &#8212; bonds, cash, defensives).<br><br>
-      <strong>Inflation Monitor</strong> tracks CPI, Core CPI, PCE, Core PCE and PPI against the Fed's 2% target. Core PCE is the Fed's preferred measure. Readings above target with rising trend = hawkish pressure. Below target with falling trend = dovish space.<br><br>
-      <strong>Labor Market</strong> indicators confirm the growth side of the equation. Rising unemployment + falling NFP + rising jobless claims = deterioration. Strong NFP + low unemployment + falling claims = expansion. JOLTs openings measure labor demand &#8212; declining openings lead unemployment increases.
-    </div>
-  </div>
 </main>
 
 <!-- Scroll to top -->
@@ -448,6 +515,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36};

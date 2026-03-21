@@ -215,6 +215,17 @@ footer{
 .disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
 .disclaimer-bar p strong{color:var(--t2);font-weight:500}
 
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
+
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
@@ -297,6 +308,10 @@ footer{
     </div>
   </div>
   <div class="trend-strip" id="trend-strip"></div>
+  <div class="chart-explain" style="margin-top:8px">
+    <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+    <div class="chart-explain-content"><p>The market trend strip shows whether the S&amp;P 500 and major sector ETFs are above or below their <strong>10-period SMA</strong>. PEAD setups work best when the broader market trend is bullish (SPX above SMA on the weekly timeframe). When the market is bearish, avoid new PEAD entries &mdash; even strong earnings can't fight the macro tide. Exception: sector hype (AI, defense) can override this rule.</p></div>
+  </div>
 </section>
 
 <main style="padding:0 48px 64px">
@@ -324,6 +339,10 @@ footer{
           <div class="loading-text">Loading earnings calendar...</div>
         </div>
       </div>
+      <div class="chart-explain" style="padding:0 28px 12px">
+        <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+        <div class="chart-explain-content"><p>The earnings calendar shows large-cap companies reporting earnings in the next two weeks. Earnings season is one of the <strong>highest-volatility periods</strong> &mdash; individual stocks can move 5-15% on earnings surprises. The sector distribution helps identify concentrated exposure &mdash; if many tech companies report in the same week, expect heightened sector volatility.</p></div>
+      </div>
     </div>
   </div>
 
@@ -337,6 +356,10 @@ footer{
           <div class="section-sub">Post-earnings announcement drift &mdash; active setups</div>
         </div>
         <div class="section-count" id="signals-count">0 signals</div>
+      </div>
+      <div class="chart-explain" style="padding:0 0 12px">
+        <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+        <div class="chart-explain-content"><p><strong>Post-Earnings Announcement Drift</strong> (PEAD) is an anomaly where stocks continue drifting in the direction of the earnings surprise for weeks after the announcement. The scanner identifies bullish setups: positive EPS surprise + bullish earnings candle. Setup types: <strong>Breakout</strong> (small gap, trade above earnings high), <strong>Test</strong> (moderate gap, wait for retest), <strong>Zone Entry</strong> (large gap, wait for price to return to pre-gap zone). A setup is invalidated if price breaks below the earnings candle low at any point.</p></div>
       </div>
       <div id="signals-body">
         <div class="loading-state" id="signals-loading">
@@ -391,6 +414,7 @@ footer{
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API = "https://vilasio-cot-backend.onrender.com";
 var DATA = null;
 var currentView = 'upcoming';

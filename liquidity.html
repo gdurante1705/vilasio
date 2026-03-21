@@ -173,21 +173,16 @@ main{padding:0 48px 64px;position:relative;z-index:1}
 .section-bar::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .section-bar-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--t2)}
 
-/* ─── EXPLANATION ─── */
-.explain-section{
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r);
-  box-shadow:var(--card-shadow);
-  padding:32px 36px;
-  margin-bottom:12px;
-  position:relative;overflow:hidden;
-}
-.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:16px}
-.explain-text{font-size:12px;color:var(--t1);line-height:1.8}
-.explain-text strong{color:var(--white);font-weight:500}
-.explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
 
 /* ─── SCROLL REVEAL ─── */
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
@@ -313,6 +308,7 @@ footer{
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netLiqChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div><div class="legend-item"><span class="legend-dot dashed"></span> S&P 500</div></div>
+    <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p><strong>Net Liquidity = WALCL - TGA - RRP.</strong> This is the actual liquidity available to the financial system after accounting for the Treasury's cash position and the Fed's reverse repo operations. Net Liquidity is considered the single most important driver of equity markets since 2020. When net liquidity rises, risk assets tend to rally. When it falls, expect headwinds.</p></div></div></div>
   </div>
 
   <!-- COMPONENTS: WALCL / TGA / RRP — shared range selector -->
@@ -324,10 +320,12 @@ footer{
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="walclChart"></canvas></div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Fed balance sheet represents total assets held by the Federal Reserve. During <strong>QE</strong> (Quantitative Easing), the Fed buys Treasury bonds from banks, creating new bank reserves and expanding the balance sheet. This excess liquidity flows into risk assets. During <strong>QT</strong> (Quantitative Tightening), the reverse happens &#8212; liquidity drains from the system. The correlation between WALCL and equity markets is historically very strong.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="rrp2Chart"></canvas></div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Reverse Repo Facility allows banks and money market funds to park excess cash at the Fed overnight in exchange for Treasury securities. High RRP usage means excess liquidity is sitting idle at the Fed instead of flowing into markets. As RRP declines, that liquidity re-enters the financial system &#8212; <strong>bullish for risk assets</strong>.</p></div></div></div>
     </div>
   </div>
 
@@ -340,6 +338,7 @@ footer{
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="bsChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> Treasury</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> MBS</div><div class="legend-item"><span class="legend-dot" style="background:var(--t2)"></span> Other</div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Treasury securities held by the Fed represent the core of QE/QT operations. When the Fed buys Treasuries, it supports bond prices and suppresses yields. When it sells or lets them mature without reinvesting (QT), Treasury supply increases, putting <strong>upward pressure on yields</strong>.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
@@ -365,6 +364,7 @@ footer{
         </div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="resChart"></canvas></div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Bank reserves are deposits that commercial banks hold at the Federal Reserve. Higher reserves mean banks have more capacity to lend and take risk. When reserves fall below critical levels, <strong>funding stress can emerge</strong> &#8212; as seen in the September 2019 repo crisis. Monitoring reserves helps anticipate potential liquidity events.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
@@ -375,6 +375,7 @@ footer{
         </div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="tgaChart"></canvas></div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The TGA is the US Treasury's checking account at the Fed. When the Treasury issues new debt and accumulates cash, money flows from the banking system into the TGA &#8212; <strong>draining liquidity</strong>. When the Treasury spends that cash, liquidity flows back into the system. Large TGA drawdowns are bullish for risk assets.</p></div></div></div>
     </div>
   </div>
 
@@ -389,6 +390,7 @@ footer{
     </div>
     <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="m2Chart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:#06b6d4"></span> M2 Level (Bn)</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> M2 YoY Growth %</div></div>
+    <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>M1 includes cash, checking deposits, and other liquid deposits. M2 adds savings deposits, money market funds, and small time deposits. <strong>Expanding M2</strong> signals increasing money in circulation &#8212; inflationary and bullish for nominal asset prices. <strong>Contracting M2</strong> (rare) signals monetary tightening and is bearish.</p></div></div></div>
   </div>
 
   <!-- DEFICIT SPENDING -->
@@ -399,18 +401,7 @@ footer{
     </div>
     <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="defChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Surplus</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Deficit</div></div>
-  </div>
-
-  <!-- EXPLANATION -->
-  <div class="explain-section reveal">
-    <div class="explain-title">How to read the Liquidity Monitor</div>
-    <div class="explain-text">
-      <strong>Net Liquidity</strong> is the single most important macro variable for risk assets. It measures how much money is actually available in the financial system. The formula is simple: <code>Net Liquidity = WALCL &minus; TGA &minus; Reverse Repo</code>. Each component plays a distinct role in determining how much capital is circulating.<br><br>
-      <strong>WALCL</strong> (Fed Total Assets) is the source of liquidity &#8212; when the Fed buys bonds (QE), WALCL increases and liquidity rises. During QT, WALCL shrinks.<br><br>
-      <strong>TGA</strong> (Treasury General Account) is the government's checking account at the Fed. When TGA is high, cash is parked there instead of circulating &#8212; liquidity decreases. When TGA drains (government spending), liquidity is released into the system.<br><br>
-      <strong>Reverse Repo (ON RRP)</strong> is where institutions park excess cash overnight with the Fed. High RRP means cash sitting on the sidelines. As RRP declines, that cash re-enters markets.<br><br>
-      <strong>Key insight:</strong> S&P 500 and Net Liquidity are highly correlated over medium-term horizons. Divergences between the two often resolve with price catching up to liquidity. When Net Liquidity expands while S&P 500 lags &#8212; it tends to be a buying opportunity. When S&P 500 leads while liquidity contracts &#8212; caution is warranted.
-    </div>
+    <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The federal budget deficit represents government spending beyond tax revenue. Large deficits inject <strong>fiscal stimulus</strong> into the economy &#8212; bullish for growth and nominal GDP. However, they also increase Treasury supply, potentially pushing yields higher. The deficit is the fiscal equivalent of monetary QE.</p></div></div></div>
   </div>
 </main>
 
@@ -436,6 +427,8 @@ footer{
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
+
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null, showSP=1, charts={};
 

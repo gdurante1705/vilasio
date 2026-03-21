@@ -159,14 +159,16 @@ main{padding:0 48px 64px}
 .fomc-countdown.upcoming{color:var(--t2)}
 .fomc-countdown.past{color:var(--t3)}
 
-/* ─── EXPLANATION ─── */
-.explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:28px 32px;margin-bottom:12px;position:relative;overflow:hidden;transition:border-color .2s}
-.explain-section:hover{border-color:var(--card-border-hover)}
-.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
-.explain-text{font-size:12px;color:var(--t2);line-height:1.8}
-.explain-text strong{color:var(--white);font-weight:500}
-.explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -278,6 +280,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="yieldChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs2')" id="leg-2y"><span class="legend-dot" style="background:#f87171"></span> 2Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs5')" id="leg-5y"><span class="legend-dot" style="background:var(--bp)"></span> 5Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs10')" id="leg-10y"><span class="legend-dot" style="background:var(--gold)"></span> 10Y</div><div class="legend-item" style="cursor:pointer" onclick="togYld('dgs30')" id="leg-30y"><span class="legend-dot" style="background:var(--violet)"></span> 30Y</div></div>
+    <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The yield curve plots Treasury bond yields across different maturities. A <strong>normal curve</strong> slopes upward (longer maturity = higher yield). An <strong>inverted curve</strong> (short-term yields above long-term) has historically preceded every US recession. The steepness of the curve reflects market expectations for growth and inflation.</p></div></div></div>
   </div>
 
   <!-- 2Y-10Y SPREAD -->
@@ -288,6 +291,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="spreadChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Normal (positive)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inverted (negative)</div></div>
+    <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The difference between the 10-Year and 2-Year Treasury yields. When <strong>negative (inverted)</strong>, it signals that markets expect economic slowdown or recession. The curve typically un-inverts (steepens) just before the recession actually begins &#8212; the <strong>steepening after inversion</strong> is the danger signal, not the inversion itself.</p></div></div></div>
   </div>
 
   <!-- REAL YIELDS + BREAKEVEN -->
@@ -299,6 +303,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="realChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> 5Y Real</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y Real</div><div class="legend-item"><span class="legend-dot dashed"></span> Gold (inv. corr.)</div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Real yields are nominal yields minus expected inflation (measured by TIPS). <strong>Positive real yields</strong> mean bondholders earn above inflation &#8212; tightening financial conditions. <strong>Negative real yields</strong> mean cash is losing value, pushing investors into risk assets. Rising real yields are bearish for gold and growth stocks.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
@@ -307,6 +312,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="beChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> 5Y Breakeven</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 10Y Breakeven</div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Breakeven rates measure the market's inflation expectations (nominal yield minus TIPS yield). Rising breakevens signal markets expect higher inflation ahead. The Fed watches 5Y and 10Y breakevens closely &#8212; if they become <strong>"unanchored" above 3%</strong>, expect aggressive tightening.</p></div></div></div>
     </div>
   </div>
 
@@ -319,6 +325,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="creditChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> Investment Grade</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> High Yield</div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Credit spreads measure the premium investors demand over risk-free Treasuries. <strong>Investment Grade (IG)</strong> spreads reflect broad corporate credit risk. <strong>High Yield (HY)</strong> spreads reflect distressed/speculative credit risk. Widening spreads signal risk aversion and economic stress. Tightening spreads signal confidence. HY spreads above 500bps historically coincide with recessions.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
@@ -327,6 +334,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="ffChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> Effective</div><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Target Upper</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Target Lower</div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
     </div>
   </div>
 
@@ -336,18 +344,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="fomc-grid" id="fomc-grid"></div>
   </div>
 
-  <!-- EXPLANATION -->
-  <div class="explain-section reveal">
-    <div class="explain-title">How to read the Bond &amp; Yield Monitor</div>
-    <div class="explain-text">
-      The bond market is the <strong>absolute thermometer</strong> of the financial system. Yields anticipate rate decisions, reflect growth expectations, and signal risk appetite before equity markets react.<br><br>
-      <strong>Yield Curve</strong> shows the relationship between short-term and long-term rates. A <strong>normal curve</strong> (long rates above short rates) signals healthy growth expectations. An <strong>inverted curve</strong> (2Y above 10Y) has preceded every US recession since the 1970s. The <code>2Y-10Y spread</code> is the most watched inversion signal.<br><br>
-      <strong>Real Yields</strong> (TIPS) measure the return after inflation. They have a strong <strong>inverse correlation with Gold</strong> &#8212; when real yields fall, gold tends to rise as the opportunity cost of holding non-yielding assets drops.<br><br>
-      <strong>Credit Spreads</strong> measure the premium investors demand for corporate bonds over Treasuries. <strong>IG</strong> (Investment Grade) widening signals caution; <strong>HY</strong> (High Yield) spiking signals financial stress. Tight spreads = risk-on, wide spreads = risk-off.<br><br>
-      <strong>Fed Funds Rate</strong> is the overnight lending rate set by the Fed. The gap between the effective rate and the target range shows market stress. When effective drifts toward the upper bound, funding pressure is building.<br><br>
-      <strong>Key insight:</strong> when yields fall, the dollar tends to weaken and risk assets rise. When yields rise but the dollar falls simultaneously, it signals a <strong>credibility shock</strong> &#8212; markets losing confidence in the issuer rather than repricing growth.
-    </div>
-  </div>
 </main>
 
 <!-- FOOTER -->
@@ -374,6 +370,8 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
+
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 /* Daily data: 3M~65, 6M~130, 1Y~260, 2Y~520, 3Y~780 business days */

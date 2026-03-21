@@ -202,12 +202,16 @@ main{padding:0 48px 64px}
 .sort-btn:hover{border-color:var(--card-border-hover);color:var(--t1)}
 .sort-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
 
-/* ─── EXPLAIN SECTION ─── */
-.explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden}
-.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
-.explain-text{font-size:12px;color:var(--t1);line-height:1.8}
-.explain-text strong{color:var(--white);font-weight:400}
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -315,6 +319,13 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-header"><div><div class="ch-title">World Risk Map</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
     <div class="map-wrap"><svg id="world-map"></svg></div>
     <div class="map-tooltip" id="map-tooltip"><div class="tt-name"></div><div class="tt-val"></div></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>The map visualizes the <strong>AI-GPR (Geopolitical Risk) index</strong> by country. The GPR measures the intensity of geopolitical threats, tensions, and conflicts using AI analysis of news articles. Higher values (darker red) indicate elevated geopolitical risk.</p>
+        <p>Geopolitical crises create specific trading opportunities: <strong>defense stocks, gold, oil, and safe-haven currencies</strong> (USD, CHF, JPY) tend to rally during geopolitical escalations. The correlation between GPR spikes and commodity price shocks is historically significant.</p>
+      </div>
+    </div>
   </div>
 
   <!-- COUNTRY DETAIL PANEL -->
@@ -342,12 +353,26 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
       <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
     </div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>When you click a country, the detail panel shows its individual <strong>GPR trajectory</strong>, economic indicators (GDP, population, trade), and risk context. Countries with chronically high GPR (above 200) represent structural geopolitical risk zones.</p>
+        <p>For commodity traders: monitor GPR in major producing countries (<strong>Saudi Arabia, Russia, Iran</strong> for oil; <strong>Chile, Peru</strong> for copper; <strong>Ukraine</strong> for grain).</p>
+      </div>
+    </div>
   </div>
 
   <!-- COUNTRY HEATMAP (grid view) -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Country Risk Grid</div><div class="ch-sub">Top 50 Countries &#183; Alternative View</div></div></div>
     <div class="heat-grid" id="heat-grid"><div style="color:var(--t2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>The ranking of countries by GPR level identifies current <strong>geopolitical hotspots</strong>. Watch for: countries rapidly rising in the ranking (emerging crises), and countries at historically extreme levels (potential escalation or resolution).</p>
+        <p>Cross-reference with commodity exposure maps and <strong>COT positioning</strong> to identify trading opportunities.</p>
+      </div>
+    </div>
   </div>
 
   <!-- GPR MONTHLY CHART -->
@@ -365,12 +390,27 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> AI-GPR</div>
       <div class="legend-item"><span class="legend-dot" style="background:var(--cyan)"></span> Oil / Energy</div>
     </div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>The global GPR trend shows how worldwide geopolitical risk has evolved. Spikes correspond to major events: wars, terrorist attacks, sanctions, military escalations.</p>
+        <p>For traders, persistent elevated GPR creates a <strong>'risk premium'</strong> in commodities and FX. Sharp GPR spikes that quickly revert are trading opportunities (buy the fear). Sustained elevated GPR suggests <strong>structural regime change</strong> that affects long-term asset allocation.</p>
+        <p><strong>GPR-Oil</strong> specifically tracks geopolitical threats to oil supply and markets. Energy is the most geopolitically sensitive commodity. When GPR-Oil spikes, expect oil price volatility, energy sector outperformance, and potential inflationary pressure. For macro traders, GPR-Oil crossing above historical averages is a signal to <strong>overweight energy exposure</strong>.</p>
+      </div>
+    </div>
   </div>
 
   <!-- GPR DAILY ZOOM -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Daily GPR &#8212; Last 12 Months</div><div class="ch-sub">Daily Resolution &#183; AI-GPR Index</div></div></div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="dailyChart"></canvas></div></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>The event type decomposition shows which categories of geopolitical risk are driving the index: <strong>military threats, nuclear escalation, terrorism, trade wars, sanctions</strong>. Different event types affect different asset classes.</p>
+        <p>Military threats drive <strong>gold and defense stocks</strong>. Sanctions affect specific currencies and trade flows. Trade war escalation hits <strong>multinational equities and emerging markets</strong>.</p>
+      </div>
+    </div>
   </div>
 
   <!-- TOP RISKS TABLE -->
@@ -383,16 +423,12 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
     </div>
     <div class="tbl-wrap"><table class="data-table" id="risks-table"><tr><td style="color:var(--t2)">Loading risks...</td></tr></table></div>
-  </div>
-
-  <!-- HOW TO READ -->
-  <div class="explain-section reveal">
-    <div class="explain-title">How to read Geopolitical Risk</div>
-    <div class="explain-text">
-      The <strong>GPR Index</strong> counts the share of newspaper articles discussing geopolitical tensions, threats, and acts in major global publications. It is normalized so that <strong>100 = historical average</strong>.<br><br>
-      <strong>Risk Levels:</strong> <strong>Low</strong> (&lt;80) &#8212; calm period, risk-on favored. <strong>Elevated</strong> (80-120) &#8212; normal tensions, standard positioning. <strong>High</strong> (120-200) &#8212; significant stress, consider hedging. <strong>Extreme</strong> (&gt;200) &#8212; crisis-level, strong risk-off (gold, treasuries, USD, VIX up).<br><br>
-      <strong>Trading Implications:</strong> GPR spikes are correlated with equity drawdowns, gold rallies, and flight-to-safety in treasuries. A sustained GPR above 150 historically leads to 2-5% S&amp;P 500 underperformance over the following quarter.<br><br>
-      <strong>Country-Level:</strong> Country GPR measures how often a specific country appears in geopolitical risk articles. The <strong>Initiator</strong> role means the country is the source of tension; <strong>Respondent</strong> means it is the target; <strong>Spillover</strong> captures indirect exposure.
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>The ranking of countries by GPR level identifies current <strong>geopolitical hotspots</strong>. Watch for: countries rapidly rising in the ranking (emerging crises), and countries at historically extreme levels (potential escalation or resolution).</p>
+        <p>Cross-reference with commodity exposure maps and <strong>COT positioning</strong> to identify trading opportunities.</p>
+      </div>
     </div>
   </div>
 </main>
@@ -421,6 +457,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null;
 var _chart=null,_dailyChart=null,_countryChart=null;

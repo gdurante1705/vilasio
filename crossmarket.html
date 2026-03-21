@@ -151,12 +151,16 @@ main{padding:0 48px 64px}
 /* ─── DUAL ROW ─── */
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 
-/* ─── EXPLAIN SECTION ─── */
-.explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden}
-.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
-.explain-text{font-size:12px;color:var(--t1);line-height:1.8}
-.explain-text strong{color:var(--white);font-weight:500}
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -273,6 +277,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="csChart"></canvas></div></div>
     <div class="chart-legend" id="cs-legend"></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>Currency strength is calculated from the performance of each currency across multiple FX pairs. A <strong>strong USD</strong> (rising DXY) typically signals risk-off sentiment &mdash; it pressures commodities, emerging markets, and multinational earnings. A weakening USD is bullish for commodities and international equities. Watch for divergences: if USD strengthens while equities rally, the rally may be fragile.</p></div>
+    </div>
   </div>
 
   <!-- CORRELATION MATRIX -->
@@ -280,18 +288,30 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-header"><div><div class="ch-title">Correlation Matrix</div><div class="ch-sub">90-Day Rolling &#183; Daily Returns</div></div></div>
     <div class="corr-wrap"><table class="corr-table" id="corr-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
     <div class="corr-subtitle">Compared to previous 90-day window &#8212; arrows show direction of change</div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>The correlation matrix shows <strong>90-day rolling correlation</strong> between major asset classes (SPX, Gold, DXY, US10Y, Oil, EURUSD, BTC). Values near +1 mean assets move together, near -1 means they move inversely. Key relationships to watch: <strong>Gold-DXY</strong> (typically inverse), <strong>SPX-US10Y</strong> (varies by regime), <strong>Oil-SPX</strong> (positive in expansion). When normally inverse correlations break down (e.g., stocks and bonds falling together), it signals a regime shift.</p></div>
+    </div>
   </div>
 
   <!-- SECTOR ROTATION -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Sector Rotation Heatmap</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance %</div></div></div>
     <div class="corr-wrap"><table class="corr-table" id="sector-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>Sector performance reveals where institutional money is flowing within equities. In <strong>early expansion</strong>: Technology (XLK) and Consumer Discretionary (XLY) lead. In <strong>late expansion</strong>: Energy (XLE) and Industrials (XLI) lead. In <strong>contraction</strong>: Utilities (XLU), Healthcare (XLV), and Consumer Staples (XLP) outperform. The rotation pattern is one of the clearest signals of the economic cycle phase.</p></div>
+    </div>
   </div>
 
   <!-- COMMODITY DASHBOARD -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Commodity Dashboard</div><div class="ch-sub">Futures Performance %</div></div></div>
     <div class="corr-wrap"><table class="corr-table" id="commodity-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>Commodity prices reflect global supply-demand dynamics and inflation expectations. <strong>Gold</strong> rises during uncertainty and negative real yields. <strong>Oil</strong> correlates with economic growth and geopolitical risk. <strong>Copper</strong> (Dr. Copper) is a leading economic indicator &mdash; rising copper prices signal industrial expansion. Agricultural commodities are more seasonal and less correlated with the macro cycle.</p></div>
+    </div>
   </div>
 
   <!-- COINTEGRATION: METALS -->
@@ -309,6 +329,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="cmetChart"></canvas></div></div>
     <div id="cmet-alerts"></div>
     <div class="chart-legend" id="cmet-legend"></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>Cointegration measures long-term equilibrium relationships between assets. When cointegrated assets deviate from their historical relationship, they tend to revert &mdash; creating <strong>mean-reversion trading opportunities</strong>. Metals cluster: Gold leads, Silver follows. Divergence badges appear when an asset deviates &gt;1.5&#963; from the cluster average &mdash; strongest signals come above 2&#963;.</p></div>
+    </div>
   </div>
 
   <!-- COINTEGRATION: EQUITIES -->
@@ -326,6 +350,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="ceqChart"></canvas></div></div>
     <div id="ceq-alerts"></div>
     <div class="chart-legend" id="ceq-legend"></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>Cointegration measures long-term equilibrium relationships between assets. Equities cluster: S&amp;P 500, Nasdaq, and Russell tend to move together but <strong>divergences signal sector rotation</strong>. When one index diverges from the group, it either reverts (mean reversion trade) or leads the group in its direction (breakout trade).</p></div>
+    </div>
   </div>
 
   <!-- COINTEGRATION: CRYPTO -->
@@ -343,6 +371,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="ccrChart"></canvas></div></div>
     <div id="ccr-alerts"></div>
     <div class="chart-legend" id="ccr-legend"></div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>Cointegration measures long-term equilibrium relationships between assets. When cointegrated assets deviate from their historical relationship, they tend to revert &mdash; creating <strong>mean-reversion trading opportunities</strong>. Watch for altcoins diverging from Bitcoin &mdash; divergence badges appear when an asset deviates &gt;1.5&#963; from the cluster average.</p></div>
+    </div>
   </div>
 
   <!-- VALUE VS GROWTH -->
@@ -361,6 +393,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="legend-item" style="cursor:pointer" onclick="togVg('iwf')" id="leg-vg-iwf"><span class="legend-dot" style="background:var(--red)"></span> IWF (Growth)</div>
       <div class="legend-item" style="cursor:pointer" onclick="togVg('ratio')" id="leg-vg-ratio"><span class="legend-dot" style="background:var(--gold)"></span> Ratio IWD/IWF</div>
     </div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>The <strong>Value/Growth ratio</strong> (IWD/IWF) indicates market preference. Value outperforms in rising rate environments and during inflation. Growth outperforms when rates are low and liquidity abundant. A sustained shift from Growth to Value often signals a macro regime change &mdash; from accommodative to tightening monetary policy.</p></div>
+    </div>
   </div>
 
   <!-- VIX — S&P 500 CORRELATION -->
@@ -376,6 +412,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> S&amp;P 500</div>
       <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> VIX (inverted)</div>
     </div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>The <strong>VIX</strong> measures implied volatility of S&amp;P 500 options &mdash; it represents the market's fear gauge. VIX and SPX have a strong inverse correlation (typically -0.7 to -0.9). When VIX spikes above 30, markets are in panic &mdash; historically a contrarian buying opportunity. When VIX is below 15 (complacent), markets are vulnerable to shocks. The rolling 30-day correlation weakening (becoming less negative) can signal an unusual market regime.</p></div>
+    </div>
   </div>
 
   <!-- VIX-SPX CORRELATION CHART -->
@@ -388,19 +428,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- EXPLANATION -->
-  <div class="explain-section reveal">
-    <div class="explain-title">How to read the Cross-Market Dashboard</div>
-    <div class="explain-text">
-      <strong>Currency Strength</strong> measures relative performance of 8 major currencies across 12 forex pairs, normalized to base 100. When a currency line rises, it is strengthening vs all others. The spread between the strongest and weakest currencies defines the carry trade opportunity.<br><br>
-      <strong>Correlation Matrix</strong> shows 90-day rolling correlations between major asset classes. Watch for: SPX-Gold (risk regime), DXY-Gold (inverse), BTC-SPX (risk correlation). Arrows show changes from the previous 90-day window.<br><br>
-      <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
-      <strong>Commodity Dashboard</strong> shows performance across timeframes. Energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
-      <strong>Cointegration Charts</strong> show assets within the same cluster as % change from the start of the selected window. When one diverges from the group, it either reverts (mean reversion trade) or leads the group in its direction (breakout trade). <strong>Divergence badges</strong> appear below each chart when an asset deviates &gt;1.5&#963; from the cluster average &#8212; strongest signals come above 2&#963;. Watch for: metals diverging from gold, Russell diverging from SPX, altcoins diverging from Bitcoin.<br><br>
-      <strong>Value vs Growth</strong> tracks the IWD/IWF ratio alongside individual ETF prices. Rising ratio = capital rotating into value stocks (financials, energy). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.<br><br>
-      <strong>VIX &#8212; S&amp;P 500 Correlation</strong> shows the inverse relationship between the VIX (implied volatility) and S&amp;P 500. VIX typically spikes when SPX drops sharply. The 30-day rolling correlation measures the strength of this inverse link. Correlation near -0.8 signals a normal fear-driven market; when correlation weakens toward 0, it may indicate structural regime change or complacency. VIX regimes: COMPLACENT (&lt;13), LOW (13-18), ELEVATED (18-25), HIGH (25-35), EXTREME (&gt;35).
-    </div>
-  </div>
 </main>
 
 <!-- SCROLL TO TOP -->
@@ -430,6 +457,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 var R={cs:90,vg:104,cmet:365,ceq:365,ccr:365};
