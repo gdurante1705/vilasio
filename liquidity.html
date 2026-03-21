@@ -307,7 +307,7 @@ footer{
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netLiqChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div><div class="legend-item"><span class="legend-dot dashed"></span> S&P 500</div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Net Liquidity (Bn)</div><div class="legend-item"><span class="legend-dot" style="background:rgba(255,255,255,0.5)"></span> S&P 500</div></div>
     <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p><strong>Net Liquidity = WALCL - TGA - RRP.</strong> This is the actual liquidity available to the financial system after accounting for the Treasury's cash position and the Fed's reverse repo operations. Net Liquidity is considered the single most important driver of equity markets since 2020. When net liquidity rises, risk assets tend to rally. When it falls, expect headwinds.</p></div></div></div>
   </div>
 
@@ -318,12 +318,12 @@ footer{
   </div>
   <div class="dual-row reveal">
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div>
+      <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="display:flex;align-items:center;gap:10px"><div class="ch-toggles"><button class="ch-tog" data-g="walcl" data-rw="52" onclick="setR('walcl',52)">1Y</button><button class="ch-tog" data-g="walcl" data-rw="104" onclick="setR('walcl',104)">2Y</button><button class="ch-tog active" data-g="walcl" data-rw="156" onclick="setR('walcl',156)">3Y</button></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="walclChart"></canvas></div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Fed balance sheet represents total assets held by the Federal Reserve. During <strong>QE</strong> (Quantitative Easing), the Fed buys Treasury bonds from banks, creating new bank reserves and expanding the balance sheet. This excess liquidity flows into risk assets. During <strong>QT</strong> (Quantitative Tightening), the reverse happens &#8212; liquidity drains from the system. The correlation between WALCL and equity markets is historically very strong.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div>
+      <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="display:flex;align-items:center;gap:10px"><div class="ch-toggles"><button class="ch-tog" data-g="rrp2" data-rw="52" onclick="setR('rrp2',52)">1Y</button><button class="ch-tog" data-g="rrp2" data-rw="104" onclick="setR('rrp2',104)">2Y</button><button class="ch-tog active" data-g="rrp2" data-rw="156" onclick="setR('rrp2',156)">3Y</button></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="rrp2Chart"></canvas></div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Reverse Repo Facility allows banks and money market funds to park excess cash at the Fed overnight in exchange for Treasury securities. High RRP usage means excess liquidity is sitting idle at the Fed instead of flowing into markets. As RRP declines, that liquidity re-enters the financial system &#8212; <strong>bullish for risk assets</strong>.</p></div></div></div>
     </div>
@@ -350,6 +350,7 @@ footer{
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="qeqtChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Expansion (QE)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Contraction (QT)</div></div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The QE/QT regime indicator tracks Federal Reserve balance sheet policy. <strong>QE (Quantitative Easing)</strong> means the Fed is expanding its balance sheet by purchasing Treasury and mortgage-backed securities, injecting liquidity into the financial system &#8212; generally bullish for risk assets. <strong>QT (Quantitative Tightening)</strong> means the Fed is reducing its holdings, draining liquidity &#8212; a headwind for risk assets. The transition between QE and QT phases often marks major inflection points in equity and bond markets.</p></div></div></div>
     </div>
   </div>
 
@@ -433,9 +434,9 @@ var API="https://vilasio-cot-backend.onrender.com";
 var D=null, showSP=1, charts={};
 
 /* Independent range state per chart group */
-var R={main:156,comp:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
+var R={main:156,comp:156,walcl:156,rrp2:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
 
-var renderMap={main:'renderNetLiq',comp:'renderComponents',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
+var renderMap={main:'renderNetLiq',comp:'renderComponents',walcl:'renderWALCL',rrp2:'renderRRP2',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
 
 function setR(g,w){
   R[g]=w;
@@ -492,23 +493,28 @@ function renderNetLiq(){
   if(showSP&&D.sp500&&D.sp500.dates.length){
     var spMap={};D.sp500.dates.forEach(function(d,i){spMap[d]=D.sp500.values[i]});
     var spData=dates.map(function(d){if(spMap[d])return spMap[d];for(var off=1;off<=7;off++){var dt=new Date(d);dt.setDate(dt.getDate()-off);var ck=dt.toISOString().slice(0,10);if(spMap[ck])return spMap[ck];dt=new Date(d);dt.setDate(dt.getDate()+off);ck=dt.toISOString().slice(0,10);if(spMap[ck])return spMap[ck]}return null});
-    ds.push({label:"S&P 500",data:spData,borderColor:"rgba(240,241,245,0.6)",borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});
+    ds.push({label:"S&P 500",data:spData,borderColor:"rgba(255,255,255,0.5)",borderWidth:1,pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});
     scales.yP={position:"right",grid:{display:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:8},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(0)}}};
   }
   if(charts.netLiq)charts.netLiq.destroy();
   charts.netLiq=new Chart(document.getElementById("netLiqChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();return c.dataset.label+": "+fBn(c.parsed.y)}}})},scales:scales}});
 }
 
-function renderComponents(){
-  var nl=D.netLiquidity,n=nl.walcl.length,rw=R.comp;
+function renderComponents(){renderWALCL();renderRRP2()}
+
+function renderWALCL(){
+  var nl=D.netLiquidity,n=nl.walcl.length,rw=R.walcl;
   document.getElementById("walcl-current").textContent=fBn(nl.walcl[n-1]);
   if(charts.walcl)charts.walcl.destroy();
   charts.walcl=new Chart(document.getElementById("walclChart").getContext("2d"),{type:"line",data:{labels:sl(nl.dates,rw),datasets:[{label:"WALCL",data:sl(nl.walcl,rw),borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
-  var rr=D.rrp;if(rr&&rr.dates.length){
-    var rn=rr.values.length;document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
-    if(charts.rrp2)charts.rrp2.destroy();
-    charts.rrp2=new Chart(document.getElementById("rrp2Chart").getContext("2d"),{type:"line",data:{labels:sl(rr.dates,rw),datasets:[{label:"Reverse Repo",data:sl(rr.values,rw),borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
-  }
+}
+
+function renderRRP2(){
+  var rr=D.rrp;if(!rr||!rr.dates.length)return;
+  var rw=R.rrp2,rn=rr.values.length;
+  document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
+  if(charts.rrp2)charts.rrp2.destroy();
+  charts.rrp2=new Chart(document.getElementById("rrp2Chart").getContext("2d"),{type:"line",data:{labels:sl(rr.dates,rw),datasets:[{label:"Reverse Repo",data:sl(rr.values,rw),borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
 }
 
 function renderBS(){
@@ -545,10 +551,15 @@ function renderTGA(){
 function renderM2(){
   var ms=D.moneySupply;if(!ms)return;
   var m2=ms.m2,yoy=ms.m2yoy,rw=R.m2;
-  /* Use full M2 date range, align YoY on same dates */
-  var dates=sl(m2.dates,rw),vals=sl(m2.values,rw);
-  var yoyMap={};yoy.dates.forEach(function(d,i){yoyMap[d]=yoy.values[i]});
-  var yoyData=dates.map(function(d){return yoyMap[d]!=null?yoyMap[d]:null});
+  /* Align both datasets: only show dates where both M2 and YoY have values */
+  var yoySet={};yoy.dates.forEach(function(d,i){yoySet[d]=yoy.values[i]});
+  var firstYoyDate=yoy.dates.length?yoy.dates[0]:null;
+  var alignedDates=[],alignedM2=[],alignedYoY=[];
+  m2.dates.forEach(function(d,i){
+    if(firstYoyDate&&d>=firstYoyDate){alignedDates.push(d);alignedM2.push(m2.values[i]);alignedYoY.push(yoySet[d]!=null?yoySet[d]:null)}
+  });
+  var dates=sl(alignedDates,rw),vals=sl(alignedM2,rw);
+  var yoyData=sl(alignedYoY,rw);
   var n=yoy.values.length;
   if(n>0){var cv=yoy.values[n-1];document.getElementById("m2yoy-current").textContent=fPct(cv);document.getElementById("m2yoy-current").style.color=cv>=0?"var(--grn)":"var(--red)"}
   /* Compute independent YoY axis range from visible non-null values */
