@@ -13,6 +13,7 @@
 <link rel="icon" href="icon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -390,7 +391,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <div class="release-section"><div class="release-header"><div class="rel-title">Latest Release</div><div class="rel-badge" id="rel-badge">&#8212;</div></div><div class="release-grid"><div class="rel-col"><div class="rel-col-label" style="color:var(--bp)">Non-Commercial &#8212; Big Players</div><div style="display:flex;align-items:stretch;gap:0"><div style="flex:1"><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&#8212;</span></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&#8212;</span></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><span class="rel-net-val" id="rel-bp-net">&#8212;</span></div></div><div style="width:1px;background:var(--brd);margin:0 0"></div><div style="flex:1;padding-left:16px"><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-bp-long-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-bp-short-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">W/W Net</span><span class="rel-net-chg" id="rel-bp-net-chg" style="font-size:16px;font-weight:400">&#8212;</span></div></div></div></div>
 <div class="rel-col"><div class="rel-col-label" style="color:var(--gold)">Commercial &#8212; Dealers</div><div style="display:flex;align-items:stretch;gap:0"><div style="flex:1"><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long">&#8212;</span></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short">&#8212;</span></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><span class="rel-net-val" id="rel-dl-net">&#8212;</span></div></div><div style="width:1px;background:var(--brd);margin:0 0"></div><div style="flex:1;padding-left:16px"><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-dl-long-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-dl-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-dl-short-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-dl-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">W/W Net</span><span class="rel-net-chg" id="rel-dl-net-chg" style="font-size:16px;font-weight:400">&#8212;</span></div></div></div></div></div>
 </div></div></div>
-<div class="charts-area reveal"><div class="chart-controls"><div><div class="ch-title">Net Position Over Time</div><div class="ch-sub">Historical positioning</div></div><div style="display:flex;align-items:center;gap:6px"><div class="ch-toggles"><button class="ch-tog active" data-weeks="26">26W</button><button class="ch-tog" data-weeks="52">52W</button><button class="ch-tog" data-weeks="104">2Y</button></div><button class="price-tog" id="pt-net" onclick="togP('net')">Price</button></div></div><div style="padding:8px 28px 0;font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="chart-market-label">&#8212;</div><div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netChart"></canvas></div></div><div class="chart-legend" id="net-legend"></div></div>
+<div class="charts-area reveal"><div class="chart-controls"><div><div class="ch-title">Net Position Over Time</div><div class="ch-sub">Historical positioning</div></div><div style="display:flex;align-items:center;gap:6px"><div class="ch-toggles"><button class="ch-tog active" data-weeks="26">26W</button><button class="ch-tog" data-weeks="52">52W</button><button class="ch-tog" data-weeks="104">2Y</button></div><button class="price-tog" id="pt-net" onclick="togP('net')">Price</button></div></div><div style="padding:8px 28px 0;font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="chart-market-label">&#8212;</div><div class="chart-wrap"><div class="chart-canvas-wrap" id="netChart"></div></div><div class="chart-legend" id="net-legend"></div></div>
 <div class="dual-charts reveal"><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Open Interest</div><div class="dc-sub" id="oi-asset-label">Total contracts</div></div><div style="text-align:right"><div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px"><button class="ch-tog oi-wk active" data-oiwk="26">26W</button><button class="ch-tog oi-wk" data-oiwk="52">52W</button><button class="ch-tog oi-wk" data-oiwk="104">2Y</button><button class="price-tog" id="pt-oi" onclick="togP('oi')">Price</button></div><div class="dc-val" id="oi-current">&#8212;</div><div class="dc-val-sub" id="oi-change">&#8212;</div></div></div><div class="dc-canvas"><canvas id="oiChart"></canvas></div></div><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Net Spread</div><div class="dc-sub" id="spread-asset-label">BP - DL divergence</div></div><div style="text-align:right"><div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px"><button class="ch-tog sp-wk active" data-spwk="26">26W</button><button class="ch-tog sp-wk" data-spwk="52">52W</button><button class="ch-tog sp-wk" data-spwk="104">2Y</button><button class="price-tog" id="pt-sp" onclick="togP('sp')">Price</button></div><div class="dc-val" id="spread-current">&#8212;</div><div class="dc-val-sub" id="spread-label">Latest spread</div></div></div><div class="dc-canvas"><canvas id="spreadChart"></canvas></div></div></div>
 <div class="zscore-section reveal"><div class="zs-card"><div class="zs-top"><div class="zs-stats"><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--bp)"></div><div class="zs-stat-label">Big Players Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-bp-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-bp-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-bp-box-net">&#8212;</span></div><div>Mean: <span id="zs-bp-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-bp-box-std">&#8212;</span></div></div></div><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--gold)"></div><div class="zs-stat-label">Commercials Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-dl-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-dl-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-dl-box-net">&#8212;</span></div><div>Mean: <span id="zs-dl-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-dl-box-std">&#8212;</span></div></div></div></div></div><div class="zs-chart-area"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="zs-asset-label">&#8212;</div><div style="display:flex;gap:4px"><button class="ch-tog zs-wk active" data-zswk="52">52W</button><button class="ch-tog zs-wk" data-zswk="104">2Y</button><button class="ch-tog zs-wk" data-zswk="156">3Y</button><button class="zs-tog active" id="zs-tog-bp" onclick="togZsDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>Big Players</button><button class="zs-tog active" id="zs-tog-dl" onclick="togZsDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>Commercials</button><button class="price-tog" id="pt-zs" onclick="togP('zs')">Price</button></div></div><div class="zs-chart-wrap"><canvas id="zsChart"></canvas></div></div><div class="zs-chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> BP Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> DL Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:rgba(34,197,94,0.4)"></span> +2</div><div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.4)"></span> -2</div></div><div class="zs-explain"><strong>What is the Z-Score?</strong> The Z-Score measures how many standard deviations the current net position deviates from its 2-year historical average. Values above <strong>+2.0</strong> indicate positioning significantly above the mean, while values below <strong>-2.0</strong> indicate positioning significantly below the mean. <strong>Big Players</strong> (non-commercial speculators) and <strong>Commercials</strong> (dealers and hedgers) typically hold opposite net positions in the same market.</div>
 
@@ -408,6 +409,7 @@ var CORDER=["Equity","Energy","Metals","FX","Rates","Grains","Softs","Livestock"
 /* All markets - populated from API */
 var M={};
 var cm="ES",cw=26,cwOI=26,cwSP=26,cwZS=104,aD={},nC=null,oC=null,sC=null,zC=null;
+var netChart=null,netBpSeries=null,netDlSeries=null,netPriceSeries=null;
 var pOn={net:0,oi:0,sp:0,zs:0},show={bp:1,dl:1},zsShow={bp:1,dl:1};
 var BC="#5b8af0",BB="rgba(91,138,240,0.06)",DC="#c8a84b",DB="rgba(200,168,75,0.06)";
 var API="https://vilasio-cot-backend.onrender.com",CP="vcot2_";
@@ -421,8 +423,11 @@ function lD(mk,wk){var key=mk+"_"+wk;if(aD[key])return Promise.resolve(aD[key]);
 function fmt(n){if(n==null)return"\u2014";return n.toLocaleString("en-US")}
 function fS(n){if(n==null)return"\u2014";return(n>=0?"+":"")+n.toLocaleString("en-US")}
 function fK(n){if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(0)+"K";return n.toString()}
-function togP(ch){pOn[ch]=pOn[ch]?0:1;var b=document.getElementById("pt-"+ch);if(b)b.classList.toggle("active",!!pOn[ch]);if(ch==="net")rNet();else if(ch==="oi")rOI();else if(ch==="sp")rSP();else if(ch==="zs")rZS()}
-function togDS(w){show[w]=show[w]?0:1;rNet();rDual()}
+function togP(ch){pOn[ch]=pOn[ch]?0:1;var b=document.getElementById("pt-"+ch);if(b)b.classList.toggle("active",!!pOn[ch]);if(ch==="net"){rNet()}else if(ch==="oi")rOI();else if(ch==="sp")rSP();else if(ch==="zs")rZS()}
+function togDS(w){show[w]=show[w]?0:1;
+  if(w==='bp'&&netBpSeries)netBpSeries.applyOptions({visible:!!show.bp});
+  if(w==='dl'&&netDlSeries)netDlSeries.applyOptions({visible:!!show.dl});
+  var leg=document.getElementById("net-legend");if(leg){var items=leg.querySelectorAll(".legend-item.clickable");items.forEach(function(it){var txt=it.textContent;if(txt.indexOf("BP")>=0)it.classList.toggle("off",!show.bp);if(txt.indexOf("DL")>=0)it.classList.toggle("off",!show.dl)})}}
 function togZsDS(w){zsShow[w]=zsShow[w]?0:1;var b=document.getElementById("zs-tog-"+w);if(b)b.classList.toggle("off",!zsShow[w]);if(b)b.classList.toggle("active",!!zsShow[w]);rZS()}
 function pAx(){return{yP:{position:"right",grid:{display:false},ticks:{color:"#78787f",font:{family:"DM Mono",size:7},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(v<10?4:v<100?2:0)}}}}}
 function pTip(c){if(c.dataset.yAxisID==="yP"){var v=c.parsed.y;return"Price: "+(v>=1000?v.toLocaleString():v.toFixed(v<10?4:2))}return null}
@@ -496,6 +501,8 @@ function selM(m){cm=m;
   document.querySelectorAll(".hm-cell").forEach(function(c){var sym=c.querySelector(".hmc-sym");if(sym&&sym.textContent===m)c.classList.add("active")});
   document.querySelectorAll(".sticky-pill").forEach(function(p){var sym=p.querySelector(".sp-sym");p.classList.toggle("active",sym&&sym.textContent===m)});
   var act=document.querySelector(".sticky-pill.active");if(act)act.scrollIntoView({block:"center",behavior:"smooth"});
+  /* Destroy LWC net chart on market change so it rebuilds clean */
+  if(netChart){netChart.remove();netChart=null;netBpSeries=null;netDlSeries=null;netPriceSeries=null}
   return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()]);
 }
 function rDet(){return lD(cm,cw).then(function(d){var info=M[cm]||{name:cm,exchange:""};document.getElementById("dh-market").textContent=info.name;document.getElementById("dh-exchange").textContent=info.exchange||"";document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=info.name;document.getElementById("oi-asset-label").textContent=info.name+" — Total contracts";document.getElementById("spread-asset-label").textContent=info.name+" — BP - DL divergence"})}
@@ -510,21 +517,53 @@ fChg("rel-bp-long-chg",bLC);fBar("rel-bp-long-bar",bLC);fChg("rel-bp-short-chg",
 var bnc=document.getElementById("rel-bp-net-chg");bnc.textContent=fS(bNC);bnc.className="rel-net-chg "+(bNC>=0?"up":"dn");
 fChg("rel-dl-long-chg",dLC);fBar("rel-dl-long-bar",dLC);fChg("rel-dl-short-chg",dSC);fBar("rel-dl-short-bar",dSC);
 var dnc=document.getElementById("rel-dl-net-chg");dnc.textContent=fS(dNC);dnc.className="rel-net-chg "+(dNC>=0?"up":"dn")})}
-function rNet(){return lD(cm,cw).then(function(d){var ctx=document.getElementById("netChart").getContext("2d");if(nC)nC.destroy();
+function toLWC(labels,values){var out=[];for(var i=0;i<labels.length;i++){if(values[i]!=null)out.push({time:labels[i],value:values[i]})}return out}
+function rNet(){return lD(cm,cw).then(function(d){
+  var el=document.getElementById("netChart");
+  /* Build legend */
   var leg=document.getElementById("net-legend");leg.innerHTML="";
   function mkL(color,text,vis,click){var di=document.createElement("div");di.className="legend-item"+(click?" clickable":"");if(click&&!vis)di.classList.add("off");di.innerHTML='<span class="legend-dot" style="background:'+color+'"></span> '+text;if(click)di.onclick=click;leg.appendChild(di)}
   mkL(BC,"Non-Commercial (BP)",show.bp,function(){togDS("bp")});
   mkL(DC,"Commercial (DL)",show.dl,function(){togDS("dl")});
-  if(pOn.net){var di=document.createElement("div");di.className="legend-item";di.innerHTML='<span class="legend-dot dashed"></span> Price (Daily)';leg.appendChild(di)}
-  var useDaily=pOn.net&&d.dailyDates&&d.dailyDates.length>0;
-  var labels,bpData,dlData,priceData;
-  if(useDaily){var allDates={};d.labels.forEach(function(dt){allDates[dt]=1});d.dailyDates.forEach(function(dt){allDates[dt]=1});labels=Object.keys(allDates).sort();var bpMap={},dlMap={};d.labels.forEach(function(dt,i){bpMap[dt]=d.bpNet[i];dlMap[dt]=d.dlNet[i]});var lastBp=null,lastDl=null;bpData=[];dlData=[];labels.forEach(function(dt){if(bpMap[dt]!==undefined)lastBp=bpMap[dt];if(dlMap[dt]!==undefined)lastDl=dlMap[dt];bpData.push(lastBp);dlData.push(lastDl)});var pMap={};d.dailyDates.forEach(function(dt,i){pMap[dt]=d.dailyPrice[i]});priceData=labels.map(function(dt){return pMap[dt]!==undefined?pMap[dt]:null})}else{labels=d.labels;bpData=d.bpNet;dlData=d.dlNet;priceData=null}
-  var ds=[];
-  if(show.bp)ds.push({label:"Big Players",data:bpData,borderColor:BC,borderWidth:1.5,pointRadius:0,pointHoverRadius:3,fill:false,tension:0.3,yAxisID:"y",spanGaps:true,stepped:"before"});
-  if(show.dl)ds.push({label:"Dealers",data:dlData,borderColor:DC,borderWidth:1.5,pointRadius:0,pointHoverRadius:3,fill:false,tension:0.3,yAxisID:"y",spanGaps:true,stepped:"before"});
-  var sc={x:{grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:8},maxTicksLimit:10,maxRotation:0}},y:{grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:8},callback:function(v){return fK(v)}}}};
-  if(pOn.net&&priceData){ds.push({label:"Price",data:priceData,borderColor:"rgba(255,255,255,0.5)",borderWidth:1,pointRadius:0,pointHoverRadius:2,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});Object.assign(sc,pAx())}
-  nC=new Chart(ctx,{type:"line",data:{labels:labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:"#0c0c10",titleColor:"#f0f0f0",bodyColor:"#c0c0c4",borderColor:"rgba(255,255,255,0.06)",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10,callbacks:{label:function(c){var p=pTip(c);if(p)return p;return c.dataset.label+": "+fS(c.parsed.y)}}}},scales:sc}})})}
+  if(pOn.net){var di=document.createElement("div");di.className="legend-item";di.innerHTML='<span class="legend-dot" style="background:rgba(255,255,255,0.5)"></span> Price (Daily)';leg.appendChild(di)}
+  /* Create chart if needed */
+  if(!netChart){
+    el.innerHTML="";
+    netChart=LightweightCharts.createChart(el,{
+      layout:{background:{type:'solid',color:'transparent'},textColor:'#50505a',fontFamily:'DM Mono',fontSize:10},
+      grid:{vertLines:{color:'rgba(255,255,255,0.04)'},horzLines:{color:'rgba(255,255,255,0.04)'}},
+      crosshair:{vertLine:{color:'rgba(255,255,255,0.1)',style:3,width:1},horzLine:{color:'rgba(255,255,255,0.1)',style:3,width:1}},
+      timeScale:{borderColor:'rgba(255,255,255,0.06)',timeVisible:false,rightOffset:2,barSpacing:6},
+      rightPriceScale:{borderColor:'rgba(255,255,255,0.06)'},
+      leftPriceScale:{visible:false},
+      handleScroll:true,handleScale:true,
+      width:el.clientWidth,height:260
+    });
+    netBpSeries=netChart.addSeries(LightweightCharts.LineSeries,{color:BC,lineWidth:2,lineType:LightweightCharts.LineType.WithSteps,lastValueVisible:false,priceLineVisible:false,priceScaleId:'left'});
+    netDlSeries=netChart.addSeries(LightweightCharts.LineSeries,{color:DC,lineWidth:2,lineType:LightweightCharts.LineType.WithSteps,lastValueVisible:false,priceLineVisible:false,priceScaleId:'left'});
+    netChart.applyOptions({leftPriceScale:{visible:true,borderColor:'rgba(255,255,255,0.06)'}});
+    /* Resize observer */
+    var ro=new ResizeObserver(function(){netChart.applyOptions({width:el.clientWidth})});ro.observe(el);
+  }
+  /* Prepare data */
+  var bpD=toLWC(d.labels,d.bpNet);
+  var dlD=toLWC(d.labels,d.dlNet);
+  netBpSeries.setData(bpD);
+  netDlSeries.setData(dlD);
+  netBpSeries.applyOptions({visible:!!show.bp});
+  netDlSeries.applyOptions({visible:!!show.dl});
+  /* Price overlay */
+  if(pOn.net&&d.dailyDates&&d.dailyDates.length){
+    if(!netPriceSeries){
+      netPriceSeries=netChart.addSeries(LightweightCharts.LineSeries,{color:'rgba(255,255,255,0.5)',lineWidth:1,lastValueVisible:false,priceLineVisible:false,priceScaleId:'right'});
+      netChart.applyOptions({rightPriceScale:{visible:true,borderColor:'rgba(255,255,255,0.06)'}});
+    }
+    netPriceSeries.setData(toLWC(d.dailyDates,d.dailyPrice));
+  }else{
+    if(netPriceSeries){netChart.removeSeries(netPriceSeries);netPriceSeries=null;netChart.applyOptions({rightPriceScale:{visible:false}})}
+  }
+  netChart.timeScale().fitContent();
+})}
 function miniOp(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:"#0c0c10",titleColor:"#f0f0f0",bodyColor:"#c0c0c4",borderColor:"rgba(255,255,255,0.06)",borderWidth:1,bodyFont:{family:"DM Mono",size:9},callbacks:{label:function(c){var p=pTip(c);if(p)return p;return fS(c.parsed.y)}}}},scales:{x:{display:false},y:{position:"left",grid:{color:"rgba(255,255,255,0.02)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:7},callback:function(v){return fK(v)},maxTicksLimit:4}}}}}
 function rOI(){return lD(cm,cwOI).then(function(d){var L=d.labels.length-1,P=L-1;document.getElementById("oi-current").textContent=fmt(d.oi[L]);var oiC=d.oi[L]-d.oi[P];document.getElementById("oi-change").textContent=fS(oiC)+" w/w";document.getElementById("oi-change").style.color=oiC>=0?"var(--grn)":"var(--red)";if(oC)oC.destroy();var oids=[{data:d.oi,borderColor:"#a78bfa",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"}];var oiop=miniOp();if(pOn.oi&&d.dailyDates&&d.dailyDates.length){var pMap={};d.dailyDates.forEach(function(dt,i){pMap[dt]=d.dailyPrice[i]});var pp=d.labels.map(function(dt){return pMap[dt]!==undefined?pMap[dt]:null});oids.push({label:"Price",data:pp,borderColor:"rgba(255,255,255,0.5)",borderWidth:1,pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});Object.assign(oiop.scales,pAx())}oC=new Chart(document.getElementById("oiChart").getContext("2d"),{type:"line",data:{labels:d.labels,datasets:oids},options:oiop})})}
 function rSP(){return lD(cm,cwSP).then(function(d){var L=d.labels.length-1;var sp=d.bpNet.map(function(v,i){return v-d.dlNet[i]});document.getElementById("spread-current").textContent=fS(sp[L]);document.getElementById("spread-current").style.color=sp[L]>=0?"var(--grn)":"var(--red)";if(sC)sC.destroy();var spds=[{data:sp,borderColor:BC,segment:{borderColor:function(c){return c.p1.parsed.y>=0?"#22c55e":"#ef4444"}},borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"}];var spop=miniOp();if(pOn.sp&&d.dailyDates&&d.dailyDates.length){var pMap2={};d.dailyDates.forEach(function(dt,i){pMap2[dt]=d.dailyPrice[i]});var pp2=d.labels.map(function(dt){return pMap2[dt]!==undefined?pMap2[dt]:null});spds.push({label:"Price",data:pp2,borderColor:"rgba(255,255,255,0.5)",borderWidth:1,pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});Object.assign(spop.scales,pAx())}sC=new Chart(document.getElementById("spreadChart").getContext("2d"),{type:"line",data:{labels:d.labels,datasets:spds},options:spop})})}
