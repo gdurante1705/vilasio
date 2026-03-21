@@ -329,6 +329,24 @@ footer{
     </div>
   </div>
 
+  <!-- STACKED LIQUIDITY COMPONENTS -->
+  <div class="chart-section reveal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:20px 28px 0">
+      <div>
+        <div style="font-family:'Alata',sans-serif;font-size:16px">Liquidity Components</div>
+        <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)">WALCL + TGA + RRP &mdash; Stacked Composition</div>
+      </div>
+      <div style="display:flex;gap:4px">
+        <button class="ch-tog active" data-stackwk="52" onclick="setStackRange(this)">1Y</button>
+        <button class="ch-tog" data-stackwk="104" onclick="setStackRange(this)">2Y</button>
+        <button class="ch-tog" data-stackwk="156" onclick="setStackRange(this)">3Y</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><div style="position:relative;height:280px"><canvas id="stackedChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:#5b8af0"></span> WALCL</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> TGA</div><div class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span> RRP</div></div>
+    <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>This stacked area chart shows how Net Liquidity is composed. <strong>WALCL</strong> (Fed Balance Sheet) is the primary liquidity source. <strong>TGA</strong> (Treasury General Account) and <strong>Reverse Repo</strong> drain liquidity when they increase. Rising WALCL with declining TGA and RRP = maximum liquidity injection. The total stack height represents gross Fed balance sheet assets.</p></div></div></div>
+  </div>
+
   <!-- FED BALANCE SHEET + QE/QT -->
   <div class="dual-row reveal" style="margin-top:0">
     <div class="chart-section" style="margin-bottom:0">
@@ -348,7 +366,14 @@ footer{
           <div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)">13W Avg</div><div style="font-family:'Alata',sans-serif;font-size:18px;font-weight:400" id="qeqt-avg">&#8212;</div></div>
         </div>
       </div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="qeqtChart"></canvas></div></div>
+      <div class="chart-wrap" style="padding-bottom:0">
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:8px">
+          <div style="position:relative;width:180px;height:100px"><canvas id="qeqtGauge"></canvas></div>
+          <div style="font-family:'Alata',sans-serif;font-size:32px;font-weight:400;margin-top:-8px" id="qeqt-gauge-val">&#8212;</div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;margin-top:2px" id="qeqt-gauge-label">&#8212;</div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="padding-top:0"><div class="chart-canvas-sm"><canvas id="qeqtChart"></canvas></div></div>
       <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Expansion (QE)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Contraction (QT)</div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The QE/QT regime indicator tracks Federal Reserve balance sheet policy. <strong>QE (Quantitative Easing)</strong> means the Fed is expanding its balance sheet by purchasing Treasury and mortgage-backed securities, injecting liquidity into the financial system &#8212; generally bullish for risk assets. <strong>QT (Quantitative Tightening)</strong> means the Fed is reducing its holdings, draining liquidity &#8212; a headwind for risk assets. The transition between QE and QT phases often marks major inflection points in equity and bond markets.</p></div></div></div>
     </div>
@@ -435,6 +460,7 @@ var D=null, showSP=1, charts={};
 
 /* Independent range state per chart group */
 var R={main:156,walcl:156,rrp2:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
+var stackRange=52;
 
 var renderMap={main:'renderNetLiq',walcl:'renderWALCL',rrp2:'renderRRP2',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
 
@@ -460,7 +486,24 @@ function mOpts(){
 
 function togSP(){showSP=showSP?0:1;var b=document.getElementById("tog-sp");if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}if(D)renderNetLiq()}
 
-function renderAll(){renderStatCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
+function setStackRange(btn){
+  stackRange=parseInt(btn.dataset.stackwk);
+  document.querySelectorAll('[data-stackwk]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.stackwk)===stackRange)});
+  if(D)renderStacked();
+}
+
+function renderStacked(){
+  var nl=D.netLiquidity;if(!nl)return;
+  var rw=stackRange,dates=sl(nl.dates,rw),walcl=sl(nl.walcl,rw),tga=sl(nl.tga,rw),rrp=sl(nl.rrp,rw);
+  if(charts.stacked)charts.stacked.destroy();
+  charts.stacked=new Chart(document.getElementById("stackedChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
+    {label:"WALCL",data:walcl,borderColor:"#5b8af0",backgroundColor:"rgba(91,138,240,0.3)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+    {label:"TGA",data:tga,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.3)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
+    {label:"RRP",data:rrp,borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.3)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fBn(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:{stacked:true,grid:{color:"rgba(255,255,255,0.04)"},ticks:{color:"#50505a",font:{family:"DM Mono",size:7},callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v.toFixed(0)+"B"}}}}}});
+}
+
+function renderAll(){renderStatCards();renderNetLiq();renderComponents();renderStacked();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
 
 function renderStatCards(){
   var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
@@ -497,7 +540,11 @@ function renderStatCards(){
 
 function renderNetLiq(){
   var nl=D.netLiquidity,rw=R.main,dates=sl(nl.dates,rw),netData=sl(nl.netLiq,rw);
-  var ds=[{label:"Net Liquidity",data:netData,borderColor:"#22c55e",backgroundColor:"rgba(34,197,94,0.06)",borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"}];
+  var ctx=document.getElementById("netLiqChart").getContext("2d");
+  var grad=ctx.createLinearGradient(0,0,0,340);
+  grad.addColorStop(0,"rgba(34,197,94,0.15)");
+  grad.addColorStop(1,"rgba(34,197,94,0)");
+  var ds=[{label:"Net Liquidity",data:netData,borderColor:"#22c55e",backgroundColor:grad,borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:true,tension:0.3,yAxisID:"y"}];
   var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"T":v.toFixed(0)+"B"}})})};
   if(showSP&&D.sp500&&D.sp500.dates.length){
     var spMap={};D.sp500.dates.forEach(function(d,i){spMap[d]=D.sp500.values[i]});
@@ -506,7 +553,7 @@ function renderNetLiq(){
     scales.yP={position:"right",grid:{display:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:8},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(0)}}};
   }
   if(charts.netLiq)charts.netLiq.destroy();
-  charts.netLiq=new Chart(document.getElementById("netLiqChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();return c.dataset.label+": "+fBn(c.parsed.y)}}})},scales:scales}});
+  charts.netLiq=new Chart(ctx,{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();return c.dataset.label+": "+fBn(c.parsed.y)}}})},scales:scales}});
 }
 
 function renderComponents(){renderWALCL();renderRRP2()}
@@ -539,6 +586,19 @@ function renderQEQT(){
   var q=D.qeqt,rw=R.qeqt,dates=sl(q.dates,rw),data=sl(q.changes,rw);
   document.getElementById("qeqt-avg").textContent=fChg(q.avgWeekly)+"/wk";
   document.getElementById("qeqt-avg").style.color=q.avgWeekly>=0?"var(--grn)":"var(--red)";
+  /* Gauge */
+  var gVal=q.avgWeekly||0;
+  var clamped=Math.max(-20,Math.min(20,gVal));
+  var pct=(clamped+20)/40;
+  var leftPortion=pct,rightPortion=1-pct;
+  if(charts.qeqtGauge)charts.qeqtGauge.destroy();
+  charts.qeqtGauge=new Chart(document.getElementById("qeqtGauge").getContext("2d"),{type:"doughnut",data:{datasets:[{data:[leftPortion,rightPortion],backgroundColor:["rgba(239,68,68,0.3)","rgba(34,197,94,0.3)"],borderWidth:0,circumference:180,rotation:270}]},options:{responsive:true,maintainAspectRatio:false,cutout:"75%",plugins:{tooltip:{enabled:false},legend:{display:false}}}});
+  var gvEl=document.getElementById("qeqt-gauge-val");
+  gvEl.textContent=fChg(gVal)+"/wk";
+  gvEl.style.color=gVal>=0?"var(--grn)":"var(--red)";
+  var glEl=document.getElementById("qeqt-gauge-label");
+  glEl.textContent=gVal>=0?"EXPANDING":"CONTRACTING";
+  glEl.style.color=gVal>=0?"var(--grn)":"var(--red)";
   if(charts.qeqt)charts.qeqt.destroy();
   charts.qeqt=new Chart(document.getElementById("qeqtChart").getContext("2d"),{type:"bar",data:{labels:dates,datasets:[{data:data,backgroundColor:data.map(function(v){return v>=0?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"}),borderColor:data.map(function(v){return v>=0?"#22c55e":"#ef4444"}),borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return fChg(c.parsed.y)+" Bn"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)+"B"}})})}}});
 }
@@ -577,7 +637,7 @@ function renderM2(){
   if(yoyVis.length){yMin=Math.min.apply(null,yoyVis);yMax=Math.max.apply(null,yoyVis);var pad=(yMax-yMin)*0.2||1;yMin=Math.floor(yMin-pad);yMax=Math.ceil(yMax+pad)}
   if(charts.m2)charts.m2.destroy();
   charts.m2=new Chart(document.getElementById("m2Chart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"M2",data:vals,borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:"y"},
+    {label:"M2",data:vals,borderColor:"#06b6d4",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"y"},
     {label:"M2 YoY %",data:yoyData,borderColor:"#c8a84b",backgroundColor:"rgba(200,168,75,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yR",spanGaps:true}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
     plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"M2 YoY: "+fPct(c.parsed.y);return"M2: "+fBn(c.parsed.y)}}})},
