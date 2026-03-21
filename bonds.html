@@ -517,7 +517,7 @@ function renderFedTimeline(){
     if(u==null||lo==null)continue;
     if(prevUpper==null){prevUpper=u;prevLower=lo;continue}
     if(u!==prevUpper||lo!==prevLower){
-      var chgBps=Math.round((u-prevUpper)*10000)/100;
+      var chgBps=Math.round((u-prevUpper)*100);
       var type=chgBps<0?"cut":chgBps>0?"hike":"hold";
       decisions.push({date:f.dates[i],upper:u,lower:lo,effective:f.effective[i],chgBps:chgBps,type:type});
       prevUpper=u;prevLower=lo;
