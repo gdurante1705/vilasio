@@ -354,6 +354,26 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
 }
 
+/* ─── SEASONALITY ─── */
+.seas-section{margin-top:24px;margin-bottom:28px;padding:0 128px}
+.seas-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);overflow:hidden;position:relative}
+.seas-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);border-radius:var(--r) var(--r) 0 0}
+.seas-header{padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between}
+.seas-title{font-family:"Alata",sans-serif;font-size:18px;font-weight:400}
+.seas-sub{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--t2);margin-top:4px}
+.seas-toggles{display:flex;gap:4px}
+.seas-tog{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd);color:var(--t2);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;border-radius:100px}
+.seas-tog:hover{color:var(--white);border-color:var(--card-border-hover)}
+.seas-tog.active{background:rgba(255,255,255,0.06);color:var(--white);border-color:var(--brd)}
+.seas-tog.off{opacity:0.35}
+.seas-chart-area{padding:16px 20px 8px}
+.seas-chart-wrap{position:relative;height:280px}
+.seas-info{padding:8px 28px 20px;font-family:"DM Mono",monospace;font-size:9px;color:var(--t3);letter-spacing:0.5px}
+.seas-legend{display:flex;flex-wrap:wrap;gap:12px;padding:4px 28px 14px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
+@media(max-width:900px){
+  .seas-section{padding:0 16px}
+}
+
 </style>
 </head>
 <body>
@@ -440,6 +460,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <div class="zscore-section reveal"><div class="zs-card"><div class="zs-top"><div class="zs-stats"><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--bp)"></div><div class="zs-stat-label">Big Players Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-bp-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-bp-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-bp-box-net">&#8212;</span></div><div>Mean: <span id="zs-bp-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-bp-box-std">&#8212;</span></div></div></div><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--gold)"></div><div class="zs-stat-label">Commercials Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-dl-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-dl-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-dl-box-net">&#8212;</span></div><div>Mean: <span id="zs-dl-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-dl-box-std">&#8212;</span></div></div></div></div></div><div class="zs-chart-area"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 8px 0 36px"><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="zs-asset-label">&#8212;</div><div style="display:flex;gap:4px"><button class="ch-tog zs-wk active" data-zswk="52">52W</button><button class="ch-tog zs-wk" data-zswk="104">2Y</button><button class="ch-tog zs-wk" data-zswk="156">3Y</button><button class="zs-tog active" id="zs-tog-bp" onclick="togZsDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>Big Players</button><button class="zs-tog active" id="zs-tog-dl" onclick="togZsDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>Commercials</button><button class="price-tog" id="pt-zs" onclick="togP('zs')">Price</button></div></div><div class="zs-chart-wrap"><canvas id="zsChart"></canvas></div></div><div class="zs-chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> BP Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> DL Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:rgba(34,197,94,0.4)"></span> +2</div><div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.4)"></span> -2</div></div><div class="zs-explain"><strong>What is the Z-Score?</strong> The Z-Score measures how many standard deviations the current net position deviates from its 2-year historical average. Values above <strong>+2.0</strong> indicate positioning significantly above the mean, while values below <strong>-2.0</strong> indicate positioning significantly below the mean. <strong>Big Players</strong> (non-commercial speculators) and <strong>Commercials</strong> (dealers and hedgers) typically hold opposite net positions in the same market.</div>
 
 </div></div>
+
+<!-- SEASONALITY -->
+<div class="seas-section reveal"><div class="seas-card"><div class="seas-header"><div><div class="seas-title">Seasonality</div><div class="seas-sub">Historical positioning pattern</div></div><div class="seas-toggles"><button class="seas-tog active" id="seas-tog-bp" onclick="togSeasDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>BP</button><button class="seas-tog active" id="seas-tog-dl" onclick="togSeasDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>DL</button></div></div><div class="seas-chart-area"><div class="seas-chart-wrap"><canvas id="seasChart"></canvas></div></div><div class="seas-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> BP Avg</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> DL Avg</div><div class="legend-item"><span class="legend-dot" style="background:rgba(91,138,240,0.15)"></span> BP Range</div></div><div class="seas-info" id="seas-info">3-year average positioning by week. Shaded area shows historical min/max range.</div></div></div>
+
 </main>
 
 <!-- FLOW MAP - Capital Flow (after Z-Score) -->
@@ -452,8 +476,8 @@ var CC={"Equity":"#4a6fa5","Energy":"#c27830","Metals":"#8a8a5a","FX":"#7b6ea5",
 var CORDER=["Equity","Energy","Metals","FX","Rates","Grains","Softs","Livestock"];
 /* All markets - populated from API */
 var M={};
-var cm="ES",cw=26,cwOI=26,cwSP=26,cwZS=104,aD={},nC=null,oC=null,sC=null,zC=null;
-var pOn={net:0,oi:0,sp:0,zs:0},show={bp:1,dl:1},zsShow={bp:1,dl:1};
+var cm="ES",cw=26,cwOI=26,cwSP=26,cwZS=104,aD={},nC=null,oC=null,sC=null,zC=null,seasC=null;
+var pOn={net:0,oi:0,sp:0,zs:0},show={bp:1,dl:1},zsShow={bp:1,dl:1},seasShow={bp:1,dl:1};
 var BC="#5b8af0",BB="rgba(91,138,240,0.06)",DC="#c8a84b",DB="rgba(200,168,75,0.06)";
 var API="https://vilasio-cot-backend.onrender.com",CP="vcot2_";
 function sR(s){var x=Math.sin(s+1)*99999;return x-Math.floor(x)}
@@ -572,12 +596,25 @@ function rFlow(){
   }).catch(function(e){console.warn("Flow fail:",e)});
 }
 
+/* ─── SEASONALITY CHART ─── */
+var seasData=null;
+function togSeasDS(w){seasShow[w]=seasShow[w]?0:1;var b=document.getElementById("seas-tog-"+w);if(b){b.classList.toggle("off",!seasShow[w]);b.classList.toggle("active",!!seasShow[w])}rSeas()}
+function fetchSeas(){return fR(API+"/api/cot/seasonality?market="+cm,2,3000).then(function(d){seasData=d;rSeas()}).catch(function(e){console.warn("Seasonality fail:",e.message);seasData=null})}
+function rSeas(){if(!seasData)return;var ctx=document.getElementById("seasChart").getContext("2d");if(seasC)seasC.destroy();var wLabels=seasData.weeks.map(function(w){return"W"+w});var ds=[];
+/* BP range fill (min/max) — uses two datasets: filler line at bpMax invisible, and area from bpMin filled to bpMax */
+if(seasShow.bp){ds.push({label:"BP Max",data:seasData.bpMax,borderColor:"transparent",borderWidth:0,pointRadius:0,fill:false,tension:0,stepped:true,order:3});ds.push({label:"BP Min",data:seasData.bpMin,borderColor:"transparent",borderWidth:0,pointRadius:0,fill:"-1",backgroundColor:"rgba(91,138,240,0.05)",tension:0,stepped:true,order:2});ds.push({label:"BP Avg",data:seasData.bpAvg,borderColor:BC,borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:false,tension:0,stepped:true,order:1})}
+if(seasShow.dl){ds.push({label:"DL Avg",data:seasData.dlAvg,borderColor:DC,borderWidth:2,pointRadius:0,pointHoverRadius:3,fill:false,tension:0,stepped:true,order:1})}
+var nowLine=seasData.currentWeek?seasData.currentWeek-1:null;
+var seasNowPlugin={id:"seasNow",afterDraw:function(chart){if(nowLine===null)return;var xScale=chart.scales.x,yScale=chart.scales.y;var x=xScale.getPixelForValue(nowLine);if(x<xScale.left||x>xScale.right)return;var ctx2=chart.ctx;ctx2.save();ctx2.beginPath();ctx2.setLineDash([4,3]);ctx2.strokeStyle="rgba(255,255,255,0.2)";ctx2.lineWidth=1;ctx2.moveTo(x,yScale.top);ctx2.lineTo(x,yScale.bottom);ctx2.stroke();ctx2.setLineDash([]);ctx2.font="7px 'DM Mono'";ctx2.fillStyle="rgba(255,255,255,0.5)";ctx2.textAlign="center";ctx2.fillText("NOW",x,yScale.top-4);ctx2.restore()}};
+seasC=new Chart(ctx,{type:"line",data:{labels:wLabels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:"rgba(12,12,16,0.95)",borderColor:"rgba(255,255,255,0.06)",borderWidth:1,titleFont:{family:"DM Mono",size:10},bodyFont:{family:"DM Mono",size:10},titleColor:"#78787f",bodyColor:"#f0f0f0",padding:10,cornerRadius:8,displayColors:true,boxWidth:6,boxHeight:6,boxPadding:4,filter:function(item){return item.dataset.label!=="BP Max"&&item.dataset.label!=="BP Min"}}},scales:{x:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:7},maxRotation:0,autoSkip:true,maxTicksLimit:13}},y:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:7},callback:function(v){return fK(v)}}}},elements:{point:{radius:0},line:{borderWidth:2}}},plugins:[seasNowPlugin]});
+var info=document.getElementById("seas-info");if(seasData.yearsOfData){info.textContent=seasData.yearsOfData+"-year average positioning by week. Shaded area shows historical min/max range."}else{info.textContent="3-year average positioning by week. Shaded area shows historical min/max range."}}
+
 function selM(m){cm=m;
   document.querySelectorAll(".hm-cell").forEach(function(c){c.classList.remove("active")});
   document.querySelectorAll(".hm-cell").forEach(function(c){var sym=c.querySelector(".hmc-sym");if(sym&&sym.textContent===m)c.classList.add("active")});
   document.querySelectorAll(".sticky-pill").forEach(function(p){var sym=p.querySelector(".sp-sym");p.classList.toggle("active",sym&&sym.textContent===m)});
   var act=document.querySelector(".sticky-pill.active");if(act)act.scrollIntoView({block:"center",behavior:"smooth"});
-  return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()]);
+  return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS(),fetchSeas()]);
 }
 function rDet(){return lD(cm,cw).then(function(d){var info=M[cm]||{name:cm,exchange:""};document.getElementById("dh-market").textContent=info.name;document.getElementById("dh-exchange").textContent=info.exchange||"";document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=info.name;document.getElementById("oi-asset-label").textContent=info.name+" — Total contracts";document.getElementById("spread-asset-label").textContent=info.name+" — BP - DL divergence"})}
 function rRel(){return lD(cm,cw).then(function(d){var L=d.labels.length-1,P=L-1;if(P<0)return;document.getElementById("rel-badge").textContent="W/W \u00b7 "+d.reportDate;var bLC=d.bpLong[L]-d.bpLong[P],bSC=d.bpShort[L]-d.bpShort[P],bNC=d.bpNet[L]-d.bpNet[P],dLC=d.dlLong[L]-d.dlLong[P],dSC=d.dlShort[L]-d.dlShort[P],dNC=d.dlNet[L]-d.dlNet[P],mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);
@@ -868,7 +905,7 @@ function toggleMobileMenu(){document.getElementById('mobile-menu').classList.tog
 window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)})
 document.addEventListener('click',function(e){var menu=document.getElementById('mobile-menu');var btn=document.querySelector('.nav-mobile-btn');if(menu&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('open')}});
 /* INIT */
-rHM().then(function(){buildStickyBar();return rFlow()}).then(function(){return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()])});
+rHM().then(function(){buildStickyBar();return rFlow()}).then(function(){return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS(),fetchSeas()])});
 </script>
 
 <!-- Scroll to top -->

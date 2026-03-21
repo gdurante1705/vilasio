@@ -363,6 +363,31 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
+  <!-- VIX — S&P 500 CORRELATION -->
+  <div class="chart-section reveal" id="vix-spx-section">
+    <div class="chart-header"><div><div class="ch-title">VIX &#8212; S&amp;P 500 Correlation</div><div class="ch-sub">Inverse Relationship &#183; 30-Day Rolling Correlation</div></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)">
+      <div class="status-card" style="margin:0"><div class="sc-label">VIX Current</div><div class="sc-val" id="vix-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span id="vix-regime" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:100px">&#8212;</span></div></div>
+      <div class="status-card" style="margin:0"><div class="sc-label">S&amp;P 500</div><div class="sc-val" id="spx-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="spx-dd">&#8212;</span><span class="sc-note">from 52w high</span></div></div>
+      <div class="status-card" style="margin:0"><div class="sc-label">30d Correlation</div><div class="sc-val" id="vixspx-corr-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span class="sc-note" id="vixspx-corr-interp">&#8212;</span></div></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vixSpxChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> S&amp;P 500</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> VIX (inverted)</div>
+    </div>
+  </div>
+
+  <!-- VIX-SPX CORRELATION CHART -->
+  <div class="chart-section reveal">
+    <div class="chart-header"><div><div class="ch-title">VIX-SPX Rolling Correlation</div><div class="ch-sub">30-Day Window &#183; Strength of Inverse Relationship</div></div></div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vixSpxCorrChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 30d Correlation</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--t3);border-radius:0;height:1px;width:12px"></span> Typical Strong Inverse (-0.7)</div>
+    </div>
+  </div>
+
   <!-- EXPLANATION -->
   <div class="explain-section reveal">
     <div class="explain-title">How to read the Cross-Market Dashboard</div>
@@ -372,7 +397,8 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <strong>Sector Rotation</strong> tracks S&amp;P 500 sector ETFs across multiple timeframes. Sectors leading on 1W but lagging on 3M may signal early rotation. In expansion: XLK, XLY lead. In slowdown: XLU, XLP, XLV lead. Energy (XLE) outperforms in inflationary regimes.<br><br>
       <strong>Commodity Dashboard</strong> shows performance across timeframes. Energy and industrials (copper) are highly cyclical, while gold acts as a safe haven. Divergences between correlated commodities signal opportunities.<br><br>
       <strong>Cointegration Charts</strong> show assets within the same cluster as % change from the start of the selected window. When one diverges from the group, it either reverts (mean reversion trade) or leads the group in its direction (breakout trade). <strong>Divergence badges</strong> appear below each chart when an asset deviates &gt;1.5&#963; from the cluster average &#8212; strongest signals come above 2&#963;. Watch for: metals diverging from gold, Russell diverging from SPX, altcoins diverging from Bitcoin.<br><br>
-      <strong>Value vs Growth</strong> tracks the IWD/IWF ratio alongside individual ETF prices. Rising ratio = capital rotating into value stocks (financials, energy). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.
+      <strong>Value vs Growth</strong> tracks the IWD/IWF ratio alongside individual ETF prices. Rising ratio = capital rotating into value stocks (financials, energy). Falling = growth stocks (tech) outperforming. The ratio tends to rise with interest rates and fall when rates are cut.<br><br>
+      <strong>VIX &#8212; S&amp;P 500 Correlation</strong> shows the inverse relationship between the VIX (implied volatility) and S&amp;P 500. VIX typically spikes when SPX drops sharply. The 30-day rolling correlation measures the strength of this inverse link. Correlation near -0.8 signals a normal fear-driven market; when correlation weakens toward 0, it may indicate structural regime change or complacency. VIX regimes: COMPLACENT (&lt;13), LOW (13-18), ELEVATED (18-25), HIGH (25-35), EXTREME (&gt;35).
     </div>
   </div>
 </main>
@@ -431,7 +457,7 @@ var tipO={backgroundColor:"#0c0c10",titleColor:"#f0f0f0",bodyColor:"#c0c0c4",bor
 
 function togCoint(group,k){cointShow[group][k]=cointShow[group][k]?0:1;document.getElementById('leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'')).style.opacity=cointShow[group][k]?'1':'0.3';window[renderMap[group]]()}
 
-function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG()}
+function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG();renderVixSpx()}
 
 /* --- STATUS CARDS --- */
 function renderCards(){
@@ -627,6 +653,68 @@ function renderVG(){
   var scales={x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{position:"left",ticks:Object.assign({},axO.ticks,{callback:function(v){return"$"+v.toFixed(0)}})})};
   if(vgShow.ratio)scales.yR={position:"right",grid:{display:false},ticks:{color:"#c8a84b",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(3)}}};
   charts.vg=new Chart(document.getElementById("vgChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"Ratio: "+c.parsed.y.toFixed(4);return c.dataset.label+": $"+c.parsed.y.toFixed(2)}}})},scales:scales}});
+}
+
+/* --- VIX — S&P 500 CORRELATION --- */
+function renderVixSpx(){
+  var vs=D.vixSpx;if(!vs)return;
+  /* Status cards */
+  if(vs.vixCurrent!=null){
+    document.getElementById("vix-val").textContent=vs.vixCurrent.toFixed(2);
+    var reg=document.getElementById("vix-regime");
+    var regime=vs.vixRegime||"";
+    reg.textContent=regime;
+    var regColors={COMPLACENT:{c:"var(--grn)",bg:"var(--grn-dim)",bc:"rgba(34,197,94,0.3)"},LOW:{c:"var(--gold)",bg:"var(--gold-dim)",bc:"rgba(200,168,75,0.3)"},ELEVATED:{c:"var(--amb)",bg:"rgba(245,158,11,0.10)",bc:"rgba(245,158,11,0.3)"},HIGH:{c:"var(--red)",bg:"var(--red-dim)",bc:"rgba(239,68,68,0.3)"},EXTREME:{c:"var(--red)",bg:"var(--red-dim)",bc:"rgba(239,68,68,0.3)"}};
+    var rc=regColors[regime]||{c:"var(--t2)",bg:"transparent",bc:"var(--brd)"};
+    reg.style.color=rc.c;reg.style.background=rc.bg;reg.style.border="1px solid "+rc.bc;
+  }
+  if(vs.spxCurrent!=null){
+    document.getElementById("spx-val").textContent=vs.spxCurrent.toFixed(2);
+    var dd=vs.spxDrawdown||0;
+    var ddEl=document.getElementById("spx-dd");
+    ddEl.textContent=(dd>=0?"+":"")+dd.toFixed(2)+"%";
+    ddEl.className="sc-delta "+(dd>=-5?"up":"dn");
+  }
+  if(vs.currentCorrelation!=null){
+    var cv=vs.currentCorrelation;
+    document.getElementById("vixspx-corr-val").textContent=cv.toFixed(2);
+    var interp=Math.abs(cv)>=0.7?"Strong inverse":"Weak inverse";
+    if(Math.abs(cv)>=0.8)interp="Very strong inverse";
+    if(Math.abs(cv)<0.5)interp="Breakdown";
+    document.getElementById("vixspx-corr-interp").textContent=interp;
+  }
+  /* Dual axis chart: SPX + VIX inverted */
+  if(vs.dates&&vs.dates.length){
+    var ds=[
+      {label:"S&P 500",data:vs.spx,borderColor:"var(--white)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"ySpx",spanGaps:true},
+      {label:"VIX",data:vs.vix,borderColor:"var(--red)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,yAxisID:"yVix",spanGaps:true}
+    ];
+    if(charts.vixSpx)charts.vixSpx.destroy();
+    charts.vixSpx=new Chart(document.getElementById("vixSpxChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),ySpx:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}},yVix:{position:"right",reverse:true,grid:{display:false},ticks:{color:"var(--red)",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}}}}});
+  }
+  /* Correlation chart */
+  if(vs.dates&&vs.correlation30d&&vs.correlation30d.length){
+    var corrData=vs.correlation30d;
+    var segGold=[],segRed=[];
+    for(var i=0;i<corrData.length;i++){
+      var v=corrData[i];
+      segGold.push(v!=null&&v>=-0.5?v:null);
+      segRed.push(v!=null&&v<-0.5?v:null);
+      /* bridge segments so lines connect across color boundaries */
+      if(i>0&&corrData[i]!=null&&corrData[i-1]!=null){
+        if(corrData[i]>=-0.5&&corrData[i-1]<-0.5){segGold[i-1]=corrData[i-1]}
+        if(corrData[i]<-0.5&&corrData[i-1]>=-0.5){segRed[i-1]=corrData[i-1]}
+      }
+    }
+    var refLine=vs.dates.map(function(){return -0.7});
+    var dsCorr=[
+      {label:"30d Correlation (weak)",data:segGold,borderColor:"var(--gold)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:false},
+      {label:"30d Correlation (strong)",data:segRed,borderColor:"var(--red)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:false},
+      {label:"Typical Strong Inverse",data:refLine,borderColor:"var(--t3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,tension:0}
+    ];
+    if(charts.vixSpxCorr)charts.vixSpxCorr.destroy();
+    charts.vixSpxCorr=new Chart(document.getElementById("vixSpxCorrChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:dsCorr},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(t){return t.datasetIndex<2},callbacks:{label:function(c){return"Correlation: "+c.parsed.y.toFixed(3)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:{min:-1,max:0,grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)}}}}}});
+  }
 }
 
 function refreshData(){

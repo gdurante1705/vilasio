@@ -159,6 +159,38 @@ main{padding:0 48px 64px}
 .rp-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;margin-bottom:6px}
 .rp-desc{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);line-height:1.5}
 
+/* ─── MACRO REGIME SECTION ─── */
+.regime-section{display:grid;grid-template-columns:280px 1fr;gap:16px;margin-bottom:16px}
+.regime-current-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:32px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.regime-current-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-current-dot{width:12px;height:12px;border-radius:50%;margin-bottom:14px}
+.regime-current-name{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;letter-spacing:-0.5px;margin-bottom:16px}
+.regime-current-vals{display:flex;flex-direction:column;gap:8px;width:100%}
+.regime-val-row{display:flex;justify-content:space-between;align-items:center;padding:0 8px}
+.regime-val-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
+.regime-val-num{font-family:"DM Mono",monospace;font-size:11px;color:var(--white)}
+.regime-quadrant-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);position:relative;overflow:hidden}
+.regime-quadrant-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-quadrant-header{padding:16px 28px;border-bottom:1px solid var(--brd)}
+.regime-quadrant-header .ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
+.regime-quadrant-header .ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
+.regime-quadrant-wrap{padding:12px 20px 16px;position:relative;height:340px}
+.regime-timeline-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:20px 28px;margin-bottom:16px;position:relative;overflow:hidden}
+.regime-timeline-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-timeline-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:4px}
+.regime-timeline-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-bottom:16px}
+.regime-timeline-strip{display:flex;height:28px;border-radius:6px;overflow:hidden;gap:1px}
+.regime-timeline-bar{flex:1;min-width:0;position:relative;cursor:default;transition:opacity .2s}
+.regime-timeline-bar:hover{opacity:0.8}
+.regime-timeline-legend{display:flex;gap:16px;margin-top:12px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
+.regime-timeline-legend .legend-item{display:flex;align-items:center;gap:5px}
+.regime-timeline-legend .legend-dot{width:7px;height:7px;border-radius:50%}
+.regime-timeline-labels{display:flex;justify-content:space-between;margin-top:6px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--t3)}
+@media(max-width:768px){
+  .regime-section{grid-template-columns:1fr}
+  .regime-quadrant-wrap{height:280px}
+}
+
 /* ─── EXPLAIN SECTION ─── */
 .explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden}
 .explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
@@ -290,6 +322,36 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="regime-phase" id="rp-slowdown"><div class="rp-name" style="color:var(--red)">Slowdown</div><div class="rp-desc">Growth &#8595; Inflation &#8595;<br>Bonds, Cash, Defensive</div></div>
   </div>
 
+  <!-- MACRO REGIME QUADRANT -->
+  <div class="regime-section reveal">
+    <div class="regime-current-card">
+      <div class="regime-current-dot" id="regime-q-dot" style="background:var(--t2)"></div>
+      <div class="regime-current-name" id="regime-q-name">&#8212;</div>
+      <div class="regime-current-vals">
+        <div class="regime-val-row"><span class="regime-val-label">Growth (NFP)</span><span class="regime-val-num" id="regime-q-growth">&#8212;</span></div>
+        <div class="regime-val-row"><span class="regime-val-label">Inflation (CPI YoY)</span><span class="regime-val-num" id="regime-q-inflation">&#8212;</span></div>
+      </div>
+    </div>
+    <div class="regime-quadrant-card">
+      <div class="regime-quadrant-header"><div class="ch-title">Regime Quadrant</div><div class="ch-sub">Growth vs Inflation &#8212; Current Position &amp; 12-Month Trail</div></div>
+      <div class="regime-quadrant-wrap"><canvas id="regimeQuadrantChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- REGIME TIMELINE -->
+  <div class="regime-timeline-card reveal">
+    <div class="regime-timeline-title">Regime History</div>
+    <div class="regime-timeline-sub">Last 36 Months &#8212; Economic Regime Changes Over Time</div>
+    <div class="regime-timeline-strip" id="regime-timeline-strip"></div>
+    <div class="regime-timeline-labels" id="regime-timeline-labels"></div>
+    <div class="regime-timeline-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Expansion</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Reflation</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Stagnation</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> Slowdown</div>
+    </div>
+  </div>
+
   <!-- INFLATION MONITOR -->
   <div class="chart-section reveal">
     <div class="chart-header">
@@ -400,7 +462,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pOpts(cb){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:cb||function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderMorpheus();renderRegime();renderInflation();renderUR();renderNFP();renderIC();renderJO()}
+function renderAll(){renderCards();renderMorpheus();renderRegime();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO()}
 
 function renderCards(){
   var inf=D.inflation.cpiYoY,n=inf.values.length;if(n<2)return;
@@ -456,6 +518,91 @@ function renderRegime(){
   ['expansion','reflation','stagnation','slowdown'].forEach(function(p){
     var el=document.getElementById('rp-'+p);if(el)el.classList.toggle('active',p===rg);
   });
+}
+
+var regimeColors={EXPANSION:'#22c55e',REFLATION:'#c8a84b',STAGNATION:'#ef4444',SLOWDOWN:'#5b8af0'};
+
+function renderRegimeQuadrant(){
+  if(!D)return;
+  var rg=D.regime||'';
+  var rq=D.regimeQuadrant||{};
+  var rh=D.regimeHistory||[];
+  // Current regime badge card
+  var dotEl=document.getElementById('regime-q-dot');
+  var nameEl=document.getElementById('regime-q-name');
+  var growthEl=document.getElementById('regime-q-growth');
+  var inflEl=document.getElementById('regime-q-inflation');
+  dotEl.style.background=regimeColors[rg]||'var(--t2)';
+  nameEl.textContent=rg||'\u2014';
+  growthEl.textContent=rq.growthLabel||('\u2014');
+  inflEl.textContent=rq.inflationLabel||('\u2014');
+  // Quadrant scatter chart
+  var gv=rq.growthValue!=null?rq.growthValue:0;
+  var iv=rq.inflationValue!=null?rq.inflationValue:0;
+  // Trail: last 12 months from regimeHistory
+  var trail=rh.slice(-12);
+  var trailData=trail.map(function(p,i){
+    var alpha=0.15+0.85*(i/(trail.length-1||1));
+    return{x:p.growth||0,y:p.inflation||0,alpha:alpha,regime:p.regime||''};
+  });
+  if(charts.rq)charts.rq.destroy();
+  // Quadrant label plugin
+  var quadrantPlugin={id:'quadrantLabels',afterDraw:function(chart){
+    var ctx=chart.ctx;var xA=chart.scales.x;var yA=chart.scales.y;
+    var x0=xA.getPixelForValue(0);var y0=yA.getPixelForValue(0);
+    ctx.save();ctx.font='500 9px "DM Mono"';ctx.textAlign='center';ctx.fillStyle='#50505a';
+    // Top-right: EXPANSION
+    ctx.fillText('EXPANSION',(x0+xA.right)/2,(yA.top+y0)/2);
+    // Top-left: STAGNATION
+    ctx.fillText('STAGNATION',(xA.left+x0)/2,(yA.top+y0)/2);
+    // Bottom-right: REFLATION
+    ctx.fillText('REFLATION',(x0+xA.right)/2,(y0+yA.bottom)/2);
+    // Bottom-left: SLOWDOWN
+    ctx.fillText('SLOWDOWN',(xA.left+x0)/2,(y0+yA.bottom)/2);
+    // Zero lines
+    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(xA.left,y0);ctx.lineTo(xA.right,y0);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x0,yA.top);ctx.lineTo(x0,yA.bottom);ctx.stroke();
+    ctx.restore();
+  }};
+  // Build trail dots dataset
+  var trailBg=trailData.map(function(p){
+    var c=regimeColors[p.regime]||'#78787f';
+    // Parse hex to rgba
+    var r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);
+    return'rgba('+r+','+g+','+b+','+p.alpha.toFixed(2)+')';
+  });
+  charts.rq=new Chart(document.getElementById('regimeQuadrantChart').getContext('2d'),{
+    type:'scatter',
+    data:{datasets:[
+      {label:'Trail',data:trailData.map(function(p){return{x:p.x,y:p.y}}),backgroundColor:trailBg,borderColor:'transparent',pointRadius:5,pointHoverRadius:7},
+      {label:'Current',data:[{x:gv,y:iv}],backgroundColor:regimeColors[rg]||'#c8a84b',borderColor:'rgba(255,255,255,0.3)',borderWidth:2,pointRadius:9,pointHoverRadius:11}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'nearest',intersect:true},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.datasetIndex===1)return rg+' \u2014 Growth: '+gv.toFixed(1)+'K, Inflation: '+iv.toFixed(2)+'%';var tp=trail[c.dataIndex];return(tp?tp.regime:'')+' \u2014 Growth: '+c.parsed.x.toFixed(1)+'K, Inflation: '+c.parsed.y.toFixed(2)+'%'}}})},scales:{x:{grid:{color:'rgba(255,255,255,0.03)',drawBorder:false},ticks:{color:'#50505a',font:{family:'DM Mono',size:8},callback:function(v){return v.toFixed(0)+'K'}},title:{display:true,text:'GROWTH (NFP)',color:'#50505a',font:{family:'DM Mono',size:7,weight:'500'},padding:{top:4}}},y:{grid:{color:'rgba(255,255,255,0.03)',drawBorder:false},ticks:{color:'#50505a',font:{family:'DM Mono',size:8},callback:function(v){return v.toFixed(1)+'%'}},title:{display:true,text:'INFLATION (CPI YOY)',color:'#50505a',font:{family:'DM Mono',size:7,weight:'500'},padding:{bottom:4}}}}},
+    plugins:[quadrantPlugin]
+  });
+}
+
+function renderRegimeTimeline(){
+  if(!D)return;
+  var rh=D.regimeHistory||[];
+  if(!rh.length)return;
+  var strip=document.getElementById('regime-timeline-strip');
+  var labels=document.getElementById('regime-timeline-labels');
+  strip.innerHTML='';labels.innerHTML='';
+  rh.forEach(function(p){
+    var bar=document.createElement('div');
+    bar.className='regime-timeline-bar';
+    bar.style.background=regimeColors[p.regime]||'var(--t2)';
+    bar.title=(p.date||'')+': '+(p.regime||'');
+    strip.appendChild(bar);
+  });
+  // Start and end labels
+  if(rh.length>=2){
+    var startDate=fMon(rh[0].date)||rh[0].date||'';
+    var endDate=fMon(rh[rh.length-1].date)||rh[rh.length-1].date||'';
+    labels.innerHTML='<span>'+startDate+'</span><span>'+endDate+'</span>';
+  }
 }
 
 function renderInflation(){
