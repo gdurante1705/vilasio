@@ -502,7 +502,7 @@ function renderCredit(){
   var hyV=igD.map(function(d){return hyMap[d]!=null?hyMap[d]:null});
   if(charts.cr)charts.cr.destroy();
   charts.cr=new Chart(document.getElementById("creditChart").getContext("2d"),{type:"line",data:{labels:igD,datasets:[
-    {label:"IG OAS",data:igV,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.2,yAxisID:"y",spanGaps:true},
+    {label:"IG OAS",data:igV,borderColor:"#3b82f6",borderWidth:1.5,pointRadius:0,fill:false,tension:0.2,yAxisID:"y",spanGaps:true},
     {label:"HY OAS",data:hyV,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.2,yAxisID:"yR",spanGaps:true}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#3b82f6",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}},yR:{position:"right",grid:{display:false},ticks:{color:"#ef4444",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)+"%"}}}}}});
 }
