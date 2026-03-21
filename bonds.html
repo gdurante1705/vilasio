@@ -170,6 +170,18 @@ main{padding:0 48px 64px}
 .chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
 .chart-explain-content strong{color:var(--t1);font-weight:400}
 
+/* ─── FED TIMELINE ─── */
+.fed-timeline{display:flex;flex-direction:column;gap:1px}
+.fed-row{display:flex;align-items:center;padding:10px 16px;background:rgba(255,255,255,0.02);border-radius:6px;gap:16px}
+.fed-row:hover{background:rgba(255,255,255,0.04)}
+.fed-date{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2);min-width:90px}
+.fed-decision{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;min-width:100px}
+.fed-rate{font-family:"Alata",sans-serif;font-size:14px;color:var(--white);min-width:120px}
+.fed-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:100px;text-transform:uppercase}
+.fed-badge.cut{background:rgba(34,197,94,0.12);color:#22c55e}
+.fed-badge.hike{background:rgba(239,68,68,0.12);color:#ef4444}
+.fed-badge.hold{background:rgba(255,255,255,0.06);color:var(--t2)}
+
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
@@ -329,11 +341,16 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
-        <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Effective + Target Range</div></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="ff" data-rw="260" onclick="setR('ff',260)">1Y</button><button class="ch-tog" data-g="ff" data-rw="520" onclick="setR('ff',520)">2Y</button><button class="ch-tog active" data-g="ff" data-rw="780" onclick="setR('ff',780)">3Y</button></div>
+        <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Decision Timeline</div></div>
       </div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="ffChart"></canvas></div></div>
-      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> Effective</div><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Target Upper</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Target Lower</div></div>
+      <div class="chart-wrap">
+        <div style="display:flex;gap:4px;margin-bottom:12px">
+          <button class="ch-tog active" onclick="setFedView(this,8)">LAST 8</button>
+          <button class="ch-tog" onclick="setFedView(this,16)">LAST 16</button>
+          <button class="ch-tog" onclick="setFedView(this,0)">ALL</button>
+        </div>
+        <div class="fed-timeline" id="fed-timeline"></div>
+      </div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
     </div>
   </div>
@@ -378,7 +395,7 @@ var D=null,charts={};
 var R={yld:780,sp:780,ry:780,be:780,cr:260,ff:780};
 var yldShow={dgs2:1,dgs5:1,dgs10:1,dgs30:1};
 var yldLegIds={dgs2:'leg-2y',dgs5:'leg-5y',dgs10:'leg-10y',dgs30:'leg-30y'};
-var renderMap={yld:'renderYields',sp:'renderSpread',ry:'renderReal',be:'renderBE',cr:'renderCredit',ff:'renderFF'};
+var renderMap={yld:'renderYields',sp:'renderSpread',ry:'renderReal',be:'renderBE',cr:'renderCredit'};
 function togYld(k){yldShow[k]=yldShow[k]?0:1;var el=document.getElementById(yldLegIds[k]);if(el)el.style.opacity=yldShow[k]?'1':'0.3';if(D)renderYields()}
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
@@ -391,7 +408,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pctOpts(){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderYields();renderSpread();renderReal();renderBE();renderCredit();renderFF();renderFOMC()}
+function renderAll(){renderCards();renderYields();renderSpread();renderReal();renderBE();renderCredit();renderFedTimeline();renderFOMC()}
 
 function renderCards(){
   var y=D.yields,n=y.dgs10.length;if(n<6)return;
@@ -483,14 +500,49 @@ function renderCredit(){
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v!=null?Math.round(v*100)+" bps":"\u2014")}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{beginAtZero:false,ticks:Object.assign({},axO.ticks,{callback:function(v){return Math.round(v*100)+" bps"}})})}}});
 }
 
-function renderFF(){
-  var f=D.fedFunds,rw=R.ff,dates=sl(f.dates,rw);
-  if(charts.ff)charts.ff.destroy();
-  charts.ff=new Chart(document.getElementById("ffChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"Effective",data:sl(f.effective,rw),borderColor:"#f0f0f0",borderWidth:2,stepped:true,pointRadius:0,fill:false,spanGaps:true},
-    {label:"Target Upper",data:sl(f.upper,rw),borderColor:"rgba(34,197,94,0.5)",borderDash:[5,3],borderWidth:1,stepped:true,pointRadius:0,fill:false,spanGaps:true},
-    {label:"Target Lower",data:sl(f.lower,rw),borderColor:"rgba(239,68,68,0.5)",borderDash:[5,3],borderWidth:1,stepped:true,pointRadius:0,fill:"-1",backgroundColor:"rgba(200,168,75,0.04)",spanGaps:true}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}}),filler:{propagate:false}},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{beginAtZero:false,ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
+var fedViewCount=8;
+function setFedView(btn,count){
+  fedViewCount=count;
+  var parent=btn.parentElement;
+  parent.querySelectorAll('.ch-tog').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  if(D)renderFedTimeline();
+}
+function renderFedTimeline(){
+  var f=D.fedFunds,el=document.getElementById("fed-timeline");
+  if(!f||!f.dates||!f.upper)return;
+  /* Walk through data and detect rate changes */
+  var decisions=[];
+  var prevUpper=null,prevLower=null;
+  for(var i=0;i<f.dates.length;i++){
+    var u=f.upper[i],lo=f.lower[i];
+    if(u==null||lo==null)continue;
+    if(prevUpper==null){prevUpper=u;prevLower=lo;continue}
+    if(u!==prevUpper||lo!==prevLower){
+      var chgBps=Math.round((u-prevUpper)*10000)/100;
+      var type=chgBps<0?"cut":chgBps>0?"hike":"hold";
+      decisions.push({date:f.dates[i],upper:u,lower:lo,effective:f.effective[i],chgBps:Math.abs(chgBps),type:type});
+      prevUpper=u;prevLower=lo;
+    }
+  }
+  /* Reverse so most recent is first */
+  decisions.reverse();
+  /* Apply view count filter */
+  var visible=fedViewCount>0?decisions.slice(0,fedViewCount):decisions;
+  /* Build HTML */
+  var html="";
+  for(var j=0;j<visible.length;j++){
+    var d=visible[j];
+    var bpsLabel=d.type==="hold"?"HOLD":d.type==="cut"?"CUT "+Math.round(d.chgBps)+"BPS":"HIKE "+Math.round(d.chgBps)+"BPS";
+    var rangeStr=(d.lower!=null?d.lower.toFixed(2):"?")+"%"+" \u2013 "+(d.upper!=null?d.upper.toFixed(2):"?")+"%";
+    html+='<div class="fed-row">';
+    html+='<span class="fed-date">'+d.date+'</span>';
+    html+='<span class="fed-badge '+d.type+'">'+bpsLabel+'</span>';
+    html+='<span class="fed-rate">'+rangeStr+'</span>';
+    html+='</div>';
+  }
+  if(visible.length===0)html='<div class="fed-row"><span class="fed-date">No rate changes detected in data</span></div>';
+  el.innerHTML=html;
 }
 
 function renderFOMC(){
