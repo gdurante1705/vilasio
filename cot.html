@@ -58,7 +58,7 @@ body::after{
 
 /* ─── NAV ─── */
 nav{
-  position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;
   display:flex;align-items:center;gap:32px;
   padding:14px 28px;
   background:rgba(12,12,16,0.8);
@@ -82,6 +82,10 @@ nav{
   flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
 }
 .nav-mobile-menu.open{display:flex}
+.scroll-top{position:fixed;bottom:24px;right:24px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
+.scroll-top.show{opacity:1;pointer-events:auto}
+.scroll-top:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
+.scroll-top svg{width:16px;height:16px;stroke:var(--t1);fill:none;stroke-width:2}
 .nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
 .nav-mobile-menu a:hover{color:var(--white)}
 
@@ -858,10 +862,15 @@ function refreshCOT(){
 }
 /* Mobile menu */
 function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
+/* Scroll to top button */
+window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)})
 document.addEventListener('click',function(e){var menu=document.getElementById('mobile-menu');var btn=document.querySelector('.nav-mobile-btn');if(menu&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('open')}});
 /* INIT */
 rHM().then(function(){buildStickyBar();return rFlow()}).then(function(){return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()])});
 </script>
+
+<!-- Scroll to top -->
+<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 
 <!-- FOOTER -->
 <footer>
