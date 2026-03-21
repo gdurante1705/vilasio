@@ -379,7 +379,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 .seas-stat-dir.neg{color:var(--red)}
 .seas-stat-dir.neutral{color:var(--t2)}
 .seas-chart-area{padding:16px 20px 8px}
-.seas-chart-wrap{position:relative;height:280px}
+.seas-chart-wrap{position:relative;height:220px}
 .seas-info{padding:8px 28px 16px;font-family:"DM Mono",monospace;font-size:9px;color:var(--t3);letter-spacing:0.5px}
 .seas-interp{padding:0 28px 16px;font-family:"DM Mono",monospace;font-size:10px;color:var(--t2);line-height:1.6}
 .seas-legend{display:flex;flex-wrap:wrap;gap:12px;padding:4px 28px 14px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
@@ -477,7 +477,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div></div>
 
 <!-- SEASONALITY -->
-<div class="seas-section reveal"><div class="seas-card"><div class="seas-header"><div><div class="seas-title">Seasonality</div><div class="seas-sub">Historical positioning pattern</div></div><div class="seas-toggles"><button class="seas-tog active" id="seas-tog-bp" onclick="togSeasDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>BP</button><button class="seas-tog active" id="seas-tog-dl" onclick="togSeasDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>DL</button></div></div>
+<div class="seas-section reveal"><div class="seas-card"><div class="seas-header"><div><div class="seas-title">Seasonality</div><div class="seas-sub">Historical positioning pattern</div></div><div class="seas-toggles"><button class="seas-tog active" id="seas-tog-bp" onclick="togSeasDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>BP</button><button class="seas-tog active" id="seas-tog-dl" onclick="togSeasDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>DL</button><button class="price-tog" id="pt-seas" onclick="togP('seas')">Price</button></div></div>
 <div class="seas-stats-row">
 <div class="seas-stat-card"><div class="seas-stat-label"><span class="seas-stat-dot" style="background:var(--bp)"></span>BP Seasonal Deviation</div><div class="seas-stat-val neutral" id="seas-bp-dev">&#8212;</div><div class="seas-stat-dir neutral" id="seas-bp-dir">&#8212;</div></div>
 <div class="seas-stat-card"><div class="seas-stat-label"><span class="seas-stat-dot" style="background:var(--gold)"></span>DL Seasonal Deviation</div><div class="seas-stat-val neutral" id="seas-dl-dev">&#8212;</div><div class="seas-stat-dir neutral" id="seas-dl-dir">&#8212;</div></div>
@@ -490,6 +490,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <div class="legend-item"><span class="legend-dot" style="background:rgba(200,168,75,0.15)"></span> DL Range</div>
 <div class="legend-item"><span class="legend-line" style="border-color:var(--bp)"></span> BP Current</div>
 <div class="legend-item"><span class="legend-line" style="border-color:var(--gold)"></span> DL Current</div>
+<div class="legend-item" id="seas-price-legend" style="display:none"><span class="legend-dot" style="background:rgba(255,255,255,0.5)"></span> Price Avg</div>
 </div>
 <div class="seas-interp" id="seas-interp"></div>
 <div class="seas-info" id="seas-info"></div></div></div>
@@ -507,7 +508,7 @@ var CORDER=["Equity","Energy","Metals","FX","Rates","Grains","Softs","Livestock"
 /* All markets - populated from API */
 var M={};
 var cm="ES",cw=26,cwOI=26,cwSP=26,cwZS=104,aD={},nC=null,oC=null,sC=null,zC=null,seasC=null;
-var pOn={net:0,oi:0,sp:0,zs:0},show={bp:1,dl:1},zsShow={bp:1,dl:1},seasShow={bp:1,dl:1};
+var pOn={net:0,oi:0,sp:0,zs:0,seas:0},show={bp:1,dl:1},zsShow={bp:1,dl:1},seasShow={bp:1,dl:1};
 var BC="#5b8af0",BB="rgba(91,138,240,0.06)",DC="#c8a84b",DB="rgba(200,168,75,0.06)";
 var API="https://vilasio-cot-backend.onrender.com",CP="vcot2_";
 function sR(s){var x=Math.sin(s+1)*99999;return x-Math.floor(x)}
@@ -520,7 +521,7 @@ function lD(mk,wk){var key=mk+"_"+wk;if(aD[key])return Promise.resolve(aD[key]);
 function fmt(n){if(n==null)return"\u2014";return n.toLocaleString("en-US")}
 function fS(n){if(n==null)return"\u2014";return(n>=0?"+":"")+n.toLocaleString("en-US")}
 function fK(n){if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(0)+"K";return n.toString()}
-function togP(ch){pOn[ch]=pOn[ch]?0:1;var b=document.getElementById("pt-"+ch);if(b)b.classList.toggle("active",!!pOn[ch]);if(ch==="net")rNet();else if(ch==="oi")rOI();else if(ch==="sp")rSP();else if(ch==="zs")rZS()}
+function togP(ch){pOn[ch]=pOn[ch]?0:1;var b=document.getElementById("pt-"+ch);if(b)b.classList.toggle("active",!!pOn[ch]);if(ch==="net")rNet();else if(ch==="oi")rOI();else if(ch==="sp")rSP();else if(ch==="zs")rZS();else if(ch==="seas")rSeas()}
 function togDS(w){show[w]=show[w]?0:1;rNet()}
 function togZsDS(w){zsShow[w]=zsShow[w]?0:1;var b=document.getElementById("zs-tog-"+w);if(b)b.classList.toggle("off",!zsShow[w]);if(b)b.classList.toggle("active",!!zsShow[w]);rZS()}
 
@@ -636,22 +637,39 @@ function getISOWeek(d){var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.g
 function getCurYearData(){
   var key=cm+"_"+cw;var d=aD[key];if(!d||!d.labels||!d.bpNet)return null;
   var now=new Date(),curYear=now.getFullYear();
-  var bpByWeek={},dlByWeek={};
+  var bpByWeek={},dlByWeek={},priceByWeek={};
   for(var i=0;i<d.labels.length;i++){
     var dt=new Date(d.labels[i]);
     if(dt.getFullYear()===curYear){
       var wk=getISOWeek(dt);
       bpByWeek[wk]=d.bpNet[i];
       dlByWeek[wk]=d.dlNet[i];
+      if(d.price&&d.price[i]!=null)priceByWeek[wk]=d.price[i];
     }
   }
-  return{bp:bpByWeek,dl:dlByWeek};
+  return{bp:bpByWeek,dl:dlByWeek,price:priceByWeek};
+}
+/* Compute seasonal average price from all cached COT data */
+function getSeasPriceAvg(){
+  var key=cm+"_"+cw;var d=aD[key];if(!d||!d.labels||!d.price)return null;
+  var weekSums={},weekCounts={};
+  for(var i=0;i<d.labels.length;i++){
+    if(d.price[i]==null)continue;
+    var dt=new Date(d.labels[i]);
+    var wk=getISOWeek(dt);
+    if(!weekSums[wk]){weekSums[wk]=0;weekCounts[wk]=0}
+    weekSums[wk]+=d.price[i];weekCounts[wk]++;
+  }
+  var avg={};for(var w in weekSums)avg[w]=weekSums[w]/weekCounts[w];
+  return avg;
 }
 function rSeas(){
   if(!seasData)return;
   var ctx=document.getElementById("seasChart").getContext("2d");
   if(seasC)seasC.destroy();
-  var wLabels=seasData.weeks.map(function(w){return"W"+w});
+  var weekToMonth={"1":"Jan","2":"Jan","3":"Jan","4":"Jan","5":"Feb","6":"Feb","7":"Feb","8":"Feb","9":"Mar","10":"Mar","11":"Mar","12":"Mar","13":"Mar","14":"Apr","15":"Apr","16":"Apr","17":"Apr","18":"May","19":"May","20":"May","21":"May","22":"Jun","23":"Jun","24":"Jun","25":"Jun","26":"Jun","27":"Jul","28":"Jul","29":"Jul","30":"Jul","31":"Aug","32":"Aug","33":"Aug","34":"Aug","35":"Aug","36":"Sep","37":"Sep","38":"Sep","39":"Sep","40":"Oct","41":"Oct","42":"Oct","43":"Oct","44":"Nov","45":"Nov","46":"Nov","47":"Nov","48":"Nov","49":"Dec","50":"Dec","51":"Dec","52":"Dec"};
+  var monthStarts={"1":1,"5":1,"9":1,"14":1,"18":1,"22":1,"27":1,"31":1,"36":1,"40":1,"44":1,"49":1};
+  var wLabels=seasData.weeks.map(function(w){return weekToMonth[w]||""});
   var ds=[];
   var curYear=getCurYearData();
   var nowWeekIdx=seasData.currentWeek?seasData.currentWeek-1:null;
@@ -710,6 +728,22 @@ function rSeas(){
     }
   }
 
+  /* --- Price overlay --- */
+  var seasPriceLeg=document.getElementById("seas-price-legend");
+  if(seasPriceLeg)seasPriceLeg.style.display=pOn.seas?"flex":"none";
+  if(pOn.seas){
+    var priceAvgMap=getSeasPriceAvg();
+    if(priceAvgMap){
+      var priceAvgArr=seasData.weeks.map(function(w){return priceAvgMap[w]!=null?priceAvgMap[w]:null});
+      ds.push({label:"Price Avg",data:priceAvgArr,borderColor:"rgba(255,255,255,0.5)",borderWidth:1,pointRadius:0,pointHoverRadius:2,fill:false,tension:0.3,stepped:false,spanGaps:true,yAxisID:"yP",order:0});
+    }
+    if(curYear&&curYear.price){
+      var priceCurArr=seasData.weeks.map(function(w){return curYear.price[w]!=null?curYear.price[w]:null});
+      var hasAny=priceCurArr.some(function(v){return v!=null});
+      if(hasAny)ds.push({label:"Price Current",data:priceCurArr,borderColor:"rgba(255,255,255,0.5)",borderWidth:1,borderDash:[4,2],pointRadius:0,pointHoverRadius:2,fill:false,tension:0.1,stepped:false,spanGaps:true,yAxisID:"yP",order:0});
+    }
+  }
+
   /* --- NOW vertical line plugin --- */
   var nowLine=nowWeekIdx;
   var seasNowPlugin={id:"seasNow",afterDraw:function(chart){
@@ -720,7 +754,7 @@ function rSeas(){
     var ctx2=chart.ctx;ctx2.save();
     ctx2.beginPath();ctx2.setLineDash([4,3]);ctx2.strokeStyle="rgba(255,255,255,0.2)";ctx2.lineWidth=1;
     ctx2.moveTo(x,yScale.top);ctx2.lineTo(x,yScale.bottom);ctx2.stroke();ctx2.setLineDash([]);
-    ctx2.font="7px 'DM Mono'";ctx2.fillStyle="rgba(255,255,255,0.5)";ctx2.textAlign="center";
+    ctx2.font="9px 'DM Mono'";ctx2.fillStyle="#f0f0f0";ctx2.textAlign="center";
     ctx2.fillText("NOW",x,yScale.top-4);ctx2.restore();
   }};
 
@@ -733,10 +767,10 @@ function rSeas(){
       displayColors:true,boxWidth:6,boxHeight:6,boxPadding:4,
       filter:function(item){var lb=item.dataset.label;return lb!=="BP Max"&&lb!=="BP Min"&&lb!=="DL Max"&&lb!=="DL Min"}
     }},
-    scales:{
-      x:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:7},maxRotation:0,autoSkip:true,maxTicksLimit:13}},
+    scales:Object.assign({
+      x:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:7},maxRotation:0,autoSkip:false,callback:function(val,idx){var w=seasData.weeks[idx];return monthStarts[w]?wLabels[idx]:""}}},
       y:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"#50505a",font:{family:"DM Mono",size:7},callback:function(v){return fK(v)}}}
-    },
+    },pOn.seas?pAx():{}),
     elements:{point:{radius:0},line:{borderWidth:2}}
   },plugins:[seasNowPlugin]});
 
@@ -751,7 +785,9 @@ function rSeas(){
       }
     }
     var curWk=seasData.currentWeek||getISOWeek(new Date());
-    interp.textContent="BP historically peaks around W"+peakWk+" and troughs around W"+troughWk+". Currently in W"+curWk+".";
+    var wkMonths={"1":"Jan","5":"Feb","9":"Mar","14":"Apr","18":"May","22":"Jun","27":"Jul","31":"Aug","36":"Sep","40":"Oct","44":"Nov","49":"Dec"};
+    function wkToMonthName(w){var best="";for(var k in wkMonths){if(parseInt(k)<=w)best=wkMonths[k]}return best||"W"+w}
+    interp.textContent="BP historically peaks around "+wkToMonthName(peakWk)+" (W"+peakWk+") and troughs around "+wkToMonthName(troughWk)+" (W"+troughWk+"). Currently in "+wkToMonthName(curWk)+" (W"+curWk+").";
   }else{interp.textContent=""}
 
   /* --- Info line --- */
