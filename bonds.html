@@ -497,12 +497,14 @@ function renderBE(){
 
 function renderCredit(){
   var cr=D.credit,rw=R.cr;
-  var igDates=sl(cr.ig.dates,rw),igV=sl(cr.ig.values,rw),hyV=sl(cr.hy.values,rw);
-  if(charts.credit)charts.credit.destroy();
-  charts.credit=new Chart(document.getElementById("creditChart").getContext("2d"),{type:"line",data:{labels:igDates,datasets:[
-    {label:"Investment Grade",data:igV,borderColor:"#5b8af0",backgroundColor:"rgba(91,138,240,0.06)",fill:true,borderWidth:1.5,tension:0.3,pointRadius:0,spanGaps:true},
-    {label:"High Yield",data:hyV,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",fill:true,borderWidth:1.5,tension:0.3,pointRadius:0,spanGaps:true}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v!=null?Math.round(v*100)+" bps":"\u2014")}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{beginAtZero:false,ticks:Object.assign({},axO.ticks,{callback:function(v){return Math.round(v*100)+" bps"}})})}}});
+  var igD=sl(cr.ig.dates,rw),igV=sl(cr.ig.values,rw);
+  var hyMap={};cr.hy.dates.forEach(function(d,i){hyMap[d]=cr.hy.values[i]});
+  var hyV=igD.map(function(d){return hyMap[d]!=null?hyMap[d]:null});
+  if(charts.cr)charts.cr.destroy();
+  charts.cr=new Chart(document.getElementById("creditChart").getContext("2d"),{type:"line",data:{labels:igD,datasets:[
+    {label:"IG OAS",data:igV,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.2,yAxisID:"y",spanGaps:true},
+    {label:"HY OAS",data:hyV,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.04)",borderWidth:2,pointRadius:0,fill:false,tension:0.2,yAxisID:"yR",spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#3b82f6",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}},yR:{position:"right",grid:{display:false},ticks:{color:"#ef4444",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)+"%"}}}}}});
 }
 
 var fedViewCount=8;
