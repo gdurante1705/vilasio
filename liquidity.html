@@ -102,6 +102,15 @@ nav{
 .refresh-btn:hover{color:var(--white);border-color:var(--card-border-hover)}
 .refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
 
+/* ─── STAT CARDS ROW ─── */
+.stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:20px;position:relative;transition:border-color .2s}
+.stat-card:hover{border-color:var(--card-border-hover)}
+.stat-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);border-radius:var(--r-sm) var(--r-sm) 0 0}
+.stat-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
+.stat-val{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;color:var(--white)}
+.stat-sub{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2);margin-top:4px}
+
 /* ─── STATUS CARDS ─── */
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .status-card{
@@ -225,6 +234,7 @@ footer{
   .hero-top{flex-direction:column;align-items:flex-start;gap:16px}
   .hero-badges{align-items:flex-start}
   main{padding:0 16px 40px}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
   .triple-row{grid-template-columns:1fr}
@@ -232,6 +242,7 @@ footer{
   .disclaimer-inner{padding:0 20px;flex-direction:column;gap:10px}
 }
 @media(max-width:480px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
   .status-row{grid-template-columns:1fr}
 }
 </style>
@@ -289,6 +300,40 @@ footer{
 </section>
 
 <main>
+  <!-- STAT CARDS ROW -->
+  <div class="stats-row reveal">
+    <div class="stat-card">
+      <div class="stat-label">FED BALANCE SHEET</div>
+      <div class="stat-val" id="stat-walcl">&#8212;</div>
+      <div class="stat-sub" id="stat-walcl-chg">&#8212;</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">TGA</div>
+      <div class="stat-val" id="stat-tga">&#8212;</div>
+      <div class="stat-sub" id="stat-tga-chg">&#8212;</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">REVERSE REPO</div>
+      <div class="stat-val" id="stat-rrp">&#8212;</div>
+      <div class="stat-sub" id="stat-rrp-chg">&#8212;</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">NET LIQUIDITY</div>
+      <div class="stat-val" id="stat-netliq">&#8212;</div>
+      <div class="stat-sub" id="stat-netliq-chg">&#8212;</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">M2 SUPPLY</div>
+      <div class="stat-val" id="stat-m2">&#8212;</div>
+      <div class="stat-sub" id="stat-m2-yoy">&#8212;</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">QE/QT REGIME</div>
+      <div class="stat-val" id="stat-qeqt">&#8212;</div>
+      <div class="stat-sub" id="stat-qeqt-badge">&#8212;</div>
+    </div>
+  </div>
+
   <!-- STATUS CARDS -->
   <div class="status-row reveal" id="status-row">
     <div class="status-card neut" id="sc-netliq"><div class="sc-label">Net Liquidity</div><div class="sc-val" id="sc-netliq-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-netliq-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
@@ -460,7 +505,35 @@ function mOpts(){
 
 function togSP(){showSP=showSP?0:1;var b=document.getElementById("tog-sp");if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}if(D)renderNetLiq()}
 
-function renderAll(){renderCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
+function renderAll(){renderStatCards();renderCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
+
+function renderStatCards(){
+  var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
+  /* WALCL */
+  var wc=nl.walcl[n-1],wp=nl.walcl[n-2],wchg=wc-wp;
+  document.getElementById("stat-walcl").textContent=fBn(wc);
+  var swc=document.getElementById("stat-walcl-chg");swc.textContent=fChg(wchg)+" w/w";swc.style.color=wchg>=0?"var(--grn)":"var(--red)";
+  /* TGA */
+  var tc=nl.tga[n-1],tp=nl.tga[n-2],tchg=tc-tp;
+  document.getElementById("stat-tga").textContent=fBn(tc);
+  var stc=document.getElementById("stat-tga-chg");stc.textContent=fChg(tchg)+" w/w";stc.style.color=tchg<=0?"var(--grn)":"var(--red)";
+  /* RRP */
+  var rc=nl.rrp[n-1],rp=nl.rrp[n-2],rchg=rc-rp;
+  document.getElementById("stat-rrp").textContent=fBn(rc);
+  var src=document.getElementById("stat-rrp-chg");src.textContent=fChg(rchg)+" w/w";src.style.color=rchg<=0?"var(--grn)":"var(--red)";
+  /* Net Liquidity */
+  var cur=nl.netLiq[n-1],prev=nl.netLiq[n-2],nchg=cur-prev;
+  document.getElementById("stat-netliq").textContent=fBn(cur);
+  var snc=document.getElementById("stat-netliq-chg");snc.textContent=fChg(nchg)+" w/w";snc.style.color=nchg>=0?"var(--grn)":"var(--red)";
+  /* M2 */
+  var ms=D.moneySupply;
+  if(ms&&ms.m2&&ms.m2.values.length){var mn=ms.m2.values.length;document.getElementById("stat-m2").textContent=fBn(ms.m2.values[mn-1]);if(ms.m2yoy&&ms.m2yoy.values.length){var yn=ms.m2yoy.values.length;var yv=ms.m2yoy.values[yn-1];var sm2=document.getElementById("stat-m2-yoy");sm2.textContent="YoY "+fPct(yv);sm2.style.color=yv>=0?"var(--grn)":"var(--red)"}}
+  /* QE/QT */
+  var st=D.qeqt.status;
+  document.getElementById("stat-qeqt").textContent=st==="QE"?"QE":st==="QT"?"QT":"NEUTRAL";
+  document.getElementById("stat-qeqt").style.color=st==="QE"?"var(--grn)":st==="QT"?"var(--red)":"var(--t1)";
+  var sqb=document.getElementById("stat-qeqt-badge");sqb.textContent=st==="QE"?"EXPANDING":st==="QT"?"CONTRACTING":"FLAT";sqb.style.color=st==="QE"?"var(--grn)":st==="QT"?"var(--red)":"var(--t2)";
+}
 
 function renderCards(){
   var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
