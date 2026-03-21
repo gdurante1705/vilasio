@@ -117,9 +117,9 @@ nav{
 .sc-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
 .sc-val{font-family:"Alata",sans-serif;font-size:36px;font-weight:400;letter-spacing:-0.5px;line-height:1}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
-.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
+.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;color:var(--t2)}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
-.sc-note{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--t2)}
+.sc-note{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:inherit}
 
 /* ─── MAIN ─── */
 main{padding:0 48px 64px}
@@ -418,26 +418,26 @@ function renderCards(){
   var c10=y.dgs10[n-1],p10=y.dgs10[n-6],chg10=c10!=null&&p10!=null?c10-p10:null;
   document.getElementById("sc-10y-val").textContent=fPct(c10);
   var e10=document.getElementById("sc-10y-chg");e10.textContent=fChgPct(chg10);e10.className="sc-delta "+(chg10>=0?"up":"dn");
-  document.getElementById("sc-10y").className="status-card "+(chg10>=0?"up":"dn");
+  e10.parentElement.style.color=chg10>=0?"var(--grn)":"var(--red)";
 
   var sp=D.spread,sn=sp.values.length;
   var csp=sp.values[sn-1],psp=sn>5?sp.values[sn-6]:null,chgsp=csp!=null&&psp!=null?csp-psp:null;
   document.getElementById("sc-spread-val").textContent=csp!=null?csp.toFixed(2)+"%":"\u2014";
   var esp=document.getElementById("sc-spread-chg");esp.textContent=fChgPct(chgsp);esp.className="sc-delta "+(chgsp>=0?"up":"dn");
-  document.getElementById("sc-spread").className="status-card";
+  esp.parentElement.style.color=chgsp>=0?"var(--grn)":"var(--red)";
 
   var ff=D.fedFunds,fn=ff.effective.length;
   var cff=ff.effective[fn-1];
   document.getElementById("sc-ff-val").textContent=fPct(cff);
   var pff=fn>5?ff.effective[fn-6]:null,chgff=cff!=null&&pff!=null?cff-pff:null;
   var eff=document.getElementById("sc-ff-chg");eff.textContent=fChgPct(chgff);eff.className="sc-delta "+(chgff!=null?(chgff>=0?"dn":"up"):"");
-  document.getElementById("sc-ff").className="status-card neut";
+  if(chgff!=null)eff.parentElement.style.color=chgff>=0?"var(--red)":"var(--grn)";
 
   var hy=D.credit.hy,hn=hy.values.length;
   var chy=hy.values[hn-1],phy=hn>5?hy.values[hn-6]:null,chghy=chy!=null&&phy!=null?chy-phy:null;
   document.getElementById("sc-hy-val").textContent=chy!=null?chy.toFixed(2)+"%":"\u2014";
   var ehy=document.getElementById("sc-hy-chg");ehy.textContent=fChgPct(chghy);ehy.className="sc-delta "+(chghy!=null?(chghy>=0?"dn":"up"):"");
-  document.getElementById("sc-hy").className="status-card "+(chghy!=null?(chghy<=0?"up":"dn"):"neut");
+  if(chghy!=null)ehy.parentElement.style.color=chghy>=0?"var(--red)":"var(--grn)";
 
   /* Curve badge */
   var badge=document.getElementById("curve-badge");
