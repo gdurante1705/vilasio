@@ -329,16 +329,16 @@ footer{
     </div>
   </div>
 
-  <!-- FED BALANCE SHEET + QE/QT -->
+  <!-- QE/QT + DEFICIT SPENDING -->
   <div class="dual-row reveal" style="margin-top:0">
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
-        <div><div class="ch-title">Fed Balance Sheet</div><div class="ch-sub">Treasury + MBS + Other</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="ch-toggles"><button class="ch-tog" data-g="bs" data-rw="13" onclick="setR('bs',13)">3M</button><button class="ch-tog" data-g="bs" data-rw="26" onclick="setR('bs',26)">6M</button><button class="ch-tog" data-g="bs" data-rw="52" onclick="setR('bs',52)">1Y</button><button class="ch-tog" data-g="bs" data-rw="104" onclick="setR('bs',104)">2Y</button><button class="ch-tog active" data-g="bs" data-rw="156" onclick="setR('bs',156)">3Y</button></div><button class="ch-tog" id="tog-breakdown" onclick="togBreakdown()">Breakdown</button></div>
+        <div><div class="ch-title">Deficit Spending</div><div class="ch-sub">Monthly Federal Surplus / Deficit (Bn)</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="def" data-rw="12" onclick="setR('def',12)">1Y</button><button class="ch-tog" data-g="def" data-rw="24" onclick="setR('def',24)">2Y</button><button class="ch-tog active" data-g="def" data-rw="36" onclick="setR('def',36)">3Y</button></div>
       </div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="bsChart"></canvas></div></div>
-      <div class="chart-legend" id="bs-legend"><div class="legend-item" id="bs-leg-total"><span class="legend-dot" style="background:var(--bp)"></span> Total WALCL</div><div class="legend-item" id="bs-leg-treasury" style="display:none"><span class="legend-dot" style="background:var(--bp)"></span> Treasury</div><div class="legend-item" id="bs-leg-mbs" style="display:none"><span class="legend-dot" style="background:var(--gold)"></span> MBS</div><div class="legend-item" id="bs-leg-other" style="display:none"><span class="legend-dot" style="background:#a78bfa"></span> Other</div></div>
-      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Treasury securities held by the Fed represent the core of QE/QT operations. When the Fed buys Treasuries, it supports bond prices and suppresses yields. When it sells or lets them mature without reinvesting (QT), Treasury supply increases, putting <strong>upward pressure on yields</strong>.</p></div></div></div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="defChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Surplus</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Deficit</div></div>
+      <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The federal budget deficit represents government spending beyond tax revenue. Large deficits inject <strong>fiscal stimulus</strong> into the economy &#8212; bullish for growth and nominal GDP. However, they also increase Treasury supply, potentially pushing yields higher. The deficit is the fiscal equivalent of monetary QE.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
@@ -394,16 +394,6 @@ footer{
     <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>M1 includes cash, checking deposits, and other liquid deposits. M2 adds savings deposits, money market funds, and small time deposits. <strong>Expanding M2</strong> signals increasing money in circulation &#8212; inflationary and bullish for nominal asset prices. <strong>Contracting M2</strong> (rare) signals monetary tightening and is bearish.</p></div></div></div>
   </div>
 
-  <!-- DEFICIT SPENDING -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Deficit Spending</div><div class="ch-sub">Monthly Federal Surplus / Deficit (Bn)</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="def" data-rw="12" onclick="setR('def',12)">1Y</button><button class="ch-tog" data-g="def" data-rw="24" onclick="setR('def',24)">2Y</button><button class="ch-tog active" data-g="def" data-rw="36" onclick="setR('def',36)">3Y</button></div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="defChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Surplus</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Deficit</div></div>
-    <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The federal budget deficit represents government spending beyond tax revenue. Large deficits inject <strong>fiscal stimulus</strong> into the economy &#8212; bullish for growth and nominal GDP. However, they also increase Treasury supply, potentially pushing yields higher. The deficit is the fiscal equivalent of monetary QE.</p></div></div></div>
-  </div>
 </main>
 
 <footer>
@@ -431,11 +421,11 @@ footer{
 function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 
 var API="https://vilasio-cot-backend.onrender.com";
-var D=null, showSP=1, showBreakdown=false, charts={};
+var D=null, showSP=1, charts={};
 
 /* Independent range state per chart group */
-var R={main:156,walcl:156,rrp2:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
-var renderMap={main:'renderNetLiq',walcl:'renderWALCL',rrp2:'renderRRP2',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
+var R={main:156,walcl:156,rrp2:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
+var renderMap={main:'renderNetLiq',walcl:'renderWALCL',rrp2:'renderRRP2',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
 
 function setR(g,w){
   R[g]=w;
@@ -459,9 +449,7 @@ function mOpts(){
 
 function togSP(){showSP=showSP?0:1;var b=document.getElementById("tog-sp");if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}if(D)renderNetLiq()}
 
-function togBreakdown(){showBreakdown=!showBreakdown;var b=document.getElementById("tog-breakdown");if(b)b.classList.toggle("active",showBreakdown);document.getElementById("bs-leg-total").style.display=showBreakdown?"none":"flex";document.getElementById("bs-leg-treasury").style.display=showBreakdown?"flex":"none";document.getElementById("bs-leg-mbs").style.display=showBreakdown?"flex":"none";document.getElementById("bs-leg-other").style.display=showBreakdown?"flex":"none";if(D)renderBS()}
-
-function renderAll(){renderStatCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
+function renderAll(){renderStatCards();renderNetLiq();renderComponents();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
 
 function renderStatCards(){
   var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
@@ -529,27 +517,6 @@ function renderRRP2(){
   document.getElementById("rrp2-current").textContent=fBn(rr.values[rn-1]);
   if(charts.rrp2)charts.rrp2.destroy();
   charts.rrp2=new Chart(document.getElementById("rrp2Chart").getContext("2d"),{type:"line",data:{labels:sl(rr.dates,rw),datasets:[{label:"Reverse Repo",data:sl(rr.values,rw),borderColor:"#a78bfa",backgroundColor:"rgba(167,139,250,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:mOpts()});
-}
-
-function renderBS(){
-  var bs=D.balanceSheet,rw=R.bs,dates=sl(bs.dates,rw);if(charts.bs)charts.bs.destroy();
-  var ds;
-  if(showBreakdown){
-    ds=[
-      {label:"Treasury",data:sl(bs.treasury,rw),borderColor:"#5b8af0",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3},
-      {label:"MBS",data:sl(bs.mbs,rw),borderColor:"#c8a84b",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3},
-      {label:"Other",data:sl(bs.other,rw),borderColor:"#a78bfa",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3}
-    ];
-  } else {
-    var walclData=sl(D.netLiquidity.walcl,sl(D.netLiquidity.dates,rw).length);
-    /* If walcl length doesn't match bs dates, compute total from components */
-    if(walclData.length!==dates.length){
-      var t=sl(bs.treasury,rw),m=sl(bs.mbs,rw),o=sl(bs.other,rw);
-      walclData=dates.map(function(_,i){return(t[i]||0)+(m[i]||0)+(o[i]||0)});
-    }
-    ds=[{label:"Total WALCL",data:walclData,borderColor:"#5b8af0",borderWidth:2,pointRadius:0,fill:false,tension:0.3}];
-  }
-  charts.bs=new Chart(document.getElementById("bsChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:mOpts()});
 }
 
 function renderQEQT(){
