@@ -496,7 +496,7 @@ function selM(m){cm=m;
   document.querySelectorAll(".hm-cell").forEach(function(c){var sym=c.querySelector(".hmc-sym");if(sym&&sym.textContent===m)c.classList.add("active")});
   document.querySelectorAll(".sticky-pill").forEach(function(p){var sym=p.querySelector(".sp-sym");p.classList.toggle("active",sym&&sym.textContent===m)});
   var act=document.querySelector(".sticky-pill.active");if(act)act.scrollIntoView({block:"center",behavior:"smooth"});
-  return rDet().then(rRel).then(rNet).then(rDual).then(rZS);
+  return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()]);
 }
 function rDet(){return lD(cm,cw).then(function(d){var info=M[cm]||{name:cm,exchange:""};document.getElementById("dh-market").textContent=info.name;document.getElementById("dh-exchange").textContent=info.exchange||"";document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=info.name;document.getElementById("oi-asset-label").textContent=info.name+" — Total contracts";document.getElementById("spread-asset-label").textContent=info.name+" — BP - DL divergence"})}
 function rRel(){return lD(cm,cw).then(function(d){var L=d.labels.length-1,P=L-1;if(P<0)return;document.getElementById("rel-badge").textContent="W/W \u00b7 "+d.reportDate;var bLC=d.bpLong[L]-d.bpLong[P],bSC=d.bpShort[L]-d.bpShort[P],bNC=d.bpNet[L]-d.bpNet[P],dLC=d.dlLong[L]-d.dlLong[P],dSC=d.dlShort[L]-d.dlShort[P],dNC=d.dlNet[L]-d.dlNet[P],mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);
@@ -708,17 +708,17 @@ function buildStickyBar(){
 /* OI weeks toggle */
 document.querySelectorAll(".oi-wk").forEach(function(b){b.addEventListener("click",function(){
   document.querySelectorAll(".oi-wk").forEach(function(x){x.classList.remove("active")});
-  b.classList.add("active");cwOI=parseInt(b.dataset.oiwk);aD={};rOI();
+  b.classList.add("active");cwOI=parseInt(b.dataset.oiwk);rOI();
 })});
 /* Spread weeks toggle */
 document.querySelectorAll(".sp-wk").forEach(function(b){b.addEventListener("click",function(){
   document.querySelectorAll(".sp-wk").forEach(function(x){x.classList.remove("active")});
-  b.classList.add("active");cwSP=parseInt(b.dataset.spwk);aD={};rSP();
+  b.classList.add("active");cwSP=parseInt(b.dataset.spwk);rSP();
 })});
 /* Z-Score weeks toggle */
 document.querySelectorAll(".zs-wk").forEach(function(b){b.addEventListener("click",function(){
   document.querySelectorAll(".zs-wk").forEach(function(x){x.classList.remove("active")});
-  b.classList.add("active");cwZS=parseInt(b.dataset.zswk);aD={};rZS();
+  b.classList.add("active");cwZS=parseInt(b.dataset.zswk);rZS();
 })});
 /* Flow weeks toggle */
 document.querySelectorAll(".flow-wk").forEach(function(b){b.addEventListener("click",function(){
@@ -733,7 +733,7 @@ document.addEventListener("click",function(e){
   if(drillCat)openDrill(drillCat);
 });
 
-document.querySelectorAll(".ch-tog:not(.flow-wk)").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".ch-tog:not(.flow-wk)").forEach(function(x){x.classList.remove("active")});b.classList.add("active");cw=parseInt(b.dataset.weeks);aD={};rDet().then(rRel).then(rNet).then(rDual).then(rZS)})});
+document.querySelectorAll(".ch-tog[data-weeks]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".ch-tog[data-weeks]").forEach(function(x){x.classList.remove("active")});b.classList.add("active");cw=parseInt(b.dataset.weeks);rDet().then(rRel);rNet()})});
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
 window.addEventListener("resize",function(){if(flowView==="sankey"&&flowData)drawSankey(flowData)});
 /* REFRESH */
@@ -746,7 +746,7 @@ function refreshCOT(){
     return rHM();
   }).then(function(){
     buildStickyBar();return rFlow();
-  }).then(rDet).then(rRel).then(rNet).then(rDual).then(rZS).then(function(){
+  }).then(function(){return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()])}).then(function(){
     btn.textContent="REFRESH";btn.style.color="";btn.style.borderColor="";btn.style.pointerEvents="";
   }).catch(function(e){
     console.error("COT refresh failed:",e);
@@ -758,7 +758,7 @@ function refreshCOT(){
 function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
 document.addEventListener('click',function(e){var menu=document.getElementById('mobile-menu');var btn=document.querySelector('.nav-mobile-btn');if(menu&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('open')}});
 /* INIT */
-rHM().then(function(){buildStickyBar();return rFlow()}).then(rDet).then(rRel).then(rNet).then(rDual).then(rZS);
+rHM().then(function(){buildStickyBar();return rFlow()}).then(function(){return Promise.all([rDet().then(rRel),rNet(),rOI(),rSP(),rZS()])});
 </script>
 
 <!-- FOOTER -->
