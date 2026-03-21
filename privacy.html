@@ -28,7 +28,7 @@ body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;fon
 body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);pointer-events:none;z-index:0;}
 body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
 
-nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:32px;padding:14px 28px;background:rgba(12,12,16,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(200,168,75,0.06);border-radius:100px;}
+nav{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:32px;padding:14px 28px;background:rgba(12,12,16,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(200,168,75,0.06);border-radius:100px;}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo-img{width:24px;height:24px;opacity:0.9}
 .nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
@@ -104,6 +104,10 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
   .foot-links{flex-wrap:wrap;gap:16px}
 }
 @media(max-width:768px){.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid rgba(200,168,75,0.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
+.scroll-top.show{opacity:1;pointer-events:auto}
+.scroll-top:hover{border-color:rgba(200,168,75,0.14);transform:translateY(-2px)}
+.scroll-top svg{width:16px;height:16px;stroke:#c0c0c4;fill:none;stroke-width:2}
 </style>
 </head>
 <body>
@@ -350,6 +354,8 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
 <script>
 function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open');}
 document.addEventListener('click',function(e){var menu=document.getElementById('mobile-menu');var btn=document.querySelector('.nav-mobile-btn');if(menu&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('open');}});
+window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)});
 </script>
+<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 </body>
 </html>
