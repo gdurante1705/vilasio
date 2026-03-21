@@ -210,9 +210,9 @@ main{padding:0 48px 64px 120px}
 .rel-detail-row:last-child{border-bottom:none}
 .rel-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);width:40px;flex-shrink:0}
 .rel-val{font-family:"Roboto Slab",serif;font-size:13px;font-weight:400;min-width:80px}
-.rel-bar-track{flex:1;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden}
-.rel-bar{height:100%;border-radius:3px;transition:width .4s ease}
-.rel-bar.pos{background:var(--grn)}.rel-bar.neg{background:var(--red)}
+.rel-bar-center-track{flex:1;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;position:relative;overflow:hidden}
+.rel-bar-mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1)}
+.rel-bar-fill{position:absolute;top:0;height:100%;border-radius:3px;transition:width .4s ease,left .4s ease}
 .rel-delta{font-family:"DM Mono",monospace;font-size:11px;min-width:70px;text-align:right}
 .rel-delta.up{color:var(--grn)}.rel-delta.dn{color:var(--red)}.rel-delta.flat{color:var(--t2)}
 .rel-badge-row{text-align:center;margin-top:8px}
@@ -397,25 +397,25 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <!-- LEFT: BP -->
     <div class="release-half">
       <div class="bento-pair">
-        <div class="bento-card"><div class="bento-label" style="color:var(--bp)">BP NET POSITION</div><div class="bento-val" id="rel-bp-net">&#8212;</div><div class="bento-sub">Long: <span id="rel-bp-long">&#8212;</span> &middot; Short: <span id="rel-bp-short">&#8212;</span></div></div>
-        <div class="bento-card"><div class="bento-label">W/W CHANGE BP</div><div class="bento-val" id="rel-bp-net-chg">&#8212;</div><div class="bento-sub">Long: <span id="rel-bp-long-chg">&#8212;</span> &middot; Short: <span id="rel-bp-short-chg">&#8212;</span></div></div>
+        <div class="bento-card"><div class="bento-label" style="color:var(--bp)">BP NET POSITION</div><div class="bento-val" id="rel-bp-net">&#8212;</div><span style="display:none" id="rel-bp-long"></span><span style="display:none" id="rel-bp-short"></span></div>
+        <div class="bento-card"><div class="bento-label">W/W CHANGE BP</div><div class="bento-val" id="rel-bp-net-chg">&#8212;</div><span style="display:none" id="rel-bp-long-chg"></span><span style="display:none" id="rel-bp-short-chg"></span></div>
       </div>
       <div class="rel-col-card">
         <div class="rel-col-label" style="color:var(--bp)">Non-Commercial &#8212; Big Players</div>
-        <div class="rel-detail-row"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long2"></span><div class="rel-bar-track"><div class="rel-bar pos" id="rel-bp-long-bar"></div></div><span class="rel-delta" id="rel-bp-long-chg2"></span></div>
-        <div class="rel-detail-row"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short2"></span><div class="rel-bar-track"><div class="rel-bar neg" id="rel-bp-short-bar"></div></div><span class="rel-delta" id="rel-bp-short-chg2"></span></div>
+        <div class="rel-detail-row"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long2"></span><div class="rel-bar-center-track"><div class="rel-bar-mid"></div><div class="rel-bar-fill" id="rel-bp-long-bar"></div></div><span class="rel-delta" id="rel-bp-long-chg2"></span></div>
+        <div class="rel-detail-row"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short2"></span><div class="rel-bar-center-track"><div class="rel-bar-mid"></div><div class="rel-bar-fill" id="rel-bp-short-bar"></div></div><span class="rel-delta" id="rel-bp-short-chg2"></span></div>
       </div>
     </div>
     <!-- RIGHT: DL -->
     <div class="release-half">
       <div class="bento-pair">
-        <div class="bento-card"><div class="bento-label" style="color:var(--gold)">DL NET POSITION</div><div class="bento-val" id="rel-dl-net">&#8212;</div><div class="bento-sub">Long: <span id="rel-dl-long">&#8212;</span> &middot; Short: <span id="rel-dl-short">&#8212;</span></div></div>
-        <div class="bento-card"><div class="bento-label">W/W CHANGE DL</div><div class="bento-val" id="rel-dl-net-chg">&#8212;</div><div class="bento-sub">Long: <span id="rel-dl-long-chg">&#8212;</span> &middot; Short: <span id="rel-dl-short-chg">&#8212;</span></div></div>
+        <div class="bento-card"><div class="bento-label" style="color:var(--gold)">DL NET POSITION</div><div class="bento-val" id="rel-dl-net">&#8212;</div><span style="display:none" id="rel-dl-long"></span><span style="display:none" id="rel-dl-short"></span></div>
+        <div class="bento-card"><div class="bento-label">W/W CHANGE DL</div><div class="bento-val" id="rel-dl-net-chg">&#8212;</div><span style="display:none" id="rel-dl-long-chg"></span><span style="display:none" id="rel-dl-short-chg"></span></div>
       </div>
       <div class="rel-col-card">
         <div class="rel-col-label" style="color:var(--gold)">Commercial &#8212; Dealers</div>
-        <div class="rel-detail-row"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long2"></span><div class="rel-bar-track"><div class="rel-bar pos" id="rel-dl-long-bar"></div></div><span class="rel-delta" id="rel-dl-long-chg2"></span></div>
-        <div class="rel-detail-row"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short2"></span><div class="rel-bar-track"><div class="rel-bar neg" id="rel-dl-short-bar"></div></div><span class="rel-delta" id="rel-dl-short-chg2"></span></div>
+        <div class="rel-detail-row"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long2"></span><div class="rel-bar-center-track"><div class="rel-bar-mid"></div><div class="rel-bar-fill" id="rel-dl-long-bar"></div></div><span class="rel-delta" id="rel-dl-long-chg2"></span></div>
+        <div class="rel-detail-row"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short2"></span><div class="rel-bar-center-track"><div class="rel-bar-mid"></div><div class="rel-bar-fill" id="rel-dl-short-bar"></div></div><span class="rel-delta" id="rel-dl-short-chg2"></span></div>
       </div>
     </div>
   </div>
@@ -573,15 +573,15 @@ document.getElementById("rel-dl-long").textContent=fmt(d.dlLong[L]);document.get
 document.getElementById("rel-dl-long2").textContent=fmt(d.dlLong[L]);document.getElementById("rel-dl-short2").textContent=fmt(d.dlShort[L]);
 var dne=document.getElementById("rel-dl-net");dne.textContent=fS(d.dlNet[L]);dne.className="bento-val "+(d.dlNet[L]>=0?"pos":"neg");
 function fChg(id,dl){var c=document.getElementById(id);if(!c)return;c.textContent=fS(dl);c.className="rel-delta "+(dl>0?"up":dl<0?"dn":"flat")}
-function fValBar(id,val,maxVal){var b=document.getElementById(id);if(!b)return;b.style.width=(Math.abs(val)/maxVal*100)+"%"}
+function fCenterBar(id,chg,maxChg){var b=document.getElementById(id);if(!b)return;var pct=Math.abs(chg)/maxChg*50;if(chg>=0){b.style.left="50%";b.style.width=pct+"%";b.style.background="var(--grn)"}else{b.style.left=(50-pct)+"%";b.style.width=pct+"%";b.style.background="var(--red)"}}
 fChg("rel-bp-long-chg",bLC);fChg("rel-bp-long-chg2",bLC);fChg("rel-bp-short-chg",bSC);fChg("rel-bp-short-chg2",bSC);
-/* Bars proportional to Long/Short values */
-var bpMax=Math.max(Math.abs(d.bpLong[L]),Math.abs(d.bpShort[L]),1);
-fValBar("rel-bp-long-bar",d.bpLong[L],bpMax);fValBar("rel-bp-short-bar",d.bpShort[L],bpMax);
+/* Bars from center — proportional to weekly change */
+var bpChgMax=Math.max(Math.abs(bLC),Math.abs(bSC),1);
+fCenterBar("rel-bp-long-bar",bLC,bpChgMax);fCenterBar("rel-bp-short-bar",bSC,bpChgMax);
 var bnc=document.getElementById("rel-bp-net-chg");bnc.textContent=fS(bNC);bnc.className="bento-val "+(bNC>=0?"pos":"neg");
 fChg("rel-dl-long-chg",dLC);fChg("rel-dl-long-chg2",dLC);fChg("rel-dl-short-chg",dSC);fChg("rel-dl-short-chg2",dSC);
-var dlMax=Math.max(Math.abs(d.dlLong[L]),Math.abs(d.dlShort[L]),1);
-fValBar("rel-dl-long-bar",d.dlLong[L],dlMax);fValBar("rel-dl-short-bar",d.dlShort[L],dlMax);
+var dlChgMax=Math.max(Math.abs(dLC),Math.abs(dSC),1);
+fCenterBar("rel-dl-long-bar",dLC,dlChgMax);fCenterBar("rel-dl-short-bar",dSC,dlChgMax);
 var dnc=document.getElementById("rel-dl-net-chg");dnc.textContent=fS(dNC);dnc.className="bento-val "+(dNC>=0?"pos":"neg")})}
 
 /* ─── NET POSITION CHART (Chart.js) ─── */
