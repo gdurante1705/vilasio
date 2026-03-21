@@ -3,122 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Macro Regime Dashboard - Vilasio</title>
+<title>Macro Dashboard — VILASIO</title>
 <meta name="description" content="Macro Regime Dashboard by Vilasio — Macro Regime Oscillator, 4-regime model, inflation monitor, labor market tracker for institutional macro analysis.">
+<meta property="og:title" content="VILASIO — Financial Analytics & Market Research">
+<meta property="og:description" content="Institutional positioning, macro regime, cross-market correlations and geopolitical risk for professional traders.">
+<meta property="og:image" content="https://vilasio.com/Social_Profile.jpg">
+<meta property="og:url" content="https://vilasio.com">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#050507;--surf:#0a0a10;--surf2:#111118;--surf3:#18181f;
-  --brd:#ffffff08;--brd2:#ffffff12;--brd3:#ffffff1a;
-  --white:#f0f1f5;--gray:#5a6070;--gray2:#8a90a0;--gray3:#c0c4d0;
-  --gold:#c8a84b;--gold2:#e8c96a;--gold-dim:rgba(200,168,75,0.12);
+  --bg:#08080a;
+  --surf:#0c0c10;
+  --brd:rgba(255,255,255,0.06);
+  --white:#f0f0f0;
+  --t1:#c0c0c4;
+  --t2:#78787f;
+  --t3:#50505a;
+  --gold:#c8a84b;
+  --gold2:#d4be64;
+  --gold-dim:rgba(200,168,75,0.12);
   --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
   --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
   --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;
   --cyan:#06b6d4;
+  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
+  --card-border:rgba(200,168,75,0.06);
+  --card-border-hover:rgba(200,168,75,0.14);
+  --card-shadow:0 4px 24px rgba(0,0,0,0.5);
+  --r:18px;
+  --r-sm:14px;
+  --r-xs:10px;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.7}
+
+body::before{
+  content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:900px;height:700px;
+  background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;
+  display:flex;align-items:center;gap:32px;
+  padding:14px 28px;
+  background:rgba(12,12,16,0.8);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(200,168,75,0.06);
+  border-radius:100px;
+}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo{width:24px;height:24px;opacity:.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-sep{color:var(--gray);margin:0 4px}
-.nav-page{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
-.nav-right{display:flex;align-items:center;gap:24px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}
-.nav-link:hover{color:var(--white)}
+.nav-logo-img{width:24px;height:24px;opacity:0.9}
+.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.nav-link:hover,.nav-link.active{color:var(--white)}
+.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
+.nav-mobile-menu{
+  display:none;position:fixed;top:64px;left:16px;right:16px;
+  background:rgba(12,12,16,0.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(200,168,75,0.06);
+  border-radius:var(--r);
+  flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
+}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.nav-mobile-menu a:hover{color:var(--white)}
+
+/* ─── SCROLL TOP ─── */
+.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
+.scroll-top.show{opacity:1;pointer-events:auto}
+.scroll-top:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
+.scroll-top svg{width:16px;height:16px;stroke:var(--t1);fill:none;stroke-width:2}
+
+/* ─── HERO ─── */
 .hero{padding:88px 48px 24px}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
 .pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
 .hero-h1{font-family:"Alata",sans-serif;font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:-1.5px;line-height:1.1;margin-top:6px}
 .hero-h1 em{font-style:normal;color:var(--gold2)}
-.hero-desc{font-size:12px;color:var(--gray2);line-height:1.6;max-width:540px;margin-top:6px}
-.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.hero-desc{font-size:12px;color:var(--t1);line-height:1.6;max-width:540px;margin-top:6px}
 .hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.regime-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap}
+.regime-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap;border-radius:100px}
 .regime-badge.expansion{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
 .regime-badge.reflation{color:var(--cyan);border:1px solid rgba(6,182,212,0.3);background:rgba(6,182,212,0.1)}
 .regime-badge.stagnation{color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)}
 .regime-badge.slowdown{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
-.regime-badge.unknown{color:var(--gray3);border:1px solid var(--brd2);background:var(--surf2)}
-.policy-badge{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;white-space:nowrap}
+.regime-badge.unknown{color:var(--t1);border:1px solid var(--brd);background:var(--surf)}
+.policy-badge{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;white-space:nowrap;border-radius:100px}
 .policy-badge.dovish{color:var(--grn);border:1px solid rgba(34,197,94,0.2);background:var(--grn-dim)}
 .policy-badge.hawkish{color:var(--red);border:1px solid rgba(239,68,68,0.2);background:var(--red-dim)}
-.policy-badge.neutral{color:var(--gray2);border:1px solid var(--brd2);background:var(--surf2)}
-.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
+.policy-badge.neutral{color:var(--t2);border:1px solid var(--brd);background:var(--surf)}
+.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap;border-radius:100px}
 .refresh-row{display:flex;align-items:center;gap:8px}
-.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);border:1px solid var(--brd2);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.refresh-btn:hover{color:var(--white);border-color:var(--brd3)}
+.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px}
+.refresh-btn:hover{color:var(--white);border-color:var(--card-border-hover)}
 .refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
-.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:24px}
-.status-card{background:var(--surf);border:1px solid var(--brd2);padding:20px 24px;position:relative;overflow:hidden}
+
+/* ─── STATUS CARDS (Bento) ─── */
+main{padding:0 48px 64px}
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px 24px;position:relative;overflow:hidden;transition:border-color .2s}
+.status-card:hover{border-color:var(--card-border-hover)}
+.status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
 .status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gray)}
-.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px}
+.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--t2)}
+.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
 .sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
 .sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
-.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
-main{padding:0 48px 64px}
-.chart-section{background:var(--surf);border:1px solid var(--brd2);margin-bottom:3px}
+.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
+
+/* ─── CHART SECTIONS ─── */
+.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden}
+.chart-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
 .ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
-.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin-top:2px}
+.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .ch-toggles{display:flex;gap:3px}
-.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd2);color:var(--gray3);cursor:pointer;transition:all .2s}
-.ch-tog:hover{color:var(--white);border-color:var(--brd3)}
+.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd);color:var(--t1);cursor:pointer;transition:all .2s;border-radius:100px}
+.ch-tog:hover{color:var(--white);border-color:var(--card-border-hover)}
 .ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
 .chart-wrap{padding:12px 20px 16px}
 .chart-canvas-wrap{position:relative;height:340px}
 .chart-canvas-sm{position:relative;height:220px}
-.chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
+.chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
 .legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-dot{width:7px;height:7px;border-radius:50%}
-.legend-dot.dashed{border:1.5px dashed var(--gray3);background:transparent}
-.dual-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px}
-.regime-card{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
-.regime-phase{padding:16px;border:1px solid var(--brd2);text-align:center;opacity:0.3;transition:all .3s}
+.legend-dot.dashed{border:1.5px dashed var(--t1);background:transparent}
+
+/* ─── DUAL ROW ─── */
+.dual-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.dual-row .chart-section{margin-bottom:0}
+
+/* ─── REGIME CARD ─── */
+.regime-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;position:relative;overflow:hidden}
+.regime-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-phase{padding:16px;border:1px solid var(--brd);border-radius:var(--r-xs);text-align:center;opacity:0.3;transition:all .3s}
 .regime-phase.active{opacity:1;border-color:var(--gold);background:rgba(200,168,75,0.04)}
 .rp-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;margin-bottom:6px}
-.rp-desc{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--gray2);line-height:1.5}
-.explain-section{background:var(--surf);border:1px solid var(--brd2);padding:24px 28px;margin-bottom:3px}
+.rp-desc{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);line-height:1.5}
+
+/* ─── EXPLAIN SECTION ─── */
+.explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden}
+.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
-.explain-text{font-size:12px;color:var(--gray2);line-height:1.8}
+.explain-text{font-size:12px;color:var(--t1);line-height:1.8}
 .explain-text strong{color:var(--white);font-weight:500}
 .explain-text code{font-family:"DM Mono",monospace;font-size:12px;color:var(--white);font-weight:400}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
-footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--bg)}
-.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
-.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-@media(max-width:768px){nav{padding:12px 16px}.hero{padding:76px 16px 16px}main{padding:0 16px 40px}.status-row{grid-template-columns:1fr 1fr}.dual-row{grid-template-columns:1fr}.regime-card{grid-template-columns:1fr 1fr}footer{padding:24px 16px;flex-direction:column}.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+
+/* ─── FOOTER ─── */
+footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-logo{width:22px;height:22px;opacity:0.7}
+.foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.foot-links{display:flex;gap:28px}
+.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.foot-links a:hover{color:var(--white)}
+.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t2)}
+
+/* ─── DISCLAIMER ─── */
+.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
+.disclaimer-bar p strong{color:var(--t2);font-weight:400}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
+  .nav-links{display:none}
+  .nav-mobile-btn{display:block}
+}
+@media(max-width:768px){
+  .hero{padding:76px 16px 16px}
+  .hero-top{flex-direction:column;gap:12px;align-items:flex-start}
+  .hero-badges{align-items:flex-start}
+  main{padding:0 16px 40px}
+  .status-row{grid-template-columns:1fr 1fr}
+  .dual-row{grid-template-columns:1fr}
+  .regime-card{grid-template-columns:1fr 1fr}
+  footer{flex-direction:column;padding:32px 24px;text-align:center}
+  .foot-links{flex-wrap:wrap;justify-content:center}
+  .foot-right{text-align:center}
+  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <a class="nav-brand" href="index.html">
-    <img class="nav-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
-    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">Macro Regime</span>
+  <a href="index.html" class="nav-brand">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
+    <span class="nav-name">Vilasio</span>
   </a>
-  <div class="nav-right">
+  <div class="nav-links">
     <a class="nav-link" href="owl.html">The Owl</a>
     <a class="nav-link" href="liquidity.html">Liquidity</a>
     <a class="nav-link" href="bonds.html">Bonds</a>
-    <a class="nav-link" href="macro.html">Macro</a>
+    <a class="nav-link active" href="macro.html">Macro</a>
     <a class="nav-link" href="crossmarket.html">Cross-Market</a>
     <a class="nav-link" href="earnings.html">Earnings</a>
     <a class="nav-link" href="congressional.html">Congressional</a>
     <a class="nav-link" href="geopolitical.html">Geopolitical</a>
   </div>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">&#9776;</button>
 </nav>
 
+<!-- Mobile menu -->
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="owl.html">The Owl</a>
+  <a href="liquidity.html">Liquidity</a>
+  <a href="bonds.html">Bonds</a>
+  <a href="macro.html">Macro</a>
+  <a href="crossmarket.html">Cross-Market</a>
+  <a href="earnings.html">Earnings</a>
+  <a href="congressional.html">Congressional</a>
+  <a href="geopolitical.html">Geopolitical</a>
+</div>
+
+<!-- HERO -->
 <section class="hero">
   <div class="hero-top">
     <div>
@@ -140,6 +264,7 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 </section>
 
 <main>
+  <!-- STATUS CARDS -->
   <div class="status-row reveal">
     <div class="status-card neut" id="sc-cpi"><div class="sc-label">CPI YoY</div><div class="sc-val" id="sc-cpi-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-cpi-chg">&#8212;</span><span class="sc-note">vs prior &#183; Target 2%</span></div></div>
     <div class="status-card neut" id="sc-ur"><div class="sc-label">Unemployment Rate</div><div class="sc-val" id="sc-ur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ur-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
@@ -184,14 +309,14 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
 
   <!-- LABOR MARKET -->
   <div class="dual-row reveal">
-    <div class="chart-section" style="margin-bottom:0">
+    <div class="chart-section">
       <div class="chart-header">
         <div><div class="ch-title">Unemployment Rate</div><div class="ch-sub">UNRATE %</div></div>
         <div class="ch-toggles"><button class="ch-tog" data-g="ur" data-rw="6" onclick="setR('ur',6)">6M</button><button class="ch-tog" data-g="ur" data-rw="12" onclick="setR('ur',12)">1Y</button><button class="ch-tog" data-g="ur" data-rw="36" onclick="setR('ur',36)">3Y</button><button class="ch-tog active" data-g="ur" data-rw="60" onclick="setR('ur',60)">5Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="urChart"></canvas></div></div>
     </div>
-    <div class="chart-section" style="margin-bottom:0">
+    <div class="chart-section">
       <div class="chart-header">
         <div><div class="ch-title">NFP Monthly Change</div><div class="ch-sub">Nonfarm Payrolls (thousands)</div></div>
         <div class="ch-toggles"><button class="ch-tog" data-g="nfp" data-rw="6" onclick="setR('nfp',6)">6M</button><button class="ch-tog" data-g="nfp" data-rw="12" onclick="setR('nfp',12)">1Y</button><button class="ch-tog" data-g="nfp" data-rw="24" onclick="setR('nfp',24)">2Y</button><button class="ch-tog active" data-g="nfp" data-rw="36" onclick="setR('nfp',36)">3Y</button></div>
@@ -201,14 +326,14 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   </div>
 
   <div class="dual-row reveal">
-    <div class="chart-section" style="margin-bottom:0">
+    <div class="chart-section">
       <div class="chart-header">
         <div><div class="ch-title">Jobless Claims</div><div class="ch-sub">Initial Claims (weekly)</div></div>
         <div class="ch-toggles"><button class="ch-tog" data-g="ic" data-rw="26" onclick="setR('ic',26)">6M</button><button class="ch-tog" data-g="ic" data-rw="52" onclick="setR('ic',52)">1Y</button><button class="ch-tog active" data-g="ic" data-rw="104" onclick="setR('ic',104)">2Y</button></div>
       </div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="icChart"></canvas></div></div>
     </div>
-    <div class="chart-section" style="margin-bottom:0">
+    <div class="chart-section">
       <div class="chart-header">
         <div><div class="ch-title">JOLTs Job Openings</div><div class="ch-sub">Level (thousands)</div></div>
         <div class="ch-toggles"><button class="ch-tog" data-g="jo" data-rw="6" onclick="setR('jo',6)">6M</button><button class="ch-tog" data-g="jo" data-rw="12" onclick="setR('jo',12)">1Y</button><button class="ch-tog" data-g="jo" data-rw="24" onclick="setR('jo',24)">2Y</button><button class="ch-tog active" data-g="jo" data-rw="36" onclick="setR('jo',36)">3Y</button></div>
@@ -230,17 +355,31 @@ footer{padding:32px 64px;border-top:1px solid rgba(255,255,255,0.07);display:fle
   </div>
 </main>
 
+<!-- Scroll to top -->
+<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
+
+<!-- FOOTER -->
 <footer>
-  <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Alata',sans-serif;font-size:13px;font-weight:500;color:#9ca3af">Vilasio</span></div>
-  <div style="display:flex;gap:28px">
-    <a href="privacy.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Privacy Policy</a>
-    <a href="terms.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Terms of Use</a>
-    <a href="cookie.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Cookie Policy</a>
-    <a href="contact.html" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6b7280;text-decoration:none">Contact</a>
+  <div class="foot-brand">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="V">
+    <span class="foot-name">Vilasio</span>
   </div>
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+  <div class="foot-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="cookie.html">Cookie Policy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
-<div class="disclaimer-bar"><div class="disclaimer-inner"><span class="disclaimer-label">Financial Disclaimer</span><p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p></div></div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer-bar">
+  <div class="disclaimer-inner">
+    <span class="disclaimer-label">Disclaimer</span>
+    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
+  </div>
+</div>
 
 <script>
 var API="https://vilasio-cot-backend.onrender.com";
@@ -366,6 +505,12 @@ function refreshData(){
     D=d;renderAll();btn.textContent="REFRESH";btn.classList.remove("loading");
   }).catch(function(){btn.textContent="FAILED";setTimeout(function(){btn.textContent="REFRESH";btn.classList.remove("loading")},2000)});
 }
+
+/* Mobile menu */
+function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
+/* Scroll to top button */
+window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)})
+document.addEventListener('click',function(e){var menu=document.getElementById('mobile-menu');var btn=document.querySelector('.nav-mobile-btn');if(menu&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('open')}});
 
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:0.1});
 document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
