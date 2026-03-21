@@ -198,6 +198,23 @@ main{padding:0 48px 64px 120px}
 .bento-val.pos{color:var(--grn)}.bento-val.neg{color:var(--red)}
 .bento-sub{font-family:"DM Mono",monospace;font-size:11px;color:var(--t2);margin-top:6px}
 
+/* Release detail bars */
+.release-detail{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.rel-col-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px 24px;position:relative;overflow:hidden}
+.rel-col-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
+.rel-col-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+.rel-detail-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)}
+.rel-detail-row:last-child{border-bottom:none}
+.rel-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);width:40px;flex-shrink:0}
+.rel-val{font-family:"Roboto Slab",serif;font-size:13px;font-weight:400;min-width:80px}
+.rel-bar-track{flex:1;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden}
+.rel-bar{height:100%;border-radius:3px;transition:width .4s ease}
+.rel-bar.pos{background:var(--grn)}.rel-bar.neg{background:var(--red)}
+.rel-delta{font-family:"DM Mono",monospace;font-size:11px;min-width:70px;text-align:right}
+.rel-delta.up{color:var(--grn)}.rel-delta.dn{color:var(--red)}.rel-delta.flat{color:var(--t2)}
+.rel-badge-row{text-align:center;margin-top:8px}
+.rel-badge-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
+
 /* ─── CHARTS AREA ─── */
 .charts-area{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);position:relative;overflow:hidden;margin-top:16px}
 .charts-area::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
@@ -313,6 +330,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .flow-section{padding:0 16px}
   .bento-grid{grid-template-columns:1fr}
   .bento-wide{grid-column:span 1}
+  .release-detail{grid-template-columns:1fr}
   .dual-charts{grid-template-columns:1fr}
   .zs-top{flex-direction:column}
   .zs-stats{grid-template-columns:1fr}
@@ -393,10 +411,21 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="bento-sub">Long: <span id="rel-dl-long-chg">&#8212;</span> &middot; Short: <span id="rel-dl-short-chg">&#8212;</span></div>
       <div style="display:none"><div id="rel-dl-long-bar"></div><div id="rel-dl-short-bar"></div></div>
     </div>
-    <div class="bento-card bento-wide">
-      <div class="bento-label" id="rel-badge">&#8212;</div>
+  </div>
+  <!-- Detailed bars -->
+  <div class="release-detail">
+    <div class="rel-col-card">
+      <div class="rel-col-label" style="color:var(--bp)">Non-Commercial &#8212; Big Players</div>
+      <div class="rel-detail-row"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long2"></span><div class="rel-bar-track"><div class="rel-bar pos" id="rel-bp-long-bar"></div></div><span class="rel-delta" id="rel-bp-long-chg2"></span></div>
+      <div class="rel-detail-row"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short2"></span><div class="rel-bar-track"><div class="rel-bar neg" id="rel-bp-short-bar"></div></div><span class="rel-delta" id="rel-bp-short-chg2"></span></div>
+    </div>
+    <div class="rel-col-card">
+      <div class="rel-col-label" style="color:var(--gold)">Commercial &#8212; Dealers</div>
+      <div class="rel-detail-row"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long2"></span><div class="rel-bar-track"><div class="rel-bar pos" id="rel-dl-long-bar"></div></div><span class="rel-delta" id="rel-dl-long-chg2"></span></div>
+      <div class="rel-detail-row"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short2"></span><div class="rel-bar-track"><div class="rel-bar neg" id="rel-dl-short-bar"></div></div><span class="rel-delta" id="rel-dl-short-chg2"></span></div>
     </div>
   </div>
+  <div class="rel-badge-row"><span class="rel-badge-label" id="rel-badge">&#8212;</span></div>
 </div>
 
 <!-- CHARTS -->
@@ -544,14 +573,16 @@ function selM(m){cm=m;
 function rDet(){return lD(cm,cw).then(function(d){var info=M[cm]||{name:cm,exchange:""};document.getElementById("dh-market").textContent=info.name;document.getElementById("dh-exchange").textContent=info.exchange||"";document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=info.name;document.getElementById("oi-asset-label").textContent=info.name+" — Total contracts";document.getElementById("spread-asset-label").textContent=info.name+" — BP - DL divergence"})}
 function rRel(){return lD(cm,cw).then(function(d){var L=d.labels.length-1,P=L-1;if(P<0)return;document.getElementById("rel-badge").textContent="W/W \u00b7 "+d.reportDate;var bLC=d.bpLong[L]-d.bpLong[P],bSC=d.bpShort[L]-d.bpShort[P],bNC=d.bpNet[L]-d.bpNet[P],dLC=d.dlLong[L]-d.dlLong[P],dSC=d.dlShort[L]-d.dlShort[P],dNC=d.dlNet[L]-d.dlNet[P],mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);
 document.getElementById("rel-bp-long").textContent=fmt(d.bpLong[L]);document.getElementById("rel-bp-short").textContent=fmt(d.bpShort[L]);
+document.getElementById("rel-bp-long2").textContent=fmt(d.bpLong[L]);document.getElementById("rel-bp-short2").textContent=fmt(d.bpShort[L]);
 var bne=document.getElementById("rel-bp-net");bne.textContent=fS(d.bpNet[L]);bne.className="bento-val "+(d.bpNet[L]>=0?"pos":"neg");
 document.getElementById("rel-dl-long").textContent=fmt(d.dlLong[L]);document.getElementById("rel-dl-short").textContent=fmt(d.dlShort[L]);
+document.getElementById("rel-dl-long2").textContent=fmt(d.dlLong[L]);document.getElementById("rel-dl-short2").textContent=fmt(d.dlShort[L]);
 var dne=document.getElementById("rel-dl-net");dne.textContent=fS(d.dlNet[L]);dne.className="bento-val "+(d.dlNet[L]>=0?"pos":"neg");
 function fChg(id,dl){var c=document.getElementById(id);c.textContent=fS(dl);c.className="rel-delta "+(dl>0?"up":dl<0?"dn":"flat")}
 function fBar(id,dl){var b=document.getElementById(id);b.style.width=(Math.abs(dl)/mx*100)+"%";b.className="rel-bar "+(dl>=0?"pos":"neg")}
-fChg("rel-bp-long-chg",bLC);fBar("rel-bp-long-bar",bLC);fChg("rel-bp-short-chg",bSC);fBar("rel-bp-short-bar",bSC);
+fChg("rel-bp-long-chg",bLC);fChg("rel-bp-long-chg2",bLC);fBar("rel-bp-long-bar",bLC);fChg("rel-bp-short-chg",bSC);fChg("rel-bp-short-chg2",bSC);fBar("rel-bp-short-bar",bSC);
 var bnc=document.getElementById("rel-bp-net-chg");bnc.textContent=fS(bNC);bnc.className="bento-val "+(bNC>=0?"pos":"neg");
-fChg("rel-dl-long-chg",dLC);fBar("rel-dl-long-bar",dLC);fChg("rel-dl-short-chg",dSC);fBar("rel-dl-short-bar",dSC);
+fChg("rel-dl-long-chg",dLC);fChg("rel-dl-long-chg2",dLC);fBar("rel-dl-long-bar",dLC);fChg("rel-dl-short-chg",dSC);fChg("rel-dl-short-chg2",dSC);fBar("rel-dl-short-bar",dSC);
 var dnc=document.getElementById("rel-dl-net-chg");dnc.textContent=fS(dNC);dnc.className="bento-val "+(dNC>=0?"pos":"neg")})}
 
 /* ─── NET POSITION CHART (Chart.js) ─── */
