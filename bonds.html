@@ -170,17 +170,19 @@ main{padding:0 48px 64px}
 .chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
 .chart-explain-content strong{color:var(--t1);font-weight:400}
 
-/* ─── FED TIMELINE ─── */
-.fed-timeline{display:flex;flex-direction:column;gap:0px}
-.fed-row{display:flex;align-items:center;padding:7px 12px;background:rgba(255,255,255,0.02);border-radius:6px;gap:10px}
-.fed-row:hover{background:rgba(255,255,255,0.04)}
-.fed-date{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2);min-width:90px}
-.fed-decision{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;min-width:100px}
-.fed-rate{font-family:"Alata",sans-serif;font-size:11px;color:var(--white);min-width:120px}
-.fed-badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;padding:2px 6px;border-radius:100px;text-transform:uppercase}
+/* ─── FED TABLE ─── */
+.fed-table{width:100%;border-collapse:collapse}
+.fed-table-head{display:grid;grid-template-columns:120px 120px 1fr 100px;padding:8px 16px;border-bottom:1px solid var(--brd)}
+.fed-table-head span{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.fed-table-row{display:grid;grid-template-columns:120px 120px 1fr 100px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.03);transition:background .2s}
+.fed-table-row:hover{background:rgba(200,168,75,0.03)}
+.fed-table-row .fed-date{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2)}
+.fed-table-row .fed-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:100px;text-transform:uppercase;display:inline-block}
 .fed-badge.cut{background:rgba(34,197,94,0.12);color:#22c55e}
 .fed-badge.hike{background:rgba(239,68,68,0.12);color:#ef4444}
 .fed-badge.hold{background:rgba(255,255,255,0.06);color:var(--t2)}
+.fed-table-row .fed-rate{font-family:"DM Mono",monospace;font-size:11px;color:var(--white)}
+.fed-table-row .fed-change{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2)}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -349,7 +351,15 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
           <button class="ch-tog" onclick="setFedView(this,16)">LAST 16</button>
           <button class="ch-tog" onclick="setFedView(this,0)">ALL</button>
         </div>
-        <div class="fed-timeline" id="fed-timeline"></div>
+        <div id="fed-timeline">
+          <div class="fed-table-head">
+            <span>DATE</span>
+            <span>DECISION</span>
+            <span>TARGET RATE</span>
+            <span>CHANGE</span>
+          </div>
+          <div id="fed-table-body"></div>
+        </div>
       </div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
     </div>
@@ -509,7 +519,7 @@ function setFedView(btn,count){
   if(D)renderFedTimeline();
 }
 function renderFedTimeline(){
-  var f=D.fedFunds,el=document.getElementById("fed-timeline");
+  var f=D.fedFunds,el=document.getElementById("fed-table-body");
   if(!f||!f.dates||!f.upper)return;
   /* Walk through data and detect rate changes */
   var decisions=[];
@@ -521,7 +531,7 @@ function renderFedTimeline(){
     if(u!==prevUpper||lo!==prevLower){
       var chgBps=Math.round((u-prevUpper)*10000)/100;
       var type=chgBps<0?"cut":chgBps>0?"hike":"hold";
-      decisions.push({date:f.dates[i],upper:u,lower:lo,effective:f.effective[i],chgBps:Math.abs(chgBps),type:type});
+      decisions.push({date:f.dates[i],upper:u,lower:lo,effective:f.effective[i],chgBps:chgBps,type:type});
       prevUpper=u;prevLower=lo;
     }
   }
@@ -533,15 +543,19 @@ function renderFedTimeline(){
   var html="";
   for(var j=0;j<visible.length;j++){
     var d=visible[j];
-    var bpsLabel=d.type==="hold"?"HOLD":d.type==="cut"?"CUT "+Math.round(d.chgBps)+"BPS":"HIKE "+Math.round(d.chgBps)+"BPS";
-    var rangeStr=(d.lower!=null?d.lower.toFixed(2):"?")+"%"+" \u2013 "+(d.upper!=null?d.upper.toFixed(2):"?")+"%";
-    html+='<div class="fed-row">';
+    var bpsLabel=d.type==="hold"?"HOLD":d.type==="cut"?"CUT "+Math.round(Math.abs(d.chgBps))+"BPS":"HIKE "+Math.round(Math.abs(d.chgBps))+"BPS";
+    var rangeStr=(d.lower!=null?d.lower.toFixed(2):"?")+"%"+" \u2014 "+(d.upper!=null?d.upper.toFixed(2):"?")+"%";
+    var chgSign=d.chgBps>0?"+":"";
+    var chgColor=d.chgBps<0?"color:#22c55e":d.chgBps>0?"color:#ef4444":"color:var(--t2)";
+    var chgText=d.type==="hold"?"0":chgSign+Math.round(d.chgBps)+"bps";
+    html+='<div class="fed-table-row">';
     html+='<span class="fed-date">'+d.date+'</span>';
-    html+='<span class="fed-badge '+d.type+'">'+bpsLabel+'</span>';
+    html+='<span><span class="fed-badge '+d.type+'">'+bpsLabel+'</span></span>';
     html+='<span class="fed-rate">'+rangeStr+'</span>';
+    html+='<span class="fed-change" style="'+chgColor+'">'+chgText+'</span>';
     html+='</div>';
   }
-  if(visible.length===0)html='<div class="fed-row"><span class="fed-date">No rate changes detected in data</span></div>';
+  if(visible.length===0)html='<div class="fed-table-row"><span class="fed-date" style="grid-column:1/-1">No rate changes detected in data</span></div>';
   el.innerHTML=html;
 }
 
