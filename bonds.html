@@ -113,9 +113,7 @@ nav{
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
 .status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:24px 28px;position:relative;overflow:hidden;transition:border-color .2s}
 .status-card:hover{border-color:var(--card-border-hover)}
-.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
 .status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--t2)}
 .sc-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
 .sc-val{font-family:"Alata",sans-serif;font-size:36px;font-weight:400;letter-spacing:-0.5px;line-height:1}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
@@ -134,9 +132,9 @@ main{padding:0 48px 64px}
 .ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
 .ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .ch-toggles{display:flex;gap:4px}
-.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;background:none;border:1px solid var(--brd);color:var(--t2);cursor:pointer;transition:all .2s;border-radius:100px}
-.ch-tog:hover{color:var(--white);border-color:var(--card-border-hover)}
-.ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
+.ch-tog{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:7px 16px;background:none;border:1px solid var(--brd);color:var(--t2);cursor:pointer;transition:all .2s;border-radius:100px}
+.ch-tog:hover{color:var(--white);border-color:rgba(200,168,75,0.14)}
+.ch-tog.active{background:rgba(255,255,255,0.08);color:var(--white);border-color:rgba(255,255,255,0.2)}
 .chart-wrap{padding:16px 24px 20px}
 .chart-canvas-wrap{position:relative;height:340px}
 .chart-canvas-sm{position:relative;height:220px}
