@@ -146,16 +146,6 @@ main{padding:0 48px 64px}
 .legend-dot.dashed{border:1.5px dashed var(--t1);background:transparent}
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 
-/* ─── CREDIT BARS ─── */
-.credit-bars{display:flex;flex-direction:column;gap:16px}
-.credit-bar-item{padding:8px 0}
-.credit-bar-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
-.credit-bar-row{display:flex;align-items:center;gap:12px}
-.credit-bar-track{flex:1;height:8px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden}
-.credit-bar-fill{height:100%;border-radius:4px;transition:width 0.5s}
-.credit-bar-val{font-family:"Alata",sans-serif;font-size:18px;min-width:60px;text-align:right}
-.credit-bar-chg{font-family:"DM Mono",monospace;font-size:9px;min-width:50px}
-
 /* ─── FOMC CALENDAR ─── */
 .fomc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px 28px}
 .fomc-card{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xs);padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s}
@@ -297,7 +287,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">2Y-10Y Spread</div><div class="ch-sub">Inversion = Recession Signal</div></div>
-      <div class="ch-toggles"><button class="ch-tog active" data-g="spv" onclick="setSpreadView('line')" id="sp-line-tog">LINE</button><button class="ch-tog" data-g="spv" onclick="setSpreadView('curve')" id="sp-curve-tog">CURVE</button><span style="width:8px"></span><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="sp" data-rw="65" onclick="setR('sp',65)">3M</button><button class="ch-tog" data-g="sp" data-rw="130" onclick="setR('sp',130)">6M</button><button class="ch-tog" data-g="sp" data-rw="260" onclick="setR('sp',260)">1Y</button><button class="ch-tog" data-g="sp" data-rw="520" onclick="setR('sp',520)">2Y</button><button class="ch-tog active" data-g="sp" data-rw="780" onclick="setR('sp',780)">3Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="spreadChart"></canvas></div></div>
     <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Normal (positive)</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inverted (negative)</div></div>
@@ -331,52 +321,19 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">Credit Spreads</div><div class="ch-sub">IG vs HY OAS (bps)</div></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="cr" data-rw="65" onclick="setR('cr',65)">3M</button><button class="ch-tog" data-g="cr" data-rw="130" onclick="setR('cr',130)">6M</button><button class="ch-tog active" data-g="cr" data-rw="260" onclick="setR('cr',260)">1Y</button><button class="ch-tog" data-g="cr" data-rw="520" onclick="setR('cr',520)">2Y</button><button class="ch-tog" data-g="cr" data-rw="780" onclick="setR('cr',780)">3Y</button></div>
       </div>
-      <div class="chart-wrap">
-        <div class="credit-bars">
-          <div class="credit-bar-item">
-            <div class="credit-bar-label">INVESTMENT GRADE</div>
-            <div class="credit-bar-row">
-              <div class="credit-bar-track"><div class="credit-bar-fill" id="ig-bar" style="background:#5b8af0"></div></div>
-              <div class="credit-bar-val" id="ig-val">&#8212;</div>
-              <div class="credit-bar-chg" id="ig-chg">&#8212;</div>
-            </div>
-            <div style="height:30px"><canvas id="igSparkline"></canvas></div>
-          </div>
-          <div class="credit-bar-item">
-            <div class="credit-bar-label">HIGH YIELD</div>
-            <div class="credit-bar-row">
-              <div class="credit-bar-track"><div class="credit-bar-fill" id="hy-bar" style="background:#ef4444"></div></div>
-              <div class="credit-bar-val" id="hy-val">&#8212;</div>
-              <div class="credit-bar-chg" id="hy-chg">&#8212;</div>
-            </div>
-            <div style="height:30px"><canvas id="hySparkline"></canvas></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:4px;margin-top:8px">
-          <button class="ch-tog active" onclick="setCreditRange(this,13)">3M</button>
-          <button class="ch-tog" onclick="setCreditRange(this,26)">6M</button>
-          <button class="ch-tog" onclick="setCreditRange(this,52)">1Y</button>
-        </div>
-      </div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="creditChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:#5b8af0"></span> Investment Grade</div><div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span> High Yield</div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Credit spreads measure the premium investors demand over risk-free Treasuries. <strong>Investment Grade (IG)</strong> spreads reflect broad corporate credit risk. <strong>High Yield (HY)</strong> spreads reflect distressed/speculative credit risk. Widening spreads signal risk aversion and economic stress. Tightening spreads signal confidence. HY spreads above 500bps historically coincide with recessions.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
       <div class="chart-header">
         <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Effective + Target Range</div></div>
-        <div class="ch-toggles"><button class="ch-tog" id="ff-hist-tog" onclick="toggleFedHistory()">HISTORY</button><span style="width:8px"></span><button class="ch-tog" data-g="ff" data-rw="260" onclick="setR('ff',260)">1Y</button><button class="ch-tog" data-g="ff" data-rw="520" onclick="setR('ff',520)">2Y</button><button class="ch-tog active" data-g="ff" data-rw="780" onclick="setR('ff',780)">3Y</button></div>
+        <div class="ch-toggles"><button class="ch-tog" data-g="ff" data-rw="260" onclick="setR('ff',260)">1Y</button><button class="ch-tog" data-g="ff" data-rw="520" onclick="setR('ff',520)">2Y</button><button class="ch-tog active" data-g="ff" data-rw="780" onclick="setR('ff',780)">3Y</button></div>
       </div>
-      <div class="chart-wrap">
-        <div style="position:relative;width:200px;height:110px;margin:0 auto">
-          <canvas id="fedGauge"></canvas>
-        </div>
-        <div style="text-align:center;margin-bottom:16px">
-          <div id="fed-rate-val" style="font-family:'Alata',sans-serif;font-size:36px;color:var(--white)">&#8212;</div>
-          <div id="fed-rate-range" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--t2)">&#8212;</div>
-        </div>
-      </div>
-      <div class="chart-wrap" id="ff-history-wrap" style="display:none"><div class="chart-canvas-sm"><canvas id="ffChart"></canvas></div></div>
-      <div class="chart-legend" id="ff-history-legend" style="display:none"><div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> Effective</div><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Target Upper</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Target Lower</div></div>
+      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="ffChart"></canvas></div></div>
+      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> Effective</div><div class="legend-item"><span class="legend-dot" style="background:var(--grn)"></span> Target Upper</div><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Target Lower</div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
     </div>
   </div>
@@ -418,11 +375,10 @@ function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classL
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
 /* Daily data: 3M~65, 6M~130, 1Y~260, 2Y~520, 3Y~780 business days */
-var R={yld:780,sp:780,ry:780,be:780,ff:780};
-var spreadView='line';
+var R={yld:780,sp:780,ry:780,be:780,cr:260,ff:780};
 var yldShow={dgs2:1,dgs5:1,dgs10:1,dgs30:1};
 var yldLegIds={dgs2:'leg-2y',dgs5:'leg-5y',dgs10:'leg-10y',dgs30:'leg-30y'};
-var renderMap={yld:'renderYields',sp:'renderSpread',ry:'renderReal',be:'renderBE',ff:'renderFF'};
+var renderMap={yld:'renderYields',sp:'renderSpread',ry:'renderReal',be:'renderBE',cr:'renderCredit',ff:'renderFF'};
 function togYld(k){yldShow[k]=yldShow[k]?0:1;var el=document.getElementById(yldLegIds[k]);if(el)el.style.opacity=yldShow[k]?'1':'0.3';if(D)renderYields()}
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
@@ -483,15 +439,7 @@ function renderYields(){
   charts.yld=new Chart(document.getElementById("yieldChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:pctOpts()});
 }
 
-function setSpreadView(view){
-  spreadView=view;
-  document.getElementById('sp-line-tog').classList.toggle('active',view==='line');
-  document.getElementById('sp-curve-tog').classList.toggle('active',view==='curve');
-  if(D)renderSpread();
-}
-
 function renderSpread(){
-  if(spreadView==='curve'){renderSpreadCurve();return}
   var s=D.spread,rw=R.sp,dates=sl(s.dates,rw),vals=sl(s.values,rw);
   /* Build 2Y/10Y lookup for tooltip */
   var y=D.yields,y2map={},y10map={};
@@ -503,21 +451,6 @@ function renderSpread(){
     backgroundColor:"rgba(255,255,255,0.02)",borderWidth:2,pointRadius:0,fill:true,tension:0.2,spanGaps:true
   },{data:dates.map(function(){return 0}),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{displayColors:false,filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){var dt=dates[c.dataIndex],v2=y2map[dt],v10=y10map[dt];var parts=[];if(v2!=null)parts.push("2Y: "+fPct(v2));if(v10!=null)parts.push("10Y: "+fPct(v10));parts.push("Spread: "+fPct(c.parsed.y));return parts}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
-}
-
-function renderSpreadCurve(){
-  var y=D.yields,n=y.dgs2.length;
-  var cur2=y.dgs2[n-1],cur10=y.dgs10[n-1];
-  var ago=Math.min(65,n-1);
-  var old2=y.dgs2[n-1-ago],old10=y.dgs10[n-1-ago];
-  var isNormal=(cur10!=null&&cur2!=null&&cur10>cur2);
-  var fillColor=isNormal?'rgba(34,197,94,0.15)':'rgba(239,68,68,0.15)';
-  var lineColor=isNormal?'#22c55e':'#ef4444';
-  if(charts.sp)charts.sp.destroy();
-  charts.sp=new Chart(document.getElementById("spreadChart").getContext("2d"),{type:"line",data:{labels:['2Y','10Y'],datasets:[
-    {label:"Current",data:[cur2,cur10],borderColor:lineColor,backgroundColor:fillColor,borderWidth:2,pointRadius:4,pointBackgroundColor:lineColor,fill:true,tension:0.1},
-    {label:"3 Months Ago",data:[old2,old10],borderColor:'rgba(255,255,255,0.3)',borderWidth:1.5,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'rgba(255,255,255,0.3)',fill:false,tension:0.1}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{grid:{display:false}}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(2)+"%"}})})}}});
 }
 
 function renderReal(){
@@ -540,73 +473,24 @@ function renderBE(){
   ]},options:pctOpts()});
 }
 
-var creditRange=26;
-function setCreditRange(btn,weeks){
-  creditRange=weeks;
-  btn.parentElement.querySelectorAll('.ch-tog').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  if(D)renderCredit();
-}
-function renderCreditSparkline(canvasId,data,color){
-  if(charts[canvasId])charts[canvasId].destroy();
-  charts[canvasId]=new Chart(document.getElementById(canvasId).getContext("2d"),{type:"line",data:{labels:data.map(function(_,i){return i}),datasets:[{data:data,borderColor:color,borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
-}
 function renderCredit(){
-  var cr=D.credit,rw=creditRange*5;
-  var igV=sl(cr.ig.values,rw),igD=sl(cr.ig.dates,rw);
-  var hyV=sl(cr.hy.values,rw);
-  var igCur=igV[igV.length-1],igPrev=igV.length>5?igV[igV.length-6]:null;
-  var hyCur=hyV[hyV.length-1],hyPrev=hyV.length>5?hyV[hyV.length-6]:null;
-  /* IG values are in percentage (e.g. 1.05 = 105 bps), HY similarly */
-  var igBps=igCur!=null?Math.round(igCur*100):null;
-  var hyBps=hyCur!=null?Math.round(hyCur*100):null;
-  document.getElementById('ig-val').textContent=igBps!=null?igBps+' bps':'\u2014';
-  document.getElementById('hy-val').textContent=hyBps!=null?hyBps+' bps':'\u2014';
-  /* Bar widths: IG max ~200bps, HY max ~600bps */
-  document.getElementById('ig-bar').style.width=igBps!=null?Math.min(100,igBps/2)+'%':'0%';
-  document.getElementById('hy-bar').style.width=hyBps!=null?Math.min(100,hyBps/6)+'%':'0%';
-  /* Weekly change */
-  var igChg=igCur!=null&&igPrev!=null?Math.round((igCur-igPrev)*100):null;
-  var hyChg=hyCur!=null&&hyPrev!=null?Math.round((hyCur-hyPrev)*100):null;
-  var igChgEl=document.getElementById('ig-chg'),hyChgEl=document.getElementById('hy-chg');
-  if(igChg!=null){igChgEl.textContent=(igChg>=0?'\u25B2':'\u25BC')+Math.abs(igChg);igChgEl.style.color=igChg<=0?'var(--grn)':'var(--red)'}else{igChgEl.textContent='\u2014'}
-  if(hyChg!=null){hyChgEl.textContent=(hyChg>=0?'\u25B2':'\u25BC')+Math.abs(hyChg);hyChgEl.style.color=hyChg<=0?'var(--grn)':'var(--red)'}else{hyChgEl.textContent='\u2014'}
-  /* Sparklines */
-  renderCreditSparkline('igSparkline',igV,'#5b8af0');
-  renderCreditSparkline('hySparkline',hyV,'#ef4444');
+  var cr=D.credit,rw=R.cr;
+  var igDates=sl(cr.ig.dates,rw),igV=sl(cr.ig.values,rw),hyV=sl(cr.hy.values,rw);
+  if(charts.credit)charts.credit.destroy();
+  charts.credit=new Chart(document.getElementById("creditChart").getContext("2d"),{type:"line",data:{labels:igDates,datasets:[
+    {label:"Investment Grade",data:igV,borderColor:"#5b8af0",backgroundColor:"rgba(91,138,240,0.06)",fill:true,borderWidth:1.5,tension:0.3,pointRadius:0,spanGaps:true},
+    {label:"High Yield",data:hyV,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.06)",fill:true,borderWidth:1.5,tension:0.3,pointRadius:0,spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){var v=c.parsed.y;return c.dataset.label+": "+(v!=null?Math.round(v*100)+" bps":"\u2014")}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{beginAtZero:false,ticks:Object.assign({},axO.ticks,{callback:function(v){return Math.round(v*100)+" bps"}})})}}});
 }
 
-var showFedHistory=false;
-function toggleFedHistory(){
-  showFedHistory=!showFedHistory;
-  document.getElementById('ff-hist-tog').classList.toggle('active',showFedHistory);
-  document.getElementById('ff-history-wrap').style.display=showFedHistory?'block':'none';
-  document.getElementById('ff-history-legend').style.display=showFedHistory?'flex':'none';
-  if(showFedHistory&&D)renderFFLine();
-}
 function renderFF(){
-  renderFedGauge();
-  if(showFedHistory)renderFFLine();
-}
-function renderFedGauge(){
-  var f=D.fedFunds,n=f.effective.length;
-  var eff=f.effective[n-1],upper=f.upper[n-1],lower=f.lower[n-1];
-  document.getElementById('fed-rate-val').textContent=eff!=null?eff.toFixed(2)+'%':'\u2014';
-  document.getElementById('fed-rate-range').textContent=(lower!=null&&upper!=null)?'TARGET: '+lower.toFixed(2)+'% \u2013 '+upper.toFixed(2)+'%':'\u2014';
-  /* Gauge: position of effective between lower and upper */
-  var pct=0.5;
-  if(eff!=null&&lower!=null&&upper!=null&&upper>lower){pct=Math.max(0,Math.min(1,(eff-lower)/(upper-lower)))}
-  if(charts.fedGauge)charts.fedGauge.destroy();
-  charts.fedGauge=new Chart(document.getElementById('fedGauge').getContext('2d'),{type:'doughnut',data:{datasets:[{data:[pct,1-pct],backgroundColor:['rgba(34,197,94,0.2)','rgba(255,255,255,0.04)'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,circumference:180,rotation:270,cutout:'75%',plugins:{legend:{display:false},tooltip:{enabled:false}}}});
-}
-function renderFFLine(){
   var f=D.fedFunds,rw=R.ff,dates=sl(f.dates,rw);
   if(charts.ff)charts.ff.destroy();
   charts.ff=new Chart(document.getElementById("ffChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"Effective",data:sl(f.effective,rw),borderColor:"#f0f1f5",borderWidth:2,pointRadius:0,fill:false,tension:0,spanGaps:true},
-    {label:"Target Upper",data:sl(f.upper,rw),borderColor:"rgba(34,197,94,0.6)",borderWidth:1,borderDash:[4,2],pointRadius:0,fill:false,tension:0,spanGaps:true},
-    {label:"Target Lower",data:sl(f.lower,rw),borderColor:"rgba(239,68,68,0.6)",borderWidth:1,borderDash:[4,2],pointRadius:0,fill:false,tension:0,spanGaps:true}
-  ]},options:pctOpts()});
+    {label:"Effective",data:sl(f.effective,rw),borderColor:"#f0f0f0",borderWidth:2,stepped:true,pointRadius:0,fill:false,spanGaps:true},
+    {label:"Target Upper",data:sl(f.upper,rw),borderColor:"rgba(34,197,94,0.5)",borderDash:[5,3],borderWidth:1,stepped:true,pointRadius:0,fill:false,spanGaps:true},
+    {label:"Target Lower",data:sl(f.lower,rw),borderColor:"rgba(239,68,68,0.5)",borderDash:[5,3],borderWidth:1,stepped:true,pointRadius:0,fill:"-1",backgroundColor:"rgba(200,168,75,0.04)",spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}}),filler:{propagate:false}},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{beginAtZero:false,ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}});
 }
 
 function renderFOMC(){
