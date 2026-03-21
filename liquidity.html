@@ -456,19 +456,19 @@ function renderStatCards(){
   /* WALCL */
   var wc=nl.walcl[n-1],wp=nl.walcl[n-2],wchg=wc-wp;
   document.getElementById("stat-walcl").textContent=fBn(wc);
-  var swc=document.getElementById("stat-walcl-chg");swc.textContent=fChg(wchg)+" w/w";swc.style.color=wchg>=0?"var(--grn)":"var(--red)";
+  var swc=document.getElementById("stat-walcl-chg");swc.textContent=fChg(wchg)+" weekly";swc.style.color=wchg>=0?"var(--grn)":"var(--red)";
   /* TGA */
   var tc=nl.tga[n-1],tp=nl.tga[n-2],tchg=tc-tp;
   document.getElementById("stat-tga").textContent=fBn(tc);
-  var stc=document.getElementById("stat-tga-chg");stc.textContent=fChg(tchg)+" w/w";stc.style.color=tchg<=0?"var(--grn)":"var(--red)";
+  var stc=document.getElementById("stat-tga-chg");stc.textContent=fChg(tchg)+" weekly";stc.style.color=tchg<=0?"var(--grn)":"var(--red)";
   /* RRP */
   var rc=nl.rrp[n-1],rp=nl.rrp[n-2],rchg=rc-rp;
   document.getElementById("stat-rrp").textContent=fBn(rc);
-  var src=document.getElementById("stat-rrp-chg");src.textContent=fChg(rchg)+" w/w";src.style.color=rchg<=0?"var(--grn)":"var(--red)";
+  var src=document.getElementById("stat-rrp-chg");src.textContent=fChg(rchg)+" weekly";src.style.color=rchg<=0?"var(--grn)":"var(--red)";
   /* Net Liquidity */
   var cur=nl.netLiq[n-1],prev=nl.netLiq[n-2],nchg=cur-prev;
   document.getElementById("stat-netliq").textContent=fBn(cur);
-  var snc=document.getElementById("stat-netliq-chg");snc.textContent=fChg(nchg)+" w/w";snc.style.color=nchg>=0?"var(--grn)":"var(--red)";
+  var snc=document.getElementById("stat-netliq-chg");snc.textContent=fChg(nchg)+" weekly";snc.style.color=nchg>=0?"var(--grn)":"var(--red)";
   /* M2 */
   var ms=D.moneySupply;
   if(ms&&ms.m2&&ms.m2.values.length){var mn=ms.m2.values.length;document.getElementById("stat-m2").textContent=fBn(ms.m2.values[mn-1]);if(ms.m2yoy&&ms.m2yoy.values.length){var yn=ms.m2yoy.values.length;var yv=ms.m2yoy.values[yn-1];var sm2=document.getElementById("stat-m2-yoy");sm2.textContent="YoY "+fPct(yv);sm2.style.color=yv>=0?"var(--grn)":"var(--red)"}}
