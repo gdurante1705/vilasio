@@ -119,7 +119,7 @@ nav{
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
 .sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
-.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--t2);text-transform:uppercase}
+.sc-note{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--t2)}
 
 /* ─── MAIN ─── */
 main{padding:0 48px 64px}
@@ -278,10 +278,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <main>
   <!-- STATUS CARDS -->
   <div class="status-row reveal">
-    <div class="status-card neut" id="sc-10y"><div class="sc-label">10-Year Yield</div><div class="sc-val" id="sc-10y-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-10y-chg">&#8212;</span><span class="sc-note">WEEKLY CHANGE</span></div></div>
-    <div class="status-card neut" id="sc-spread"><div class="sc-label">2Y-10Y Spread</div><div class="sc-val" id="sc-spread-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-spread-chg">&#8212;</span><span class="sc-note">WEEKLY CHANGE</span></div></div>
+    <div class="status-card neut" id="sc-10y"><div class="sc-label">10-Year Yield</div><div class="sc-val" id="sc-10y-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-10y-chg">&#8212;</span><span class="sc-note">weekly</span></div></div>
+    <div class="status-card neut" id="sc-spread"><div class="sc-label">2Y-10Y Spread</div><div class="sc-val" id="sc-spread-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-spread-chg">&#8212;</span><span class="sc-note">weekly</span></div></div>
     <div class="status-card neut" id="sc-ff"><div class="sc-label">Fed Funds Rate</div><div class="sc-val" id="sc-ff-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ff-chg">&#8212;</span><span class="sc-note">Effective</span></div></div>
-    <div class="status-card neut" id="sc-hy"><div class="sc-label">HY Credit Spread</div><div class="sc-val" id="sc-hy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-hy-chg">&#8212;</span><span class="sc-note">WEEKLY CHANGE &#183; High = Stress</span></div></div>
+    <div class="status-card neut" id="sc-hy"><div class="sc-label">HY Credit Spread</div><div class="sc-val" id="sc-hy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-hy-chg">&#8212;</span><span class="sc-note">weekly &#183; High = Stress</span></div></div>
   </div>
 
   <!-- YIELD CURVE (all maturities) -->
@@ -424,8 +424,7 @@ function renderCards(){
   var csp=sp.values[sn-1],psp=sn>5?sp.values[sn-6]:null,chgsp=csp!=null&&psp!=null?csp-psp:null;
   document.getElementById("sc-spread-val").textContent=csp!=null?csp.toFixed(2)+"%":"\u2014";
   var esp=document.getElementById("sc-spread-chg");esp.textContent=fChgPct(chgsp);esp.className="sc-delta "+(chgsp>=0?"up":"dn");
-  var spreadCard=document.getElementById("sc-spread");spreadCard.className="status-card "+(csp>=0?"up":"dn");
-  spreadCard.style.borderColor=csp>=0?"rgba(34,197,94,0.3)":"rgba(239,68,68,0.3)";
+  document.getElementById("sc-spread").className="status-card";
 
   var ff=D.fedFunds,fn=ff.effective.length;
   var cff=ff.effective[fn-1];
