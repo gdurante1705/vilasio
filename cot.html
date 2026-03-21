@@ -103,23 +103,21 @@ nav{
 .hm-toggle-count{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;color:var(--t1)}
 .hm-toggle-arrow{font-family:"DM Mono",monospace;font-size:10px;color:var(--t1);transition:transform .3s}
 .hm-toggle-arrow.open{transform:rotate(180deg)}
-.hm-content{overflow:hidden;transition:max-height .4s ease;max-height:2000px}
+.hm-content{overflow:hidden;transition:max-height .4s ease;max-height:600px}
 .hm-content.collapsed{max-height:0}
-.hm-group{margin-bottom:8px}
-.hm-group-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--t1);padding:6px 0 4px;display:flex;align-items:center;gap:8px}
-.hm-group-label::after{content:"";flex:1;height:1px;background:var(--brd)}
-.hm-group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:3px}
-.hm-cell{background:var(--card);border:1px solid var(--card-border);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.hm-cell::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:8px 8px 0 0}
-.hm-cell.bull::before{background:var(--grn)}.hm-cell.bear::before{background:var(--red)}.hm-cell.neut::before{background:var(--amb)}
-.hm-cell:hover{border-color:rgba(200,168,75,0.3);transform:translateY(-1px);box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.hm-cell.active{border-color:var(--gold);background:var(--surf)}
-.hmc-sym{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:2px}
-.hmc-name{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--t1);text-transform:uppercase;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hmc-net{font-family:"Roboto Slab",serif;font-size:13px;font-weight:400}
+.hm-content.expanded{max-height:2000px}
+.hm-group{margin-bottom:6px}
+.hm-group-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t3);padding:4px 0 3px}
+.hm-group-grid{display:flex;flex-wrap:wrap;gap:4px}
+.hm-cell{border:1px solid var(--card-border);border-radius:8px;padding:8px 12px;cursor:pointer;transition:all .15s;width:110px}
+.hm-cell.bull{background:rgba(34,197,94,0.06)}.hm-cell.bear{background:rgba(239,68,68,0.06)}.hm-cell.neut{background:rgba(255,255,255,0.02)}
+.hm-cell:hover{border-color:rgba(200,168,75,0.14);transform:scale(1.02)}
+.hm-cell.active{border-color:var(--gold);background:rgba(200,168,75,0.06)}
+.hmc-sym{font-family:"DM Mono",monospace;font-size:11px;font-weight:500;color:var(--white);margin-bottom:3px}
+.hmc-name{display:none}
+.hmc-net{font-family:"DM Mono",monospace;font-size:10px}
 .hmc-net.pos{color:var(--grn)}.hmc-net.neg{color:var(--red)}
-.hmc-chg{font-family:"DM Mono",monospace;font-size:9px;margin-top:3px}
-.hmc-chg.up{color:var(--grn)}.hmc-chg.dn{color:var(--red)}
+.hmc-chg{display:none}
 
 /* ─── FLOW MAP ─── */
 .flow-section{padding:0 48px 0 120px;margin-top:20px}
@@ -477,14 +475,14 @@ function rHM(){
       if(!items.length)return;
       var grp=document.createElement("div");grp.className="hm-group";
       var lbl=document.createElement("div");lbl.className="hm-group-label";
-      lbl.innerHTML='<span style="color:'+CC[cat]+'">'+cat.toUpperCase()+'</span>';
+      lbl.textContent=cat.toUpperCase();
       grp.appendChild(lbl);
       var grid=document.createElement("div");grid.className="hm-group-grid";
       items.forEach(function(m){
         var ch=m.bpNetChg,bi=ch>5000?"bull":ch<-5000?"bear":"neut";
         var ce=document.createElement("div");
         ce.className="hm-cell "+bi+(m.market===cm?" active":"");
-        ce.innerHTML='<div class="hmc-sym">'+m.market+'</div><div class="hmc-name">'+m.name+'</div><div class="hmc-net '+(m.bpNet>=0?"pos":"neg")+'">'+fS(m.bpNet)+'</div><div class="hmc-chg '+(ch>=0?"up":"dn")+'">'+fS(ch)+' w/w</div>';
+        ce.innerHTML='<div class="hmc-sym">'+m.market+'</div><div class="hmc-name">'+m.name+'</div><div class="hmc-net '+(m.bpNet>=0?"pos":"neg")+'">'+fK(m.bpNet)+'</div><div class="hmc-chg '+(ch>=0?"up":"dn")+'">'+fS(ch)+'</div>';
         ce.onclick=(function(mk){return function(){selM(mk)}})(m.market);
         grid.appendChild(ce);
       });
