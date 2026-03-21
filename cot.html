@@ -109,10 +109,10 @@ nav{
 .hm-group-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--t1);padding:6px 0 4px;display:flex;align-items:center;gap:8px}
 .hm-group-label::after{content:"";flex:1;height:1px;background:var(--brd)}
 .hm-group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:3px}
-.hm-cell{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.hm-cell::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r-xs) var(--r-xs) 0 0}
+.hm-cell{background:var(--card);border:1px solid var(--card-border);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.hm-cell::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:8px 8px 0 0}
 .hm-cell.bull::before{background:var(--grn)}.hm-cell.bear::before{background:var(--red)}.hm-cell.neut::before{background:var(--amb)}
-.hm-cell:hover{border-color:var(--card-border-hover);transform:translateY(-1px)}
+.hm-cell:hover{border-color:rgba(200,168,75,0.3);transform:translateY(-1px);box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .hm-cell.active{border-color:var(--gold);background:var(--surf)}
 .hmc-sym{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:2px}
 .hmc-name{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--t1);text-transform:uppercase;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -178,108 +178,76 @@ nav{
 .flow-foot-item{display:flex;align-items:center;gap:5px}
 .flow-foot-dot{width:7px;height:3px;border-radius:1px}
 
-/* ─── DETAIL + CHARTS ─── */
+/* ─── DETAIL BENTO GRID ─── */
 main{padding:0 48px 64px 120px}
 .detail-section{margin-top:24px}
-.detail-header{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 28px;background:var(--card);border:1px solid var(--card-border);border-radius:var(--r) var(--r) 0 0;position:relative;overflow:hidden}
-.detail-header::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.dh-market{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:0}
+.det-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.det-market{}
+.dh-market{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;letter-spacing:0}
 .dh-exchange{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:3px}
-.dh-right{text-align:right}
+.det-date-badge{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:10px 16px;text-align:right}
 .dh-date-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
 .dh-date{font-family:"DM Mono",monospace;font-size:14px;font-weight:400;color:var(--white);margin-top:2px}
-.release-section{border:1px solid var(--card-border);border-top:none;background:var(--card);position:relative;overflow:hidden}
-.release-header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--brd)}
-.rel-title{font-family:"Alata",sans-serif;font-size:13px;font-weight:400}
-.rel-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
-.release-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.rel-col{padding:20px 28px}.rel-col:first-child{border-right:1px solid var(--brd)}
-.rel-col-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:14px}
-.rel-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;min-height:42px;border-bottom:1px solid var(--brd)}.rel-row:last-child{border-bottom:none}
-.rel-row-left{display:flex;align-items:center;gap:10px}
-.rel-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);width:44px}
-.rel-val{font-family:"Roboto Slab",serif;font-size:13px;font-weight:400;line-height:1}
-.rel-row-right{display:flex;align-items:center;gap:6px}
-.rel-delta{font-family:"Roboto Slab",serif;font-size:13px;font-weight:400;min-width:70px;text-align:right}
-.rel-delta.up{color:var(--grn)}.rel-delta.dn{color:var(--red)}.rel-delta.flat{color:var(--t2)}
-.rel-bar-wrap{width:60px;height:4px;background:var(--surf);border-radius:2px;overflow:hidden}
-.rel-bar{height:100%;border-radius:2px;transition:width .4s ease}.rel-bar.pos{background:var(--grn)}.rel-bar.neg{background:var(--red)}
-.rel-net{display:flex;align-items:center;justify-content:space-between;padding:12px 0 0;margin-top:6px;border-top:1px solid var(--brd);min-height:42px}
-.rel-net-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t1)}
-.rel-net-group{display:flex;align-items:baseline;gap:10px}
-.rel-net-val{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;letter-spacing:-0.5px}
-.rel-net-val.pos{color:var(--grn)}.rel-net-val.neg{color:var(--red)}
-.rel-net-chg{font-family:"Alata",sans-serif;font-size:16px;font-weight:400;letter-spacing:-0.5px}.rel-net-chg.up{color:var(--grn)}.rel-net-chg.dn{color:var(--red)}
-.rel-summary{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--brd)}
-.rel-zs-box{padding:16px 20px;border-right:1px solid var(--brd)}.rel-zs-box:last-child{border-right:none}
-.rel-zs-header{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.rel-zs-dot{width:8px;height:8px;border-radius:50%}
-.rel-zs-name{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
-.rel-zs-val{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;line-height:1}
-.rel-zs-val.bull{color:var(--grn)}.rel-zs-val.bear{color:var(--red)}.rel-zs-val.neutral{color:var(--t1)}
-.rel-zs-tag{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;padding:3px 8px;display:inline-block;border-radius:100px}
-.rel-zs-tag.bull{color:var(--grn);background:var(--grn-dim)}.rel-zs-tag.bear{color:var(--red);background:var(--red-dim)}.rel-zs-tag.neutral{color:var(--t2);background:var(--surf)}
-.rel-zs-stats{display:flex;gap:16px;margin-top:10px}
-.rel-zs-mini{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t1)}
-.rel-zs-mini span{color:var(--t1);font-weight:400}
-.rel-stat{padding:14px 20px;text-align:center;border-right:1px solid var(--brd)}.rel-stat:last-child{border-right:none}
-.rel-stat-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);margin-bottom:3px}
-.rel-stat-val{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
-.rel-stat-sub{font-family:"DM Mono",monospace;font-size:8px;margin-top:1px}.rel-stat-sub.up{color:var(--grn)}.rel-stat-sub.dn{color:var(--red)}
+.bento-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.bento-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px;position:relative;overflow:hidden;transition:border-color .2s}
+.bento-card:hover{border-color:var(--card-border-hover)}
+.bento-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
+.bento-wide{grid-column:span 2}
+.bento-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
+.bento-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;line-height:1;letter-spacing:-0.5px}
+.bento-val.pos{color:var(--grn)}.bento-val.neg{color:var(--red)}
+.bento-sub{font-family:"DM Mono",monospace;font-size:11px;color:var(--t2);margin-top:6px}
 
 /* ─── CHARTS AREA ─── */
-.charts-area{border:1px solid var(--card-border);border-top:none;background:var(--card);border-radius:0 0 var(--r) var(--r);position:relative;overflow:hidden}
+.charts-area{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);position:relative;overflow:hidden;margin-top:16px}
+.charts-area::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .chart-controls{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--brd)}
-.ch-title{font-family:"Alata",sans-serif;font-size:13px;font-weight:400}
+.ch-title{font-family:"Alata",sans-serif;font-size:16px;font-weight:400}
 .ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .ch-toggles{display:flex;gap:3px}
 .ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd);color:var(--t1);cursor:pointer;transition:all .2s;border-radius:100px}
 .ch-tog:hover{color:var(--white);border-color:var(--card-border-hover)}
 .ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
 .chart-wrap{padding:12px 20px 16px}
-.chart-canvas-wrap{position:relative;height:260px}
+.chart-canvas-wrap{position:relative;height:220px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
 .legend-item{display:flex;align-items:center;gap:5px;cursor:default}
 .legend-item.clickable{cursor:pointer;transition:opacity .2s}.legend-item.clickable:hover{opacity:1}
 .legend-item.off{opacity:0.3}
 .legend-dot{width:7px;height:7px;border-radius:50%}
 .legend-dot.dashed{border:1.5px dashed var(--t1);background:transparent}
-.dual-charts{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--card-border);border-top:none;border-radius:0 0 var(--r) var(--r);overflow:hidden}
-.dual-chart-card{background:var(--card);padding:16px 20px}.dual-chart-card:first-child{border-right:1px solid var(--brd)}
+
+/* ─── DUAL CHARTS ─── */
+.dual-charts{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);overflow:hidden;margin-top:16px;position:relative}
+.dual-charts::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.dual-chart-card{background:transparent;padding:16px 20px}.dual-chart-card:first-child{border-right:1px solid var(--brd)}
 .dc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .dc-title{font-family:"Alata",sans-serif;font-size:13px;font-weight:400}
 .dc-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .dc-val{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;text-align:right}
 .dc-val-sub{font-family:"DM Mono",monospace;font-size:8px;color:var(--t1);text-align:right;margin-top:1px}
-.dc-canvas{position:relative;height:140px}
+.dc-canvas{position:relative;height:160px}
 
 /* ─── Z-SCORE ─── */
 .zscore-section{margin-top:24px;margin-bottom:28px;overflow:visible}
 .zs-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);overflow:visible;position:relative}
 .zs-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);border-radius:var(--r) var(--r) 0 0}
 .zs-top{display:flex;align-items:stretch;border-bottom:1px solid var(--brd)}
-.zs-info{width:380px;padding:24px 28px;border-right:1px solid var(--brd);flex-shrink:0}
-.zs-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
-.zs-value{font-family:"Alata",sans-serif;font-size:44px;font-weight:400;line-height:1}
-.zs-value.bull{color:var(--grn)}.zs-value.bear{color:var(--red)}.zs-value.neutral{color:var(--t1)}
-.zs-reading{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-top:8px;padding:4px 10px;display:inline-block;border-radius:100px}
-.zs-reading.bull{color:var(--grn);background:var(--grn-dim)}.zs-reading.bear{color:var(--red);background:var(--red-dim)}.zs-reading.neutral{color:var(--t2);background:var(--surf)}
-.zs-gauge{margin-top:16px;position:relative;height:8px;background:linear-gradient(90deg,var(--red) 0%,var(--red) 16%,var(--surf) 16%,var(--surf) 33%,var(--t2) 33%,var(--t2) 66%,var(--surf) 66%,var(--surf) 83%,var(--grn) 83%,var(--grn) 100%);border-radius:4px;overflow:visible}
-.zs-gauge-marker{position:absolute;top:-3px;width:3px;height:14px;background:var(--white);border-radius:1px;transform:translateX(-50%);transition:left .5s ease;box-shadow:0 0 6px rgba(255,255,255,0.4)}
-.zs-gauge-labels{display:flex;justify-content:space-between;margin-top:4px;font-family:"DM Mono",monospace;font-size:6px;letter-spacing:1px;color:var(--t2)}
-.zs-stats{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
-.zs-stat{padding:32px 40px;border-right:1px solid var(--brd)}.zs-stat:last-child{border-right:none}
+.zs-stats{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:12px;width:100%;padding:8px}
+.zs-stat{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:28px 32px;position:relative;overflow:hidden;transition:border-color .2s}
+.zs-stat:hover{border-color:var(--card-border-hover)}
+.zs-stat::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
 .zs-stat-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .zs-stat-dot{width:10px;height:10px;border-radius:50%}
 .zs-stat-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
-.zs-stat-val{font-family:"Alata",sans-serif;font-size:36px;font-weight:400;line-height:1;letter-spacing:-1px}
+.zs-stat-val{font-family:"Alata",sans-serif;font-size:48px;font-weight:400;line-height:1;letter-spacing:-1px}
 .zs-stat-val.bull{color:var(--grn)}.zs-stat-val.bear{color:var(--red)}.zs-stat-val.neutral{color:var(--t1)}
 .zs-stat-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-top:12px;padding:5px 12px;display:inline-block;border-radius:100px}
 .zs-stat-tag.bull{color:var(--grn);background:var(--grn-dim)}.zs-stat-tag.bear{color:var(--red);background:var(--red-dim)}.zs-stat-tag.neutral{color:var(--t2);background:var(--surf)}
 .zs-stat-mini{display:flex;gap:20px;margin-top:16px;font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t1)}
 .zs-stat-mini span{color:var(--t1);font-weight:400}
 .zs-chart-area{padding:16px 20px 24px;overflow:visible}
-.zs-chart-wrap{position:relative;height:320px;overflow:visible}
+.zs-chart-wrap{position:relative;height:280px;overflow:visible}
 .zs-explain{padding:20px 28px;border-top:1px solid var(--brd);font-size:12px;color:var(--t1);line-height:1.8}
 .zs-explain strong{color:var(--white);font-weight:500}
 .zs-chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:8px 28px 14px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);overflow:visible}
@@ -336,18 +304,19 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
   .nav-links{display:none}
   .nav-mobile-btn{display:block}
+  .bento-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
   .sticky-bar{display:none}
   .hero{padding:76px 16px 16px 16px}
   main{padding:0 16px 40px 16px}
   .flow-section{padding:0 16px}
-  .release-grid{grid-template-columns:1fr}
-  .rel-summary{grid-template-columns:1fr}
+  .bento-grid{grid-template-columns:1fr}
+  .bento-wide{grid-column:span 1}
   .dual-charts{grid-template-columns:1fr}
   .zs-top{flex-direction:column}
   .zs-stats{grid-template-columns:1fr}
-  .detail-header{flex-direction:column;gap:8px}
+  .det-top{flex-direction:column;gap:8px}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
@@ -388,14 +357,56 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <!-- HERO -->
 <section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div style="display:flex;align-items:center;gap:8px"><div class="update-badge" id="update-badge">REPORT: loading...</div><button id="cot-refresh-btn" onclick="refreshCOT()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px">REFRESH</button></div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div id="heatmap-area"></div></div></section>
 <main>
-<div class="detail-section reveal" id="detail-section"><div class="detail-header"><div><div class="dh-market" id="dh-market">E-Mini S&#38;P 500</div><div class="dh-exchange" id="dh-exchange">CME</div></div><div class="dh-right"><div class="dh-date-label">Report Date</div><div class="dh-date" id="dh-date">&#8212;</div></div></div>
-<div class="release-section"><div class="release-header"><div class="rel-title">Latest Release</div><div class="rel-badge" id="rel-badge">&#8212;</div></div><div class="release-grid"><div class="rel-col"><div class="rel-col-label" style="color:var(--bp)">Non-Commercial &#8212; Big Players</div><div style="display:flex;align-items:stretch;gap:0"><div style="flex:1"><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-bp-long">&#8212;</span></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-bp-short">&#8212;</span></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><span class="rel-net-val" id="rel-bp-net">&#8212;</span></div></div><div style="width:1px;background:var(--brd);margin:0 0"></div><div style="flex:1;padding-left:16px"><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-bp-long-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-bp-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-bp-short-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-bp-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">W/W Net</span><span class="rel-net-chg" id="rel-bp-net-chg" style="font-size:16px;font-weight:400">&#8212;</span></div></div></div></div>
-<div class="rel-col"><div class="rel-col-label" style="color:var(--gold)">Commercial &#8212; Dealers</div><div style="display:flex;align-items:stretch;gap:0"><div style="flex:1"><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Long</span><span class="rel-val" id="rel-dl-long">&#8212;</span></div></div><div class="rel-row"><div class="rel-row-left"><span class="rel-tag">Short</span><span class="rel-val" id="rel-dl-short">&#8212;</span></div></div><div class="rel-net"><span class="rel-net-label">Net Position</span><span class="rel-net-val" id="rel-dl-net">&#8212;</span></div></div><div style="width:1px;background:var(--brd);margin:0 0"></div><div style="flex:1;padding-left:16px"><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-dl-long-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-dl-long-bar"></div></div></div></div><div class="rel-row"><div class="rel-row-right" style="width:100%;justify-content:flex-start"><span class="rel-delta" id="rel-dl-short-chg">&#8212;</span><div class="rel-bar-wrap" style="flex:1"><div class="rel-bar" id="rel-dl-short-bar"></div></div></div></div><div class="rel-net"><span class="rel-net-label">W/W Net</span><span class="rel-net-chg" id="rel-dl-net-chg" style="font-size:16px;font-weight:400">&#8212;</span></div></div></div></div></div>
-</div></div></div>
-<div class="charts-area reveal"><div class="chart-controls"><div><div class="ch-title">Net Position Over Time</div><div class="ch-sub">Historical positioning</div></div><div style="display:flex;align-items:center;gap:6px"><div class="ch-toggles"><button class="ch-tog active" data-weeks="26">26W</button><button class="ch-tog" data-weeks="52">52W</button><button class="ch-tog" data-weeks="104">2Y</button></div><button class="price-tog" id="pt-net" onclick="togP('net')">Price</button></div></div><div style="padding:8px 28px 0;font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="chart-market-label">&#8212;</div><div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netChart"></canvas></div></div><div class="chart-legend" id="net-legend"></div></div>
-<div class="dual-charts reveal"><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Open Interest</div><div class="dc-sub" id="oi-asset-label">Total contracts</div></div><div style="text-align:right"><div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px"><button class="ch-tog oi-wk active" data-oiwk="26">26W</button><button class="ch-tog oi-wk" data-oiwk="52">52W</button><button class="ch-tog oi-wk" data-oiwk="104">2Y</button><button class="price-tog" id="pt-oi" onclick="togP('oi')">Price</button></div><div class="dc-val" id="oi-current">&#8212;</div><div class="dc-val-sub" id="oi-change">&#8212;</div></div></div><div class="dc-canvas"><canvas id="oiChart"></canvas></div></div><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Net Spread</div><div class="dc-sub" id="spread-asset-label">BP - DL divergence</div></div><div style="text-align:right"><div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px"><button class="ch-tog sp-wk active" data-spwk="26">26W</button><button class="ch-tog sp-wk" data-spwk="52">52W</button><button class="ch-tog sp-wk" data-spwk="104">2Y</button><button class="price-tog" id="pt-sp" onclick="togP('sp')">Price</button></div><div class="dc-val" id="spread-current">&#8212;</div><div class="dc-val-sub" id="spread-label">Latest spread</div></div></div><div class="dc-canvas"><canvas id="spreadChart"></canvas></div></div></div>
-<div class="zscore-section reveal"><div class="zs-card"><div class="zs-top"><div class="zs-stats"><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--bp)"></div><div class="zs-stat-label">Big Players Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-bp-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-bp-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-bp-box-net">&#8212;</span></div><div>Mean: <span id="zs-bp-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-bp-box-std">&#8212;</span></div></div></div><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--gold)"></div><div class="zs-stat-label">Commercials Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-dl-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-dl-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-dl-box-net">&#8212;</span></div><div>Mean: <span id="zs-dl-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-dl-box-std">&#8212;</span></div></div></div></div></div><div class="zs-chart-area"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="zs-asset-label">&#8212;</div><div style="display:flex;gap:4px"><button class="ch-tog zs-wk active" data-zswk="52">52W</button><button class="ch-tog zs-wk" data-zswk="104">2Y</button><button class="ch-tog zs-wk" data-zswk="156">3Y</button><button class="zs-tog active" id="zs-tog-bp" onclick="togZsDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>Big Players</button><button class="zs-tog active" id="zs-tog-dl" onclick="togZsDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>Commercials</button><button class="price-tog" id="pt-zs" onclick="togP('zs')">Price</button></div></div><div class="zs-chart-wrap"><canvas id="zsChart"></canvas></div></div><div class="zs-chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> BP Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> DL Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:rgba(34,197,94,0.4)"></span> +2</div><div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.4)"></span> -2</div></div><div class="zs-explain"><strong>What is the Z-Score?</strong> The Z-Score measures how many standard deviations the current net position deviates from its 2-year historical average. Values above <strong>+2.0</strong> indicate positioning significantly above the mean, while values below <strong>-2.0</strong> indicate positioning significantly below the mean. <strong>Big Players</strong> (non-commercial speculators) and <strong>Commercials</strong> (dealers and hedgers) typically hold opposite net positions in the same market.</div>
 
+<!-- DETAIL SECTION — Bento Grid -->
+<div class="detail-section reveal" id="detail-section">
+  <div class="det-top">
+    <div class="det-market">
+      <div class="dh-market" id="dh-market">E-Mini S&#38;P 500</div>
+      <div class="dh-exchange" id="dh-exchange">CME</div>
+    </div>
+    <div class="det-date-badge">
+      <div class="dh-date-label">Report Date</div>
+      <div class="dh-date" id="dh-date">&#8212;</div>
+    </div>
+  </div>
+  <div class="bento-grid">
+    <div class="bento-card">
+      <div class="bento-label" style="color:var(--bp)">BP NET POSITION</div>
+      <div class="bento-val" id="rel-bp-net">&#8212;</div>
+      <div class="bento-sub">Long: <span id="rel-bp-long">&#8212;</span> &middot; Short: <span id="rel-bp-short">&#8212;</span></div>
+    </div>
+    <div class="bento-card">
+      <div class="bento-label" style="color:var(--gold)">DL NET POSITION</div>
+      <div class="bento-val" id="rel-dl-net">&#8212;</div>
+      <div class="bento-sub">Long: <span id="rel-dl-long">&#8212;</span> &middot; Short: <span id="rel-dl-short">&#8212;</span></div>
+    </div>
+    <div class="bento-card">
+      <div class="bento-label">W/W CHANGE BP</div>
+      <div class="bento-val" id="rel-bp-net-chg">&#8212;</div>
+      <div class="bento-sub">Long: <span id="rel-bp-long-chg">&#8212;</span> &middot; Short: <span id="rel-bp-short-chg">&#8212;</span></div>
+      <div style="display:none"><div id="rel-bp-long-bar"></div><div id="rel-bp-short-bar"></div></div>
+    </div>
+    <div class="bento-card">
+      <div class="bento-label">W/W CHANGE DL</div>
+      <div class="bento-val" id="rel-dl-net-chg">&#8212;</div>
+      <div class="bento-sub">Long: <span id="rel-dl-long-chg">&#8212;</span> &middot; Short: <span id="rel-dl-short-chg">&#8212;</span></div>
+      <div style="display:none"><div id="rel-dl-long-bar"></div><div id="rel-dl-short-bar"></div></div>
+    </div>
+    <div class="bento-card bento-wide">
+      <div class="bento-label" id="rel-badge">&#8212;</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="charts-area reveal"><div class="chart-controls"><div><div class="ch-title">Net Position Over Time</div><div class="ch-sub">Historical positioning</div></div><div style="display:flex;align-items:center;gap:6px"><div class="ch-toggles"><button class="ch-tog active" data-weeks="26">26W</button><button class="ch-tog" data-weeks="52">52W</button><button class="ch-tog" data-weeks="104">2Y</button></div><button class="price-tog" id="pt-net" onclick="togP('net')">Price</button></div></div><div style="padding:8px 28px 0;font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="chart-market-label">&#8212;</div><div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="netChart"></canvas></div></div><div class="chart-legend" id="net-legend"></div></div>
+
+<!-- DUAL CHARTS -->
+<div class="dual-charts reveal"><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Open Interest</div><div class="dc-sub" id="oi-asset-label">Total contracts</div></div><div style="text-align:right"><div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px"><button class="ch-tog oi-wk active" data-oiwk="26">26W</button><button class="ch-tog oi-wk" data-oiwk="52">52W</button><button class="ch-tog oi-wk" data-oiwk="104">2Y</button><button class="price-tog" id="pt-oi" onclick="togP('oi')">Price</button></div><div class="dc-val" id="oi-current">&#8212;</div><div class="dc-val-sub" id="oi-change">&#8212;</div></div></div><div class="dc-canvas"><canvas id="oiChart"></canvas></div></div><div class="dual-chart-card"><div class="dc-header"><div><div class="dc-title">Net Spread</div><div class="dc-sub" id="spread-asset-label">BP - DL divergence</div></div><div style="text-align:right"><div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px"><button class="ch-tog sp-wk active" data-spwk="26">26W</button><button class="ch-tog sp-wk" data-spwk="52">52W</button><button class="ch-tog sp-wk" data-spwk="104">2Y</button><button class="price-tog" id="pt-sp" onclick="togP('sp')">Price</button></div><div class="dc-val" id="spread-current">&#8212;</div><div class="dc-val-sub" id="spread-label">Latest spread</div></div></div><div class="dc-canvas"><canvas id="spreadChart"></canvas></div></div></div>
+
+<!-- Z-SCORE -->
+<div class="zscore-section reveal"><div class="zs-card"><div class="zs-top"><div class="zs-stats"><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--bp)"></div><div class="zs-stat-label">Big Players Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-bp-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-bp-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-bp-box-net">&#8212;</span></div><div>Mean: <span id="zs-bp-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-bp-box-std">&#8212;</span></div></div></div><div class="zs-stat"><div class="zs-stat-header"><div class="zs-stat-dot" style="background:var(--gold)"></div><div class="zs-stat-label">Commercials Z-Score (2Y)</div></div><div class="zs-stat-val neutral" id="zs-dl-box-val">&#8212;</div><div class="zs-stat-tag neutral" id="zs-dl-box-tag">&#8212;</div><div class="zs-stat-mini"><div>Net: <span id="zs-dl-box-net">&#8212;</span></div><div>Mean: <span id="zs-dl-box-mean">&#8212;</span></div><div>StdDev: <span id="zs-dl-box-std">&#8212;</span></div></div></div></div></div><div class="zs-chart-area"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-family:'Alata',sans-serif;font-size:13px;font-weight:400" id="zs-asset-label">&#8212;</div><div style="display:flex;gap:4px"><button class="ch-tog zs-wk active" data-zswk="52">52W</button><button class="ch-tog zs-wk" data-zswk="104">2Y</button><button class="ch-tog zs-wk" data-zswk="156">3Y</button><button class="zs-tog active" id="zs-tog-bp" onclick="togZsDS('bp')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bp);margin-right:4px;vertical-align:middle"></span>Big Players</button><button class="zs-tog active" id="zs-tog-dl" onclick="togZsDS('dl')"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:4px;vertical-align:middle"></span>Commercials</button><button class="price-tog" id="pt-zs" onclick="togP('zs')">Price</button></div></div><div class="zs-chart-wrap"><canvas id="zsChart"></canvas></div></div><div class="zs-chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> BP Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> DL Z-Score</div><div class="legend-item"><span class="legend-dot" style="background:rgba(34,197,94,0.4)"></span> +2</div><div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.4)"></span> -2</div></div><div class="zs-explain"><strong>What is the Z-Score?</strong> The Z-Score measures how many standard deviations the current net position deviates from its 2-year historical average. Values above <strong>+2.0</strong> indicate positioning significantly above the mean, while values below <strong>-2.0</strong> indicate positioning significantly below the mean. <strong>Big Players</strong> (non-commercial speculators) and <strong>Commercials</strong> (dealers and hedgers) typically hold opposite net positions in the same market.</div>
 
 </div></div>
 </main>
@@ -533,15 +544,15 @@ function selM(m){cm=m;
 function rDet(){return lD(cm,cw).then(function(d){var info=M[cm]||{name:cm,exchange:""};document.getElementById("dh-market").textContent=info.name;document.getElementById("dh-exchange").textContent=info.exchange||"";document.getElementById("dh-date").textContent=d.reportDate;document.getElementById("chart-market-label").textContent=info.name;document.getElementById("oi-asset-label").textContent=info.name+" — Total contracts";document.getElementById("spread-asset-label").textContent=info.name+" — BP - DL divergence"})}
 function rRel(){return lD(cm,cw).then(function(d){var L=d.labels.length-1,P=L-1;if(P<0)return;document.getElementById("rel-badge").textContent="W/W \u00b7 "+d.reportDate;var bLC=d.bpLong[L]-d.bpLong[P],bSC=d.bpShort[L]-d.bpShort[P],bNC=d.bpNet[L]-d.bpNet[P],dLC=d.dlLong[L]-d.dlLong[P],dSC=d.dlShort[L]-d.dlShort[P],dNC=d.dlNet[L]-d.dlNet[P],mx=Math.max(Math.abs(bLC),Math.abs(bSC),Math.abs(dLC),Math.abs(dSC),1);
 document.getElementById("rel-bp-long").textContent=fmt(d.bpLong[L]);document.getElementById("rel-bp-short").textContent=fmt(d.bpShort[L]);
-var bne=document.getElementById("rel-bp-net");bne.textContent=fS(d.bpNet[L]);bne.className="rel-net-val "+(d.bpNet[L]>=0?"pos":"neg");
+var bne=document.getElementById("rel-bp-net");bne.textContent=fS(d.bpNet[L]);bne.className="bento-val "+(d.bpNet[L]>=0?"pos":"neg");
 document.getElementById("rel-dl-long").textContent=fmt(d.dlLong[L]);document.getElementById("rel-dl-short").textContent=fmt(d.dlShort[L]);
-var dne=document.getElementById("rel-dl-net");dne.textContent=fS(d.dlNet[L]);dne.className="rel-net-val "+(d.dlNet[L]>=0?"pos":"neg");
+var dne=document.getElementById("rel-dl-net");dne.textContent=fS(d.dlNet[L]);dne.className="bento-val "+(d.dlNet[L]>=0?"pos":"neg");
 function fChg(id,dl){var c=document.getElementById(id);c.textContent=fS(dl);c.className="rel-delta "+(dl>0?"up":dl<0?"dn":"flat")}
 function fBar(id,dl){var b=document.getElementById(id);b.style.width=(Math.abs(dl)/mx*100)+"%";b.className="rel-bar "+(dl>=0?"pos":"neg")}
 fChg("rel-bp-long-chg",bLC);fBar("rel-bp-long-bar",bLC);fChg("rel-bp-short-chg",bSC);fBar("rel-bp-short-bar",bSC);
-var bnc=document.getElementById("rel-bp-net-chg");bnc.textContent=fS(bNC);bnc.className="rel-net-chg "+(bNC>=0?"up":"dn");
+var bnc=document.getElementById("rel-bp-net-chg");bnc.textContent=fS(bNC);bnc.className="bento-val "+(bNC>=0?"pos":"neg");
 fChg("rel-dl-long-chg",dLC);fBar("rel-dl-long-bar",dLC);fChg("rel-dl-short-chg",dSC);fBar("rel-dl-short-bar",dSC);
-var dnc=document.getElementById("rel-dl-net-chg");dnc.textContent=fS(dNC);dnc.className="rel-net-chg "+(dNC>=0?"up":"dn")})}
+var dnc=document.getElementById("rel-dl-net-chg");dnc.textContent=fS(dNC);dnc.className="bento-val "+(dNC>=0?"pos":"neg")})}
 
 /* ─── NET POSITION CHART (Chart.js) ─── */
 function rNet(){return lD(cm,cw).then(function(d){var ctx=document.getElementById("netChart").getContext("2d");if(nC)nC.destroy();
@@ -835,5 +846,3 @@ rHM().then(function(){buildStickyBar();return rFlow()}).then(function(){return P
     <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
   </div>
 </div>
-</body>
-</html>
