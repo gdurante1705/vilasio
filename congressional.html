@@ -161,12 +161,16 @@ nav{
 
 .owner-buy{color:var(--grn)}.owner-sale{color:var(--red)}.owner-proposed{color:var(--amb)}.owner-option{color:var(--t2)}
 
-/* ─── EXPLAIN SECTION ─── */
-.explain-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:28px 32px;margin-bottom:16px;position:relative;overflow:hidden}
-.explain-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.explain-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:12px}
-.explain-text{font-size:12px;color:var(--t1);line-height:1.8}
-.explain-text strong{color:var(--white);font-weight:500}
+/* ─── CHART EXPLAIN DROPDOWNS ─── */
+.chart-explain{margin-top:12px}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
+.chart-explain-toggle.open svg{transform:rotate(180deg)}
+.chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
+.chart-explain-content.open{max-height:600px}
+.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--t1);font-weight:400}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -305,6 +309,12 @@ footer{
       </div>
     </div>
     <div class="tbl-wrap"><table class="data-table" id="insider-table"><tr><td style="color:var(--t2)">Loading insider trades...</td></tr></table></div>
+    <div class="chart-explain" style="padding:0 28px 16px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>Corporate insider transactions (CEO, CFO, directors buying or selling their own company stock) provide signals about management confidence. <strong>Insider buying is generally more significant than selling</strong> &#8212; executives have many reasons to sell (diversification, taxes) but only one reason to buy (they believe the stock is undervalued). Clusters of insider buying across a sector can signal institutional-level conviction.</p>
+      </div>
+    </div>
   </div>
 
   <!-- HOUSE FINANCIAL DISCLOSURES -->
@@ -316,40 +326,23 @@ footer{
       <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--t1);padding:10px 14px;border:1px solid var(--card-border);background:var(--surf);border-radius:var(--r-xs)">&#9432; Each row is a Periodic Transaction Report (PTR) filed under the STOCK Act. Click &#8220;View PDF&#8221; to see actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently are the most active traders to monitor. Senate disclosures temporarily unavailable.</div>
     </div>
     <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--t2)">Loading congressional filings...</td></tr></table></div>
+    <div class="chart-explain" style="padding:0 28px 16px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>Congressional trading data tracks stock transactions by US Senators and Representatives, who are required to disclose trades within 45 days under the STOCK Act. These disclosures reveal potential informational advantages &#8212; <strong>members of Congress often sit on committees overseeing industries they trade in</strong>. Watch for clusters of purchases in the same sector by multiple members, especially around legislative events.</p>
+      </div>
+    </div>
   </div>
 
   <!-- SMART MONEY OVERLAP -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Signal Confluence</div><div class="ch-sub">Stocks with Earnings Signal + Insider Buy</div></div></div>
     <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--t2)">Loading overlap...</td></tr></table></div>
-  </div>
-
-  <div class="explain-section reveal">
-    <div class="explain-title">How to read this page</div>
-    <div class="explain-text">
-      <strong>1. Insider Open Market Buys &#8212; The Strongest Signal</strong><br>
-      When a CEO, CFO, or Director buys shares on the open market with their own money, it is one of the most reliable bullish indicators available. These individuals have the deepest knowledge of a company&#8217;s future prospects. Focus on: purchases over $100K, C-suite buyers (CEO/CFO), and cluster buys &#8212; multiple insiders buying the same stock within days. Option exercises are filtered out automatically as they represent routine compensation events, not conviction.<br><br>
-
-      <strong>2. How to Filter the Noise</strong><br>
-      Not all insider trades carry equal weight. Use the filter dropdown to isolate what matters:<br>
-      &#8226; <strong>Buy Transactions</strong>: The primary signal. Open market purchases show genuine conviction &#8212; insiders risking their own capital.<br>
-      &#8226; <strong>Sale Transactions</strong>: Less informative. Insiders sell for many reasons &#8212; taxes, diversification, personal needs. Only significant if a CEO sells an unusually large position unexpectedly.<br>
-      &#8226; <strong>Proposed Sales</strong>: Pre-planned sales filed in advance. These are scheduled months ahead and carry almost no signal value.<br>
-      Sort by Value ($) descending to find the largest conviction bets. Sort by Date to see the most recent activity first.<br><br>
-
-      <strong>3. Signal Confluence &#8212; Maximum Conviction Setup</strong><br>
-      The most powerful signal on this page is when a stock appears in BOTH the Earnings Intelligence tool (positive earnings surprise with bullish price reaction) AND in the insider buy table. This dual confirmation means: the company beat expectations AND those closest to the company are buying with their own money. This represents institutional-grade conviction. Check the Signal Confluence section below for any active overlaps.<br><br>
-
-      <strong>4. House Financial Disclosures &#8212; Congressional Trading</strong><br>
-      Under the STOCK Act (2012), members of Congress must disclose stock trades within 45 days. Each row shows a Periodic Transaction Report (PTR) filing. Click &#8220;View PDF&#8221; to see the actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently &#8212; those with 5+ filings in recent months &#8212; are the most active traders to monitor. Research shows congressional portfolios consistently outperform broad market indices, suggesting informational advantages from committee work and policy visibility.<br><br>
-
-      <strong>5. Connecting the Dots &#8212; The Vilasio Framework</strong><br>
-      This page is one piece of the institutional positioning puzzle. Combine insider data with other Vilasio tools for maximum edge:<br>
-      &#8226; <strong>COT Intelligence</strong>: If institutional positioning is net long on an index AND insiders are buying stocks in that sector, the confluence is strong.<br>
-      &#8226; <strong>Macro Dashboard</strong>: Insider buys during an expansion regime carry more weight than during stagnation or contraction.<br>
-      &#8226; <strong>Cross-Market Analysis</strong>: Check if the sector trend confirms the insider&#8217;s bet. Sector bullish + insider buy = optimal alignment.<br>
-      &#8226; <strong>Earnings Intelligence</strong>: Earnings surprise + insider buy = the highest-confidence setup in our system (see Signal Confluence above).<br>
-      The goal is not to blindly follow insiders, but to use their trades as one confirmation layer within a multi-factor institutional framework.
+    <div class="chart-explain" style="padding:0 28px 16px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <div class="chart-explain-content">
+        <p>The most powerful signal on this page is when a stock appears in both <strong>Earnings Intelligence</strong> (positive earnings surprise with bullish price reaction) and the insider buy table. This dual confirmation means the company beat expectations AND those closest to the company are buying with their own money. This represents institutional-grade conviction.</p>
+      </div>
     </div>
   </div>
 </main>
@@ -376,6 +369,8 @@ footer{
 </div>
 
 <script>
+function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
+
 var API='https://vilasio-cot-backend.onrender.com';
 var D=null;
 var currentTab='latest';
