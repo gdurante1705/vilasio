@@ -330,39 +330,34 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- CREDIT SPREADS + FED FUNDS -->
-  <div class="dual-row reveal">
-    <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">Credit Spreads</div><div class="ch-sub">IG vs HY OAS (bps)</div></div>
-        <div class="ch-toggles"><button class="ch-tog" data-g="cr" data-rw="65" onclick="setR('cr',65)">3M</button><button class="ch-tog" data-g="cr" data-rw="130" onclick="setR('cr',130)">6M</button><button class="ch-tog active" data-g="cr" data-rw="260" onclick="setR('cr',260)">1Y</button><button class="ch-tog" data-g="cr" data-rw="520" onclick="setR('cr',520)">2Y</button><button class="ch-tog" data-g="cr" data-rw="780" onclick="setR('cr',780)">3Y</button></div>
-      </div>
-      <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="creditChart"></canvas></div></div>
-      <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:#5b8af0"></span> Investment Grade</div><div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span> High Yield</div></div>
-      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Credit spreads measure the premium investors demand over risk-free Treasuries. <strong>Investment Grade (IG)</strong> spreads reflect broad corporate credit risk. <strong>High Yield (HY)</strong> spreads reflect distressed/speculative credit risk. Widening spreads signal risk aversion and economic stress. Tightening spreads signal confidence. HY spreads above 500bps historically coincide with recessions.</p></div></div></div>
+  <!-- CREDIT SPREADS -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Credit Spreads</div><div class="ch-sub">IG vs HY OAS (bps)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="cr" data-rw="65" onclick="setR('cr',65)">3M</button><button class="ch-tog" data-g="cr" data-rw="130" onclick="setR('cr',130)">6M</button><button class="ch-tog active" data-g="cr" data-rw="260" onclick="setR('cr',260)">1Y</button><button class="ch-tog" data-g="cr" data-rw="520" onclick="setR('cr',520)">2Y</button><button class="ch-tog" data-g="cr" data-rw="780" onclick="setR('cr',780)">3Y</button></div>
     </div>
-    <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header">
-        <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Decision Timeline</div></div>
-      </div>
-      <div class="chart-wrap">
-        <div style="display:flex;gap:4px;margin-bottom:12px">
-          <button class="ch-tog active" onclick="setFedView(this,8)">LAST 8</button>
-          <button class="ch-tog" onclick="setFedView(this,16)">LAST 16</button>
-          <button class="ch-tog" onclick="setFedView(this,0)">ALL</button>
-        </div>
-        <div id="fed-timeline">
-          <div class="fed-table-head">
-            <span>DATE</span>
-            <span>DECISION</span>
-            <span>TARGET RATE</span>
-            <span>CHANGE</span>
-          </div>
-          <div id="fed-table-body"></div>
-        </div>
-      </div>
-      <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="creditChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:#5b8af0"></span> Investment Grade</div><div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span> High Yield</div></div>
+    <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Credit spreads measure the premium investors demand over risk-free Treasuries. <strong>Investment Grade (IG)</strong> spreads reflect broad corporate credit risk. <strong>High Yield (HY)</strong> spreads reflect distressed/speculative credit risk. Widening spreads signal risk aversion and economic stress. Tightening spreads signal confidence. HY spreads above 500bps historically coincide with recessions.</p></div></div></div>
+  </div>
+
+  <!-- FED FUNDS RATE -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Decision Timeline</div></div>
     </div>
+    <div class="chart-wrap">
+      <div id="fed-timeline">
+        <div class="fed-table-head">
+          <span>DATE</span>
+          <span>DECISION</span>
+          <span>TARGET RATE</span>
+          <span>CHANGE</span>
+        </div>
+        <div id="fed-table-body"></div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
   </div>
 
   <!-- FOMC CALENDAR -->
@@ -511,13 +506,6 @@ function renderCredit(){
 }
 
 var fedViewCount=8;
-function setFedView(btn,count){
-  fedViewCount=count;
-  var parent=btn.parentElement;
-  parent.querySelectorAll('.ch-tog').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  if(D)renderFedTimeline();
-}
 function renderFedTimeline(){
   var f=D.fedFunds,el=document.getElementById("fed-table-body");
   if(!f||!f.dates||!f.upper)return;
