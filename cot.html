@@ -105,18 +105,22 @@ nav{
 .hm-toggle-arrow.open{transform:rotate(180deg)}
 .hm-content{overflow:hidden;transition:max-height .4s ease;max-height:2000px}
 .hm-content.collapsed{max-height:0}
-.hm-group{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.hm-group-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t3);min-width:64px;flex-shrink:0;padding:0}
-.hm-group-grid{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding:4px 0;flex:1}
+/* Sector selector */
+.hm-sector-bar{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.hm-sector-select{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);background:none;border:1px solid var(--card-border);border-radius:100px;padding:6px 14px;cursor:pointer;transition:all .2s;appearance:none;-webkit-appearance:none}
+.hm-sector-select:hover{border-color:var(--card-border-hover);color:var(--white)}
+.hm-sector-select option{background:var(--bg);color:var(--white);font-family:"DM Mono",monospace;font-size:10px}
+.hm-group{display:none}.hm-group.visible{display:block}
+.hm-group-label{display:none}
+.hm-group-grid{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding:2px 0}
 .hm-group-grid::-webkit-scrollbar{display:none}
-.hm-cell{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:10px 14px;cursor:pointer;transition:all .15s;min-width:140px;max-width:140px;flex-shrink:0;scroll-snap-align:start}
+.hm-cell{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:10px 14px;cursor:pointer;transition:all .15s;min-width:160px;max-width:160px;flex-shrink:0;scroll-snap-align:start}
 .hm-cell:hover{border-color:rgba(200,168,75,0.14);transform:translateY(-2px)}
 .hm-cell.active{border-color:var(--gold);background:rgba(200,168,75,0.06)}
-.hmc-sym{font-family:"DM Mono",monospace;font-size:9px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
-.hmc-name{display:none}
-.hmc-net{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;line-height:1}
-.hmc-net.pos{color:var(--grn)}.hmc-net.neg{color:var(--red)}
-.hmc-chg{font-family:"DM Mono",monospace;font-size:8px;margin-top:3px}
+.hmc-sym{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--t2);margin-bottom:2px}
+.hmc-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.hmc-net{display:none}
+.hmc-chg{font-family:"DM Mono",monospace;font-size:8px}
 .hmc-chg.up{color:var(--grn)}.hmc-chg.dn{color:var(--red)}
 
 /* ─── FLOW MAP ─── */
@@ -376,7 +380,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </div>
 
 <!-- HERO -->
-<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div style="display:flex;align-items:center;gap:8px"><div class="update-badge" id="update-badge">REPORT: loading...</div><button id="cot-refresh-btn" onclick="refreshCOT()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px">REFRESH</button></div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div id="heatmap-area"></div></div></section>
+<section class="hero"><div class="hero-top"><div><div class="hero-tag"><span class="pulse"></span> CFTC Weekly Report</div><h1 class="hero-h1">Who is <em>really</em> moving the market.</h1><p class="hero-desc">Commitments of Traders data &#8212; institutional positioning across futures markets, updated every Friday.</p></div><div style="display:flex;align-items:center;gap:8px"><div class="update-badge" id="update-badge">REPORT: loading...</div><button id="cot-refresh-btn" onclick="refreshCOT()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px">REFRESH</button></div></div><div class="hm-toggle" id="hm-toggle" onclick="toggleHM()"><div class="hm-toggle-left"><span class="hm-toggle-label">All Markets</span><span class="hm-toggle-count" id="hm-count"></span></div><span class="hm-toggle-arrow open" id="hm-arrow">&#9660;</span></div><div class="hm-content" id="hm-content"><div class="hm-sector-bar"><select class="hm-sector-select" id="hm-sector-select" onchange="switchSector(this.value)"></select></div><div id="heatmap-area"></div></div></section>
 <main>
 
 <!-- DETAIL SECTION — Bento Grid -->
@@ -473,7 +477,7 @@ function rHM(){
     CORDER.forEach(function(cat){
       var items=mkts.filter(function(m){return m.cat===cat});
       if(!items.length)return;
-      var grp=document.createElement("div");grp.className="hm-group";
+      var grp=document.createElement("div");grp.className="hm-group";grp.dataset.cat=cat;
       var lbl=document.createElement("div");lbl.className="hm-group-label";
       lbl.textContent=cat.toUpperCase();
       grp.appendChild(lbl);
@@ -482,15 +486,22 @@ function rHM(){
         var ch=m.bpNetChg;
         var ce=document.createElement("div");
         ce.className="hm-cell"+(m.market===cm?" active":"");
-        ce.innerHTML='<div class="hmc-sym">'+m.market+' &middot; '+m.name+'</div><div class="hmc-net '+(m.bpNet>=0?"pos":"neg")+'">'+fK(m.bpNet)+'</div><div class="hmc-chg '+(ch>=0?"up":"dn")+'">'+fS(ch)+' w/w</div>';
+        ce.innerHTML='<div class="hmc-sym">'+m.market+'</div><div class="hmc-name">'+m.name+'</div><div class="hmc-net '+(m.bpNet>=0?"pos":"neg")+'">'+fK(m.bpNet)+'</div><div class="hmc-chg '+(ch>=0?"up":"dn")+'">'+fS(ch)+' w/w</div>';
         ce.onclick=(function(mk){return function(){selM(mk)}})(m.market);
         grid.appendChild(ce);
       });
       grp.appendChild(grid);area.appendChild(grp);
     });
     if(mkts.length){document.getElementById("update-badge").textContent="REPORT: "+mkts[0].reportDate;document.getElementById("hm-count").textContent=mkts.length+" MARKETS"}
+    /* Populate sector dropdown */
+    var sel=document.getElementById("hm-sector-select");sel.innerHTML="";
+    CORDER.forEach(function(cat){var opt=document.createElement("option");opt.value=cat;opt.textContent=cat.toUpperCase();sel.appendChild(opt)});
+    /* Show first sector by default, or the one matching current market */
+    var curCat=(M[cm]&&M[cm].cat)||CORDER[0];sel.value=curCat;switchSector(curCat)
   }).catch(function(e){console.warn("Summary fail:",e)});
 }
+
+function switchSector(cat){document.querySelectorAll(".hm-group").forEach(function(g){g.classList.toggle("visible",g.dataset.cat===cat)})}
 
 /* FLOW MAP */
 function rFlow(){
