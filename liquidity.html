@@ -111,31 +111,6 @@ nav{
 .stat-val{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;color:var(--white)}
 .stat-sub{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2);margin-top:4px}
 
-/* ─── STATUS CARDS ─── */
-.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.status-card{
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r-sm);
-  box-shadow:var(--card-shadow);
-  padding:24px 28px;
-  position:relative;overflow:hidden;
-  transition:border-color .2s;
-}
-.status-card:hover{border-color:var(--card-border-hover)}
-.status-card::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);
-}
-.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--t2)}
-.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
-.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
-.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
-.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
-.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
-.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
-
 /* ─── MAIN ─── */
 main{padding:0 48px 64px;position:relative;z-index:1}
 
@@ -176,11 +151,6 @@ main{padding:0 48px 64px;position:relative;z-index:1}
 /* ─── GRID LAYOUTS ─── */
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .triple-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:0}
-
-/* ─── SECTION BAR ─── */
-.section-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:12px;position:relative;overflow:hidden}
-.section-bar::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.section-bar-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--t2)}
 
 /* ─── CHART EXPLAIN DROPDOWNS ─── */
 .chart-explain{margin-top:12px}
@@ -235,7 +205,6 @@ footer{
   .hero-badges{align-items:flex-start}
   main{padding:0 16px 40px}
   .stats-row{grid-template-columns:repeat(3,1fr)}
-  .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
   .triple-row{grid-template-columns:1fr}
   footer{padding:24px 20px;flex-direction:column;gap:16px;align-items:flex-start}
@@ -243,7 +212,6 @@ footer{
 }
 @media(max-width:480px){
   .stats-row{grid-template-columns:repeat(2,1fr)}
-  .status-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -334,14 +302,6 @@ footer{
     </div>
   </div>
 
-  <!-- STATUS CARDS -->
-  <div class="status-row reveal" id="status-row">
-    <div class="status-card neut" id="sc-netliq"><div class="sc-label">Net Liquidity</div><div class="sc-val" id="sc-netliq-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-netliq-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
-    <div class="status-card neut" id="sc-walcl"><div class="sc-label">Fed Balance Sheet (WALCL)</div><div class="sc-val" id="sc-walcl-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-walcl-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
-    <div class="status-card neut" id="sc-tga"><div class="sc-label">TGA Balance</div><div class="sc-val" id="sc-tga-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-tga-chg">&#8212;</span><span class="sc-note">W/W &#183; High = Drain</span></div></div>
-    <div class="status-card neut" id="sc-rrp"><div class="sc-label">Reverse Repo (ON RRP)</div><div class="sc-val" id="sc-rrp-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-rrp-chg">&#8212;</span><span class="sc-note">W/W</span></div></div>
-  </div>
-
   <!-- NET LIQUIDITY -->
   <div class="chart-section reveal">
     <div class="chart-header">
@@ -356,19 +316,14 @@ footer{
     <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p><strong>Net Liquidity = WALCL - TGA - RRP.</strong> This is the actual liquidity available to the financial system after accounting for the Treasury's cash position and the Fed's reverse repo operations. Net Liquidity is considered the single most important driver of equity markets since 2020. When net liquidity rises, risk assets tend to rally. When it falls, expect headwinds.</p></div></div></div>
   </div>
 
-  <!-- COMPONENTS: WALCL / TGA / RRP — shared range selector -->
-  <div class="section-bar reveal">
-    <span class="section-bar-label">Components</span>
-    <div class="ch-toggles"><button class="ch-tog" data-g="comp" data-rw="13" onclick="setR('comp',13)">3M</button><button class="ch-tog" data-g="comp" data-rw="26" onclick="setR('comp',26)">6M</button><button class="ch-tog" data-g="comp" data-rw="52" onclick="setR('comp',52)">1Y</button><button class="ch-tog" data-g="comp" data-rw="104" onclick="setR('comp',104)">2Y</button><button class="ch-tog active" data-g="comp" data-rw="156" onclick="setR('comp',156)">3Y</button></div>
-  </div>
   <div class="dual-row reveal">
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="display:flex;align-items:center;gap:10px"><div class="ch-toggles"><button class="ch-tog" data-g="walcl" data-rw="52" onclick="setR('walcl',52)">1Y</button><button class="ch-tog" data-g="walcl" data-rw="104" onclick="setR('walcl',104)">2Y</button><button class="ch-tog active" data-g="walcl" data-rw="156" onclick="setR('walcl',156)">3Y</button></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div></div>
+      <div class="chart-header"><div><div class="ch-title">WALCL</div><div class="ch-sub">Fed Total Assets</div></div><div style="display:flex;align-items:center;gap:10px"><div class="ch-toggles"><button class="ch-tog" data-g="walcl" data-rw="13" onclick="setR('walcl',13)">3M</button><button class="ch-tog" data-g="walcl" data-rw="26" onclick="setR('walcl',26)">6M</button><button class="ch-tog" data-g="walcl" data-rw="52" onclick="setR('walcl',52)">1Y</button><button class="ch-tog" data-g="walcl" data-rw="104" onclick="setR('walcl',104)">2Y</button><button class="ch-tog active" data-g="walcl" data-rw="156" onclick="setR('walcl',156)">3Y</button></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="walcl-current">&#8212;</div></div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="walclChart"></canvas></div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Fed balance sheet represents total assets held by the Federal Reserve. During <strong>QE</strong> (Quantitative Easing), the Fed buys Treasury bonds from banks, creating new bank reserves and expanding the balance sheet. This excess liquidity flows into risk assets. During <strong>QT</strong> (Quantitative Tightening), the reverse happens &#8212; liquidity drains from the system. The correlation between WALCL and equity markets is historically very strong.</p></div></div></div>
     </div>
     <div class="chart-section" style="margin-bottom:0">
-      <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="display:flex;align-items:center;gap:10px"><div class="ch-toggles"><button class="ch-tog" data-g="rrp2" data-rw="52" onclick="setR('rrp2',52)">1Y</button><button class="ch-tog" data-g="rrp2" data-rw="104" onclick="setR('rrp2',104)">2Y</button><button class="ch-tog active" data-g="rrp2" data-rw="156" onclick="setR('rrp2',156)">3Y</button></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div></div>
+      <div class="chart-header"><div><div class="ch-title">Reverse Repo</div><div class="ch-sub">ON RRP Usage</div></div><div style="display:flex;align-items:center;gap:10px"><div class="ch-toggles"><button class="ch-tog" data-g="rrp2" data-rw="13" onclick="setR('rrp2',13)">3M</button><button class="ch-tog" data-g="rrp2" data-rw="26" onclick="setR('rrp2',26)">6M</button><button class="ch-tog" data-g="rrp2" data-rw="52" onclick="setR('rrp2',52)">1Y</button><button class="ch-tog" data-g="rrp2" data-rw="104" onclick="setR('rrp2',104)">2Y</button><button class="ch-tog active" data-g="rrp2" data-rw="156" onclick="setR('rrp2',156)">3Y</button></div><div style="font-family:'Alata',sans-serif;font-size:16px;font-weight:400" id="rrp2-current">&#8212;</div></div></div>
       <div class="chart-wrap"><div class="chart-canvas-sm"><canvas id="rrp2Chart"></canvas></div></div>
       <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Reverse Repo Facility allows banks and money market funds to park excess cash at the Fed overnight in exchange for Treasury securities. High RRP usage means excess liquidity is sitting idle at the Fed instead of flowing into markets. As RRP declines, that liquidity re-enters the financial system &#8212; <strong>bullish for risk assets</strong>.</p></div></div></div>
     </div>
@@ -479,9 +434,9 @@ var API="https://vilasio-cot-backend.onrender.com";
 var D=null, showSP=1, charts={};
 
 /* Independent range state per chart group */
-var R={main:156,comp:156,walcl:156,rrp2:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
+var R={main:156,walcl:156,rrp2:156,bs:156,qeqt:156,res:156,tgaT:156,m2:36,def:36};
 
-var renderMap={main:'renderNetLiq',comp:'renderComponents',walcl:'renderWALCL',rrp2:'renderRRP2',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
+var renderMap={main:'renderNetLiq',walcl:'renderWALCL',rrp2:'renderRRP2',bs:'renderBS',qeqt:'renderQEQT',res:'renderReserves',tgaT:'renderTGA',m2:'renderM2',def:'renderDeficit'};
 
 function setR(g,w){
   R[g]=w;
@@ -505,7 +460,7 @@ function mOpts(){
 
 function togSP(){showSP=showSP?0:1;var b=document.getElementById("tog-sp");if(b){b.classList.toggle("active",!!showSP);b.classList.toggle("off",!showSP)}if(D)renderNetLiq()}
 
-function renderAll(){renderStatCards();renderCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
+function renderAll(){renderStatCards();renderNetLiq();renderComponents();renderBS();renderQEQT();renderReserves();renderTGA();renderM2();renderDeficit()}
 
 function renderStatCards(){
   var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
@@ -533,27 +488,8 @@ function renderStatCards(){
   document.getElementById("stat-qeqt").textContent=st==="QE"?"QE":st==="QT"?"QT":"NEUTRAL";
   document.getElementById("stat-qeqt").style.color=st==="QE"?"var(--grn)":st==="QT"?"var(--red)":"var(--t1)";
   var sqb=document.getElementById("stat-qeqt-badge");sqb.textContent=st==="QE"?"EXPANDING":st==="QT"?"CONTRACTING":"FLAT";sqb.style.color=st==="QE"?"var(--grn)":st==="QT"?"var(--red)":"var(--t2)";
-}
-
-function renderCards(){
-  var nl=D.netLiquidity,n=nl.netLiq.length;if(n<2)return;
-  var cur=nl.netLiq[n-1],prev=nl.netLiq[n-2],chg=cur-prev;
-  document.getElementById("sc-netliq-val").textContent=fBn(cur);
-  var ce=document.getElementById("sc-netliq-chg");ce.textContent=fChg(chg);ce.className="sc-delta "+(chg>=0?"up":"dn");
-  document.getElementById("sc-netliq").className="status-card "+(chg>=0?"up":"dn");
-  var wc=nl.walcl[n-1],wp=nl.walcl[n-2],wchg=wc-wp;
-  document.getElementById("sc-walcl-val").textContent=fBn(wc);
-  var we=document.getElementById("sc-walcl-chg");we.textContent=fChg(wchg);we.className="sc-delta "+(wchg>=0?"up":"dn");
-  document.getElementById("sc-walcl").className="status-card "+(wchg>=0?"up":"dn");
-  var tc=nl.tga[n-1],tp=nl.tga[n-2],tchg=tc-tp;
-  document.getElementById("sc-tga-val").textContent=fBn(tc);
-  var te=document.getElementById("sc-tga-chg");te.textContent=fChg(tchg);te.className="sc-delta "+(tchg>=0?"dn":"up");
-  document.getElementById("sc-tga").className="status-card "+(tchg<=0?"up":"dn");
-  var rc=nl.rrp[n-1],rp=nl.rrp[n-2],rchg=rc-rp;
-  document.getElementById("sc-rrp-val").textContent=fBn(rc);
-  var re=document.getElementById("sc-rrp-chg");re.textContent=fChg(rchg);re.className="sc-delta "+(rchg<=0?"up":"dn");
-  document.getElementById("sc-rrp").className="status-card "+(rchg<=0?"up":"dn");
-  var badge=document.getElementById("regime-badge"),st=D.qeqt.status;
+  /* Update hero regime badge */
+  var badge=document.getElementById("regime-badge");
   badge.textContent=st==="QE"?"EXPANDING (QE)":st==="QT"?"CONTRACTING (QT)":"NEUTRAL";
   badge.className="regime-badge "+(st==="QE"?"qe":st==="QT"?"qt":"neutral");
   if(D.lastUpdate)document.getElementById("update-badge").textContent="DATA UPDATED: "+D.lastUpdate;
