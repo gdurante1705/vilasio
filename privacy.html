@@ -3,64 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Privacy Policy — Vilasio</title>
+<title>Privacy Policy — VILASIO</title>
 <meta name="description" content="Privacy Policy for Vilasio — how we collect, use, and protect your data.">
+<meta property="og:title" content="VILASIO — Financial Analytics & Market Research">
+<meta property="og:description" content="Institutional positioning, macro regime, cross-market correlations and geopolitical risk for professional traders.">
+<meta property="og:image" content="https://vilasio.com/Social_Profile.jpg">
+<meta property="og:url" content="https://vilasio.com">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#050507;--bg2:#0a0a0f;--surf:#0f0f16;--surf2:#16161f;
-  --brd:rgba(255,255,255,0.07);--brd2:rgba(255,255,255,0.12);
-  --white:#f4f5fa;--gray:#6b7280;--gray2:#9ca3af;
-  --gold:#c8a84b;--gold2:#e8c96a;
+  --bg:#08080a;--surf:#0c0c10;
+  --brd:rgba(255,255,255,0.06);
+  --white:#f0f0f0;--t1:#c0c0c4;--t2:#78787f;--t3:#50505a;
+  --gold:#c8a84b;--gold2:#d4be64;
+  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
+  --card-border:rgba(200,168,75,0.06);--card-border-hover:rgba(200,168,75,0.14);--card-shadow:0 4px 24px rgba(0,0,0,0.5);
+  --r:18px;--r-sm:14px;--r-xs:10px;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.6}
-body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.7}
+body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 64px;background:rgba(5,5,7,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--brd)}
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:32px;padding:14px 28px;background:rgba(12,12,16,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(200,168,75,0.06);border-radius:100px;}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-img{width:28px;height:28px;opacity:0.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-right{display:flex;align-items:center;gap:32px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
-.nav-link:hover{color:var(--white)}
+.nav-logo-img{width:24px;height:24px;opacity:0.9}
+.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.nav-link:hover,.nav-link.active{color:var(--white)}
+.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
+.nav-mobile-menu{display:none;position:fixed;top:64px;left:16px;right:16px;background:rgba(12,12,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(200,168,75,0.06);border-radius:var(--r);flex-direction:column;padding:24px 28px;gap:18px;z-index:99;}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.nav-mobile-menu a:hover{color:var(--white)}
 
 .legal-hero{padding:140px 0 64px;border-bottom:1px solid var(--brd)}
 .legal-hero-inner{max-width:800px;margin:0 auto;padding:0 64px}
 .legal-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.legal-hero h1{font-family:"Alata",sans-serif;font-size:48px;font-weight:500;line-height:1.1;color:var(--white);margin-bottom:16px}
-.legal-hero-meta{font-size:12px;color:var(--gray);font-family:"DM Mono",monospace;letter-spacing:1px}
+.legal-hero h1{font-family:"Alata",sans-serif;font-size:48px;font-weight:400;line-height:1.1;color:var(--white);margin-bottom:16px}
+.legal-hero-meta{font-size:12px;color:var(--t2);font-family:"DM Mono",monospace;letter-spacing:1px}
 
 .legal-body{max-width:800px;margin:0 auto;padding:64px 64px 80px}
 
 .legal-section{margin-bottom:52px;padding-bottom:52px;border-bottom:1px solid var(--brd)}
 .legal-section:last-child{border-bottom:none;margin-bottom:0}
 
-.legal-section h2{font-family:"Alata",sans-serif;font-size:20px;font-weight:500;color:var(--white);margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.legal-section h2{font-family:"Alata",sans-serif;font-size:20px;font-weight:400;color:var(--white);margin-bottom:20px;display:flex;align-items:center;gap:14px}
 .legal-section h2::before{content:"";display:block;width:3px;height:20px;background:var(--gold);flex-shrink:0}
 
-.legal-section h3{font-family:"Alata",sans-serif;font-size:14px;font-weight:500;color:var(--gray2);margin:24px 0 10px;text-transform:uppercase;letter-spacing:1px}
+.legal-section h3{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--t1);margin:24px 0 10px;text-transform:uppercase;letter-spacing:1px}
 
-.legal-section p{font-size:14px;line-height:1.85;color:var(--gray);margin-bottom:14px}
+.legal-section p{font-size:14px;line-height:1.85;color:var(--t2);margin-bottom:14px}
 .legal-section p:last-child{margin-bottom:0}
-.legal-section strong{color:var(--white);font-weight:500}
+.legal-section strong{color:var(--white);font-weight:400}
 
 .legal-section ul{list-style:none;padding:0;margin:12px 0 16px}
-.legal-section ul li{font-size:14px;line-height:1.8;color:var(--gray);padding-left:18px;position:relative;margin-bottom:6px}
+.legal-section ul li{font-size:14px;line-height:1.8;color:var(--t2);padding-left:18px;position:relative;margin-bottom:6px}
 .legal-section ul li::before{content:"—";position:absolute;left:0;color:var(--gold);font-size:11px}
 
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--brd);border:1px solid var(--brd);margin:20px 0}
-.info-cell{background:var(--surf);padding:16px 20px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--brd);border:1px solid var(--card-border);border-radius:var(--r-sm);overflow:hidden;margin:20px 0}
+.info-cell{background:var(--card);padding:16px 20px}
 .info-cell-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.info-cell-value{font-size:13px;color:var(--gray2);line-height:1.6}
+.info-cell-value{font-size:13px;color:var(--t1);line-height:1.6}
 
-.toc{background:var(--surf);border:1px solid var(--brd);padding:28px 32px;margin-bottom:52px}
+.toc{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:28px 32px;margin-bottom:52px}
 .toc-title{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .toc ol{list-style:none;padding:0;counter-reset:toc}
-.toc ol li{counter-increment:toc;font-size:13px;color:var(--gray);padding:5px 0;display:flex;gap:10px}
+.toc ol li{counter-increment:toc;font-size:13px;color:var(--t2);padding:5px 0;display:flex;gap:10px}
 .toc ol li::before{content:counter(toc, decimal-leading-zero);font-family:"DM Mono",monospace;font-size:10px;color:rgba(200,168,75,0.5);min-width:20px}
-.toc ol li a{color:var(--gray2);text-decoration:none;transition:color .2s}
+.toc ol li a{color:var(--t1);text-decoration:none;transition:color .2s}
 .toc ol li a:hover{color:var(--white)}
 
 footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
@@ -68,27 +83,27 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
 .foot-logo{width:22px;height:22px;opacity:0.7}
 .foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
 .foot-links{display:flex;gap:28px}
-.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
+.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
 .foot-links a:hover{color:var(--white)}
-.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--gray);opacity:.6}
+.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--t2);opacity:.6}
 
-.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
+.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
 .disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
-.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-.disclaimer-bar a{color:#c8a84b;text-decoration:underline;text-underline-offset:3px}
-.disclaimer-bar a:hover{color:#e8c96a}
-@media(max-width:768px){.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0}
+.disclaimer-bar p strong{color:var(--t2);font-weight:400}
+.disclaimer-bar a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+.disclaimer-bar a:hover{color:var(--gold2)}
 
+@media(max-width:960px){nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}.nav-links{display:none}.nav-mobile-btn{display:block}}
 @media(max-width:900px){
-  nav{padding:16px 24px}
   .legal-hero-inner,.legal-body{padding-left:24px;padding-right:24px}
   .legal-hero h1{font-size:32px}
   .info-grid{grid-template-columns:1fr}
   footer{padding:40px 24px;flex-direction:column;align-items:flex-start;gap:24px}
   .foot-links{flex-wrap:wrap;gap:16px}
 }
+@media(max-width:768px){.disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}}
 </style>
 </head>
 <body>
@@ -98,29 +113,38 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
     <span class="nav-name">Vilasio</span>
   </a>
-  <div class="nav-right">
-    <a class="nav-link" href="index.html">Home</a>
-    <a class="nav-link" href="cot.html">COT Intelligence</a>
-    <a class="nav-link" href="owl.html">The Owl</a>
-    <a class="nav-link" href="blog.html">Insights</a>
-    <a class="nav-link" href="about.html">About</a>
-    <a class="nav-link" href="contact.html">Contact</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="cot.html" class="nav-link">COT Intelligence</a>
+    <a href="owl.html" class="nav-link">The Owl</a>
+    <a href="blog.html" class="nav-link">Insights</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="contact.html" class="nav-link">Contact</a>
   </div>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">&#9776;</button>
 </nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="cot.html">COT Intelligence</a>
+  <a href="owl.html">The Owl</a>
+  <a href="blog.html">Insights</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <div class="legal-hero">
   <div class="legal-hero-inner">
     <div class="legal-tag">Legal</div>
     <h1>Privacy Policy</h1>
-    <div class="legal-hero-meta">Last updated: March 2026 &nbsp;·&nbsp; </div>
+    <div class="legal-hero-meta">Last updated: March 2026 &nbsp;&middot;&nbsp; </div>
   </div>
 </div>
 
 <div class="legal-body">
 
-  <p style="font-size:14px;line-height:1.85;color:var(--gray);margin-bottom:14px">Vilasio respects the privacy of its users and is committed to protecting personal data collected through this Platform.</p>
-  <p style="font-size:14px;line-height:1.85;color:var(--gray);margin-bottom:14px">This Privacy Policy explains how Vilasio collects, uses, stores, and protects personal data when you access or use vilasio.com and any related subdomains or pages operated under the Vilasio project.</p>
-  <p style="font-size:14px;line-height:1.85;color:var(--gray);margin-bottom:52px">This policy is intended to comply with applicable data protection laws, including the EU General Data Protection Regulation (GDPR) where applicable.</p>
+  <p style="font-size:14px;line-height:1.85;color:var(--t2);margin-bottom:14px">Vilasio respects the privacy of its users and is committed to protecting personal data collected through this Platform.</p>
+  <p style="font-size:14px;line-height:1.85;color:var(--t2);margin-bottom:14px">This Privacy Policy explains how Vilasio collects, uses, stores, and protects personal data when you access or use vilasio.com and any related subdomains or pages operated under the Vilasio project.</p>
+  <p style="font-size:14px;line-height:1.85;color:var(--t2);margin-bottom:52px">This policy is intended to comply with applicable data protection laws, including the EU General Data Protection Regulation (GDPR) where applicable.</p>
 
   <div class="toc">
     <div class="toc-title">Table of Contents</div>
@@ -156,7 +180,7 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
       </div>
       <div class="info-cell">
         <div class="info-cell-label">Contact Email</div>
-        <div class="info-cell-value"><a href="/cdn-cgi/l/email-protection#0e676068614e7867626f7d6761206d6163" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px"><span class="__cf_email__" data-cfemail="036a6d656c43756a6f62706a6c2d606c6e">[email&#160;protected]</span></a></div>
+        <div class="info-cell-value"><a href="mailto:info@vilasio.com" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">info@vilasio.com</a></div>
       </div>
       <div class="info-cell">
         <div class="info-cell-label">Framework</div>
@@ -263,7 +287,7 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
       <li><strong>Right to object</strong> — to object to processing based on legitimate interests</li>
       <li><strong>Right to withdraw consent</strong> — where processing is based on consent, you may withdraw that consent at any time</li>
     </ul>
-    <p>To exercise any of these rights, please contact us at: <a href="/cdn-cgi/l/email-protection#b4dddad2dbf4c2ddd8d5c7dddb9ad7dbd9" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px"><span class="__cf_email__" data-cfemail="c2abaca4ad82b4abaea3b1abadeca1adaf">[email&#160;protected]</span></a></p>
+    <p>To exercise any of these rights, please contact us at: <a href="mailto:info@vilasio.com" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">info@vilasio.com</a></p>
     <p>We will review and respond to your request in accordance with applicable law.</p>
     <p>You may also have the right to lodge a complaint with your competent data protection authority if you believe your personal data has been handled unlawfully.</p>
   </div>
@@ -283,7 +307,7 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
   <div class="legal-section" id="children">
     <h2>Children's Privacy</h2>
     <p>The Platform is intended for adults interested in financial markets and market research.</p>
-    <p>We do not knowingly collect personal data from individuals under the age of 18. If you believe that personal data of a minor has been provided to us unintentionally, please contact us at <a href="/cdn-cgi/l/email-protection#771e19111837011e1b16041e185914181a" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px"><span class="__cf_email__" data-cfemail="5c35323a331c2a35303d2f3533723f3331">[email&#160;protected]</span></a>, and we will take appropriate steps to delete such information where required.</p>
+    <p>We do not knowingly collect personal data from individuals under the age of 18. If you believe that personal data of a minor has been provided to us unintentionally, please contact us at <a href="mailto:info@vilasio.com" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">info@vilasio.com</a>, and we will take appropriate steps to delete such information where required.</p>
   </div>
 
   <div class="legal-section" id="changes">
@@ -296,20 +320,36 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
   <div class="legal-section" id="contact">
     <h2>Contact</h2>
     <p>For any questions, requests, or concerns regarding this Privacy Policy or the handling of personal data, you may contact us at:</p>
-    <p><a href="/cdn-cgi/l/email-protection#9af3f4fcf5daecf3f6fbe9f3f5b4f9f5f7" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px"><span class="__cf_email__" data-cfemail="e78e898188a7918e8b86948e88c984888a">[email&#160;protected]</span></a></p>
+    <p><a href="mailto:info@vilasio.com" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">info@vilasio.com</a></p>
     <p>or through the <a href="contact.html" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Contact</a> page available on the Platform.</p>
   </div>
 
 </div>
 
+<div class="disclaimer-bar">
+  <div class="disclaimer-inner">
+    <div class="disclaimer-label">Disclaimer</div>
+    <p>The information provided on this platform is for <strong>informational and educational purposes only</strong> and does not constitute financial advice, investment advice, trading advice, or any other form of professional advice. Past performance is not indicative of future results. You should consult a qualified financial advisor before making any investment decisions. See our <a href="terms.html">Terms of Use</a> for full details.</p>
+  </div>
+</div>
+
 <footer>
   <div class="foot-brand">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="V">
-    <span class="foot-name">Vilasio</span>
+    <span class="foot-name">VILASIO</span>
   </div>
   <div class="foot-links">
     <a href="privacy.html">Privacy Policy</a>
     <a href="terms.html">Terms of Use</a>
     <a href="cookie.html">Cookie Policy</a>
     <a href="contact.html">Contact</a>
-  </
+  </div>
+  <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
+</footer>
+
+<script>
+function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open');}
+document.addEventListener('click',function(e){var menu=document.getElementById('mobile-menu');var btn=document.querySelector('.nav-mobile-btn');if(menu&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('open');}});
+</script>
+</body>
+</html>

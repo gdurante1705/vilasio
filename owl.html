@@ -3,114 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>The Owl — Vilasio Premium Intelligence Hub</title>
+<title>The Owl — VILASIO Premium Intelligence Hub</title>
 <meta name="description" content="The Owl by Vilasio — your command center for global markets. 7 institutional-grade intelligence modules: Liquidity, Bonds, Macro, Cross-Market, Earnings, Congressional, Geopolitical.">
+<meta property="og:title" content="VILASIO — Financial Analytics & Market Research">
+<meta property="og:description" content="Institutional positioning, macro regime, cross-market correlations and geopolitical risk for professional traders.">
+<meta property="og:image" content="https://vilasio.com/Social_Profile.jpg">
+<meta property="og:url" content="https://vilasio.com">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#050507;--bg2:#0a0a0f;--surf:#0f0f16;--surf2:#16161f;
-  --brd:rgba(255,255,255,0.07);--brd2:rgba(255,255,255,0.12);
-  --white:#f4f5fa;--gray:#6b7280;--gray2:#9ca3af;
-  --gold:#c8a84b;--gold2:#e8c96a;
-  --grn:#00d97e;--red:#ff4d4d;--amb:#f59e0b;--blu:#3b82f6;
+  --bg:#08080a;
+  --surf:#0c0c10;
+  --brd:rgba(255,255,255,0.06);
+  --white:#f0f0f0;
+  --t1:#c0c0c4;
+  --t2:#78787f;
+  --t3:#50505a;
+  --gold:#c8a84b;
+  --gold2:#d4be64;
+  --grn:#22c55e;
+  --red:#ef4444;
+  --bp:#5b8af0;
+  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
+  --card-border:rgba(200,168,75,0.06);
+  --card-border-hover:rgba(200,168,75,0.14);
+  --card-shadow:0 4px 24px rgba(0,0,0,0.5);
+  --r:18px;
+  --r-sm:14px;
+  --r-xs:10px;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.6}
-body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.7}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd2)}
+body::before{
+  content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:900px;height:700px;
+  background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;
+  display:flex;align-items:center;gap:32px;
+  padding:14px 28px;
+  background:rgba(12,12,16,0.8);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(200,168,75,0.06);
+  border-radius:100px;
+}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo{width:24px;height:24px;opacity:.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-sep{color:var(--gray);margin:0 4px}
-.nav-page{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
-.nav-right{display:flex;align-items:center;gap:24px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);text-decoration:none;transition:color .3s}
-.nav-link:hover{color:var(--white)}
-.nav-link.active{color:var(--gold)}
+.nav-logo-img{width:24px;height:24px;opacity:0.9}
+.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.nav-link:hover,.nav-link.active{color:var(--white)}
+.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
+.nav-mobile-menu{
+  display:none;position:fixed;top:64px;left:16px;right:16px;
+  background:rgba(12,12,16,0.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(200,168,75,0.06);
+  border-radius:var(--r);
+  flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
+}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.nav-mobile-menu a:hover{color:var(--white)}
 
-/* HERO */
+/* ─── HERO ─── */
 .hero{
   min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:140px 48px 60px;position:relative;overflow:hidden;
 }
-.hero::before{
-  content:"";position:absolute;inset:0;
-  background-image:linear-gradient(var(--brd) 1px,transparent 1px),linear-gradient(90deg,var(--brd) 1px,transparent 1px);
-  background-size:64px 64px;opacity:0.4;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
-  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
-}
 .hero::after{
-  content:"";position:absolute;width:600px;height:600px;
-  background:radial-gradient(circle,rgba(200,168,75,0.06) 0%,transparent 70%);
-  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+  content:"";position:absolute;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(200,168,75,0.04) 0%,transparent 70%);
+  top:45%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
 }
 .hero-content{position:relative;z-index:2}
-.hero-owl{width:80px;height:80px;opacity:0.95;margin:0 auto 28px;filter:drop-shadow(0 0 32px rgba(200,168,75,0.15));opacity:0;animation:fadeIn 1s ease forwards .1s}
+.hero-owl{width:80px;height:80px;margin:0 auto 28px;filter:drop-shadow(0 0 32px rgba(200,168,75,0.12));opacity:0;animation:fadeIn 1s ease forwards .1s}
 .hero-h1{font-family:"Alata",sans-serif;font-size:clamp(42px,6vw,72px);font-weight:400;letter-spacing:2px;line-height:1;margin-bottom:16px;opacity:0;animation:fadeUp .8s ease forwards .3s}
 .hero-subtitle{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards .45s}
-.hero-desc{font-size:14px;color:var(--gray2);line-height:1.7;max-width:600px;margin:0 auto;opacity:0;animation:fadeUp .8s ease forwards .6s}
+.hero-desc{font-size:14px;color:var(--t1);line-height:1.7;max-width:600px;margin:0 auto;opacity:0;animation:fadeUp .8s ease forwards .6s}
 
-@keyframes fadeIn{from{opacity:0}to{opacity:0.95}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-/* TOOL GRID */
+/* ─── TOOL GRID ─── */
 .grid-section{padding:0 48px 60px;max-width:1280px;margin:0 auto}
-.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
 .tool-card{
-  background:var(--surf);border:1px solid var(--brd2);
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:var(--r);
+  box-shadow:var(--card-shadow);
   padding:32px 28px;position:relative;cursor:pointer;
   text-decoration:none;color:var(--white);
   transition:all .3s ease;overflow:hidden;
 }
-.tool-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;transition:background .3s}
-.tool-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 8px 32px rgba(200,168,75,0.08)}
-.tool-card:hover::before{background:var(--gold)!important}
-.card-stat{position:absolute;top:16px;right:16px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
+.tool-card:hover{transform:translateY(-4px);border-color:var(--card-border-hover);box-shadow:0 8px 32px rgba(200,168,75,0.08)}
+.tool-card::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);
+}
+.card-stat{position:absolute;top:16px;right:16px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
 .card-name{font-family:"Alata",sans-serif;font-size:20px;font-weight:400;margin-bottom:10px;line-height:1.2}
-.card-desc{font-family:"DM Mono",monospace;font-size:11px;color:var(--gray2);line-height:1.6}
+.card-desc{font-family:"DM Mono",monospace;font-size:11px;color:var(--t1);line-height:1.6}
 
-/* COT NOTE */
-.cot-note{text-align:center;padding:40px 48px 0;font-family:"DM Mono",monospace;font-size:12px;color:var(--gray2);opacity:0;animation:fadeUp .8s ease forwards 1s}
+/* ─── COT NOTE ─── */
+.cot-note{text-align:center;padding:40px 48px 0;font-family:"DM Mono",monospace;font-size:12px;color:var(--t1);opacity:0;animation:fadeUp .8s ease forwards 1s}
 .cot-note a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
 .cot-note a:hover{color:var(--gold2)}
 
-/* QUICK STATS */
-.quick-stats{text-align:center;padding:48px 48px 0;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+/* ─── QUICK STATS ─── */
+.quick-stats{text-align:center;padding:48px 48px 0;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
 
-/* FOOTER */
+/* ─── FOOTER ─── */
 footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:40px}
 .foot-brand{display:flex;align-items:center;gap:10px}
-.foot-logo{width:24px;height:24px;opacity:0.7}
+.foot-logo{width:22px;height:22px;opacity:0.7}
 .foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.foot-links{display:flex;gap:20px}
-.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
+.foot-links{display:flex;gap:28px}
+.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
 .foot-links a:hover{color:var(--white)}
-.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--gray)}
+.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t2)}
 
-/* DISCLAIMER */
-.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
+/* ─── DISCLAIMER ─── */
+.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
 .disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
-.disclaimer-bar p strong{color:#9ca3af;font-weight:500}
-.disclaimer-bar a{color:#c8a84b;text-decoration:underline;text-underline-offset:3px}
-.disclaimer-bar a:hover{color:#e8c96a}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
+.disclaimer-bar p strong{color:var(--t2);font-weight:400}
+.disclaimer-bar a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+.disclaimer-bar a:hover{color:var(--gold2)}
 
-/* RESPONSIVE */
+/* ─── ANIMATIONS ─── */
+@keyframes fadeIn{from{opacity:0}to{opacity:0.95}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── RESPONSIVE ─── */
 @media(max-width:1024px){
   .tool-grid{grid-template-columns:repeat(2,1fr)}
 }
+@media(max-width:960px){
+  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
+  .nav-links{display:none}
+  .nav-mobile-btn{display:block}
+}
 @media(max-width:768px){
-  nav{padding:16px 20px}
-  .nav-right{display:none}
   .hero{padding:120px 24px 40px;min-height:auto}
   .hero-h1{font-size:36px}
   .grid-section{padding:0 16px 40px}
-  .tool-grid{grid-template-columns:1fr}
+  .tool-grid{grid-template-columns:1fr;gap:16px}
   .tool-card{padding:24px 20px}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -125,21 +176,30 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <!-- NAV -->
 <nav>
-  <a class="nav-brand" href="index.html">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo" alt="Vilasio">
-    <span class="nav-name">Vilasio</span><span class="nav-sep">&#183;</span><span class="nav-page">The Owl</span>
+  <a href="index.html" class="nav-brand">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
+    <span class="nav-name">Vilasio</span>
   </a>
-  <div class="nav-right">
-    <a class="nav-link active" href="owl.html">The Owl</a>
-    <a class="nav-link" href="liquidity.html">Liquidity</a>
-    <a class="nav-link" href="bonds.html">Bonds</a>
-    <a class="nav-link" href="macro.html">Macro</a>
-    <a class="nav-link" href="crossmarket.html">Cross-Market</a>
-    <a class="nav-link" href="earnings.html">Earnings</a>
-    <a class="nav-link" href="congressional.html">Congressional</a>
-    <a class="nav-link" href="geopolitical.html">Geopolitical</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="cot.html" class="nav-link">COT Intelligence</a>
+    <a href="owl.html" class="nav-link active">The Owl</a>
+    <a href="blog.html" class="nav-link">Insights</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="contact.html" class="nav-link">Contact</a>
   </div>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
 </nav>
+
+<!-- Mobile menu -->
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="cot.html">COT Intelligence</a>
+  <a href="owl.html">The Owl</a>
+  <a href="blog.html">Insights</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -155,53 +215,46 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <section class="grid-section">
   <div class="tool-grid">
 
-    <a href="liquidity.html" class="tool-card" style="--card-color:#a78bfa">
+    <a href="liquidity.html" class="tool-card">
       <span class="card-stat">FED DATA</span>
       <div class="card-name">Liquidity Monitor</div>
       <div class="card-desc">Fed balance sheet, TGA, reverse repo, and net liquidity tracking.</div>
-      <style>.tool-card:nth-child(1)::before{background:#a78bfa}</style>
     </a>
 
     <a href="bonds.html" class="tool-card">
       <span class="card-stat">TREASURY</span>
       <div class="card-name">Bond & Yield</div>
       <div class="card-desc">Treasury yield curves, real rates, term premium, and credit spreads.</div>
-      <style>.tool-card:nth-child(2)::before{background:#06b6d4}</style>
     </a>
 
     <a href="macro.html" class="tool-card">
       <span class="card-stat">KEY INDICATORS</span>
       <div class="card-name">Macro Dashboard</div>
       <div class="card-desc">GDP, inflation, employment, consumer sentiment, and Fed policy indicators.</div>
-      <style>.tool-card:nth-child(3)::before{background:#f59e0b}</style>
     </a>
 
     <a href="crossmarket.html" class="tool-card">
       <span class="card-stat">8 ASSET CLASSES</span>
       <div class="card-name">Cross-Market</div>
       <div class="card-desc">Currency strength, correlation matrix, sector rotation, and commodity dashboard.</div>
-      <style>.tool-card:nth-child(4)::before{background:#22c55e}</style>
     </a>
 
     <a href="earnings.html" class="tool-card">
       <span class="card-stat">NYSE & NASDAQ</span>
       <div class="card-name">Earnings Intelligence</div>
       <div class="card-desc">PEAD signal scanner, upcoming earnings calendar, analyst ratings, EPS history.</div>
-      <style>.tool-card:nth-child(5)::before{background:#c8a84b}</style>
     </a>
 
     <a href="congressional.html" class="tool-card">
       <span class="card-stat">INSIDER ACTIVITY</span>
       <div class="card-name">Congressional Positioning</div>
       <div class="card-desc">Corporate insider trading activity. Executive and director trades.</div>
-      <style>.tool-card:nth-child(6)::before{background:#ef4444}</style>
     </a>
 
     <a href="geopolitical.html" class="tool-card">
       <span class="card-stat">120+ COUNTRIES</span>
       <div class="card-name">Geopolitical Risk</div>
       <div class="card-desc">AI-GPR Index with interactive SVG world map. 120+ country risk profiles with macro indicators.</div>
-      <style>.tool-card:nth-child(7)::before{background:#e879f9}</style>
     </a>
 
   </div>
@@ -229,17 +282,32 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <a href="cookie.html">Cookie Policy</a>
     <a href="contact.html">Contact</a>
   </div>
-  <div class="foot-right">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+  <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
 
+<!-- DISCLAIMER -->
 <div class="disclaimer-bar">
   <div class="disclaimer-inner">
-    <span class="disclaimer-label">Financial Disclaimer</span>
+    <span class="disclaimer-label">Disclaimer</span>
     <p>The information, data visualizations, and analytical tools provided on this website are intended strictly for informational, educational, and research purposes. Vilasio provides financial market analytics designed to help users better understand market structure, institutional positioning, and statistical patterns in financial markets. The content available on this platform does not constitute financial advice, investment advice, trading advice, or recommendations to buy or sell financial instruments.</p>
     <p>Trading and investing in financial markets involve substantial risk, including the potential loss of capital. Users are solely responsible for their own financial and trading decisions and should conduct their own research or consult a qualified financial professional before making any investment decisions.</p>
     <p>While reasonable efforts are made to ensure the accuracy and reliability of the information provided, Vilasio makes no guarantees regarding completeness, accuracy, or timeliness of any data or analysis.</p>
     <p>By using this website and its tools, users acknowledge that Vilasio and its creators cannot be held liable for any financial losses or damages resulting from the use of the information or analytical tools provided.</p>
   </div>
 </div>
+
+<script>
+// Mobile menu
+function toggleMobileMenu(){
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const menu=document.getElementById('mobile-menu');
+  const btn=document.querySelector('.nav-mobile-btn');
+  if(menu && !menu.contains(e.target) && !btn.contains(e.target)){
+    menu.classList.remove('open');
+  }
+});
+</script>
 </body>
 </html>
