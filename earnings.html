@@ -102,8 +102,8 @@ nav{
 .refresh-row{display:flex;align-items:center;gap:8px}
 
 /* ─── MARKET TREND STRIP ─── */
-.trend-strip{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
-.trend-chip{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:10px 16px;display:flex;align-items:center;gap:8px;transition:border-color .2s;position:relative;overflow:hidden}
+.trend-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:12px}
+.trend-chip{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:10px 14px;display:flex;align-items:center;gap:8px;transition:border-color .2s;position:relative;overflow:hidden}
 .trend-chip::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
 .trend-chip:hover{border-color:var(--card-border-hover)}
 .trend-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
@@ -149,26 +149,25 @@ nav{
 
 /* ─── PEAD SIGNAL CARDS ─── */
 .signals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-.sig-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px 24px;position:relative;overflow:hidden;transition:border-color .2s;cursor:pointer}
+.sig-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:20px 24px;position:relative;overflow:hidden;transition:border-color .2s;cursor:pointer}
 .sig-card:hover{border-color:var(--card-border-hover)}
-.sig-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
+.sig-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .sig-card.inactive{opacity:0.5}
-.sig-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.sig-sym{font-family:"DM Mono",monospace;font-size:14px;font-weight:500;color:var(--white);letter-spacing:1px}
-.sig-name{font-family:"Roboto Slab",serif;font-size:11px;font-weight:300;color:var(--t1);margin-top:2px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sig-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.sig-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--brd)}
+.sig-sym{font-family:"Alata",sans-serif;font-size:20px;font-weight:400;color:var(--white);letter-spacing:0}
+.sig-name{font-family:"Roboto Slab",serif;font-size:12px;font-weight:300;color:var(--t1);margin-top:2px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sig-badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:100px}
 .sig-badge.active{color:var(--grn);background:var(--grn-dim)}
 .sig-badge.expired{color:var(--t2);background:var(--surf)}
-.sig-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.sig-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .sig-metric{}
 .sig-metric-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:2px}
 .sig-metric-val{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;line-height:1}
 .sig-metric-val.pos{color:var(--grn)}.sig-metric-val.neg{color:var(--red)}
+.sig-setup{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--gold-dim);color:var(--gold);display:inline-block;border-radius:100px;margin-bottom:12px}
 .sig-levels{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--brd)}
-.sig-level-label{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
+.sig-level-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
 .sig-level-val{font-family:"DM Mono",monospace;font-size:11px;color:var(--t1);margin-top:2px}
-.sig-setup{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:8px;display:flex;align-items:center;gap:6px}
-.sig-gap-tag{font-size:7px;padding:2px 6px;border-radius:100px;border:1px solid var(--brd);color:var(--t1)}
 
 /* ─── EPS HISTORY CHART (modal-like panel) ─── */
 .eps-panel{display:none;margin-top:16px}
@@ -242,7 +241,7 @@ footer{
   main{padding:0 16px 40px 16px}
   .hero-top{flex-direction:column;align-items:flex-start;gap:12px}
   .hero-badges{align-items:flex-start}
-  .trend-strip{flex-direction:column}
+  .trend-strip{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
   .sig-metrics{grid-template-columns:1fr 1fr}
   .sig-levels{grid-template-columns:1fr 1fr}
   .earn-table{font-size:9px}
@@ -615,13 +614,14 @@ function renderSignals(signals) {
     var badgeCls = s.isActive ? 'active' : 'expired';
     var badgeText = s.isActive ? 'Active' : 'Expired';
 
+    var secTrend = s.sectorTrend || 'bearish';
     html += '<div class="sig-card' + activeCls + '" onclick="loadEpsHistory(\'' + s.symbol + '\')">';
     html += '<div class="sig-top">';
-    var secTrend = s.sectorTrend || 'bearish';
-    var secTrendCls = secTrend === 'bullish' ? 'pos' : 'neg';
     html += '<div><div class="sig-sym">' + s.symbol + '</div><div class="sig-name">' + (s.name || s.symbol) + '</div>';
-    html += '<div style="display:flex;align-items:center;gap:6px;margin-top:3px"><span style="font-family:DM Mono,monospace;font-size:8px;letter-spacing:1px;color:var(--t2)">' + (s.sector || '') + '</span>';
-    html += '<span style="font-family:DM Mono,monospace;font-size:7px;letter-spacing:1px;padding:1px 6px;border-radius:100px;' + (secTrend === 'bullish' ? 'color:#22c55e;background:rgba(34,197,94,0.1)' : 'color:#ef4444;background:rgba(239,68,68,0.1)') + '">' + secTrend.toUpperCase() + '</span></div></div>';
+    html += '<div style="display:flex;align-items:center;gap:6px;margin-top:4px">';
+    html += '<span style="font-family:DM Mono,monospace;font-size:8px;letter-spacing:1px;color:var(--t2)">' + (s.sector || '') + '</span>';
+    html += '<span style="font-family:DM Mono,monospace;font-size:7px;letter-spacing:1px;padding:2px 6px;border-radius:100px;' + (secTrend === 'bullish' ? 'color:#22c55e;background:rgba(34,197,94,0.1)' : 'color:#ef4444;background:rgba(239,68,68,0.1)') + '">' + secTrend.toUpperCase() + '</span>';
+    html += '</div></div>';
     html += '<span class="sig-badge ' + badgeCls + '">' + badgeText + '</span>';
     html += '</div>';
 
@@ -630,12 +630,7 @@ function renderSignals(signals) {
     html += '<div class="sig-metric"><div class="sig-metric-label">Drift</div><div class="sig-metric-val ' + driftCls + '">' + (s.driftPct > 0 ? '+' : '') + s.driftPct + '%</div></div>';
     html += '</div>';
 
-    html += '<div class="sig-setup">';
-    html += s.setupType.replace(/_/g, ' ') + ' setup';
-    if (s.analystRating) {
-      html += ' <span class="earn-rating ' + ratingClass(s.analystRating) + '" style="margin-left:auto">' + ratingLabel(s.analystRating) + '</span>';
-    }
-    html += '</div>';
+    html += '<div class="sig-setup">' + s.setupType.replace(/_/g, ' ') + ' setup</div>';
 
     html += '<div class="sig-levels">';
     html += '<div><div class="sig-level-label">Entry</div><div class="sig-level-val">$' + s.entryLevel + '</div></div>';
