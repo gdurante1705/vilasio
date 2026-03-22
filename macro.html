@@ -307,27 +307,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="status-card neut" id="sc-cpce"><div class="sc-label">Core PCE YoY</div><div class="sc-val" id="sc-cpce-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-cpce-chg">&#8212;</span><span class="sc-note">Fed's preferred &#183; Target 2%</span></div></div>
   </div>
 
-  <!-- MACRO REGIME OSCILLATOR -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank (52M Lookback)</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="6" onclick="setR('mo',6)">6M</button><button class="ch-tog" data-g="mo" data-rw="12" onclick="setR('mo',12)">1Y</button><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button></div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
-    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inflation Rank</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Unemployment Rank</div><div class="legend-item"><span class="legend-dot dashed"></span> 20 / 80 Thresholds</div></div>
-    <div style="padding:0 28px 16px">
-      <div class="chart-explain">
-        <button class="chart-explain-toggle" onclick="togExplain(this)">
-          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
-          How to read this chart
-        </button>
-        <div class="chart-explain-content">
-          <p>The <strong>Phillips Curve</strong> describes the inverse relationship between inflation and unemployment: when inflation is high, unemployment tends to be low, and vice versa. This chart tracks the percentile rank of both metrics over a 52-month window. When <strong>Inflation Rank</strong> is high (above 80) and <strong>Unemployment Rank</strong> is low (below 20), the Fed is under pressure to hike rates &#8212; bearish for equities and bonds. When Inflation Rank is low and Unemployment Rank is high, the Fed has room to cut &#8212; bullish for risk assets. The crossover between the two lines often signals a regime shift. Watch for divergences: when the lines move in the same direction, the historical inverse relationship is breaking down.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- MACRO REGIME QUADRANT -->
   <div class="regime-section reveal">
     <div class="regime-current-card">
@@ -374,6 +353,27 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </button>
       <div class="chart-explain-content">
         <p>The macro regime is determined by two forces: <strong>growth</strong> (measured by NFP employment data) and <strong>inflation</strong> (CPI YoY). In <strong>Expansion</strong> (growth up, inflation up), equities and commodities perform best. In <strong>Reflation</strong> (growth up, inflation down), tech, growth stocks and bonds outperform. In <strong>Stagnation</strong> (growth down, inflation up), gold, energy and cash are defensive. In <strong>Slowdown</strong> (growth down, inflation down), bonds and defensive sectors lead. The timeline shows how the regime has shifted over the past 36 months.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MACRO REGIME OSCILLATOR -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Macro Regime Oscillator</div><div class="ch-sub">Inflation vs Unemployment &#8212; Percent Rank (52M Lookback)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="mo" data-rw="6" onclick="setR('mo',6)">6M</button><button class="ch-tog" data-g="mo" data-rw="12" onclick="setR('mo',12)">1Y</button><button class="ch-tog" data-g="mo" data-rw="24" onclick="setR('mo',24)">2Y</button><button class="ch-tog" data-g="mo" data-rw="36" onclick="setR('mo',36)">3Y</button><button class="ch-tog active" data-g="mo" data-rw="60" onclick="setR('mo',60)">5Y</button></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="morphChart"></canvas></div></div>
+    <div class="chart-legend"><div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Inflation Rank</div><div class="legend-item"><span class="legend-dot" style="background:var(--blu)"></span> Unemployment Rank</div><div class="legend-item"><span class="legend-dot dashed"></span> 20 / 80 Thresholds</div></div>
+    <div style="padding:0 28px 16px">
+      <div class="chart-explain">
+        <button class="chart-explain-toggle" onclick="togExplain(this)">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+          How to read this chart
+        </button>
+        <div class="chart-explain-content">
+          <p>The <strong>Phillips Curve</strong> describes the inverse relationship between inflation and unemployment: when inflation is high, unemployment tends to be low, and vice versa. This chart tracks the percentile rank of both metrics over a 52-month window. When <strong>Inflation Rank</strong> is high (above 80) and <strong>Unemployment Rank</strong> is low (below 20), the Fed is under pressure to hike rates &#8212; bearish for equities and bonds. When Inflation Rank is low and Unemployment Rank is high, the Fed has room to cut &#8212; bullish for risk assets. The crossover between the two lines often signals a regime shift. Watch for divergences: when the lines move in the same direction, the historical inverse relationship is breaking down.</p>
+        </div>
       </div>
     </div>
   </div>
