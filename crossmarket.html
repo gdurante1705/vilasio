@@ -268,26 +268,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="status-card" id="sc-corr2"><div class="sc-label">BTC-SPX Corr</div><div class="sc-val" id="sc-corr2-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr2-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
   </div>
 
-  <!-- CURRENCY STRENGTH -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Currency Strength Matrix</div><div class="ch-sub">Relative Strength Index &#183; Base 100</div></div>
-      <div class="ch-toggles">
-        <button class="ch-tog" data-g="cs" data-rw="7" onclick="setR('cs',7)">1W</button>
-        <button class="ch-tog" data-g="cs" data-rw="30" onclick="setR('cs',30)">1M</button>
-        <button class="ch-tog active" data-g="cs" data-rw="90" onclick="setR('cs',90)">3M</button>
-        <button class="ch-tog" data-g="cs" data-rw="180" onclick="setR('cs',180)">6M</button>
-        <button class="ch-tog" data-g="cs" data-rw="365" onclick="setR('cs',365)">1Y</button>
-      </div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="csChart"></canvas></div></div>
-    <div id="cs-filter-btns" style="display:flex;flex-wrap:wrap;gap:4px;padding:10px 28px"></div>
-    <div class="chart-explain" style="padding:0 28px 12px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>Currency strength is calculated from the performance of each currency across multiple FX pairs. A <strong>strong USD</strong> (rising DXY) typically signals risk-off sentiment &mdash; it pressures commodities, emerging markets, and multinational earnings. A weakening USD is bullish for commodities and international equities. Watch for divergences: if USD strengthens while equities rally, the rally may be fragile.</p></div>
-    </div>
-  </div>
-
   <!-- SECTOR ROTATION -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Sector Rotation</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance Heatmap</div></div></div>
@@ -308,24 +288,64 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- COINTEGRATION: METALS -->
+  <!-- CURRENCY STRENGTH -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Metals Cointegration</div><div class="ch-sub">% Change from Start &#183; Divergences signal mean reversion</div></div>
+      <div><div class="ch-title">Currency Strength Matrix</div><div class="ch-sub">Relative Strength Index &#183; Base 100</div></div>
       <div class="ch-toggles">
-        <button class="ch-tog" data-g="cmet" data-rw="7" onclick="setR('cmet',7)">1W</button>
-        <button class="ch-tog" data-g="cmet" data-rw="30" onclick="setR('cmet',30)">1M</button>
-        <button class="ch-tog" data-g="cmet" data-rw="90" onclick="setR('cmet',90)">3M</button>
-        <button class="ch-tog" data-g="cmet" data-rw="180" onclick="setR('cmet',180)">6M</button>
-        <button class="ch-tog active" data-g="cmet" data-rw="365" onclick="setR('cmet',365)">1Y</button>
+        <button class="ch-tog" data-g="cs" data-rw="7" onclick="setR('cs',7)">1W</button>
+        <button class="ch-tog" data-g="cs" data-rw="30" onclick="setR('cs',30)">1M</button>
+        <button class="ch-tog active" data-g="cs" data-rw="90" onclick="setR('cs',90)">3M</button>
+        <button class="ch-tog" data-g="cs" data-rw="180" onclick="setR('cs',180)">6M</button>
+        <button class="ch-tog" data-g="cs" data-rw="365" onclick="setR('cs',365)">1Y</button>
       </div>
     </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="cmetChart"></canvas></div></div>
-    <div id="cmet-alerts"></div>
-    <div class="chart-legend" id="cmet-legend"></div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="csChart"></canvas></div></div>
+    <div id="cs-filter-btns" style="display:flex;flex-wrap:wrap;gap:4px;padding:10px 28px"></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>Cointegration measures long-term equilibrium relationships between assets. When cointegrated assets deviate from their historical relationship, they tend to revert &mdash; creating <strong>mean-reversion trading opportunities</strong>. Metals cluster: Gold leads, Silver follows. Divergence badges appear when an asset deviates &gt;1.5&#963; from the cluster average &mdash; strongest signals come above 2&#963;.</p></div>
+      <div class="chart-explain-content"><p>Currency strength is calculated from the performance of each currency across multiple FX pairs. A <strong>strong USD</strong> (rising DXY) typically signals risk-off sentiment &mdash; it pressures commodities, emerging markets, and multinational earnings. A weakening USD is bullish for commodities and international equities. Watch for divergences: if USD strengthens while equities rally, the rally may be fragile.</p></div>
+    </div>
+  </div>
+
+  <!-- VALUE VS GROWTH -->
+  <div class="chart-section reveal">
+    <div class="chart-header">
+      <div><div class="ch-title">Value vs Growth</div><div class="ch-sub">IWD (Value) &#183; IWF (Growth) &#183; Ratio IWD/IWF</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="vg" data-rw="26" onclick="setR('vg',26)">6M</button>
+        <button class="ch-tog" data-g="vg" data-rw="52" onclick="setR('vg',52)">1Y</button>
+        <button class="ch-tog active" data-g="vg" data-rw="104" onclick="setR('vg',104)">2Y</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vgChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item" style="cursor:pointer" onclick="togVg('iwd')" id="leg-vg-iwd"><span class="legend-dot" style="background:#06b6d4"></span> IWD (Value)</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togVg('iwf')" id="leg-vg-iwf"><span class="legend-dot" style="background:#a78bfa"></span> IWF (Growth)</div>
+      <div class="legend-item" style="cursor:pointer" onclick="togVg('ratio')" id="leg-vg-ratio"><span class="legend-dot" style="background:#f97316"></span> Ratio IWD/IWF</div>
+    </div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>The <strong>Value/Growth ratio</strong> (IWD/IWF) indicates market preference. Value outperforms in rising rate environments and during inflation. Growth outperforms when rates are low and liquidity abundant. A sustained shift from Growth to Value often signals a macro regime change &mdash; from accommodative to tightening monetary policy.</p></div>
+    </div>
+  </div>
+
+  <!-- VIX — S&P 500 CORRELATION -->
+  <div class="chart-section reveal" id="vix-spx-section">
+    <div class="chart-header"><div><div class="ch-title">VIX &#8212; S&amp;P 500 Correlation</div><div class="ch-sub">Inverse Relationship &#183; 30-Day Rolling Correlation</div></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)">
+      <div class="status-card" style="margin:0"><div class="sc-label">VIX Current</div><div class="sc-val" id="vix-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span id="vix-regime" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:100px">&#8212;</span></div></div>
+      <div class="status-card" style="margin:0"><div class="sc-label">S&amp;P 500</div><div class="sc-val" id="spx-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="spx-dd">&#8212;</span><span class="sc-note">from 52w high</span></div></div>
+      <div class="status-card" style="margin:0"><div class="sc-label">30d Correlation</div><div class="sc-val" id="vixspx-corr-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span class="sc-note" id="vixspx-corr-interp">&#8212;</span></div></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vixSpxChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> S&amp;P 500</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> VIX (inverted)</div>
+    </div>
+    <div class="chart-explain" style="padding:0 28px 12px">
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
+      <div class="chart-explain-content"><p>The <strong>VIX</strong> measures implied volatility of S&amp;P 500 options &mdash; it represents the market's fear gauge. VIX and SPX have a strong inverse correlation (typically -0.7 to -0.9). When VIX spikes above 30, markets are in panic &mdash; historically a contrarian buying opportunity. When VIX is below 15 (complacent), markets are vulnerable to shocks. The rolling 30-day correlation weakening (becoming less negative) can signal an unusual market regime.</p></div>
     </div>
   </div>
 
@@ -371,47 +391,26 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- VALUE VS GROWTH -->
+  <!-- COINTEGRATION: METALS -->
   <div class="chart-section reveal">
     <div class="chart-header">
-      <div><div class="ch-title">Value vs Growth</div><div class="ch-sub">IWD (Value) &#183; IWF (Growth) &#183; Ratio IWD/IWF</div></div>
+      <div><div class="ch-title">Metals Cointegration</div><div class="ch-sub">% Change from Start &#183; Divergences signal mean reversion</div></div>
       <div class="ch-toggles">
-        <button class="ch-tog" data-g="vg" data-rw="26" onclick="setR('vg',26)">6M</button>
-        <button class="ch-tog" data-g="vg" data-rw="52" onclick="setR('vg',52)">1Y</button>
-        <button class="ch-tog active" data-g="vg" data-rw="104" onclick="setR('vg',104)">2Y</button>
+        <button class="ch-tog" data-g="cmet" data-rw="7" onclick="setR('cmet',7)">1W</button>
+        <button class="ch-tog" data-g="cmet" data-rw="30" onclick="setR('cmet',30)">1M</button>
+        <button class="ch-tog" data-g="cmet" data-rw="90" onclick="setR('cmet',90)">3M</button>
+        <button class="ch-tog" data-g="cmet" data-rw="180" onclick="setR('cmet',180)">6M</button>
+        <button class="ch-tog active" data-g="cmet" data-rw="365" onclick="setR('cmet',365)">1Y</button>
       </div>
     </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vgChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item" style="cursor:pointer" onclick="togVg('iwd')" id="leg-vg-iwd"><span class="legend-dot" style="background:#06b6d4"></span> IWD (Value)</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togVg('iwf')" id="leg-vg-iwf"><span class="legend-dot" style="background:#a78bfa"></span> IWF (Growth)</div>
-      <div class="legend-item" style="cursor:pointer" onclick="togVg('ratio')" id="leg-vg-ratio"><span class="legend-dot" style="background:#f97316"></span> Ratio IWD/IWF</div>
-    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="cmetChart"></canvas></div></div>
+    <div id="cmet-alerts"></div>
+    <div class="chart-legend" id="cmet-legend"></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>The <strong>Value/Growth ratio</strong> (IWD/IWF) indicates market preference. Value outperforms in rising rate environments and during inflation. Growth outperforms when rates are low and liquidity abundant. A sustained shift from Growth to Value often signals a macro regime change &mdash; from accommodative to tightening monetary policy.</p></div>
+      <div class="chart-explain-content"><p>Cointegration measures long-term equilibrium relationships between assets. When cointegrated assets deviate from their historical relationship, they tend to revert &mdash; creating <strong>mean-reversion trading opportunities</strong>. Metals cluster: Gold leads, Silver follows. Divergence badges appear when an asset deviates &gt;1.5&#963; from the cluster average &mdash; strongest signals come above 2&#963;.</p></div>
     </div>
   </div>
-
-  <!-- VIX — S&P 500 CORRELATION -->
-  <div class="chart-section reveal" id="vix-spx-section">
-    <div class="chart-header"><div><div class="ch-title">VIX &#8212; S&amp;P 500 Correlation</div><div class="ch-sub">Inverse Relationship &#183; 30-Day Rolling Correlation</div></div></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)">
-      <div class="status-card" style="margin:0"><div class="sc-label">VIX Current</div><div class="sc-val" id="vix-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span id="vix-regime" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:100px">&#8212;</span></div></div>
-      <div class="status-card" style="margin:0"><div class="sc-label">S&amp;P 500</div><div class="sc-val" id="spx-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="spx-dd">&#8212;</span><span class="sc-note">from 52w high</span></div></div>
-      <div class="status-card" style="margin:0"><div class="sc-label">30d Correlation</div><div class="sc-val" id="vixspx-corr-val" style="font-size:28px">&#8212;</div><div class="sc-sub"><span class="sc-note" id="vixspx-corr-interp">&#8212;</span></div></div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vixSpxChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--white)"></span> S&amp;P 500</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> VIX (inverted)</div>
-    </div>
-    <div class="chart-explain" style="padding:0 28px 12px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>The <strong>VIX</strong> measures implied volatility of S&amp;P 500 options &mdash; it represents the market's fear gauge. VIX and SPX have a strong inverse correlation (typically -0.7 to -0.9). When VIX spikes above 30, markets are in panic &mdash; historically a contrarian buying opportunity. When VIX is below 15 (complacent), markets are vulnerable to shocks. The rolling 30-day correlation weakening (becoming less negative) can signal an unusual market regime.</p></div>
-    </div>
-  </div>
-
 
 </main>
 
