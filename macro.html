@@ -203,6 +203,20 @@ main{padding:0 48px 64px}
 .chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
 .chart-explain-content strong{color:var(--t1);font-weight:400}
 
+/* ─── CONSUMER RELEASES TABLE ─── */
+.ch-releases-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--brd)}
+.ch-rel-col{border-right:1px solid var(--brd)}
+.ch-rel-col:last-child{border-right:none}
+.ch-rel-col-head{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);padding:10px 16px;border-bottom:1px solid var(--brd)}
+.ch-rel-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:6px 16px;border-bottom:1px solid rgba(255,255,255,0.03);font-family:"DM Mono",monospace;font-size:10px;transition:background .2s}
+.ch-rel-row:hover{background:rgba(200,168,75,0.03)}
+.ch-rel-row:nth-child(even){background:rgba(255,255,255,0.01)}
+.ch-rel-row:nth-child(even):hover{background:rgba(200,168,75,0.03)}
+.ch-rel-date{color:var(--t2);font-size:9px}
+.ch-rel-val{color:var(--white)}
+.ch-rel-delta{text-align:right;font-size:9px}
+.ch-rel-delta.up{color:var(--grn)}.ch-rel-delta.dn{color:var(--red)}.ch-rel-delta.flat{color:var(--t2)}
+
 /* ─── SECTION STAT GRIDS ─── */
 .sec-stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)}
 .sec-stats-3 .status-card{margin:0}
@@ -242,6 +256,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
   .sec-stats-3{grid-template-columns:1fr}
+  .ch-releases-grid{grid-template-columns:1fr}
 
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -501,25 +516,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="status-card neut" id="sc-cd" style="margin:0"><div class="sc-label">Credit Card Delinquency</div><div class="sc-val" id="sc-cd-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-cd-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
       <div class="status-card neut" id="sc-dg" style="margin:0"><div class="sc-label">Household Debt / GDP</div><div class="sc-val" id="sc-dg-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dg-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
     </div>
-    <div class="chart-header" style="border-bottom:none;padding-bottom:0">
-      <div><div class="ch-sub">Personal Saving Rate &#8212; Trend</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="ch" data-rw="12" onclick="setR('ch',12)">1Y</button><button class="ch-tog" data-g="ch" data-rw="24" onclick="setR('ch',24)">2Y</button><button class="ch-tog active" data-g="ch" data-rw="60" onclick="setR('ch',60)">5Y</button></div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="consumerChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Saving Rate</div>
-    </div>
-    <div style="padding:0 28px 16px">
-      <div class="chart-explain">
-        <button class="chart-explain-toggle" onclick="togExplain(this)">
-          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
-          How to read this chart
-        </button>
-        <div class="chart-explain-content">
-          <p>The <strong>Personal Saving Rate</strong> shows what percentage of disposable income households are saving. A falling saving rate means consumers are spending more relative to income &#8212; bullish short-term but signals fragility. <strong>Credit Card Delinquency Rate</strong> measures the percentage of credit card balances 30+ days past due. Rising delinquencies are a leading indicator of consumer stress. When saving rate drops AND delinquencies rise simultaneously, it signals consumer exhaustion &#8212; a late-cycle warning that often precedes economic slowdowns.</p>
-        </div>
-      </div>
-    </div>
+    <!-- Recent Releases Table -->
+    <div class="chart-header"><div><div class="ch-sub">Recent Releases</div></div></div>
+    <div class="ch-releases-grid" id="consumer-releases"></div>
   </div>
 
   <!-- US BANKING STRESS -->
@@ -618,9 +617,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36,ch:60,bkus:104,bkixg:104,bkiak:104};
+var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36,bkus:104,bkixg:104,bkiak:104};
 var infShow={cpi:1,ccpi:1,pce:1,cpce:1,ppi:1};
-var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO',ch:'renderConsumer',bkus:'renderBankUS',bkixg:'renderBankIXG',bkiak:'renderBankIAK'};
+var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO',bkus:'renderBankUS',bkixg:'renderBankIXG',bkiak:'renderBankIAK'};
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togInf(k){infShow[k]=infShow[k]?0:1;var el=document.getElementById('leg-'+k);if(el)el.style.opacity=infShow[k]?'1':'0.3';if(D)renderInflation()}
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -791,12 +790,34 @@ function renderConsumerCards(){
 
 function renderConsumer(){
   if(!D||!D.consumer)return;
-  var sr=D.consumer.savingRate,cd=D.consumer.creditDelinquency,rw=R.ch;
-  var dates=sl(sr.dates,rw),vals=sl(sr.values,rw);
-  if(charts.ch)charts.ch.destroy();
-  charts.ch=new Chart(document.getElementById('consumerChart').getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
-    {label:'Saving Rate',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true}
-  ]},options:pOpts(function(c){return 'Saving Rate: '+fPct(c.parsed.y)})});
+  var el=document.getElementById('consumer-releases');if(!el)return;
+  // Build 3 columns: [name, series, invertDelta]
+  var cols=[
+    ['Saving Rate',D.consumer.savingRate,false],
+    ['Credit Card Delinquency',D.consumer.creditDelinquency,true],
+    ['Household Debt / GDP',D.consumer.debtToGdp,true]
+  ];
+  var html='';
+  cols.forEach(function(col){
+    var name=col[0],s=col[1],inv=col[2];
+    html+='<div class="ch-rel-col">';
+    html+='<div class="ch-rel-col-head">'+name+'</div>';
+    var n=s.dates.length,start=Math.max(0,n-8);
+    for(var i=n-1;i>=start;i--){
+      var v=s.values[i],prev=i>0?s.values[i-1]:null;
+      var delta=prev!=null?(v-prev):0;
+      var good=inv?(delta<=0):(delta>=0);
+      var cls=delta===0?'flat':(good?'up':'dn');
+      var sign=delta>=0?'+':'';
+      html+='<div class="ch-rel-row">';
+      html+='<span class="ch-rel-date">'+fMon(s.dates[i])+'</span>';
+      html+='<span class="ch-rel-val">'+v.toFixed(1)+'%</span>';
+      html+='<span class="ch-rel-delta '+cls+'">'+sign+delta.toFixed(2)+'</span>';
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+  el.innerHTML=html;
 }
 
 /* ─── BANKING ─── */
