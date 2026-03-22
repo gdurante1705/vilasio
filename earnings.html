@@ -172,7 +172,7 @@ nav{
 /* ─── EPS HISTORY CHART (modal-like panel) ─── */
 .eps-panel{display:none;margin-top:16px}
 .eps-panel.open{display:block}
-.eps-chart-wrap{position:relative;height:220px;padding:12px 20px 16px}
+.eps-chart-wrap{position:relative;height:280px;padding:12px 20px 16px}
 .eps-legend{display:flex;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
 .eps-legend-item{display:flex;align-items:center;gap:5px}
 .eps-legend-dot{width:7px;height:7px;border-radius:50%}
@@ -680,7 +680,7 @@ function loadEpsHistory(symbol) {
         var c2 = chart.ctx; c2.save(); c2.textAlign = 'center';
         var metaA = chart.getDatasetMeta(0), metaE = chart.getDatasetMeta(1);
         // $ values above bars
-        c2.font = '500 9px DM Mono'; c2.textBaseline = 'bottom';
+        c2.font = '500 11px DM Mono'; c2.textBaseline = 'bottom';
         metaA.data.forEach(function(bar, i) {
           var a = actuals[i]; if (a == null) return;
           c2.fillStyle = '#22c55e';
@@ -692,7 +692,7 @@ function loadEpsHistory(symbol) {
           c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
         });
         // Surprise % below bars, centered between the two bars
-        c2.font = '500 8px DM Mono'; c2.textBaseline = 'top';
+        c2.font = '700 11px DM Mono'; c2.textBaseline = 'top';
         var area = chart.chartArea;
         metaA.data.forEach(function(bar, i) {
           var v = surprises[i]; if (v == null) return;
@@ -714,7 +714,7 @@ function loadEpsHistory(symbol) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: 16}},
+          layout: {padding: {top: 20, bottom: 24}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
@@ -732,7 +732,7 @@ function loadEpsHistory(symbol) {
             }
           },
           scales: {
-            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 7}, color: '#78787f', padding: 14}},
+            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 18}},
             y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
           }
         },
