@@ -402,7 +402,7 @@ footer{
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="sofrChart"></canvas></div></div>
     <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span> SOFR-EFFR Spread</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> SOFR-EFFR Spread</div>
     </div>
     <div class="chart-wrap"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p><strong>SOFR</strong> is the secured overnight rate backed by Treasuries &#8212; the cost of money for those lending against collateral. <strong>EFFR</strong> is the Fed's target rate on federal funds. In normal conditions the two move in parallel and the spread is near zero. When the spread widens, it signals stress in the overnight funding market: hedge funds and dealers pay a premium for short-term liquidity. Spread spikes have historically preceded systemic stress episodes (repo crisis September 2019, March 2020). A persistent SOFR above EFFR indicates collateral scarcity or exceptional liquidity demand in the system.</p></div></div></div>
   </div>
@@ -599,7 +599,7 @@ function renderSOFR(){
   var bpsData=spread.map(function(v){return Math.round(v*100)});
   if(charts.sofr)charts.sofr.destroy();
   charts.sofr=new Chart(document.getElementById('sofrChart').getContext('2d'),{type:'line',data:{labels:dates,datasets:[
-    {label:'SOFR-EFFR Spread',data:bpsData,borderColor:'#a78bfa',borderWidth:2,pointRadius:0,fill:false,tension:0}
+    {label:'SOFR-EFFR Spread',data:bpsData,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:2,pointRadius:0,fill:true,tension:0}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return'Spread: '+c.parsed.y+' bps'}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v+' bps'}})})}}});
 }
 

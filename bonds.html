@@ -320,7 +320,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="moveChart"></canvas></div></div>
     <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> MOVE Index</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span> MOVE Index</div>
       <div class="legend-item"><span class="legend-dot dashed"></span> 80 / 100 Thresholds</div>
     </div>
     <div style="padding:0 28px 16px"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The <strong>MOVE Index</strong> is the VIX of the bond market &#8212; it measures the implied volatility of US Treasuries over a 1-month horizon, derived from option prices. Values below 80 indicate a calm market and stable rate expectations. Between 80 and 100 the market is pricing significant uncertainty about the next Fed moves. Above 100 we are in stress territory: dealers widen spreads, bond liquidity dries up and price moves become erratic. The MOVE is a leading indicator for risky asset volatility &#8212; when it spikes sharply, it tends to precede equity and credit selloffs by a few weeks.</p></div></div></div>
@@ -475,7 +475,7 @@ function renderMOVE(){
   if(charts.move)charts.move.destroy();
   var len=dates.length;
   charts.move=new Chart(document.getElementById('moveChart').getContext('2d'),{type:'line',data:{labels:dates,datasets:[
-    {label:'MOVE Index',data:vals,borderColor:'#c8a84b',borderWidth:2,pointRadius:0,fill:false,tension:0},
+    {label:'MOVE Index',data:vals,borderColor:'#f97316',backgroundColor:'rgba(249,115,22,0.08)',borderWidth:2,pointRadius:0,fill:true,tension:0},
     {data:Array(len).fill(80),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false},
     {data:Array(len).fill(100),borderColor:'rgba(239,68,68,0.3)',borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex===0},callbacks:{label:function(c){return'MOVE: '+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
