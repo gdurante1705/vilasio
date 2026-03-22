@@ -102,14 +102,12 @@ nav{
 .refresh-row{display:flex;align-items:center;gap:8px}
 
 /* ─── MARKET TREND STRIP ─── */
-.trend-spx{background:var(--card);border:1px solid rgba(200,168,75,0.15);border-radius:var(--r-sm);padding:14px 20px;display:flex;align-items:center;gap:12px;margin-top:12px}
-.trend-strip{display:flex;gap:8px;margin-top:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.trend-strip::-webkit-scrollbar{display:none}
-.trend-chip{background:var(--card);border:1px solid rgba(200,168,75,0.15);border-radius:var(--r-sm);padding:10px 16px;transition:border-color .2s;width:120px;min-width:120px;flex-shrink:0}
+.trend-strip{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-top:12px}
+.trend-chip{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:12px 14px;transition:border-color .2s}
 .trend-chip:hover{border-color:var(--card-border-hover)}
 .trend-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
-.trend-val{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white)}
-.trend-tag{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:100px}
+.trend-val{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;color:var(--white);margin-top:2px}
+.trend-tag{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-top:4px;display:inline-block}
 .trend-tag.bullish{color:var(--grn);background:var(--grn-dim)}
 .trend-tag.bearish{color:var(--red);background:var(--red-dim)}
 
@@ -123,7 +121,7 @@ nav{
 .section-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);position:relative;overflow:hidden;transition:border-color .2s;margin-bottom:16px}
 .section-card:hover{border-color:var(--card-border-hover)}
 .section-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.section-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--brd)}
 .section-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
 .section-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .section-body{padding:16px 28px}
@@ -131,12 +129,12 @@ nav{
 
 /* ─── UPCOMING TABLE ─── */
 .earn-table{width:100%;border-collapse:collapse}
-.earn-table th{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-align:left;padding:8px 10px;border-bottom:1px solid var(--brd);white-space:nowrap}
-.earn-table td{font-family:"DM Mono",monospace;font-size:11px;padding:10px;border-bottom:1px solid var(--brd);vertical-align:middle}
+.earn-table th{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-align:left;padding:10px 14px;border-bottom:1px solid var(--brd);white-space:nowrap}
+.earn-table td{font-family:"DM Mono",monospace;font-size:11px;padding:14px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
 .earn-table tr:last-child td{border-bottom:none}
-.earn-table tr:hover td{background:rgba(200,168,75,0.02)}
-.earn-sym{font-weight:500;color:var(--white);letter-spacing:1px}
-.earn-name{font-family:"Roboto Slab",serif;font-size:11px;font-weight:300;color:var(--t1);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.earn-table tr:hover td{background:rgba(200,168,75,0.03)}
+.earn-sym{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white);letter-spacing:0}
+.earn-name{font-family:"Roboto Slab",serif;font-size:12px;font-weight:300;color:var(--t1);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .earn-date{color:var(--t1)}
 .earn-sector{color:var(--t2);font-size:8px;letter-spacing:1px}
 .earn-mcap{color:var(--t1);text-align:right}
@@ -523,19 +521,9 @@ function applyFilter(items) {
 function renderTrendStrip(trend) {
   var strip = document.getElementById('trend-strip');
   if (!trend || Object.keys(trend).length === 0) { strip.innerHTML = ''; return; }
-  var spx = trend['SPX'];
   var html = '';
-  if (spx) {
-    var cls = spx.trend === 'bullish' ? 'bullish' : 'bearish';
-    html += '<div class="trend-spx">';
-    html += '<span class="trend-label">SPX</span>';
-    html += '<span class="trend-val" style="font-size:18px">' + spx.price.toLocaleString() + '</span>';
-    html += '<span class="trend-tag ' + cls + '">' + spx.trend + '</span>';
-    html += '</div>';
-  }
-  html += '<div class="trend-strip" id="trend-sectors">';
-  var sectors = ['XLK', 'XLF', 'XLE', 'XLV', 'XLY', 'XLP', 'XLI', 'XLC', 'XLRE', 'XLB', 'XLU'];
-  sectors.forEach(function(key) {
+  var order = ['SPX', 'XLK', 'XLF', 'XLE', 'XLV', 'XLY', 'XLP', 'XLI', 'XLC', 'XLRE', 'XLB', 'XLU'];
+  order.forEach(function(key) {
     var t = trend[key];
     if (!t) return;
     var cls = t.trend === 'bullish' ? 'bullish' : 'bearish';
@@ -545,7 +533,6 @@ function renderTrendStrip(trend) {
     html += '<span class="trend-tag ' + cls + '">' + t.trend + '</span>';
     html += '</div>';
   });
-  html += '</div>';
   strip.innerHTML = html;
 }
 
@@ -676,7 +663,10 @@ function loadEpsHistory(symbol) {
         return;
       }
 
-      var labels = data.quarters.map(function(q) { return q.date; }).reverse();
+      var labels = data.quarters.map(function(q) {
+        var p = q.date.split('-'); var m = parseInt(p[1]); var qn = Math.ceil(m / 3);
+        return 'Q' + qn + ' ' + p[0];
+      }).reverse();
       var actuals = data.quarters.map(function(q) { return q.epsActual; }).reverse();
       var estimates = data.quarters.map(function(q) { return q.epsEstimate; }).reverse();
 
@@ -724,11 +714,11 @@ function loadEpsHistory(symbol) {
           },
           scales: {
             x: {
-              grid: { color: 'rgba(255,255,255,0.04)' },
+              grid: { display: false },
               ticks: { font: { family: "'DM Mono', monospace", size: 8 }, color: '#50505a' }
             },
             y: {
-              grid: { color: 'rgba(255,255,255,0.04)' },
+              grid: { color: 'rgba(255,255,255,0.03)' },
               ticks: { font: { family: "'DM Mono', monospace", size: 8 }, color: '#50505a' }
             }
           }
