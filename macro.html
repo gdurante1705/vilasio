@@ -203,23 +203,6 @@ main{padding:0 48px 64px}
 .chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
 .chart-explain-content strong{color:var(--t1);font-weight:400}
 
-/* ─── CONSUMER RELEASES TABLE ─── */
-.ch-releases-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--brd)}
-.ch-rel-col{border-right:1px solid var(--brd)}
-.ch-rel-col:last-child{border-right:none}
-.ch-rel-col-head{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);padding:10px 16px;border-bottom:1px solid var(--brd)}
-.ch-rel-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:6px 16px;border-bottom:1px solid rgba(255,255,255,0.03);font-family:"DM Mono",monospace;font-size:10px;transition:background .2s}
-.ch-rel-row:hover{background:rgba(200,168,75,0.03)}
-.ch-rel-row:nth-child(even){background:rgba(255,255,255,0.01)}
-.ch-rel-row:nth-child(even):hover{background:rgba(200,168,75,0.03)}
-.ch-rel-date{color:var(--t2);font-size:9px}
-.ch-rel-val{color:var(--white)}
-.ch-rel-delta{text-align:right;font-size:9px}
-.ch-rel-delta.up{color:var(--grn)}.ch-rel-delta.dn{color:var(--red)}.ch-rel-delta.flat{color:var(--t2)}
-
-/* ─── SECTION STAT GRIDS ─── */
-.sec-stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)}
-.sec-stats-3 .status-card{margin:0}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -255,8 +238,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   main{padding:0 16px 40px}
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
-  .sec-stats-3{grid-template-columns:1fr}
-  .ch-releases-grid{grid-template-columns:1fr}
 
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -506,21 +487,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- CONSUMER HEALTH -->
-  <div class="chart-section reveal" style="margin-top:24px">
-    <div class="chart-header">
-      <div><div class="ch-title">Consumer Health</div><div class="ch-sub">Saving Rate &#183; Credit Card Delinquency &#183; Household Debt/GDP</div></div>
-    </div>
-    <div class="sec-stats-3">
-      <div class="status-card neut" id="sc-sr" style="margin:0"><div class="sc-label">Personal Saving Rate</div><div class="sc-val" id="sc-sr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-sr-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
-      <div class="status-card neut" id="sc-cd" style="margin:0"><div class="sc-label">Credit Card Delinquency</div><div class="sc-val" id="sc-cd-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-cd-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
-      <div class="status-card neut" id="sc-dg" style="margin:0"><div class="sc-label">Household Debt / GDP</div><div class="sc-val" id="sc-dg-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dg-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
-    </div>
-    <!-- Recent Releases Table -->
-    <div class="chart-header"><div><div class="ch-sub">Recent Releases</div></div></div>
-    <div class="ch-releases-grid" id="consumer-releases"></div>
-  </div>
-
   <!-- US BANKING STRESS -->
   <div class="chart-section reveal" style="margin-top:24px">
     <div class="chart-header">
@@ -633,7 +599,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pOpts(cb){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:cb||function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderConsumerCards();renderConsumer();renderBankUS();renderBankIXG();renderBankIAK()}
+function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderBankUS();renderBankIXG();renderBankIAK()}
 
 function renderCards(){
   var inf=D.inflation.cpiYoY,n=inf.values.length;if(n<2)return;
@@ -768,56 +734,6 @@ function renderJO(){
   var jo=D.labor.jolts,rw=R.jo;if(!jo||!jo.dates.length)return;
   if(charts.jo)charts.jo.destroy();
   charts.jo=new Chart(document.getElementById("joChart").getContext("2d"),{type:"line",data:{labels:fMonArr(sl(jo.dates,rw)),datasets:[{label:"JOLTs Openings",data:sl(jo.values,rw),borderColor:"#06b6d4",backgroundColor:"rgba(6,182,212,0.06)",borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return"Openings: "+c.parsed.y.toFixed(0)+"K"}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return(v/1000).toFixed(1)+"M"}})})}}});
-}
-
-/* ─── CONSUMER HEALTH ─── */
-function renderConsumerCards(){
-  if(!D||!D.consumer)return;
-  var sr=D.consumer.savingRate,cd=D.consumer.creditDelinquency,dg=D.consumer.debtToGdp;
-  function upCard(id,vals,inv){
-    var n=vals.length;if(n<2)return;
-    var cv=vals[n-1],pv=vals[n-2],chg=cv-pv;
-    document.getElementById(id+'-val').textContent=cv.toFixed(1)+'%';
-    var e=document.getElementById(id+'-chg');e.textContent=fChgP(chg);
-    var good=inv?(chg>=0):(chg<=0);
-    e.className='sc-delta '+(good?'up':'dn');
-    document.getElementById(id).className='status-card '+(good?'up':'dn');
-  }
-  upCard('sc-sr',sr.values,true);
-  upCard('sc-cd',cd.values,false);
-  upCard('sc-dg',dg.values,false);
-}
-
-function renderConsumer(){
-  if(!D||!D.consumer)return;
-  var el=document.getElementById('consumer-releases');if(!el)return;
-  // Build 3 columns: [name, series, invertDelta]
-  var cols=[
-    ['Saving Rate',D.consumer.savingRate,false],
-    ['Credit Card Delinquency',D.consumer.creditDelinquency,true],
-    ['Household Debt / GDP',D.consumer.debtToGdp,true]
-  ];
-  var html='';
-  cols.forEach(function(col){
-    var name=col[0],s=col[1],inv=col[2];
-    html+='<div class="ch-rel-col">';
-    html+='<div class="ch-rel-col-head">'+name+'</div>';
-    var n=s.dates.length,start=Math.max(0,n-8);
-    for(var i=n-1;i>=start;i--){
-      var v=s.values[i],prev=i>0?s.values[i-1]:null;
-      var delta=prev!=null?(v-prev):0;
-      var good=inv?(delta<=0):(delta>=0);
-      var cls=delta===0?'flat':(good?'up':'dn');
-      var sign=delta>=0?'+':'';
-      html+='<div class="ch-rel-row">';
-      html+='<span class="ch-rel-date">'+fMon(s.dates[i])+'</span>';
-      html+='<span class="ch-rel-val">'+v.toFixed(1)+'%</span>';
-      html+='<span class="ch-rel-delta '+cls+'">'+sign+delta.toFixed(2)+'</span>';
-      html+='</div>';
-    }
-    html+='</div>';
-  });
-  el.innerHTML=html;
 }
 
 /* ─── BANKING ─── */
