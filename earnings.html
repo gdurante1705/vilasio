@@ -665,7 +665,7 @@ function loadEpsHistory(symbol) {
       var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       var labels = quarters.map(function(q) {
         var p = q.date.split('-'); var m = parseInt(p[1]); var d = parseInt(p[2]); var qn = Math.ceil(m / 3);
-        return ['Q' + qn + " '" + p[0].slice(2), d + ' ' + MON[m-1]];
+        return ['Q' + qn + ' ' + p[0], d + ' ' + MON[m-1]];
       });
       var actuals = quarters.map(function(q) { return q.epsActual; });
       var estimates = quarters.map(function(q) { return q.epsEstimate; });
