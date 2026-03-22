@@ -281,8 +281,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       </div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="csChart"></canvas></div></div>
-    <div class="chart-legend" id="cs-legend"></div>
-    <div id="cs-filter-btns" style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 28px"></div>
+    <div id="cs-filter-btns" style="display:flex;flex-wrap:wrap;gap:4px;padding:10px 28px"></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
       <div class="chart-explain-content"><p>Currency strength is calculated from the performance of each currency across multiple FX pairs. A <strong>strong USD</strong> (rising DXY) typically signals risk-off sentiment &mdash; it pressures commodities, emerging markets, and multinational earnings. A weakening USD is bullish for commodities and international equities. Watch for divergences: if USD strengthens while equities rally, the rally may be fragile.</p></div>
@@ -512,15 +511,6 @@ function renderCS(){
     if(!csShow[c]||!src.series[c])return;
     ds.push({label:c,data:slDays(src.series[c],src.dates,days),borderColor:ccyColors[c]||'#888',borderWidth:c==='USD'?2:1.5,pointRadius:0,fill:false,tension:0,spanGaps:true});
   });
-  var leg=document.getElementById('cs-legend');
-  if(!leg.children.length){
-    cs.currencies.forEach(function(c){
-      var el=document.createElement('div');el.className='legend-item';el.style.cursor='pointer';el.id='leg-cs-'+c;
-      el.onclick=function(){togCs(c)};
-      el.innerHTML='<span class="legend-dot" style="background:'+(ccyColors[c]||'#888')+'"></span> '+c;
-      leg.appendChild(el);
-    });
-  }
   if(charts.cs)charts.cs.destroy();
   charts.cs=new Chart(document.getElementById("csChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
 }
@@ -718,18 +708,18 @@ function renderVixSpx(){
 /* --- CURRENCY COT POSITIONING --- */
 var csColors={USD:'#eab308',EUR:'#3b82f6',GBP:'#06b6d4',JPY:'#ef4444',AUD:'#22c55e',CAD:'#a78bfa',CHF:'#f97316',NZD:'#f0f1f5'};
 function _hexToRgb(h){if(!h||h.charAt(0)==='r')return'255,255,255';h=h.replace('#','');return parseInt(h.substring(0,2),16)+','+parseInt(h.substring(2,4),16)+','+parseInt(h.substring(4,6),16)}
+function _csActiveStyle(btn,col){btn.style.background='transparent';btn.style.borderColor=col;btn.style.color=col;btn.style.opacity='1'}
+function _csInactiveStyle(btn){btn.style.background='transparent';btn.style.borderColor='var(--t3)';btn.style.color='var(--t3)';btn.style.opacity='0.4'}
 function initCsFilterBtns(){
   var wrap=document.getElementById('cs-filter-btns');if(!wrap)return;
   ['USD','EUR','GBP','JPY','AUD','CAD','CHF','NZD'].forEach(function(k){
-    var col=csColors[k],isW=k==='NZD';
+    var col=csColors[k];
     var btn=document.createElement('button');
     btn.id='cs-fbtn-'+k;btn.textContent=k;btn.dataset.ccy=k;
-    btn.style.cssText='font-family:DM Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;cursor:pointer;transition:all .2s;background:'+(isW?'#fff':col)+';border:1px solid '+(isW?'rgba(255,255,255,0.4)':col)+';color:#000';
+    btn.style.cssText='font-family:DM Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;cursor:pointer;transition:all .2s;background:transparent;border:1px solid '+col+';color:'+col;
     btn.onclick=function(){
       csShow[k]=csShow[k]?0:1;
-      if(csShow[k]){btn.style.background=isW?'#fff':col;btn.style.color='#000'}
-      else{btn.style.background='transparent';btn.style.color=isW?'var(--white)':col}
-      var leg=document.getElementById('leg-cs-'+k);if(leg)leg.style.opacity=csShow[k]?'1':'0.3';
+      if(csShow[k]){_csActiveStyle(btn,col)}else{_csInactiveStyle(btn)}
       if(D)renderCS();
     };
     wrap.appendChild(btn);
