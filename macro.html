@@ -34,9 +34,9 @@
   --card-border:rgba(200,168,75,0.06);
   --card-border-hover:rgba(200,168,75,0.14);
   --card-shadow:0 4px 24px rgba(0,0,0,0.5);
-  --r:18px;
-  --r-sm:14px;
-  --r-xs:10px;
+  --r:0px;
+  --r-sm:0px;
+  --r-xs:0px;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.7}
@@ -55,13 +55,12 @@ body::after{
 
 /* ─── NAV ─── */
 nav{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;gap:32px;
   padding:14px 28px;
-  background:rgba(12,12,16,0.8);
+  background:rgba(12,12,16,0.92);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:100px;
+  border-bottom:1px solid var(--brd);
 }
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo-img{width:24px;height:24px;opacity:0.9}
@@ -71,11 +70,10 @@ nav{
 .nav-link:hover,.nav-link.active{color:var(--white)}
 .nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
 .nav-mobile-menu{
-  display:none;position:fixed;top:64px;left:16px;right:16px;
+  display:none;position:fixed;top:50px;left:0;right:0;
   background:rgba(12,12,16,0.95);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:var(--r);
+  border-bottom:1px solid var(--brd);
   flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
 }
 .nav-mobile-menu.open{display:flex}
@@ -89,7 +87,7 @@ nav{
 .scroll-top svg{width:16px;height:16px;stroke:var(--t1);fill:none;stroke-width:2}
 
 /* ─── HERO ─── */
-.hero{padding:88px 48px 24px}
+.hero{padding:72px 48px 24px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
 .pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
@@ -98,30 +96,29 @@ nav{
 .hero-h1 em{font-style:normal;color:var(--gold2)}
 .hero-desc{font-size:12px;color:var(--t1);line-height:1.6;max-width:540px;margin-top:6px}
 .hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.regime-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap;border-radius:100px}
+.regime-badge{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;white-space:nowrap}
 .regime-badge.expansion{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
 .regime-badge.reflation{color:var(--cyan);border:1px solid rgba(6,182,212,0.3);background:rgba(6,182,212,0.1)}
 .regime-badge.stagnation{color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)}
 .regime-badge.slowdown{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
 .regime-badge.unknown{color:var(--t1);border:1px solid var(--brd);background:var(--surf)}
-.policy-badge{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;white-space:nowrap;border-radius:100px}
+.policy-badge{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;white-space:nowrap}
 .policy-badge.dovish{color:var(--grn);border:1px solid rgba(34,197,94,0.2);background:var(--grn-dim)}
 .policy-badge.hawkish{color:var(--red);border:1px solid rgba(239,68,68,0.2);background:var(--red-dim)}
 .policy-badge.neutral{color:var(--t2);border:1px solid var(--brd);background:var(--surf)}
-.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap;border-radius:100px}
+.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap}
 .refresh-row{display:flex;align-items:center;gap:8px}
-.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px}
+.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .refresh-btn:hover{color:var(--white);border-color:var(--card-border-hover)}
 .refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
 
 /* ─── STATUS CARDS (Bento) ─── */
 main{padding:0 48px 64px}
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px 24px;position:relative;overflow:hidden;transition:border-color .2s}
+.status-card{background:var(--surf);border:1px solid var(--brd);padding:20px 24px;position:relative;overflow:hidden;transition:border-color .2s}
 .status-card:hover{border-color:var(--card-border-hover)}
-.status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
-.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--t2)}
+.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold)}
+.status-card.up::before{background:var(--grn)}.status-card.dn::before{background:var(--red)}.status-card.neut::before{background:var(--gold)}
 .sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
 .sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
@@ -130,13 +127,12 @@ main{padding:0 48px 64px}
 .sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
 
 /* ─── CHART SECTIONS ─── */
-.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden}
-.chart-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.chart-section{background:var(--surf);border:1px solid var(--brd);margin-bottom:16px;position:relative;overflow:hidden}
 .chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
 .ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
 .ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .ch-toggles{display:flex;gap:3px}
-.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd);color:var(--t1);cursor:pointer;transition:all .2s;border-radius:100px}
+.ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd);color:var(--t1);cursor:pointer;transition:all .2s}
 .ch-tog:hover{color:var(--white);border-color:var(--card-border-hover)}
 .ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
 .chart-wrap{padding:12px 20px 16px}
@@ -154,32 +150,29 @@ main{padding:0 48px 64px}
 
 /* ─── MACRO REGIME SECTION ─── */
 .regime-section{display:grid;grid-template-columns:280px 1fr;gap:16px;margin-bottom:16px}
-.regime-current-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:32px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.regime-current-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-current-card{background:var(--surf);border:1px solid var(--brd);padding:32px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
 .regime-current-dot{width:12px;height:12px;border-radius:50%;margin-bottom:14px}
 .regime-current-name{font-family:"Alata",sans-serif;font-size:28px;font-weight:400;letter-spacing:-0.5px;margin-bottom:16px}
 .regime-current-vals{display:flex;flex-direction:column;gap:8px;width:100%}
 .regime-val-row{display:flex;justify-content:space-between;align-items:center;padding:0 8px}
 .regime-val-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
 .regime-val-num{font-family:"DM Mono",monospace;font-size:11px;color:var(--white)}
-.regime-quadrant-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);position:relative;overflow:hidden}
-.regime-quadrant-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-quadrant-card{background:var(--surf);border:1px solid var(--brd);position:relative;overflow:hidden}
 .regime-quadrant-header{padding:16px 28px;border-bottom:1px solid var(--brd)}
 .regime-quadrant-header .ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
 .regime-quadrant-header .ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 .regime-quadrant-grid-wrap{padding:20px 28px 24px;display:flex;align-items:center;gap:12px}
 .regime-axis-y{display:flex;flex-direction:column;justify-content:space-between;height:216px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);writing-mode:vertical-lr;transform:rotate(180deg);text-align:center;padding:8px 0}
 .regime-quadrant-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;flex:1}
-.regime-q-cell{padding:20px 16px;border:1px solid var(--brd);border-radius:var(--r-xs);text-align:center;opacity:0.3;transition:all .3s;min-height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.regime-q-cell{padding:20px 16px;border:1px solid var(--brd);text-align:center;opacity:0.3;transition:all .3s;min-height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .regime-q-cell.active{opacity:1;border-color:var(--gold);box-shadow:0 0 20px rgba(200,168,75,0.06)}
 .regime-q-cell .rq-name{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:6px}
 .regime-q-cell .rq-desc{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);line-height:1.6}
 .regime-axis-x{display:flex;justify-content:space-between;padding:8px 0 0;margin-left:24px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
-.regime-timeline-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);padding:20px 28px;margin-bottom:16px;position:relative;overflow:hidden}
-.regime-timeline-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.regime-timeline-card{background:var(--surf);border:1px solid var(--brd);padding:20px 28px;margin-bottom:16px;position:relative;overflow:hidden}
 .regime-timeline-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;margin-bottom:4px}
 .regime-timeline-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-bottom:16px}
-.regime-timeline-strip{display:flex;height:28px;border-radius:6px;overflow:hidden;gap:1px}
+.regime-timeline-strip{display:flex;height:28px;overflow:hidden;gap:1px}
 .regime-timeline-bar{flex:1;min-width:0;position:relative;cursor:default;transition:opacity .2s}
 .regime-timeline-bar:hover{opacity:0.8}
 .regime-timeline-legend{display:flex;gap:16px;margin-top:12px;font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
@@ -227,7 +220,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:960px){
-  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
+  nav{padding:12px 20px;gap:0;justify-content:space-between}
   .nav-links{display:none}
   .nav-mobile-btn{display:block}
 }
