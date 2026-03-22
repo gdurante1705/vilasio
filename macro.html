@@ -205,8 +205,7 @@ main{padding:0 48px 64px}
 
 /* ─── SECTION STAT GRIDS ─── */
 .sec-stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)}
-.sec-stats-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)}
-.sec-stats-3 .status-card,.sec-stats-2 .status-card{margin:0}
+.sec-stats-3 .status-card{margin:0}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -243,7 +242,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
   .sec-stats-3{grid-template-columns:1fr}
-  .sec-stats-2{grid-template-columns:1fr}
 
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -525,37 +523,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- BUSINESS SENTIMENT / PMI -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Business Sentiment</div><div class="ch-sub">ISM Manufacturing &#183; ISM Services &#8212; Purchasing Managers Index</div></div>
-    </div>
-    <div class="sec-stats-2">
-      <div class="status-card neut" id="sc-pmim" style="margin:0"><div class="sc-label">ISM Manufacturing</div><div class="sc-val" id="sc-pmim-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-pmim-badge">&#8212;</span><span class="sc-note">threshold: 50</span></div></div>
-      <div class="status-card neut" id="sc-pmis" style="margin:0"><div class="sc-label">ISM Services</div><div class="sc-val" id="sc-pmis-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-pmis-badge">&#8212;</span><span class="sc-note">threshold: 50</span></div></div>
-    </div>
-    <div class="chart-header" style="border-bottom:none;padding-bottom:0">
-      <div><div class="ch-sub">Manufacturing vs Services PMI &#8212; Expansion / Contraction Threshold at 50</div></div>
-      <div class="ch-toggles"><button class="ch-tog" data-g="pmi" data-rw="12" onclick="setR('pmi',12)">1Y</button><button class="ch-tog" data-g="pmi" data-rw="24" onclick="setR('pmi',24)">2Y</button><button class="ch-tog active" data-g="pmi" data-rw="60" onclick="setR('pmi',60)">5Y</button></div>
-    </div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="pmiChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Manufacturing</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> Services</div>
-      <div class="legend-item"><span class="legend-dot dashed"></span> 50 Threshold</div>
-    </div>
-    <div style="padding:0 28px 16px">
-      <div class="chart-explain">
-        <button class="chart-explain-toggle" onclick="togExplain(this)">
-          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
-          How to read this chart
-        </button>
-        <div class="chart-explain-content">
-          <p>The <strong>ISM Manufacturing PMI</strong> and <strong>ISM Services PMI</strong> are diffusion indices where 50 is the dividing line: above 50 signals expansion, below 50 signals contraction. Manufacturing is more cyclical and tends to lead &#8212; when it drops below 50 while services remains above, it signals a manufacturing recession that may or may not spread to the broader economy. When both drop below 50 simultaneously, it's a strong recession signal. Services PMI matters more for the US economy (70%+ of GDP) but manufacturing is the better leading indicator.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </main>
 
@@ -589,9 +556,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36,ch:60,pmi:60};
+var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36,ch:60};
 var infShow={cpi:1,ccpi:1,pce:1,cpce:1,ppi:1};
-var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO',ch:'renderConsumer',pmi:'renderPMI'};
+var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO',ch:'renderConsumer'};
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togInf(k){infShow[k]=infShow[k]?0:1;var el=document.getElementById('leg-'+k);if(el)el.style.opacity=infShow[k]?'1':'0.3';if(D)renderInflation()}
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -605,7 +572,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pOpts(cb){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:cb||function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderConsumerCards();renderConsumer();renderPMICards();renderPMI()}
+function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderConsumerCards();renderConsumer()}
 
 function renderCards(){
   var inf=D.inflation.cpiYoY,n=inf.values.length;if(n<2)return;
@@ -772,39 +739,6 @@ function renderConsumer(){
     {label:'Saving Rate',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},
     {label:'Credit Card Delinquency',data:cdVals,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.04)',borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
   ]},options:pOpts(function(c){return c.dataset.label+': '+fPct(c.parsed.y)})});
-}
-
-/* ─── PMI / BUSINESS SENTIMENT ─── */
-function renderPMICards(){
-  if(!D||!D.pmi)return;
-  var mfg=D.pmi.manufacturing,svc=D.pmi.services;
-  function upPMI(id,vals){
-    var n=vals.length;if(n<1)return;
-    var cv=vals[n-1];
-    document.getElementById(id+'-val').textContent=cv.toFixed(1);
-    var badge=document.getElementById(id+'-badge');
-    if(cv>=50){badge.textContent='EXPANSION';badge.className='sc-delta up'}
-    else{badge.textContent='CONTRACTION';badge.className='sc-delta dn'}
-    document.getElementById(id).className='status-card '+(cv>=50?'up':'dn');
-  }
-  upPMI('sc-pmim',mfg.values);
-  upPMI('sc-pmis',svc.values);
-}
-
-function renderPMI(){
-  if(!D||!D.pmi)return;
-  var mfg=D.pmi.manufacturing,svc=D.pmi.services,rw=R.pmi;
-  // Align services onto manufacturing dates
-  var svcMap={};svc.dates.forEach(function(d,i){svcMap[d]=svc.values[i]});
-  var dates=sl(mfg.dates,rw),mVals=sl(mfg.values,rw);
-  var sVals=dates.map(function(d){return svcMap[d]!=null?svcMap[d]:null});
-  var len=dates.length;
-  if(charts.pmi)charts.pmi.destroy();
-  charts.pmi=new Chart(document.getElementById('pmiChart').getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
-    {label:'Manufacturing',data:mVals,borderColor:'#c8a84b',borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:'Services',data:sVals,borderColor:'#5b8af0',borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
-    {label:'50 Threshold',data:Array(len).fill(50),borderColor:'rgba(255,255,255,0.2)',borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+': '+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
 }
 
 function refreshData(){
