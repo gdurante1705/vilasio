@@ -677,17 +677,28 @@ function loadEpsHistory(symbol) {
       var gradGrn = ctx.createLinearGradient(0, 0, 0, 220);
       gradGrn.addColorStop(0, 'rgba(34,197,94,0.9)'); gradGrn.addColorStop(1, 'rgba(34,197,94,0.2)');
       var epsLabelPlugin = {id: 'epsLabels', afterDatasetsDraw: function(chart) {
-        var c2 = chart.ctx; c2.save(); c2.textAlign = 'center'; c2.font = '500 9px DM Mono'; c2.textBaseline = 'bottom';
+        var c2 = chart.ctx; c2.save(); c2.textAlign = 'center';
         var metaA = chart.getDatasetMeta(0), metaE = chart.getDatasetMeta(1);
+        // $ values above bars
+        c2.font = '500 9px DM Mono'; c2.textBaseline = 'bottom';
         metaA.data.forEach(function(bar, i) {
-          var v = surprises[i]; if (v == null) return;
-          c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '%', bar.x, bar.y - 4);
+          var a = actuals[i]; if (a == null) return;
+          c2.fillStyle = '#22c55e';
+          c2.fillText('$' + a.toFixed(2), bar.x, bar.y - 4);
         });
         metaE.data.forEach(function(bar, i) {
           var e = estimates[i]; if (e == null) return;
           c2.fillStyle = '#06b6d4';
           c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
+        });
+        // Surprise % below bars, centered between the two bars
+        c2.font = '500 8px DM Mono'; c2.textBaseline = 'top';
+        var area = chart.chartArea;
+        metaA.data.forEach(function(bar, i) {
+          var v = surprises[i]; if (v == null) return;
+          var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
+          c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
+          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 4);
         });
         c2.restore();
       }};
@@ -703,7 +714,7 @@ function loadEpsHistory(symbol) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20}},
+          layout: {padding: {top: 20, bottom: 16}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
@@ -721,7 +732,7 @@ function loadEpsHistory(symbol) {
             }
           },
           scales: {
-            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 7}, color: '#78787f'}},
+            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 7}, color: '#78787f', padding: 14}},
             y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
           }
         },
