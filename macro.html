@@ -502,13 +502,12 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="status-card neut" id="sc-dg" style="margin:0"><div class="sc-label">Household Debt / GDP</div><div class="sc-val" id="sc-dg-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dg-chg">&#8212;</span><span class="sc-note">vs prior</span></div></div>
     </div>
     <div class="chart-header" style="border-bottom:none;padding-bottom:0">
-      <div><div class="ch-sub">Saving Rate vs Credit Card Delinquency &#8212; Dual Trend</div></div>
+      <div><div class="ch-sub">Personal Saving Rate &#8212; Trend</div></div>
       <div class="ch-toggles"><button class="ch-tog" data-g="ch" data-rw="12" onclick="setR('ch',12)">1Y</button><button class="ch-tog" data-g="ch" data-rw="24" onclick="setR('ch',24)">2Y</button><button class="ch-tog active" data-g="ch" data-rw="60" onclick="setR('ch',60)">5Y</button></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="consumerChart"></canvas></div></div>
     <div class="chart-legend">
       <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Saving Rate</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> Credit Card Delinquency</div>
     </div>
     <div style="padding:0 28px 16px">
       <div class="chart-explain">
@@ -683,7 +682,7 @@ function renderMorpheus(){
     {data:Array(len).fill(80),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:Array(len).fill(20),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:Array(len).fill(50),borderColor:"rgba(255,255,255,0.10)",borderWidth:1,borderDash:[2,4],pointRadius:0,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{min:0,max:100,ticks:Object.assign({},axO.ticks,{stepSize:20})})}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(i){return i.datasetIndex<2},callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(1)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:Object.assign({},axO,{min:-2,max:102,ticks:Object.assign({},axO.ticks,{stepSize:20,callback:function(v){return v<0||v>100?'':v}})})}}});
 }
 
 var regimeColors={EXPANSION:'#22c55e',REFLATION:'#c8a84b',STAGNATION:'#ef4444',SLOWDOWN:'#5b8af0'};
@@ -793,24 +792,11 @@ function renderConsumerCards(){
 function renderConsumer(){
   if(!D||!D.consumer)return;
   var sr=D.consumer.savingRate,cd=D.consumer.creditDelinquency,rw=R.ch;
-  // Date-based filtering: rw = months (12/24/60), compute start date
-  var now=new Date();
-  var startDate=new Date(now.getFullYear(),now.getMonth()-rw,1).toISOString().slice(0,10);
-  // Build maps
-  var srMap={};sr.dates.forEach(function(d,i){srMap[d]=sr.values[i]});
-  var cdMap={};cd.dates.forEach(function(d,i){cdMap[d]=cd.values[i]});
-  // Merge all dates, filter by startDate
-  var allDates=sr.dates.slice();
-  cd.dates.forEach(function(d){if(allDates.indexOf(d)<0)allDates.push(d)});
-  allDates.sort();
-  var dates=allDates.filter(function(d){return d>=startDate});
-  var srVals=dates.map(function(d){return srMap[d]!=null?srMap[d]:null});
-  var cdVals=dates.map(function(d){return cdMap[d]!=null?cdMap[d]:null});
+  var dates=sl(sr.dates,rw),vals=sl(sr.values,rw);
   if(charts.ch)charts.ch.destroy();
   charts.ch=new Chart(document.getElementById('consumerChart').getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
-    {label:'Saving Rate',data:srVals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},
-    {label:'Credit Card Delinquency',data:cdVals,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.04)',borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
-  ]},options:pOpts(function(c){return c.dataset.label+': '+fPct(c.parsed.y)})});
+    {label:'Saving Rate',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true}
+  ]},options:pOpts(function(c){return 'Saving Rate: '+fPct(c.parsed.y)})});
 }
 
 /* ─── BANKING ─── */
@@ -837,7 +823,7 @@ function _bankSingleChart(key,canvasId,series,color,rw){
     {label:series.toUpperCase(),data:vals,borderColor:color,borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+': $'+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return'$'+v.toFixed(0)}})})}}});
 }
-function renderBankIXG(){_bankSingleChart('bkixg','bankIXGChart','ixg','#c8a84b',R.bkixg)}
+function renderBankIXG(){_bankSingleChart('bkixg','bankIXGChart','ixg','#f97316',R.bkixg)}
 function renderBankIAK(){_bankSingleChart('bkiak','bankIAKChart','iak','#a78bfa',R.bkiak)}
 
 function refreshData(){
