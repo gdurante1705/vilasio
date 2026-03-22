@@ -139,14 +139,9 @@ main{padding:0 48px 64px}
 .corr-table th{padding:10px 8px;font-weight:400;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:8px;font-family:"DM Mono",monospace}
 .corr-table td{padding:14px 16px;text-align:center;font-weight:400;border-radius:6px;cursor:pointer;position:relative;transition:all .15s}
 .corr-table td:hover{filter:brightness(1.2);transform:scale(1.02)}
-.corr-tip{position:fixed;z-index:200;background:rgba(12,12,16,0.95);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:12px 16px;pointer-events:none;font-family:"DM Mono",monospace;font-size:10px;color:var(--white);max-width:260px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,0.6)}
-.corr-tip-pair{font-size:11px;letter-spacing:1px;margin-bottom:4px}
-.corr-tip-val{font-size:18px;font-family:"Alata",sans-serif;margin-bottom:4px}
-.corr-tip-chg{font-size:9px;color:var(--t2);margin-bottom:4px}
-.corr-tip-interp{font-size:9px;color:var(--t1);line-height:1.4}
-.corr-table td.lbl{text-align:left;color:var(--gold);font-weight:400;letter-spacing:2px;font-size:8px;font-family:"DM Mono",monospace;text-transform:uppercase;cursor:default;background:transparent}
+.corr-table td.lbl{text-align:left;color:var(--white);font-weight:400;font-size:14px;font-family:"Alata",sans-serif;cursor:default;background:transparent}
+.corr-table td.lbl .lbl-sym{font-family:"DM Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-right:4px}
 .corr-table td.lbl:hover{filter:none;transform:none}
-.corr-subtitle{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);padding:10px 28px;border-top:1px solid var(--brd)}
 
 /* ─── COT CURRENCY PANEL ─── */
 .cot-panel-inner{background:var(--surf);border:1px solid var(--card-border);border-radius:var(--r-sm);margin:0 28px 16px;padding:20px 24px}
@@ -307,32 +302,13 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div id="cot-currency-panel" style="max-height:0;overflow:hidden;transition:max-height .4s ease"></div>
   </div>
 
-  <!-- CORRELATION MATRIX -->
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Correlation Matrix</div><div class="ch-sub">90-Day Rolling &#183; Daily Returns</div></div></div>
-    <div class="corr-wrap"><table class="corr-table" id="corr-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
-    <div class="corr-subtitle">Compared to previous 90-day window &#8212; arrows show direction of change</div>
-    <div class="chart-explain" style="padding:0 28px 12px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>The correlation matrix shows <strong>90-day rolling correlation</strong> between major asset classes (SPX, Gold, DXY, US10Y, Oil, EURUSD, BTC). Values near +1 mean assets move together, near -1 means they move inversely. Key relationships to watch: <strong>Gold-DXY</strong> (typically inverse), <strong>SPX-US10Y</strong> (varies by regime), <strong>Oil-SPX</strong> (positive in expansion). When normally inverse correlations break down (e.g., stocks and bonds falling together), it signals a regime shift.</p></div>
-    </div>
-  </div>
-
   <!-- SECTOR ROTATION -->
   <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Sector Rotation</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Momentum vs Performance</div></div>
-      <div class="ch-toggles">
-        <button class="ch-tog active" data-g="sec" onclick="setSectorTF('chg1W',this)">1W</button>
-        <button class="ch-tog" data-g="sec" onclick="setSectorTF('chg1M',this)">1M</button>
-        <button class="ch-tog" data-g="sec" onclick="setSectorTF('chg3M',this)">3M</button>
-        <button class="ch-tog" data-g="sec" onclick="setSectorTF('chgYTD',this)">YTD</button>
-      </div>
-    </div>
-    <div id="sector-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:16px 28px"></div>
+    <div class="chart-header"><div><div class="ch-title">Sector Rotation</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance Heatmap</div></div></div>
+    <div class="corr-wrap"><table class="corr-table" id="sector-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>Cards are ranked by performance in the selected timeframe. The sparkline shows the price trend over the last 30 days. Use this to identify which sectors are leading or lagging the market rotation.</p></div>
+      <div class="chart-explain-content"><p>S&amp;P 500 sector ETFs ranked by 1-year performance. Color intensity reflects the magnitude of the move &mdash; darker green means stronger outperformance, darker red means heavier underperformance. Use the 1W column to spot short-term momentum shifts within the longer trend.</p></div>
     </div>
   </div>
 
@@ -508,7 +484,7 @@ var tipO={backgroundColor:"#0c0c10",titleColor:"#f0f0f0",bodyColor:"#c0c0c4",bor
 
 function togCoint(group,k){cointShow[group][k]=cointShow[group][k]?0:1;document.getElementById('leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'')).style.opacity=cointShow[group][k]?'1':'0.3';window[renderMap[group]]()}
 
-function renderAll(){renderCards();renderCS();renderCorrelation();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG();renderVixSpx()}
+function renderAll(){renderCards();renderCS();renderSectorTable();renderCommodityTable();renderCMet();renderCEq();renderCCr();renderVG();renderVixSpx()}
 
 /* --- STATUS CARDS --- */
 function renderCards(){
@@ -562,62 +538,6 @@ function renderCS(){
   charts.cs=new Chart(document.getElementById("csChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(0)}})})}}});
 }
 
-/* --- CORRELATION MATRIX --- */
-function corrInterp(v){
-  if(v==null)return'';
-  var a=Math.abs(v);
-  var dir=v>=0?'positive':'negative';
-  if(a>=0.7)return'Strong '+dir+' — tend to move '+(v>=0?'together':'in opposite directions');
-  if(a>=0.4)return'Moderate '+dir+' correlation';
-  if(a>=0.2)return'Weak '+dir+' correlation';
-  return'Near zero — no meaningful relationship';
-}
-var _corrTip=null;
-function showCorrTip(e,a,b,v,pv){
-  if(!_corrTip){_corrTip=document.createElement('div');_corrTip.className='corr-tip';document.body.appendChild(_corrTip)}
-  var d=v-pv,chgTxt=d>0.03?'&#9650; +'+d.toFixed(2)+' vs prior':d<-0.03?'&#9660; '+d.toFixed(2)+' vs prior':'&#8212; Stable vs prior';
-  var chgCol=d>0.03?'var(--grn)':d<-0.03?'var(--red)':'var(--t2)';
-  _corrTip.innerHTML='<div class="corr-tip-pair">'+a+' &#8596; '+b+'</div><div class="corr-tip-val">'+v.toFixed(3)+'</div><div class="corr-tip-chg" style="color:'+chgCol+'">'+chgTxt+'</div><div class="corr-tip-interp">'+corrInterp(v)+'</div>';
-  _corrTip.style.display='block';
-  var r=e.target.getBoundingClientRect();
-  _corrTip.style.left=Math.min(r.left,window.innerWidth-270)+'px';
-  _corrTip.style.top=(r.bottom+6)+'px';
-}
-function hideCorrTip(){if(_corrTip)_corrTip.style.display='none'}
-
-function renderCorrelation(){
-  var co=D.correlation;if(!co||!co.labels)return;
-  var labels=co.labels,cur=co.current,prev=co.previous,n=labels.length;
-  function corrColor(v){
-    if(v==null)return'rgba(255,255,255,0.04)';
-    if(v>=0.5)return'rgba(34,197,94,0.5)';
-    if(v>=0.2)return'rgba(34,197,94,0.15)';
-    if(v>-0.2)return'rgba(255,255,255,0.04)';
-    if(v>-0.5)return'rgba(239,68,68,0.15)';
-    return'rgba(239,68,68,0.5)';
-  }
-  function corrTxt(v){
-    if(v==null)return'var(--t1)';
-    if(v>=0.2)return'#22c55e';
-    if(v>-0.2)return'var(--t1)';
-    return'#ef4444';
-  }
-  function arrow(c,p){var d=c-p;if(Math.abs(d)<0.03)return'';return d>0?' <span style="color:#22c55e;font-size:10px">&#9650;</span>':' <span style="color:#ef4444;font-size:10px">&#9660;</span>'}
-  var html='<tr><th></th>';
-  for(var j=0;j<n;j++)html+='<th>'+labels[j]+'</th>';
-  html+='</tr>';
-  for(var i=0;i<n;i++){
-    html+='<tr><td class="lbl" style="color:var(--gold)">'+labels[i]+'</td>';
-    for(var j=0;j<n;j++){
-      var v=cur[i][j],pv=prev[i][j],bg=corrColor(v);
-      if(i===j){html+='<td style="background:rgba(200,168,75,0.08);color:var(--t2);cursor:default">1.00</td>'}
-      else{html+='<td style="background:'+bg+';color:'+corrTxt(v)+'" onmouseenter=\'showCorrTip(event,"'+labels[i]+'","'+labels[j]+'",'+v+','+pv+')\' onmouseleave="hideCorrTip()">'+v.toFixed(2)+arrow(v,pv)+'</td>'}
-    }
-    html+='</tr>';
-  }
-  document.getElementById('corr-table').innerHTML=html;
-}
-
 /* --- HEATMAP HELPERS --- */
 function heatColor(v){
   if(v==null)return'var(--surf)';
@@ -627,31 +547,29 @@ function heatColor(v){
 }
 function fmtPct(v){return v==null?'\u2014':(v>=0?'+':'')+v.toFixed(1)+'%'}
 
-/* --- SECTOR ROTATION CARDS --- */
-var sectorTF='chg1W';
-var secSparkCharts={};
-function setSectorTF(tf,btn){sectorTF=tf;document.querySelectorAll('.ch-tog[data-g="sec"]').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');renderSectorTable()}
+/* --- SECTOR ROTATION TABLE --- */
+function sectorHeatColor(v){
+  if(v==null)return'var(--surf)';
+  if(v>10)return'rgba(34,197,94,0.7)';
+  if(v>3)return'rgba(34,197,94,0.35)';
+  if(v>=0)return'rgba(34,197,94,0.12)';
+  if(v>-3)return'rgba(239,68,68,0.12)';
+  if(v>-10)return'rgba(239,68,68,0.35)';
+  return'rgba(239,68,68,0.7)';
+}
 function renderSectorTable(){
   var s=D.sectorRotation;if(!s||!s.length)return;
-  var sorted=s.slice().sort(function(a,b){return(b[sectorTF]||0)-(a[sectorTF]||0)});
-  var grid=document.getElementById('sector-grid');grid.innerHTML='';
-  Object.keys(secSparkCharts).forEach(function(k){secSparkCharts[k].destroy()});secSparkCharts={};
-  sorted.forEach(function(r,idx){
-    var v=r[sectorTF]||0,col=v>=0?'#22c55e':'#ef4444';
-    var card=document.createElement('div');
-    card.style.cssText='background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px;position:relative;overflow:hidden';
-    card.innerHTML='<div style="font-family:Alata,sans-serif;font-size:18px;font-weight:400">'+r.symbol+'</div>'
-      +'<div style="font-family:DM Mono,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-top:2px">'+r.name+'</div>'
-      +'<div style="font-family:Alata,sans-serif;font-size:28px;font-weight:400;color:'+col+';margin-top:10px">'+fmtPct(v)+'</div>'
-      +'<div style="height:50px;margin-top:8px"><canvas id="sec-spark-'+idx+'"></canvas></div>'
-      +'<div style="font-family:DM Mono,monospace;font-size:10px;color:var(--t2);margin-top:4px">$'+r.price.toFixed(2)+'</div>';
-    grid.appendChild(card);
-    // Sparkline from history if available, otherwise skip
-    var hist=r.history||[];
-    if(hist.length>1){
-      secSparkCharts[idx]=new Chart(document.getElementById('sec-spark-'+idx).getContext('2d'),{type:'line',data:{labels:hist.map(function(){return''}),datasets:[{data:hist,borderColor:'rgba(240,240,245,0.5)',backgroundColor:'rgba(240,240,245,0.05)',borderWidth:1,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
-    }
+  var sorted=s.slice().sort(function(a,b){return(b.chg1Y||0)-(a.chg1Y||0)});
+  var html='<tr><th style="text-align:left">Sector</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>1Y</th></tr>';
+  sorted.forEach(function(r){
+    html+='<tr><td class="lbl"><span class="lbl-sym">'+r.symbol+'</span> '+r.name+'</td><td style="color:var(--white);border-radius:6px">$'+r.price.toFixed(2)+'</td>';
+    ['chg1W','chg1M','chg3M','chg1Y'].forEach(function(k){
+      var v=r[k],col=v!=null?(v>=0?'#22c55e':'#ef4444'):'var(--t1)';
+      html+='<td style="background:'+sectorHeatColor(v)+';color:'+col+';border-radius:6px">'+fmtPct(v)+'</td>';
+    });
+    html+='</tr>';
   });
+  document.getElementById('sector-table').innerHTML=html;
 }
 
 /* --- COMMODITY TABLE --- */
@@ -659,7 +577,7 @@ function renderCommodityTable(){
   var c=D.commodities;if(!c||!c.table||!c.table.length)return;
   var html='<tr><th style="text-align:left">Commodity</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
   c.table.forEach(function(r){
-    html+='<tr><td class="lbl">'+r.symbol+' &middot; '+r.name+'</td><td style="color:var(--white);border-radius:6px">$'+r.price.toFixed(2)+'</td>';
+    html+='<tr><td class="lbl"><span class="lbl-sym">'+r.symbol+'</span> '+r.name+'</td><td style="color:var(--white);border-radius:6px">$'+r.price.toFixed(2)+'</td>';
     ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
       var col=r[k]!=null?(r[k]>=0?'#22c55e':'#ef4444'):'var(--t1)';
       html+='<td style="background:'+heatColor(r[k])+';color:'+col+';border-radius:6px">'+fmtPct(r[k])+'</td>';
