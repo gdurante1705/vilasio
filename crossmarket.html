@@ -135,14 +135,16 @@ main{padding:0 48px 64px}
 
 /* ─── CORRELATION & TABLES ─── */
 .corr-wrap{padding:20px 28px}
-.corr-table{width:100%;border-collapse:separate;border-spacing:3px;font-family:"DM Mono",monospace;font-size:11px}
-.corr-table th{padding:10px 8px;font-weight:400;text-align:center;vertical-align:bottom}
-.corr-table th .th-sym{display:block;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:9px;font-family:"DM Mono",monospace}
-.corr-table th .th-name{display:block;color:var(--t3);font-size:7px;letter-spacing:1px;font-family:"DM Mono",monospace;margin-top:2px}
-.corr-table td{padding:10px 8px;text-align:center;font-weight:500;border-radius:6px;color:var(--white);transition:all .15s}
+.corr-table{width:100%;border-collapse:separate;border-spacing:3px;font-family:"DM Mono",monospace;font-size:11px;table-layout:fixed}
+.corr-table th{padding:10px 4px;font-weight:400;text-align:center;vertical-align:bottom;overflow:hidden}
+.corr-table th .th-sym{display:block;color:var(--gold);letter-spacing:1px;text-transform:uppercase;font-size:11px;font-weight:500;font-family:"DM Mono",monospace}
+.corr-table th .th-name{display:block;color:var(--t2);font-size:9px;letter-spacing:0.5px;font-family:"DM Mono",monospace;margin-top:2px;white-space:nowrap}
+.corr-table td{padding:10px 6px;text-align:center;font-weight:500;border-radius:6px;color:var(--white);transition:all .15s}
 .corr-table td:hover{filter:brightness(1.15)}
 .corr-table td.tf-label{background:transparent;color:var(--gold);font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:left;padding:12px 16px;border-right:1px solid var(--brd);width:80px;cursor:default}
 .corr-table td.tf-label:hover{filter:none}
+.corr-table colgroup .col-tf{width:80px}
+.corr-table colgroup .col-asset{}
 
 /* ─── COT CURRENCY PANEL ─── */
 .cot-panel-inner{background:var(--surf);border:1px solid var(--card-border);border-radius:var(--r-sm);margin:0 28px 16px;padding:20px 24px}
@@ -558,14 +560,18 @@ function sectorHeatColor(v){
   if(v>-10)return'rgba(239,68,68,0.35)';
   return'rgba(239,68,68,0.7)';
 }
+var sectorShort={'Technology':'Tech','Financials':'Financials','Energy':'Energy','Health Care':'Healthcare','Utilities':'Utilities','Consumer Staples':'Staples','Real Estate':'Real Estate','Materials':'Materials','Consumer Discretionary':'Cons. Disc.','Industrials':'Industrials','Communication Services':'Comm. Svc.'};
 function renderSectorTable(){
   var s=D.sectorRotation;if(!s||!s.length)return;
   var order=['XLE','XLC','XLU','XLK','XLF','XLRE','XLP','XLY','XLV','XLI','XLB'];
   var map={};s.forEach(function(r){map[r.symbol]=r});
   var cols=order.filter(function(sym){return map[sym]}).map(function(sym){return map[sym]});
+  var n=cols.length;
   var rows=[{label:'1W',key:'chg1W'},{label:'1M',key:'chg1M'},{label:'3M',key:'chg3M'},{label:'1Y',key:'chg1Y'}];
-  var html='<tr><th></th>';
-  cols.forEach(function(c){html+='<th><span class="th-sym">'+c.symbol+'</span><span class="th-name">'+c.name+'</span></th>'});
+  var html='<colgroup><col class="col-tf">';
+  for(var i=0;i<n;i++)html+='<col class="col-asset">';
+  html+='</colgroup><tr><th></th>';
+  cols.forEach(function(c){var short=sectorShort[c.name]||c.name;html+='<th title="'+c.symbol+' \u00b7 '+c.name+'"><span class="th-sym">'+c.symbol+'</span><span class="th-name">'+short+'</span></th>'});
   html+='</tr>';
   rows.forEach(function(row){
     html+='<tr><td class="tf-label">'+row.label+'</td>';
@@ -585,9 +591,12 @@ function renderCommodityTable(){
   var symMap={'GC=F':'GC','SI=F':'SI','CL=F':'CL','NG=F':'NG','HG=F':'HG','ZC=F':'ZC','ZS=F':'ZS'};
   var map={};c.table.forEach(function(r){var k=symMap[r.symbol]||r.symbol.replace('=F','');map[k]=r});
   var cols=order.filter(function(sym){return map[sym]}).map(function(sym){return map[sym]});
+  var n=cols.length;
   var rows=[{label:'1W',key:'chg1W'},{label:'1M',key:'chg1M'},{label:'3M',key:'chg3M'},{label:'YTD',key:'chgYTD'}];
-  var html='<tr><th></th>';
-  cols.forEach(function(co){var sym=symMap[co.symbol]||co.symbol.replace('=F','');html+='<th><span class="th-sym">'+sym+'</span><span class="th-name">'+co.name+'</span></th>'});
+  var html='<colgroup><col class="col-tf">';
+  for(var i=0;i<n;i++)html+='<col class="col-asset">';
+  html+='</colgroup><tr><th></th>';
+  cols.forEach(function(co){var sym=symMap[co.symbol]||co.symbol.replace('=F','');html+='<th title="'+sym+' \u00b7 '+co.name+'"><span class="th-sym">'+sym+'</span><span class="th-name">'+co.name+'</span></th>'});
   html+='</tr>';
   rows.forEach(function(row){
     html+='<tr><td class="tf-label">'+row.label+'</td>';
