@@ -623,12 +623,10 @@ function renderSignals(signals) {
 
     html += '<div class="sig-metrics">';
     html += '<div class="sig-metric"><div class="sig-metric-label">Surprise</div><div class="sig-metric-val ' + surpriseCls + '">' + (s.surprisePct > 0 ? '+' : '') + s.surprisePct + '%</div></div>';
-    html += '<div class="sig-metric"><div class="sig-metric-label">Gap</div><div class="sig-metric-val ' + gapCls + '">' + (s.gapPct > 0 ? '+' : '') + s.gapPct + '%</div></div>';
     html += '<div class="sig-metric"><div class="sig-metric-label">Drift</div><div class="sig-metric-val ' + driftCls + '">' + (s.driftPct > 0 ? '+' : '') + s.driftPct + '%</div></div>';
     html += '</div>';
 
     html += '<div class="sig-setup">';
-    html += '<span class="sig-gap-tag">' + s.gapType + ' gap</span>';
     html += s.setupType.replace(/_/g, ' ') + ' setup';
     if (s.analystRating) {
       html += ' <span class="earn-rating ' + ratingClass(s.analystRating) + '" style="margin-left:auto">' + ratingLabel(s.analystRating) + '</span>';
