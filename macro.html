@@ -28,7 +28,7 @@
   --gold-dim:rgba(200,168,75,0.12);
   --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
   --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
-  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;
+  --amb:#f59e0b;--blu:#3b82f6;--violet:#a78bfa;--bp:#5b8af0;
   --cyan:#06b6d4;
   --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
   --card-border:rgba(200,168,75,0.06);
@@ -328,7 +328,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
           How to read this chart
         </button>
         <div class="chart-explain-content">
-          <p>The <strong>Morpheus chart</strong> shows the inflation-unemployment trade-off (Phillips Curve). Percentile rankings over 12-month and 52-month windows reveal where current conditions sit relative to history. When inflation is ranked high and unemployment ranked low, expect hawkish Fed policy (rate hikes). When inflation is ranked low and unemployment ranked high, expect dovish policy (rate cuts). The crossover points often signal regime changes.</p>
+          <p>The <strong>Phillips Curve</strong> describes the inverse relationship between inflation and unemployment: when inflation is high, unemployment tends to be low, and vice versa. This chart tracks the percentile rank of both metrics over a 52-month window. When <strong>Inflation Rank</strong> is high (above 80) and <strong>Unemployment Rank</strong> is low (below 20), the Fed is under pressure to hike rates &#8212; bearish for equities and bonds. When Inflation Rank is low and Unemployment Rank is high, the Fed has room to cut &#8212; bullish for risk assets. The crossover between the two lines often signals a regime shift. Watch for divergences: when the lines move in the same direction, the historical inverse relationship is breaking down.</p>
         </div>
       </div>
     </div>
@@ -678,8 +678,8 @@ function renderMorpheus(){
   var len=dates.length;
   if(charts.mo)charts.mo.destroy();
   charts.mo=new Chart(document.getElementById("morphChart").getContext("2d"),{type:"line",data:{labels:dates,datasets:[
-    {label:"Inflation Rank",data:ir,borderColor:"#ef4444",backgroundColor:"rgba(239,68,68,0.05)",borderWidth:2.5,pointRadius:0,fill:true,tension:0.3},
-    {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.05)",borderWidth:2.5,pointRadius:0,fill:true,tension:0.3},
+    {label:"Inflation Rank",data:ir,borderColor:"#ef4444",borderWidth:2.5,pointRadius:0,fill:false,tension:0.3},
+    {label:"Unemployment Rank",data:ur,borderColor:"#3b82f6",borderWidth:2.5,pointRadius:0,fill:false,tension:0.3},
     {data:Array(len).fill(80),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:Array(len).fill(20),borderColor:"rgba(255,255,255,0.15)",borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     {data:Array(len).fill(50),borderColor:"rgba(255,255,255,0.10)",borderWidth:1,borderDash:[2,4],pointRadius:0,fill:false}
@@ -793,13 +793,17 @@ function renderConsumerCards(){
 function renderConsumer(){
   if(!D||!D.consumer)return;
   var sr=D.consumer.savingRate,cd=D.consumer.creditDelinquency,rw=R.ch;
-  // Merge monthly (saving rate) + quarterly (delinquency) into unified timeline
+  // Date-based filtering: rw = months (12/24/60), compute start date
+  var now=new Date();
+  var startDate=new Date(now.getFullYear(),now.getMonth()-rw,1).toISOString().slice(0,10);
+  // Build maps
   var srMap={};sr.dates.forEach(function(d,i){srMap[d]=sr.values[i]});
   var cdMap={};cd.dates.forEach(function(d,i){cdMap[d]=cd.values[i]});
+  // Merge all dates, filter by startDate
   var allDates=sr.dates.slice();
   cd.dates.forEach(function(d){if(allDates.indexOf(d)<0)allDates.push(d)});
   allDates.sort();
-  var dates=sl(allDates,rw);
+  var dates=allDates.filter(function(d){return d>=startDate});
   var srVals=dates.map(function(d){return srMap[d]!=null?srMap[d]:null});
   var cdVals=dates.map(function(d){return cdMap[d]!=null?cdMap[d]:null});
   if(charts.ch)charts.ch.destroy();
@@ -830,7 +834,7 @@ function _bankSingleChart(key,canvasId,series,color,rw){
   var dates=sl(s.dates,rw),vals=sl(s.values,rw);
   if(charts[key])charts[key].destroy();
   charts[key]=new Chart(document.getElementById(canvasId).getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
-    {label:series.toUpperCase(),data:vals,borderColor:color,backgroundColor:color.replace(')',',0.06)').replace('rgb','rgba'),borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true}
+    {label:series.toUpperCase(),data:vals,borderColor:color,borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+': $'+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return'$'+v.toFixed(0)}})})}}});
 }
 function renderBankIXG(){_bankSingleChart('bkixg','bankIXGChart','ixg','#c8a84b',R.bkixg)}
