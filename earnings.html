@@ -678,11 +678,16 @@ function loadEpsHistory(symbol) {
       gradGrn.addColorStop(0, 'rgba(34,197,94,0.9)'); gradGrn.addColorStop(1, 'rgba(34,197,94,0.2)');
       var epsLabelPlugin = {id: 'epsLabels', afterDatasetsDraw: function(chart) {
         var c2 = chart.ctx; c2.save(); c2.textAlign = 'center'; c2.font = '500 9px DM Mono'; c2.textBaseline = 'bottom';
-        var meta = chart.getDatasetMeta(0);
-        meta.data.forEach(function(bar, i) {
+        var metaA = chart.getDatasetMeta(0), metaE = chart.getDatasetMeta(1);
+        metaA.data.forEach(function(bar, i) {
           var v = surprises[i]; if (v == null) return;
           c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), bar.x, bar.y - 4);
+          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '%', bar.x, bar.y - 4);
+        });
+        metaE.data.forEach(function(bar, i) {
+          var e = estimates[i]; if (e == null) return;
+          c2.fillStyle = '#06b6d4';
+          c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
         });
         c2.restore();
       }};
@@ -691,8 +696,8 @@ function loadEpsHistory(symbol) {
         data: {
           labels: labels,
           datasets: [
-            {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.5, categoryPercentage: 0.65},
-            {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.3, categoryPercentage: 0.65}
+            {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7},
+            {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7}
           ]
         },
         options: {
