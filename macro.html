@@ -749,17 +749,17 @@ function renderBankUS(){
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+': $'+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return'$'+v.toFixed(0)}})})}}});
 }
 
-function _bankSingleChart(key,canvasId,series,color,rw){
+function _bankSingleChart(key,canvasId,series,color,bgColor,rw){
   if(!D||!D.banking)return;
   var s=D.banking[series];if(!s||!s.dates.length)return;
   var dates=sl(s.dates,rw),vals=sl(s.values,rw);
   if(charts[key])charts[key].destroy();
   charts[key]=new Chart(document.getElementById(canvasId).getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
-    {label:series.toUpperCase(),data:vals,borderColor:color,borderWidth:2,pointRadius:0,fill:false,tension:0,spanGaps:true}
+    {label:series.toUpperCase(),data:vals,borderColor:color,backgroundColor:bgColor,borderWidth:2,pointRadius:0,fill:true,tension:0,spanGaps:true}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+': $'+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:6,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return'$'+v.toFixed(0)}})})}}});
 }
-function renderBankIXG(){_bankSingleChart('bkixg','bankIXGChart','ixg','#f97316',R.bkixg)}
-function renderBankIAK(){_bankSingleChart('bkiak','bankIAKChart','iak','#a78bfa',R.bkiak)}
+function renderBankIXG(){_bankSingleChart('bkixg','bankIXGChart','ixg','#ec4899','rgba(236,72,153,0.08)',R.bkixg)}
+function renderBankIAK(){_bankSingleChart('bkiak','bankIAKChart','iak','#a78bfa','rgba(167,139,250,0.08)',R.bkiak)}
 
 function refreshData(){
   var btn=document.getElementById("refresh-btn");btn.textContent="REFRESHING...";btn.classList.add("loading");
