@@ -135,13 +135,14 @@ main{padding:0 48px 64px}
 
 /* ─── CORRELATION & TABLES ─── */
 .corr-wrap{padding:20px 28px}
-.corr-table{width:100%;border-collapse:separate;border-spacing:3px;font-family:"Alata",sans-serif;font-size:14px}
-.corr-table th{padding:10px 8px;font-weight:400;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:8px;font-family:"DM Mono",monospace}
-.corr-table td{padding:14px 16px;text-align:center;font-weight:400;border-radius:6px;cursor:pointer;position:relative;transition:all .15s}
-.corr-table td:hover{filter:brightness(1.2);transform:scale(1.02)}
-.corr-table td.lbl{text-align:left;color:var(--white);font-weight:400;font-size:14px;font-family:"Alata",sans-serif;cursor:default;background:transparent}
-.corr-table td.lbl .lbl-sym{font-family:"DM Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-right:4px}
-.corr-table td.lbl:hover{filter:none;transform:none}
+.corr-table{width:100%;border-collapse:separate;border-spacing:3px;font-family:"DM Mono",monospace;font-size:11px}
+.corr-table th{padding:10px 8px;font-weight:400;text-align:center;vertical-align:bottom}
+.corr-table th .th-sym{display:block;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:9px;font-family:"DM Mono",monospace}
+.corr-table th .th-name{display:block;color:var(--t3);font-size:7px;letter-spacing:1px;font-family:"DM Mono",monospace;margin-top:2px}
+.corr-table td{padding:10px 8px;text-align:center;font-weight:500;border-radius:6px;color:var(--white);transition:all .15s}
+.corr-table td:hover{filter:brightness(1.15)}
+.corr-table td.tf-label{background:transparent;color:var(--gold);font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:left;padding:12px 16px;border-right:1px solid var(--brd);width:80px;cursor:default}
+.corr-table td.tf-label:hover{filter:none}
 
 /* ─── COT CURRENCY PANEL ─── */
 .cot-panel-inner{background:var(--surf);border:1px solid var(--card-border);border-radius:var(--r-sm);margin:0 28px 16px;padding:20px 24px}
@@ -559,13 +560,18 @@ function sectorHeatColor(v){
 }
 function renderSectorTable(){
   var s=D.sectorRotation;if(!s||!s.length)return;
-  var sorted=s.slice().sort(function(a,b){return(b.chg1Y||0)-(a.chg1Y||0)});
-  var html='<tr><th style="text-align:left">Sector</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>1Y</th></tr>';
-  sorted.forEach(function(r){
-    html+='<tr><td class="lbl"><span class="lbl-sym">'+r.symbol+'</span> '+r.name+'</td><td style="color:var(--white);border-radius:6px">$'+r.price.toFixed(2)+'</td>';
-    ['chg1W','chg1M','chg3M','chg1Y'].forEach(function(k){
-      var v=r[k],col=v!=null?(v>=0?'#22c55e':'#ef4444'):'var(--t1)';
-      html+='<td style="background:'+sectorHeatColor(v)+';color:'+col+';border-radius:6px">'+fmtPct(v)+'</td>';
+  var order=['XLE','XLC','XLU','XLK','XLF','XLRE','XLP','XLY','XLV','XLI','XLB'];
+  var map={};s.forEach(function(r){map[r.symbol]=r});
+  var cols=order.filter(function(sym){return map[sym]}).map(function(sym){return map[sym]});
+  var rows=[{label:'1W',key:'chg1W'},{label:'1M',key:'chg1M'},{label:'3M',key:'chg3M'},{label:'1Y',key:'chg1Y'}];
+  var html='<tr><th></th>';
+  cols.forEach(function(c){html+='<th><span class="th-sym">'+c.symbol+'</span><span class="th-name">'+c.name+'</span></th>'});
+  html+='</tr>';
+  rows.forEach(function(row){
+    html+='<tr><td class="tf-label">'+row.label+'</td>';
+    cols.forEach(function(c){
+      var v=c[row.key],col=v!=null?(v>=0?'#22c55e':'#ef4444'):'var(--t1)';
+      html+='<td style="background:'+sectorHeatColor(v)+';color:'+col+'">'+fmtPct(v)+'</td>';
     });
     html+='</tr>';
   });
@@ -575,12 +581,19 @@ function renderSectorTable(){
 /* --- COMMODITY TABLE --- */
 function renderCommodityTable(){
   var c=D.commodities;if(!c||!c.table||!c.table.length)return;
-  var html='<tr><th style="text-align:left">Commodity</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
-  c.table.forEach(function(r){
-    html+='<tr><td class="lbl"><span class="lbl-sym">'+r.symbol+'</span> '+r.name+'</td><td style="color:var(--white);border-radius:6px">$'+r.price.toFixed(2)+'</td>';
-    ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
-      var col=r[k]!=null?(r[k]>=0?'#22c55e':'#ef4444'):'var(--t1)';
-      html+='<td style="background:'+heatColor(r[k])+';color:'+col+';border-radius:6px">'+fmtPct(r[k])+'</td>';
+  var order=['CL','ZC','NG','ZS','HG','GC','SI'];
+  var symMap={'GC=F':'GC','SI=F':'SI','CL=F':'CL','NG=F':'NG','HG=F':'HG','ZC=F':'ZC','ZS=F':'ZS'};
+  var map={};c.table.forEach(function(r){var k=symMap[r.symbol]||r.symbol.replace('=F','');map[k]=r});
+  var cols=order.filter(function(sym){return map[sym]}).map(function(sym){return map[sym]});
+  var rows=[{label:'1W',key:'chg1W'},{label:'1M',key:'chg1M'},{label:'3M',key:'chg3M'},{label:'YTD',key:'chgYTD'}];
+  var html='<tr><th></th>';
+  cols.forEach(function(co){var sym=symMap[co.symbol]||co.symbol.replace('=F','');html+='<th><span class="th-sym">'+sym+'</span><span class="th-name">'+co.name+'</span></th>'});
+  html+='</tr>';
+  rows.forEach(function(row){
+    html+='<tr><td class="tf-label">'+row.label+'</td>';
+    cols.forEach(function(co){
+      var v=co[row.key],col=v!=null?(v>=0?'#22c55e':'#ef4444'):'var(--t1)';
+      html+='<td style="background:'+heatColor(v)+';color:'+col+'">'+fmtPct(v)+'</td>';
     });
     html+='</tr>';
   });
