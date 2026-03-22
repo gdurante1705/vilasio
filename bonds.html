@@ -144,19 +144,6 @@ main{padding:0 48px 64px}
 .legend-dot.dashed{border:1.5px dashed var(--t1);background:transparent}
 .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 
-/* ─── FOMC CALENDAR ─── */
-.fomc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px 28px}
-.fomc-card{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xs);padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s}
-.fomc-card:hover{border-color:var(--card-border-hover)}
-.fomc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--t2)}
-.fomc-card.next::before{background:var(--gold)}
-.fomc-card.past{opacity:0.4}
-.fomc-date{font-family:"Alata",sans-serif;font-size:14px;font-weight:400}
-.fomc-countdown{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:6px}
-.fomc-countdown.next{color:var(--gold)}
-.fomc-countdown.upcoming{color:var(--t2)}
-.fomc-countdown.past{color:var(--t3)}
-
 /* ─── CHART EXPLAIN DROPDOWNS ─── */
 .chart-explain{margin-top:12px}
 .chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
@@ -167,20 +154,6 @@ main{padding:0 48px 64px}
 .chart-explain-content.open{max-height:600px}
 .chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
 .chart-explain-content strong{color:var(--t1);font-weight:400}
-
-/* ─── FED TABLE ─── */
-.fed-table{width:100%;border-collapse:collapse}
-.fed-table-head{display:grid;grid-template-columns:120px 120px 1fr 100px;padding:8px 16px;border-bottom:1px solid var(--brd)}
-.fed-table-head span{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
-.fed-table-row{display:grid;grid-template-columns:120px 120px 1fr 100px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.03);transition:background .2s}
-.fed-table-row:hover{background:rgba(200,168,75,0.03)}
-.fed-table-row .fed-date{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2)}
-.fed-table-row .fed-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:100px;text-transform:uppercase;display:inline-block}
-.fed-badge.cut{background:rgba(34,197,94,0.12);color:#22c55e}
-.fed-badge.hike{background:rgba(239,68,68,0.12);color:#ef4444}
-.fed-badge.hold{background:rgba(255,255,255,0.06);color:var(--t2)}
-.fed-table-row .fed-rate{font-family:"DM Mono",monospace;font-size:11px;color:var(--white)}
-.fed-table-row .fed-change{font-family:"DM Mono",monospace;font-size:10px;color:var(--t2)}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -218,7 +191,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
   .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
-  .fomc-grid{grid-template-columns:1fr 1fr}
+
 }
 </style>
 </head>
@@ -339,39 +312,11 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>Credit spreads measure the premium investors demand over risk-free Treasuries. <strong>Investment Grade (IG)</strong> spreads reflect broad corporate credit risk. <strong>High Yield (HY)</strong> spreads reflect distressed/speculative credit risk. Widening spreads signal risk aversion and economic stress. Tightening spreads signal confidence. HY spreads above 500bps historically coincide with recessions.</p></div></div></div>
   </div>
 
-  <!-- FED FUNDS RATE -->
-  <div class="chart-section reveal">
-    <div class="chart-header">
-      <div><div class="ch-title">Fed Funds Rate</div><div class="ch-sub">Decision Timeline</div></div>
-    </div>
-    <div class="chart-wrap">
-      <div id="fed-timeline">
-        <div class="fed-table-head">
-          <span>DATE</span>
-          <span>DECISION</span>
-          <span>TARGET RATE</span>
-          <span>CHANGE</span>
-        </div>
-        <div id="fed-table-body"></div>
-      </div>
-    </div>
-    <div class="chart-wrap" style="padding-top:0"><div class="chart-explain"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>How to read this chart</button><div class="chart-explain-content"><p>The Federal Funds Rate is the Fed's primary policy tool &#8212; the rate at which banks lend reserves to each other overnight. When the Fed <strong>raises rates</strong>, borrowing costs increase throughout the economy, slowing growth and fighting inflation. When it <strong>cuts</strong>, the reverse happens. The market prices future rate expectations via Fed Funds futures.</p></div></div></div>
-  </div>
-
-  <!-- FOMC CALENDAR -->
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">FOMC Calendar 2026</div><div class="ch-sub">Federal Open Market Committee meetings</div></div></div>
-    <div class="fomc-grid" id="fomc-grid"></div>
-  </div>
-
   <!-- MOVE INDEX -->
   <div class="chart-section reveal">
     <div class="chart-header">
       <div><div class="ch-title">MOVE Index</div><div class="ch-sub">ICE BofA Option Volatility Estimate &#8212; Bond Market Volatility</div></div>
       <div class="ch-toggles"><button class="ch-tog" data-g="move" data-rw="130" onclick="setR('move',130)">6M</button><button class="ch-tog" data-g="move" data-rw="260" onclick="setR('move',260)">1Y</button><button class="ch-tog active" data-g="move" data-rw="520" onclick="setR('move',520)">2Y</button></div>
-    </div>
-    <div style="padding:16px 28px;border-bottom:1px solid var(--brd)">
-      <div class="status-card neut" id="sc-move" style="margin:0"><div class="sc-label">CURRENT LEVEL</div><div class="sc-val" id="sc-move-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-move-chg">&#8212;</span><span class="sc-note">vs 5d ago</span><span id="sc-move-badge" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-left:8px">&#8212;</span></div></div>
     </div>
     <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="moveChart"></canvas></div></div>
     <div class="chart-legend">
@@ -428,7 +373,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pctOpts(){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderYields();renderSpread();renderReal();renderBE();renderCredit();renderFedTimeline();renderFOMC();renderMOVE()}
+function renderAll(){renderCards();renderYields();renderSpread();renderReal();renderBE();renderCredit();renderMOVE()}
 
 function renderCards(){
   var y=D.yields,n=y.dgs10.length;if(n<6)return;
@@ -524,101 +469,9 @@ function renderCredit(){
 }
 
 var fedViewCount=8;
-function renderFedTimeline(){
-  var f=D.fedFunds,el=document.getElementById("fed-table-body");
-  if(!f||!f.dates||!f.upper)return;
-  /* Step 1: detect all rate changes with NEW rate (post-decision) */
-  var changes=[];
-  var prevU=null,prevL=null;
-  for(var i=0;i<f.dates.length;i++){
-    var u=f.upper[i],lo=f.lower[i];
-    if(u==null||lo==null)continue;
-    if(prevU!=null&&u!==prevU){
-      var bps=Math.round((u-prevU)*100);
-      changes.push({date:f.dates[i],upper:u,lower:lo,chgBps:bps,type:bps<0?"cut":"hike"});
-    }
-    prevU=u;prevL=lo;
-  }
-  /* Step 2: add 2026 FOMC HOLD dates */
-  if(D.fomc){
-    var today=new Date().toISOString().slice(0,10);
-    var changeDates={};changes.forEach(function(c){changeDates[c.date]=true});
-    /* Get current rate (latest known) */
-    var curU=null,curL=null;
-    for(var j=f.dates.length-1;j>=0;j--){
-      if(f.upper[j]!=null){curU=f.upper[j];curL=f.lower[j];break}
-    }
-    for(var k=0;k<D.fomc.length;k++){
-      var fd=D.fomc[k].date;
-      if(fd>today)continue;
-      /* Check if this FOMC date already has a rate change nearby (±2 days) */
-      var hasChange=false;
-      for(var c=0;c<changes.length;c++){
-        var diff=Math.abs((new Date(changes[c].date)-new Date(fd))/(86400000));
-        if(diff<=2){hasChange=true;break}
-      }
-      if(!hasChange){
-        changes.push({date:fd,upper:curU,lower:curL,chgBps:0,type:"hold"});
-      }
-    }
-  }
-  /* Sort by date */
-  changes.sort(function(a,b){return a.date<b.date?-1:1});
-  var decisions=changes;
-  /* Reverse so most recent is first */
-  decisions.reverse();
-  /* Show last 8 */
-  var visible=decisions.slice(0,8);
-  /* Build HTML */
-  var html="";
-  for(var j=0;j<visible.length;j++){
-    var d=visible[j];
-    var bpsLabel=d.type==="hold"?"HOLD":d.type==="cut"?"CUT "+Math.round(Math.abs(d.chgBps))+"BPS":"HIKE "+Math.round(Math.abs(d.chgBps))+"BPS";
-    var rangeStr=(d.lower!=null?d.lower.toFixed(2):"?")+"%"+" \u2014 "+(d.upper!=null?d.upper.toFixed(2):"?")+"%";
-    var chgSign=d.chgBps>0?"+":"";
-    var chgColor=d.chgBps<0?"color:#22c55e":d.chgBps>0?"color:#ef4444":"color:var(--t2)";
-    var chgText=d.type==="hold"?"0":chgSign+Math.round(d.chgBps)+"bps";
-    html+='<div class="fed-table-row">';
-    html+='<span class="fed-date">'+d.date+'</span>';
-    html+='<span><span class="fed-badge '+d.type+'">'+bpsLabel+'</span></span>';
-    html+='<span class="fed-rate">'+rangeStr+'</span>';
-    html+='<span class="fed-change" style="'+chgColor+'">'+chgText+'</span>';
-    html+='</div>';
-  }
-  if(visible.length===0)html='<div class="fed-table-row"><span class="fed-date" style="grid-column:1/-1">No rate changes detected in data</span></div>';
-  el.innerHTML=html;
-}
-
-function renderFOMC(){
-  var grid=document.getElementById("fomc-grid");grid.innerHTML="";
-  if(!D.fomc||!D.fomc.length)return;
-  D.fomc.forEach(function(m){
-    var card=document.createElement("div");
-    card.className="fomc-card"+(m.status==="next"?" next":"")+(m.status==="past"?" past":"");
-    var label=m.status==="past"?"COMPLETED":m.status==="next"?m.daysUntil+" DAYS":m.daysUntil+" DAYS";
-    card.innerHTML='<div class="fomc-date">'+m.date+'</div><div class="fomc-countdown '+m.status+'">'+label+'</div>';
-    grid.appendChild(card);
-  });
-}
-
 function renderMOVE(){
   var mv=D.move;if(!mv||!mv.dates.length)return;
   var rw=R.move,dates=sl(mv.dates,rw),vals=sl(mv.values,rw);
-  var n=vals.length;
-  // Stat card
-  if(n>0){
-    var cur=vals[n-1];
-    document.getElementById('sc-move-val').textContent=cur.toFixed(1);
-    var prev=n>5?vals[n-6]:vals[0],delta=cur-prev;
-    var el=document.getElementById('sc-move-chg');
-    el.textContent=(delta>=0?'+':'')+delta.toFixed(1);
-    el.className='sc-delta '+(delta>=0?'dn':'up');
-    // Badge
-    var badge=document.getElementById('sc-move-badge');
-    if(cur<80){badge.textContent='CALM';badge.style.color='var(--grn)';badge.style.background='var(--grn-dim)'}
-    else if(cur<100){badge.textContent='ELEVATED';badge.style.color='var(--amb)';badge.style.background='rgba(245,158,11,0.1)'}
-    else{badge.textContent='STRESS';badge.style.color='var(--red)';badge.style.background='var(--red-dim)'}
-  }
   if(charts.move)charts.move.destroy();
   var len=dates.length;
   charts.move=new Chart(document.getElementById('moveChart').getContext('2d'),{type:'line',data:{labels:dates,datasets:[
