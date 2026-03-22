@@ -733,69 +733,68 @@ function renderVixSpx(){
 
 /* --- CURRENCY COT POSITIONING --- */
 var cotCurrencies=[
-  {label:'USD',sym:'DX',name:'US Dollar Index',exchange:'ICE'},
-  {label:'EUR',sym:'6E',name:'Euro FX',exchange:'CME'},
-  {label:'GBP',sym:'6B',name:'British Pound',exchange:'CME'},
-  {label:'JPY',sym:'6J',name:'Japanese Yen',exchange:'CME'},
-  {label:'AUD',sym:'6A',name:'Australian Dollar',exchange:'CME'},
-  {label:'CAD',sym:'6C',name:'Canadian Dollar',exchange:'CME'},
-  {label:'CHF',sym:'6S',name:'Swiss Franc',exchange:'CME'},
-  {label:'NZD',sym:'6N',name:'New Zealand Dollar',exchange:'CME'}
+  {label:'USD',sym:'DX',name:'US Dollar Index',exchange:'ICE',color:'#eab308'},
+  {label:'EUR',sym:'6E',name:'Euro FX',exchange:'CME',color:'#3b82f6'},
+  {label:'GBP',sym:'6B',name:'British Pound',exchange:'CME',color:'#06b6d4'},
+  {label:'JPY',sym:'6J',name:'Japanese Yen',exchange:'CME',color:'#ef4444'},
+  {label:'AUD',sym:'6A',name:'Australian Dollar',exchange:'CME',color:'#22c55e'},
+  {label:'CAD',sym:'6C',name:'Canadian Dollar',exchange:'CME',color:'#a78bfa'},
+  {label:'CHF',sym:'6S',name:'Swiss Franc',exchange:'CME',color:'#f97316'},
+  {label:'NZD',sym:'6N',name:'New Zealand Dollar',exchange:'CME',color:'rgba(255,255,255,0.8)'}
 ];
 var cotActiveLabel=null,cotCache={},cotSparkCharts={};
 (function(){
   var wrap=document.getElementById('cot-currency-btns');if(!wrap)return;
   cotCurrencies.forEach(function(c){
     var btn=document.createElement('button');
-    btn.className='ch-tog';btn.textContent=c.label;btn.dataset.ccy=c.label;
-    btn.onclick=function(){toggleCotPanel(c)};
+    btn.className='cot-ccy-btn';btn.textContent=c.label;btn.dataset.ccy=c.label;
+    var isNzd=c.label==='NZD';
+    btn.style.cssText='font-family:DM Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;cursor:pointer;transition:all .2s;background:rgba('+(isNzd?'255,255,255,0.1':_hexToRgb(c.color)+',0.15')+');border:1px solid '+(isNzd?'rgba(255,255,255,0.4)':c.color)+';color:'+(isNzd?'var(--white)':c.color);
+    btn.onclick=function(){toggleCotPanel(c,btn)};
     wrap.appendChild(btn);
   });
 })();
-function toggleCotPanel(c){
+function _hexToRgb(h){if(h.charAt(0)==='r')return'0,0,0';h=h.replace('#','');return parseInt(h.substring(0,2),16)+','+parseInt(h.substring(2,4),16)+','+parseInt(h.substring(4,6),16)}
+function toggleCotPanel(c,clickedBtn){
   var panel=document.getElementById('cot-currency-panel');
-  var btns=document.querySelectorAll('#cot-currency-btns .ch-tog');
-  if(cotActiveLabel===c.label){cotActiveLabel=null;panel.style.maxHeight='0';btns.forEach(function(b){b.classList.remove('active')});return}
+  var btns=document.querySelectorAll('#cot-currency-btns .cot-ccy-btn');
+  if(cotActiveLabel===c.label){
+    cotActiveLabel=null;panel.style.maxHeight='0';
+    btns.forEach(function(b){var cc=cotCurrencies.find(function(x){return x.label===b.dataset.ccy});var isN=b.dataset.ccy==='NZD';b.style.background='rgba('+(isN?'255,255,255,0.1':_hexToRgb(cc.color)+',0.15')+')';b.style.color=isN?'var(--white)':cc.color});
+    return;
+  }
   cotActiveLabel=c.label;
-  btns.forEach(function(b){b.classList.toggle('active',b.dataset.ccy===c.label)});
+  btns.forEach(function(b){var cc=cotCurrencies.find(function(x){return x.label===b.dataset.ccy});var isN=b.dataset.ccy==='NZD';
+    if(b.dataset.ccy===c.label){b.style.background=isN?'#fff':cc.color;b.style.color='#000'}
+    else{b.style.background='rgba('+(isN?'255,255,255,0.1':_hexToRgb(cc.color)+',0.15')+')';b.style.color=isN?'var(--white)':cc.color}
+  });
   panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--t2);font-family:DM Mono,monospace;font-size:10px">Loading '+c.label+' COT data...</span></div>';
   panel.style.maxHeight='400px';
   if(cotCache[c.sym]){renderCotPanel(c,cotCache[c.sym]);return}
-  fetch(API+'/api/cot?market='+c.sym+'&weeks=52').then(function(r){return r.json()}).then(function(d){
-    if(d.status==='ok'){cotCache[c.sym]=d;renderCotPanel(c,d)}
-    else{panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--red);font-family:DM Mono,monospace;font-size:10px">No data available</span></div>'}
-  }).catch(function(){panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--red);font-family:DM Mono,monospace;font-size:10px">Failed to load</span></div>'});
+  fetch(API+'/api/cot?market='+c.sym+'&weeks=26').then(function(r){return r.json()}).then(function(d){
+    if(d.bpNet&&d.bpNet.length){cotCache[c.sym]=d;renderCotPanel(c,d)}
+    else{console.warn('COT: no data for '+c.sym);panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--t2);font-family:DM Mono,monospace;font-size:10px">COT data not available for '+c.label+'</span></div>'}
+  }).catch(function(e){console.error('COT fetch '+c.sym+':',e);panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--red);font-family:DM Mono,monospace;font-size:10px">Failed to load</span></div>'});
 }
 function renderCotPanel(c,d){
   var panel=document.getElementById('cot-currency-panel');
-  var bp=d.bigPlayers,dl=d.commercials,n=bp.net.length;
-  var bpNet=bp.net[n-1],bpPrev=n>=2?bp.net[n-2]:bpNet,bpChg=bpNet-bpPrev;
-  var dlNet=dl.net[n-1],dlPrev=n>=2?dl.net[n-2]:dlNet,dlChg=dlNet-dlPrev;
-  // Z-score
-  var zs=d.zScore2Y||{};var zsVal=zs.bp!=null?zs.bp:null;
-  var zsTag='NEUTRAL',zsCol='var(--t2)',zsBg='var(--surf)';
-  if(zsVal!=null){
-    if(zsVal>=2){zsTag='EXTREME LONG';zsCol='var(--grn)';zsBg='var(--grn-dim)'}
-    else if(zsVal>=0.5){zsTag='ABOVE AVG';zsCol='var(--grn)';zsBg='var(--grn-dim)'}
-    else if(zsVal<=-2){zsTag='EXTREME SHORT';zsCol='var(--red)';zsBg='var(--red-dim)'}
-    else if(zsVal<=-0.5){zsTag='BELOW AVG';zsCol='var(--red)';zsBg='var(--red-dim)'}
-  }
+  var bpNet=d.bpNet,dlNet=d.dlNet,n=bpNet.length;
+  var bpLast=bpNet[n-1],bpPrev=n>=2?bpNet[n-2]:bpLast,bpChg=bpLast-bpPrev;
+  var dlLast=dlNet[n-1],dlPrev=n>=2?dlNet[n-2]:dlLast,dlChg=dlLast-dlPrev;
   function fK(v){return v==null?'\u2014':(v>=0?'+':'')+Math.round(v/1000)+'K'}
   var html='<div class="cot-panel-inner">';
-  html+='<div class="cot-panel-header"><div><div class="cot-panel-title">'+c.name+'</div><div class="cot-panel-sub">'+c.exchange+' &#183; Report: '+(d.dates?d.dates[d.dates.length-1]:'')+'</div></div></div>';
-  html+='<div class="cot-panel-grid">';
-  html+='<div class="cot-panel-box"><div class="cpb-label">Big Players Net</div><div class="cpb-val" style="color:'+(bpNet>=0?'var(--grn)':'var(--red)')+'">'+fK(bpNet)+'</div><div class="cpb-chg" style="color:'+(bpChg>=0?'var(--grn)':'var(--red)')+'">'+(bpChg>=0?'+':'')+Math.round(bpChg/1000)+'K W/W</div></div>';
-  html+='<div class="cot-panel-box"><div class="cpb-label">Commercials Net</div><div class="cpb-val" style="color:'+(dlNet>=0?'var(--grn)':'var(--red)')+'">'+fK(dlNet)+'</div><div class="cpb-chg" style="color:'+(dlChg>=0?'var(--grn)':'var(--red)')+'">'+(dlChg>=0?'+':'')+Math.round(dlChg/1000)+'K W/W</div></div>';
-  html+='<div class="cot-panel-box"><div class="cpb-label">Z-Score BP (2Y)</div><div class="cpb-val">'+(zsVal!=null?zsVal.toFixed(2):'\u2014')+'</div><div class="cpb-tag" style="color:'+zsCol+';background:'+zsBg+'">'+zsTag+'</div></div>';
+  html+='<div class="cot-panel-header"><div><div class="cot-panel-title">'+c.name+'</div><div class="cot-panel-sub">'+d.exchange+' &#183; Report: '+(d.reportDate||'')+'</div></div></div>';
+  html+='<div class="cot-panel-grid" style="grid-template-columns:1fr 1fr">';
+  html+='<div class="cot-panel-box"><div class="cpb-label">Big Players Net</div><div class="cpb-val" style="color:'+(bpLast>=0?'var(--grn)':'var(--red)')+'">'+fK(bpLast)+'</div><div class="cpb-chg" style="color:'+(bpChg>=0?'var(--grn)':'var(--red)')+'">'+(bpChg>=0?'+':'')+Math.round(bpChg/1000)+'K W/W</div></div>';
+  html+='<div class="cot-panel-box"><div class="cpb-label">Commercials Net</div><div class="cpb-val" style="color:'+(dlLast>=0?'var(--grn)':'var(--red)')+'">'+fK(dlLast)+'</div><div class="cpb-chg" style="color:'+(dlChg>=0?'var(--grn)':'var(--red)')+'">'+(dlChg>=0?'+':'')+Math.round(dlChg/1000)+'K W/W</div></div>';
   html+='</div>';
   html+='<div class="cot-sparkline"><canvas id="cot-spark-'+c.sym+'"></canvas></div>';
   html+='</div>';
   panel.innerHTML=html;
   panel.style.maxHeight=panel.scrollHeight+'px';
-  // Sparkline
-  var last26=bp.net.slice(-26);
+  var last26=bpNet.slice(-26);
   if(cotSparkCharts[c.sym])cotSparkCharts[c.sym].destroy();
-  cotSparkCharts[c.sym]=new Chart(document.getElementById('cot-spark-'+c.sym).getContext('2d'),{type:'line',data:{labels:last26.map(function(){return''}),datasets:[{data:last26,borderColor:'#3b82f6',borderWidth:1.5,pointRadius:0,fill:false,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
+  cotSparkCharts[c.sym]=new Chart(document.getElementById('cot-spark-'+c.sym).getContext('2d'),{type:'line',data:{labels:last26.map(function(){return''}),datasets:[{data:last26,borderColor:c.color,borderWidth:1.5,pointRadius:0,fill:false,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
 }
 
 function refreshData(){
