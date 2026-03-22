@@ -382,8 +382,8 @@ footer{
           <canvas id="eps-chart"></canvas>
         </div>
         <div class="eps-legend">
-          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#ec4899"></div> Actual EPS</div>
-          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#a78bfa"></div> Estimate</div>
+          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#22c55e"></div> Actual EPS</div>
+          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:rgba(240,240,240,0.5)"></div> Estimate</div>
         </div>
       </div>
     </div>
@@ -665,15 +665,26 @@ function loadEpsHistory(symbol) {
 
       var labels = data.quarters.map(function(q) {
         var p = q.date.split('-'); var m = parseInt(p[1]); var qn = Math.ceil(m / 3);
-        return 'Q' + qn + ' ' + p[0];
+        return 'Q' + qn + " '" + p[0].slice(2);
       }).reverse();
       var actuals = data.quarters.map(function(q) { return q.epsActual; }).reverse();
       var estimates = data.quarters.map(function(q) { return q.epsEstimate; }).reverse();
 
       var gradActual=ctx.createLinearGradient(0,0,0,220);
-      gradActual.addColorStop(0,'rgba(236,72,153,0.85)');gradActual.addColorStop(1,'rgba(236,72,153,0.1)');
+      gradActual.addColorStop(0,'rgba(34,197,94,0.9)');gradActual.addColorStop(1,'rgba(34,197,94,0.2)');
       var gradEst=ctx.createLinearGradient(0,0,0,220);
-      gradEst.addColorStop(0,'rgba(167,139,250,0.5)');gradEst.addColorStop(1,'rgba(167,139,250,0.08)');
+      gradEst.addColorStop(0,'rgba(240,240,240,0.5)');gradEst.addColorStop(1,'rgba(240,240,240,0.1)');
+      var epsLabelPlugin={id:'epsLabels',afterDatasetsDraw:function(chart){
+        var ctx2=chart.ctx;ctx2.save();ctx2.textAlign='center';ctx2.textBaseline='bottom';
+        chart.data.datasets.forEach(function(ds,di){
+          var meta=chart.getDatasetMeta(di);
+          ctx2.font='500 9px DM Mono';ctx2.fillStyle=di===0?'#22c55e':'#78787f';
+          meta.data.forEach(function(bar,i){
+            var v=ds.data[i];if(v!=null)ctx2.fillText(v.toFixed(2),bar.x,bar.y-4);
+          });
+        });
+        ctx2.restore();
+      }};
       epsChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -683,21 +694,21 @@ function loadEpsHistory(symbol) {
               label: 'Actual EPS',
               data: actuals,
               backgroundColor: gradActual,
-              borderColor: '#ec4899',
+              borderColor: '#22c55e',
               borderWidth: 1,
               borderRadius: 4,
               barPercentage: 0.4,
-              categoryPercentage: 0.7
+              categoryPercentage: 0.65
             },
             {
               label: 'Estimate',
               data: estimates,
               backgroundColor: gradEst,
-              borderColor: 'rgba(167,139,250,0.6)',
+              borderColor: 'rgba(240,240,240,0.3)',
               borderWidth: 1,
               borderRadius: 4,
               barPercentage: 0.4,
-              categoryPercentage: 0.7
+              categoryPercentage: 0.65
             }
           ]
         },
@@ -736,14 +747,15 @@ function loadEpsHistory(symbol) {
           scales: {
             x: {
               grid: { display: false },
-              ticks: { font: { family: "'DM Mono', monospace", size: 8 }, color: '#50505a' }
+              ticks: { font: { family: "'DM Mono', monospace", size: 9 }, color: '#78787f' }
             },
             y: {
               grid: { color: 'rgba(255,255,255,0.04)' },
               ticks: { font: { family: "'DM Mono', monospace", size: 8 }, color: '#50505a' }
             }
           }
-        }
+        },
+        plugins: [epsLabelPlugin]
       });
 
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
