@@ -374,7 +374,7 @@ footer{
         <div class="section-header">
           <div>
             <div class="section-title" id="eps-panel-title">EPS History</div>
-            <div class="section-sub">EPS Surprise % &mdash; Last 4 Quarters</div>
+            <div class="section-sub">EPS Surprise &middot; Last 4 Quarters</div>
           </div>
           <button onclick="closeEpsPanel()" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t1);border:1px solid var(--brd);background:none;padding:4px 12px;cursor:pointer;transition:all .2s;border-radius:100px">Close</button>
         </div>
@@ -523,9 +523,11 @@ function renderTrendStrip(trend) {
     var t = trend[key];
     if (!t) return;
     var cls = t.trend === 'bullish' ? 'bullish' : 'bearish';
-    html += '<div class="trend-chip">';
-    html += '<div class="trend-label">' + key + '</div>';
-    html += '<div class="trend-val">' + t.price.toLocaleString() + '</div>';
+    var isSpx = key === 'SPX';
+    var extraStyle = isSpx ? 'border:1px solid rgba(200,168,75,0.35);box-shadow:0 0 12px rgba(200,168,75,0.08)' : '';
+    html += '<div class="trend-chip"' + (extraStyle ? ' style="' + extraStyle + '"' : '') + '>';
+    html += '<div class="trend-label"' + (isSpx ? ' style="color:var(--gold)"' : '') + '>' + key + '</div>';
+    html += '<div class="trend-val"' + (isSpx ? ' style="font-size:17px"' : '') + '>' + t.price.toLocaleString() + '</div>';
     html += '<span class="trend-tag ' + cls + '">' + t.trend + '</span>';
     html += '</div>';
   });
@@ -660,31 +662,27 @@ function loadEpsHistory(symbol) {
       }
 
       var quarters = data.quarters.slice().reverse();
+      var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       var labels = quarters.map(function(q) {
-        var p = q.date.split('-'); var m = parseInt(p[1]); var qn = Math.ceil(m / 3);
-        return 'Q' + qn + " '" + p[0].slice(2);
+        var p = q.date.split('-'); var m = parseInt(p[1]); var d = parseInt(p[2]); var qn = Math.ceil(m / 3);
+        return ['Q' + qn + " '" + p[0].slice(2), d + ' ' + MON[m-1]];
       });
+      var actuals = quarters.map(function(q) { return q.epsActual; });
+      var estimates = quarters.map(function(q) { return q.epsEstimate; });
       var surprises = quarters.map(function(q) {
         var a = q.epsActual, e = q.epsEstimate;
         if (a == null || e == null || e === 0) return null;
         return Math.round((a - e) / Math.abs(e) * 10000) / 100;
       });
-      var _qData = quarters;
       var gradGrn = ctx.createLinearGradient(0, 0, 0, 220);
       gradGrn.addColorStop(0, 'rgba(34,197,94,0.9)'); gradGrn.addColorStop(1, 'rgba(34,197,94,0.2)');
-      var gradRed = ctx.createLinearGradient(0, 220, 0, 0);
-      gradRed.addColorStop(0, 'rgba(239,68,68,0.9)'); gradRed.addColorStop(1, 'rgba(239,68,68,0.2)');
-      var bgColors = surprises.map(function(v) { return v != null && v >= 0 ? gradGrn : gradRed; });
-      var brColors = surprises.map(function(v) { return v != null && v >= 0 ? '#22c55e' : '#ef4444'; });
       var epsLabelPlugin = {id: 'epsLabels', afterDatasetsDraw: function(chart) {
-        var c2 = chart.ctx; c2.save(); c2.textAlign = 'center'; c2.font = '500 9px DM Mono';
+        var c2 = chart.ctx; c2.save(); c2.textAlign = 'center'; c2.font = '500 9px DM Mono'; c2.textBaseline = 'bottom';
         var meta = chart.getDatasetMeta(0);
         meta.data.forEach(function(bar, i) {
           var v = surprises[i]; if (v == null) return;
           c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-          c2.textBaseline = v >= 0 ? 'bottom' : 'top';
-          var yOff = v >= 0 ? bar.y - 4 : bar.y + 4;
-          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '%', bar.x, yOff);
+          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), bar.x, bar.y - 4);
         });
         c2.restore();
       }};
@@ -692,60 +690,37 @@ function loadEpsHistory(symbol) {
         type: 'bar',
         data: {
           labels: labels,
-          datasets: [{
-            label: 'EPS Surprise %',
-            data: surprises,
-            backgroundColor: bgColors,
-            borderColor: brColors,
-            borderWidth: 1,
-            borderRadius: 4,
-            barPercentage: 0.5,
-            categoryPercentage: 0.65
-          }]
+          datasets: [
+            {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.5, categoryPercentage: 0.65},
+            {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.3, categoryPercentage: 0.65}
+          ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           layout: {padding: {top: 20}},
+          interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
             tooltip: {
-              backgroundColor: '#0c0c10',
-              titleFont: {family: "'DM Mono', monospace", size: 10},
-              bodyFont: {family: "'DM Mono', monospace", size: 10},
-              titleColor: '#f0f0f0',
-              bodyColor: '#c0c0c4',
-              borderColor: 'rgba(255,255,255,0.06)',
-              borderWidth: 1,
-              padding: 12,
-              cornerRadius: 10,
+              backgroundColor: '#0c0c10', titleFont: {family: "'DM Mono', monospace", size: 10}, bodyFont: {family: "'DM Mono', monospace", size: 10},
+              titleColor: '#f0f0f0', bodyColor: '#c0c0c4', borderColor: 'rgba(255,255,255,0.06)', borderWidth: 1, padding: 12, cornerRadius: 10,
               callbacks: {
-                label: function(c) {
-                  var v = c.parsed.y, q = _qData[c.dataIndex];
-                  var a = q ? q.epsActual : null, e = q ? q.epsEstimate : null;
-                  var word = v >= 0 ? 'Beat' : 'Miss';
-                  return word + ' ' + (v >= 0 ? '+' : '') + v.toFixed(1) + '% (Actual $' + (a != null ? a.toFixed(2) : '?') + ' vs Est $' + (e != null ? e.toFixed(2) : '?') + ')';
+                title: function(items) { var l = labels[items[0].dataIndex]; return l[0] + ' \u00b7 ' + l[1]; },
+                label: function(c) { var v = c.parsed.y; return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014'); },
+                afterBody: function(items) {
+                  var i = items[0].dataIndex, s = surprises[i]; if (s == null) return '';
+                  return (s >= 0 ? 'Beat +' : 'Miss ') + s.toFixed(1) + '%';
                 }
               }
             }
           },
           scales: {
-            x: {
-              grid: {display: false},
-              ticks: {font: {family: "'DM Mono', monospace", size: 9}, color: '#78787f'}
-            },
-            y: {
-              grid: {color: 'rgba(255,255,255,0.04)'},
-              ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return (v >= 0 ? '+' : '') + v + '%'}}
-            }
+            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 7}, color: '#78787f'}},
+            y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
           }
         },
-        plugins: [epsLabelPlugin, {id: 'zeroLine', beforeDraw: function(chart) {
-          var yScale = chart.scales.y, ctx3 = chart.ctx, area = chart.chartArea;
-          var zy = yScale.getPixelForValue(0);
-          ctx3.save(); ctx3.setLineDash([4,3]); ctx3.strokeStyle = 'rgba(255,255,255,0.15)'; ctx3.lineWidth = 1;
-          ctx3.beginPath(); ctx3.moveTo(area.left, zy); ctx3.lineTo(area.right, zy); ctx3.stroke(); ctx3.restore();
-        }}]
+        plugins: [epsLabelPlugin]
       });
 
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
