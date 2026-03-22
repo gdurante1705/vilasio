@@ -307,7 +307,15 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
   <!-- SECTOR ROTATION -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Sector Rotation</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance Heatmap</div></div></div>
+    <div class="chart-header">
+      <div><div class="ch-title">Sector Rotation</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance Heatmap</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog" data-g="sr" data-rw="7" onclick="setR('sr',7)">1W</button>
+        <button class="ch-tog" data-g="sr" data-rw="30" onclick="setR('sr',30)">1M</button>
+        <button class="ch-tog" data-g="sr" data-rw="90" onclick="setR('sr',90)">3M</button>
+        <button class="ch-tog active" data-g="sr" data-rw="365" onclick="setR('sr',365)">1Y</button>
+      </div>
+    </div>
     <div class="corr-wrap"><table class="corr-table" id="sector-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
@@ -462,11 +470,11 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={cs:90,vg:104,cmet:365,ceq:365,ccr:365};
+var R={cs:90,vg:104,cmet:365,ceq:365,ccr:365,sr:365};
 var csShow={USD:1,EUR:1,GBP:1,JPY:1,AUD:1,CAD:1,CHF:1,NZD:1};
 var vgShow={iwd:1,iwf:1,ratio:1};
 var cointShow={cmet:{},ceq:{},ccr:{}};
-var renderMap={cs:'renderCS',vg:'renderVG',cmet:'renderCMet',ceq:'renderCEq',ccr:'renderCCr'};
+var renderMap={cs:'renderCS',vg:'renderVG',cmet:'renderCMet',ceq:'renderCEq',ccr:'renderCCr',sr:'renderSectorTable'};
 
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togCs(k){csShow[k]=csShow[k]?0:1;document.getElementById('leg-cs-'+k).style.opacity=csShow[k]?'1':'0.3';if(D)renderCS()}
@@ -561,11 +569,11 @@ function sectorHeatColor(v){
   return'rgba(239,68,68,0.7)';
 }
 var sectorShort={'Technology':'Technology','Financials':'Financials','Energy':'Energy','Health Care':'Healthcare','Utilities':'Utilities','Consumer Staples':'Con. Staples','Real Estate':'Real Estate','Materials':'Materials','Consumer Discretionary':'Consumer Disc.','Industrials':'Industrials','Communication Services':'Comm. Services'};
+var srSortKey={7:'chg1W',30:'chg1M',90:'chg3M',365:'chg1Y'};
 function renderSectorTable(){
   var s=D.sectorRotation;if(!s||!s.length)return;
-  var order=['XLE','XLC','XLU','XLK','XLF','XLRE','XLP','XLY','XLV','XLI','XLB'];
-  var map={};s.forEach(function(r){map[r.symbol]=r});
-  var cols=order.filter(function(sym){return map[sym]}).map(function(sym){return map[sym]});
+  var sortBy=srSortKey[R.sr]||'chg1Y';
+  var cols=s.slice().sort(function(a,b){return(b[sortBy]||0)-(a[sortBy]||0)});
   var n=cols.length;
   var rows=[{label:'1W',key:'chg1W'},{label:'1M',key:'chg1M'},{label:'3M',key:'chg3M'},{label:'1Y',key:'chg1Y'}];
   var html='<colgroup><col class="col-tf">';
