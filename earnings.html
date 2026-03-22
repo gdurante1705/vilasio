@@ -107,7 +107,7 @@ nav{
 .trend-chip:hover{border-color:var(--card-border-hover)}
 .trend-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
 .trend-val{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;color:var(--white);margin-top:2px}
-.trend-tag{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-top:4px;display:inline-block}
+.trend-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-top:4px;display:inline-block}
 .trend-tag.bullish{color:var(--grn);background:var(--grn-dim)}
 .trend-tag.bearish{color:var(--red);background:var(--red-dim)}
 
@@ -129,16 +129,16 @@ nav{
 
 /* ─── UPCOMING TABLE ─── */
 .earn-table{width:100%;border-collapse:collapse}
-.earn-table th{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-align:left;padding:10px 14px;border-bottom:1px solid var(--brd);white-space:nowrap}
-.earn-table td{font-family:"DM Mono",monospace;font-size:11px;padding:14px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
+.earn-table th{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-align:left;padding:12px 28px;border-bottom:1px solid var(--brd);white-space:nowrap}
+.earn-table td{font-family:"DM Mono",monospace;font-size:11px;padding:16px 28px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
 .earn-table tr:last-child td{border-bottom:none}
 .earn-table tr:hover td{background:rgba(200,168,75,0.03)}
-.earn-sym{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--white);letter-spacing:0}
-.earn-name{font-family:"Roboto Slab",serif;font-size:12px;font-weight:300;color:var(--t1);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.earn-date{color:var(--t1)}
-.earn-sector{color:var(--t2);font-size:8px;letter-spacing:1px}
-.earn-mcap{color:var(--t1);text-align:right}
-.earn-rating{font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:100px;display:inline-block}
+.earn-sym{font-family:"Alata",sans-serif;font-size:15px;font-weight:400;color:var(--white);letter-spacing:0}
+.earn-name{font-family:"Roboto Slab",serif;font-size:13px;font-weight:300;color:var(--t1);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.earn-date{color:var(--t2);font-size:11px}
+.earn-sector{color:var(--t2);font-size:10px;letter-spacing:1px}
+.earn-mcap{color:var(--t2);text-align:right;font-size:11px}
+.earn-rating{font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:100px;display:inline-block}
 .earn-rating.buy{color:var(--grn);background:var(--grn-dim)}
 .earn-rating.hold{color:var(--t1);background:var(--surf)}
 .earn-rating.sell{color:var(--red);background:var(--red-dim)}
@@ -698,7 +698,7 @@ function loadEpsHistory(symbol) {
           var v = surprises[i]; if (v == null) return;
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
           c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 4);
+          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 12);
         });
         c2.restore();
       }};
