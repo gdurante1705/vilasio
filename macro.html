@@ -205,7 +205,8 @@ main{padding:0 48px 64px}
 
 /* ─── SECTION STAT GRIDS ─── */
 .sec-stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)}
-.sec-stats-3 .status-card{margin:0}
+.sec-stats-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 28px;border-bottom:1px solid var(--brd)}
+.sec-stats-3 .status-card,.sec-stats-4 .status-card{margin:0}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -242,6 +243,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .status-row{grid-template-columns:1fr 1fr}
   .dual-row{grid-template-columns:1fr}
   .sec-stats-3{grid-template-columns:1fr}
+  .sec-stats-4{grid-template-columns:1fr 1fr}
 
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -523,6 +525,60 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
+  <!-- BANKING SYSTEM HEALTH -->
+  <div class="chart-section reveal" style="margin-top:24px">
+    <div class="chart-header">
+      <div><div class="ch-title">Banking System Health</div><div class="ch-sub">KBE &#183; KRE &#183; IXG &#183; IAK &#8212; Weekly Close</div></div>
+    </div>
+    <div class="sec-stats-4">
+      <div class="status-card neut" id="sc-kbe" style="margin:0"><div class="sc-label">KBE &#183; S&amp;P Bank ETF</div><div class="sc-val" id="sc-kbe-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-kbe-chg">&#8212;</span><span class="sc-note">weekly</span></div></div>
+      <div class="status-card neut" id="sc-kre" style="margin:0"><div class="sc-label">KRE &#183; Regional Banks</div><div class="sc-val" id="sc-kre-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-kre-chg">&#8212;</span><span class="sc-note">weekly</span></div></div>
+      <div class="status-card neut" id="sc-ixg" style="margin:0"><div class="sc-label">IXG &#183; Global Financials</div><div class="sc-val" id="sc-ixg-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ixg-chg">&#8212;</span><span class="sc-note">weekly</span></div></div>
+      <div class="status-card neut" id="sc-iak" style="margin:0"><div class="sc-label">IAK &#183; US Insurance</div><div class="sc-val" id="sc-iak-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-iak-chg">&#8212;</span><span class="sc-note">weekly</span></div></div>
+    </div>
+    <!-- US Banking Stress -->
+    <div class="chart-header" style="border-bottom:none;padding-bottom:0">
+      <div><div class="ch-title" style="font-size:13px">US Banking Stress</div><div class="ch-sub">KBE (Large Banks) vs KRE (Regional Banks)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="bkus" data-rw="26" onclick="setR('bkus',26)">6M</button><button class="ch-tog" data-g="bkus" data-rw="52" onclick="setR('bkus',52)">1Y</button><button class="ch-tog active" data-g="bkus" data-rw="104" onclick="setR('bkus',104)">2Y</button></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="bankUSChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> KBE &#183; Large Banks</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--bp)"></span> KRE &#183; Regional Banks</div>
+    </div>
+    <div style="padding:0 28px 16px">
+      <div class="chart-explain">
+        <button class="chart-explain-toggle" onclick="togExplain(this)">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+          How to read this chart
+        </button>
+        <div class="chart-explain-content">
+          <p>We don't read these ETFs as trading opportunities. <strong>KBE</strong> tracks the large US banks (JPMorgan, BofA, Goldman Sachs) &#8212; it's the thermometer of the big banking system. <strong>KRE</strong> tracks regional banks, far more exposed to commercial real estate, SME lending and local funding &#8212; it's the canary in the coal mine for credit risk. <strong>The divergence is the key signal</strong>: if KRE drops while KBE holds, the peripheral banking system is under stress before the problem becomes systemic (see SVB crisis 2023).</p>
+        </div>
+      </div>
+    </div>
+    <!-- Global Financial System -->
+    <div class="chart-header" style="padding-bottom:0">
+      <div><div class="ch-title" style="font-size:13px">Global Financial System</div><div class="ch-sub">IXG (Global Financials) vs IAK (US Insurance)</div></div>
+      <div class="ch-toggles"><button class="ch-tog" data-g="bkgl" data-rw="26" onclick="setR('bkgl',26)">6M</button><button class="ch-tog" data-g="bkgl" data-rw="52" onclick="setR('bkgl',52)">1Y</button><button class="ch-tog active" data-g="bkgl" data-rw="104" onclick="setR('bkgl',104)">2Y</button></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="bankGLChart"></canvas></div></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> IXG &#183; Global Financials</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span> IAK &#183; US Insurance</div>
+    </div>
+    <div style="padding:0 28px 16px">
+      <div class="chart-explain">
+        <button class="chart-explain-toggle" onclick="togExplain(this)">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+          How to read this chart
+        </button>
+        <div class="chart-explain-content">
+          <p><strong>IXG</strong> (iShares Global Financials) covers banks, insurers and asset managers from the US, Europe and Asia &#8212; it's the benchmark for global financial health. It correlates with global liquidity flows and the dollar: strong dollar &#8594; stress on non-US and EM financials, weak dollar &#8594; relief for global banks. <strong>IAK</strong> (iShares U.S. Insurance) tracks American insurance companies (AIG, MetLife, Prudential) &#8212; mega institutional investors with balance sheets exposed to Treasuries and corporate bonds. If yields rise too fast they suffer mark-to-market losses; if the bond market is stable they perform well. IAK is a proxy for long-duration rate risk and institutional investor soundness.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </main>
 
@@ -556,9 +612,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null,charts={};
-var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36,ch:60};
+var R={mo:60,inf:60,ur:60,nfp:36,ic:104,jo:36,ch:60,bkus:104,bkgl:104};
 var infShow={cpi:1,ccpi:1,pce:1,cpce:1,ppi:1};
-var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO',ch:'renderConsumer'};
+var renderMap={mo:'renderMorpheus',inf:'renderInflation',ur:'renderUR',nfp:'renderNFP',ic:'renderIC',jo:'renderJO',ch:'renderConsumer',bkus:'renderBankUS',bkgl:'renderBankGL'};
 function setR(g,w){R[g]=w;document.querySelectorAll('.ch-tog[data-g="'+g+'"]').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.rw)===w)});if(D&&renderMap[g])window[renderMap[g]]()}
 function togInf(k){infShow[k]=infShow[k]?0:1;var el=document.getElementById('leg-'+k);if(el)el.style.opacity=infShow[k]?'1':'0.3';if(D)renderInflation()}
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -572,7 +628,7 @@ var axO={grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#5a6070",font:{fami
 var tipO={backgroundColor:"#111118",titleColor:"#f0f1f5",bodyColor:"#8a90a0",borderColor:"#ffffff12",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pOpts(cb){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:cb||function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
-function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderConsumerCards();renderConsumer()}
+function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderConsumerCards();renderConsumer();renderBankCards();renderBankUS();renderBankGL()}
 
 function renderCards(){
   var inf=D.inflation.cpiYoY,n=inf.values.length;if(n<2)return;
@@ -739,6 +795,50 @@ function renderConsumer(){
     {label:'Saving Rate',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},
     {label:'Credit Card Delinquency',data:cdVals,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.04)',borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
   ]},options:pOpts(function(c){return c.dataset.label+': '+fPct(c.parsed.y)})});
+}
+
+/* ─── BANKING SYSTEM HEALTH ─── */
+function renderBankCards(){
+  if(!D||!D.banking)return;
+  var etfs=[['kbe',D.banking.kbe],['kre',D.banking.kre],['ixg',D.banking.ixg],['iak',D.banking.iak]];
+  etfs.forEach(function(e){
+    var id='sc-'+e[0],s=e[1];if(!s||!s.values.length)return;
+    var n=s.values.length,cv=s.values[n-1],pv=n>=2?s.values[n-2]:cv;
+    var chg=((cv-pv)/pv)*100;
+    document.getElementById(id+'-val').textContent='$'+cv.toFixed(2);
+    var el=document.getElementById(id+'-chg');
+    el.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';
+    el.className='sc-delta '+(chg>=0?'up':'dn');
+    document.getElementById(id).className='status-card '+(chg>=0?'up':'dn');
+  });
+}
+
+function renderBankUS(){
+  if(!D||!D.banking)return;
+  var kbe=D.banking.kbe,kre=D.banking.kre,rw=R.bkus;
+  if(!kbe.dates.length||!kre.dates.length)return;
+  var kreMap={};kre.dates.forEach(function(d,i){kreMap[d]=kre.values[i]});
+  var dates=sl(kbe.dates,rw),kbeV=sl(kbe.values,rw);
+  var kreV=dates.map(function(d){return kreMap[d]!=null?kreMap[d]:null});
+  if(charts.bkus)charts.bkus.destroy();
+  charts.bkus=new Chart(document.getElementById('bankUSChart').getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
+    {label:'KBE',data:kbeV,borderColor:'#c8a84b',borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
+    {label:'KRE',data:kreV,borderColor:'#5b8af0',borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+': $'+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return'$'+v.toFixed(0)}})})}}});
+}
+
+function renderBankGL(){
+  if(!D||!D.banking)return;
+  var ixg=D.banking.ixg,iak=D.banking.iak,rw=R.bkgl;
+  if(!ixg.dates.length||!iak.dates.length)return;
+  var iakMap={};iak.dates.forEach(function(d,i){iakMap[d]=iak.values[i]});
+  var dates=sl(ixg.dates,rw),ixgV=sl(ixg.values,rw);
+  var iakV=dates.map(function(d){return iakMap[d]!=null?iakMap[d]:null});
+  if(charts.bkgl)charts.bkgl.destroy();
+  charts.bkgl=new Chart(document.getElementById('bankGLChart').getContext('2d'),{type:'line',data:{labels:fMonArr(dates),datasets:[
+    {label:'IXG',data:ixgV,borderColor:'#c8a84b',borderWidth:2,pointRadius:0,fill:false,tension:0.3,spanGaps:true},
+    {label:'IAK',data:iakV,borderColor:'#a78bfa',borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+': $'+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return'$'+v.toFixed(0)}})})}}});
 }
 
 function refreshData(){
