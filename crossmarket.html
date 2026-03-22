@@ -137,10 +137,33 @@ main{padding:0 48px 64px}
 .corr-wrap{padding:20px 28px}
 .corr-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
 .corr-table th{padding:8px 6px;font-weight:400;color:var(--t1);letter-spacing:2px;text-transform:uppercase;font-size:8px;border-bottom:1px solid var(--brd)}
-.corr-table td{padding:8px 6px;text-align:center;font-weight:500;border:1px solid var(--brd)}
+.corr-table td{padding:8px 6px;text-align:center;font-weight:500;border:1px solid var(--brd);cursor:pointer;position:relative}
+.corr-tip{position:fixed;z-index:200;background:rgba(12,12,16,0.95);border:1px solid var(--card-border);border-radius:10px;padding:10px 14px;pointer-events:none;font-family:"DM Mono",monospace;font-size:10px;color:var(--white);max-width:260px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,0.6)}
+.corr-tip-pair{font-size:11px;letter-spacing:1px;margin-bottom:4px}
+.corr-tip-val{font-size:16px;font-family:"Alata",sans-serif;margin-bottom:4px}
+.corr-tip-chg{font-size:9px;color:var(--t2);margin-bottom:4px}
+.corr-tip-interp{font-size:9px;color:var(--t1);line-height:1.4}
 .corr-table td.lbl{text-align:left;color:var(--t1);font-weight:400;letter-spacing:1px;font-size:9px;border-left:none}
 .corr-table tr{border-bottom:1px solid var(--brd)}
 .corr-subtitle{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);padding:10px 28px;border-top:1px solid var(--brd)}
+.sec-bar-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.sec-bar-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--t1);width:120px;flex-shrink:0;text-transform:uppercase}
+.sec-bar-track{flex:1;height:18px;position:relative;background:rgba(255,255,255,0.02);border-radius:3px;overflow:hidden}
+.sec-bar-fill{position:absolute;top:0;height:100%;border-radius:3px;transition:width .4s ease}
+.sec-bar-val{font-family:"DM Mono",monospace;font-size:10px;width:60px;text-align:right;flex-shrink:0}
+
+/* ─── COT CURRENCY PANEL ─── */
+.cot-panel-inner{background:var(--surf);border:1px solid var(--card-border);border-radius:var(--r-sm);margin:0 28px 16px;padding:20px 24px}
+.cot-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cot-panel-title{font-family:"Alata",sans-serif;font-size:16px;font-weight:400}
+.cot-panel-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
+.cot-panel-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.cot-panel-box{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:14px 16px}
+.cot-panel-box .cpb-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
+.cot-panel-box .cpb-val{font-family:"Alata",sans-serif;font-size:22px;font-weight:400;line-height:1}
+.cot-panel-box .cpb-chg{font-family:"DM Mono",monospace;font-size:9px;margin-top:4px}
+.cot-panel-box .cpb-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;display:inline-block;margin-top:6px}
+.cot-sparkline{height:80px;margin-top:8px}
 
 /* ─── DISCREPANCY BADGES ─── */
 .disc-bar{display:flex;flex-wrap:wrap;gap:6px;padding:6px 28px;border-top:1px solid var(--brd)}
@@ -281,6 +304,11 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
       <div class="chart-explain-content"><p>Currency strength is calculated from the performance of each currency across multiple FX pairs. A <strong>strong USD</strong> (rising DXY) typically signals risk-off sentiment &mdash; it pressures commodities, emerging markets, and multinational earnings. A weakening USD is bullish for commodities and international equities. Watch for divergences: if USD strengthens while equities rally, the rally may be fragile.</p></div>
     </div>
+    <!-- Currency COT Positioning -->
+    <div style="padding:12px 28px;border-top:1px solid var(--brd)">
+      <div class="ch-toggles" id="cot-currency-btns" style="flex-wrap:wrap;gap:4px"></div>
+    </div>
+    <div id="cot-currency-panel" style="max-height:0;overflow:hidden;transition:max-height .4s ease"></div>
   </div>
 
   <!-- CORRELATION MATRIX -->
@@ -296,11 +324,19 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
   <!-- SECTOR ROTATION -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Sector Rotation Heatmap</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance %</div></div></div>
-    <div class="corr-wrap"><table class="corr-table" id="sector-table"><tbody><tr><td style="color:var(--t2)">Loading...</td></tr></tbody></table></div>
+    <div class="chart-header">
+      <div><div class="ch-title">Sector Rotation</div><div class="ch-sub">S&amp;P 500 Sector ETFs &#183; Performance %</div></div>
+      <div class="ch-toggles">
+        <button class="ch-tog active" data-g="sec" onclick="setSectorTF('chg1W',this)">1W</button>
+        <button class="ch-tog" data-g="sec" onclick="setSectorTF('chg1M',this)">1M</button>
+        <button class="ch-tog" data-g="sec" onclick="setSectorTF('chg3M',this)">3M</button>
+        <button class="ch-tog" data-g="sec" onclick="setSectorTF('chgYTD',this)">YTD</button>
+      </div>
+    </div>
+    <div id="sector-bars" style="padding:16px 28px"></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg> How to read this</button>
-      <div class="chart-explain-content"><p>Sector performance reveals where institutional money is flowing within equities. In <strong>early expansion</strong>: Technology (XLK) and Consumer Discretionary (XLY) lead. In <strong>late expansion</strong>: Energy (XLE) and Industrials (XLI) lead. In <strong>contraction</strong>: Utilities (XLU), Healthcare (XLV), and Consumer Staples (XLP) outperform. The rotation pattern is one of the clearest signals of the economic cycle phase.</p></div>
+      <div class="chart-explain-content"><p>Horizontal bars show sector performance for the selected timeframe, sorted from best to worst. <strong>Green</strong> bars are positive, <strong>red</strong> bars are negative. In <strong>early expansion</strong>: Technology (XLK) and Consumer Discretionary (XLY) lead. In <strong>late expansion</strong>: Energy (XLE) and Industrials (XLI) lead. In <strong>contraction</strong>: Utilities (XLU), Healthcare (XLV), and Consumer Staples (XLP) outperform. The rotation pattern is one of the clearest signals of the economic cycle phase.</p></div>
     </div>
   </div>
 
@@ -418,15 +454,6 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
-  <!-- VIX-SPX CORRELATION CHART -->
-  <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">VIX-SPX Rolling Correlation</div><div class="ch-sub">30-Day Window &#183; Strength of Inverse Relationship</div></div></div>
-    <div class="chart-wrap"><div class="chart-canvas-wrap"><canvas id="vixSpxCorrChart"></canvas></div></div>
-    <div class="chart-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> 30d Correlation</div>
-      <div class="legend-item"><span class="legend-dot" style="background:var(--t3);border-radius:0;height:1px;width:12px"></span> Typical Strong Inverse (-0.7)</div>
-    </div>
-  </div>
 
 </main>
 
@@ -540,6 +567,28 @@ function renderCS(){
 }
 
 /* --- CORRELATION MATRIX --- */
+function corrInterp(v){
+  if(v==null)return'';
+  var a=Math.abs(v);
+  var dir=v>=0?'positive':'negative';
+  if(a>=0.7)return'Strong '+dir+' — tend to move '+(v>=0?'together':'in opposite directions');
+  if(a>=0.4)return'Moderate '+dir+' correlation';
+  if(a>=0.2)return'Weak '+dir+' correlation';
+  return'Near zero — no meaningful relationship';
+}
+var _corrTip=null;
+function showCorrTip(e,a,b,v,pv){
+  if(!_corrTip){_corrTip=document.createElement('div');_corrTip.className='corr-tip';document.body.appendChild(_corrTip)}
+  var d=v-pv,chgTxt=d>0.03?'&#9650; +'+d.toFixed(2)+' vs prior':d<-0.03?'&#9660; '+d.toFixed(2)+' vs prior':'&#8212; Stable vs prior';
+  var chgCol=d>0.03?'var(--grn)':d<-0.03?'var(--red)':'var(--t2)';
+  _corrTip.innerHTML='<div class="corr-tip-pair">'+a+' &#8596; '+b+'</div><div class="corr-tip-val">'+v.toFixed(3)+'</div><div class="corr-tip-chg" style="color:'+chgCol+'">'+chgTxt+'</div><div class="corr-tip-interp">'+corrInterp(v)+'</div>';
+  _corrTip.style.display='block';
+  var r=e.target.getBoundingClientRect();
+  _corrTip.style.left=Math.min(r.left,window.innerWidth-270)+'px';
+  _corrTip.style.top=(r.bottom+6)+'px';
+}
+function hideCorrTip(){if(_corrTip)_corrTip.style.display='none'}
+
 function renderCorrelation(){
   var co=D.correlation;if(!co||!co.labels)return;
   var labels=co.labels,cur=co.current,prev=co.previous,n=labels.length;
@@ -556,7 +605,8 @@ function renderCorrelation(){
     html+="<tr><td class='lbl'>"+labels[i]+"</td>";
     for(var j=0;j<n;j++){
       var v=cur[i][j],pv=prev[i][j],bg=corrColor(v);
-      html+="<td style='background:"+bg+";color:var(--white)'>"+(i===j?"1.00":v.toFixed(2))+(i===j?"":arrow(v,pv))+"</td>";
+      if(i===j){html+="<td style='background:"+bg+";color:var(--white);cursor:default'>1.00</td>"}
+      else{html+="<td style='background:"+bg+";color:var(--white)' onmouseenter='showCorrTip(event,\""+labels[i]+"\",\""+labels[j]+"\","+v+","+pv+")' onmouseleave='hideCorrTip()'>"+v.toFixed(2)+arrow(v,pv)+"</td>"}
     }
     html+="</tr>";
   }
@@ -572,18 +622,24 @@ function heatColor(v){
 }
 function fmtPct(v){return v==null?'\u2014':(v>=0?'+':'')+v.toFixed(1)+'%'}
 
-/* --- SECTOR ROTATION TABLE --- */
+/* --- SECTOR ROTATION BARS --- */
+var sectorTF='chg1W';
+function setSectorTF(tf,btn){sectorTF=tf;document.querySelectorAll('.ch-tog[data-g="sec"]').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');renderSectorTable()}
 function renderSectorTable(){
   var s=D.sectorRotation;if(!s||!s.length)return;
-  var html='<tr><th style="text-align:left">Sector</th><th>Price</th><th>1W</th><th>1M</th><th>3M</th><th>YTD</th></tr>';
-  s.forEach(function(r){
-    html+='<tr><td class="lbl">'+r.symbol+' &middot; '+r.name+'</td><td style="color:var(--white)">$'+r.price.toFixed(2)+'</td>';
-    ['chg1W','chg1M','chg3M','chgYTD'].forEach(function(k){
-      html+='<td style="background:'+heatColor(r[k])+';color:var(--white)">'+fmtPct(r[k])+'</td>';
-    });
-    html+='</tr>';
+  var sorted=s.slice().sort(function(a,b){return(b[sectorTF]||0)-(a[sectorTF]||0)});
+  var maxAbs=1;sorted.forEach(function(r){var v=Math.abs(r[sectorTF]||0);if(v>maxAbs)maxAbs=v});
+  var html='';
+  sorted.forEach(function(r){
+    var v=r[sectorTF]||0,pct=Math.abs(v)/maxAbs*100;
+    var col=v>=0?'#22c55e':'#ef4444',bg=v>=0?'rgba(34,197,94,0.5)':'rgba(239,68,68,0.5)';
+    html+='<div class="sec-bar-row">';
+    html+='<span class="sec-bar-label">'+r.symbol+' '+r.name+'</span>';
+    html+='<div class="sec-bar-track"><div class="sec-bar-fill" style="width:'+pct+'%;background:'+bg+';border:1px solid '+col+'"></div></div>';
+    html+='<span class="sec-bar-val" style="color:'+col+'">'+fmtPct(v)+'</span>';
+    html+='</div>';
   });
-  document.getElementById('sector-table').innerHTML=html;
+  document.getElementById('sector-bars').innerHTML=html;
 }
 
 /* --- COMMODITY TABLE --- */
@@ -720,29 +776,73 @@ function renderVixSpx(){
     if(charts.vixSpx)charts.vixSpx.destroy();
     charts.vixSpx=new Chart(document.getElementById("vixSpxChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),ySpx:{position:"left",grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#f0f0f0",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}},yVix:{position:"right",reverse:true,grid:{display:false},ticks:{color:"#5b8af0",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(0)}}}}}});
   }
-  /* Correlation chart */
-  if(vs.dates&&vs.correlation30d&&vs.correlation30d.length){
-    var corrData=vs.correlation30d;
-    var segGold=[],segRed=[];
-    for(var i=0;i<corrData.length;i++){
-      var v=corrData[i];
-      segGold.push(v!=null&&v>=-0.5?v:null);
-      segRed.push(v!=null&&v<-0.5?v:null);
-      /* bridge segments so lines connect across color boundaries */
-      if(i>0&&corrData[i]!=null&&corrData[i-1]!=null){
-        if(corrData[i]>=-0.5&&corrData[i-1]<-0.5){segGold[i-1]=corrData[i-1]}
-        if(corrData[i]<-0.5&&corrData[i-1]>=-0.5){segRed[i-1]=corrData[i-1]}
-      }
-    }
-    var refLine=vs.dates.map(function(){return -0.7});
-    var dsCorr=[
-      {label:"30d Correlation (weak)",data:segGold,borderColor:"var(--gold)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:false},
-      {label:"30d Correlation (strong)",data:segRed,borderColor:"var(--red)",borderWidth:1.5,pointRadius:0,fill:false,tension:0.3,spanGaps:false},
-      {label:"Typical Strong Inverse",data:refLine,borderColor:"var(--t3)",borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false,tension:0}
-    ];
-    if(charts.vixSpxCorr)charts.vixSpxCorr.destroy();
-    charts.vixSpxCorr=new Chart(document.getElementById("vixSpxCorrChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:dsCorr},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{filter:function(t){return t.datasetIndex<2},callbacks:{label:function(c){return"Correlation: "+c.parsed.y.toFixed(3)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),y:{min:-1,max:0,grid:{color:"rgba(255,255,255,0.03)"},ticks:{color:"#78787f",font:{family:"DM Mono",size:8},callback:function(v){return v.toFixed(1)}}}}}});
+}
+
+/* --- CURRENCY COT POSITIONING --- */
+var cotCurrencies=[
+  {label:'USD',sym:'DX',name:'US Dollar Index',exchange:'ICE'},
+  {label:'EUR',sym:'6E',name:'Euro FX',exchange:'CME'},
+  {label:'GBP',sym:'6B',name:'British Pound',exchange:'CME'},
+  {label:'JPY',sym:'6J',name:'Japanese Yen',exchange:'CME'},
+  {label:'AUD',sym:'6A',name:'Australian Dollar',exchange:'CME'},
+  {label:'CAD',sym:'6C',name:'Canadian Dollar',exchange:'CME'},
+  {label:'CHF',sym:'6S',name:'Swiss Franc',exchange:'CME'},
+  {label:'NZD',sym:'6N',name:'New Zealand Dollar',exchange:'CME'}
+];
+var cotActiveLabel=null,cotCache={},cotSparkCharts={};
+(function(){
+  var wrap=document.getElementById('cot-currency-btns');if(!wrap)return;
+  cotCurrencies.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='ch-tog';btn.textContent=c.label;btn.dataset.ccy=c.label;
+    btn.onclick=function(){toggleCotPanel(c)};
+    wrap.appendChild(btn);
+  });
+})();
+function toggleCotPanel(c){
+  var panel=document.getElementById('cot-currency-panel');
+  var btns=document.querySelectorAll('#cot-currency-btns .ch-tog');
+  if(cotActiveLabel===c.label){cotActiveLabel=null;panel.style.maxHeight='0';btns.forEach(function(b){b.classList.remove('active')});return}
+  cotActiveLabel=c.label;
+  btns.forEach(function(b){b.classList.toggle('active',b.dataset.ccy===c.label)});
+  panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--t2);font-family:DM Mono,monospace;font-size:10px">Loading '+c.label+' COT data...</span></div>';
+  panel.style.maxHeight='400px';
+  if(cotCache[c.sym]){renderCotPanel(c,cotCache[c.sym]);return}
+  fetch(API+'/api/cot?market='+c.sym+'&weeks=52').then(function(r){return r.json()}).then(function(d){
+    if(d.status==='ok'){cotCache[c.sym]=d;renderCotPanel(c,d)}
+    else{panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--red);font-family:DM Mono,monospace;font-size:10px">No data available</span></div>'}
+  }).catch(function(){panel.innerHTML='<div class="cot-panel-inner" style="text-align:center;padding:24px"><span style="color:var(--red);font-family:DM Mono,monospace;font-size:10px">Failed to load</span></div>'});
+}
+function renderCotPanel(c,d){
+  var panel=document.getElementById('cot-currency-panel');
+  var bp=d.bigPlayers,dl=d.commercials,n=bp.net.length;
+  var bpNet=bp.net[n-1],bpPrev=n>=2?bp.net[n-2]:bpNet,bpChg=bpNet-bpPrev;
+  var dlNet=dl.net[n-1],dlPrev=n>=2?dl.net[n-2]:dlNet,dlChg=dlNet-dlPrev;
+  // Z-score
+  var zs=d.zScore2Y||{};var zsVal=zs.bp!=null?zs.bp:null;
+  var zsTag='NEUTRAL',zsCol='var(--t2)',zsBg='var(--surf)';
+  if(zsVal!=null){
+    if(zsVal>=2){zsTag='EXTREME LONG';zsCol='var(--grn)';zsBg='var(--grn-dim)'}
+    else if(zsVal>=0.5){zsTag='ABOVE AVG';zsCol='var(--grn)';zsBg='var(--grn-dim)'}
+    else if(zsVal<=-2){zsTag='EXTREME SHORT';zsCol='var(--red)';zsBg='var(--red-dim)'}
+    else if(zsVal<=-0.5){zsTag='BELOW AVG';zsCol='var(--red)';zsBg='var(--red-dim)'}
   }
+  function fK(v){return v==null?'\u2014':(v>=0?'+':'')+Math.round(v/1000)+'K'}
+  var html='<div class="cot-panel-inner">';
+  html+='<div class="cot-panel-header"><div><div class="cot-panel-title">'+c.name+'</div><div class="cot-panel-sub">'+c.exchange+' &#183; Report: '+(d.dates?d.dates[d.dates.length-1]:'')+'</div></div></div>';
+  html+='<div class="cot-panel-grid">';
+  html+='<div class="cot-panel-box"><div class="cpb-label">Big Players Net</div><div class="cpb-val" style="color:'+(bpNet>=0?'var(--grn)':'var(--red)')+'">'+fK(bpNet)+'</div><div class="cpb-chg" style="color:'+(bpChg>=0?'var(--grn)':'var(--red)')+'">'+(bpChg>=0?'+':'')+Math.round(bpChg/1000)+'K W/W</div></div>';
+  html+='<div class="cot-panel-box"><div class="cpb-label">Commercials Net</div><div class="cpb-val" style="color:'+(dlNet>=0?'var(--grn)':'var(--red)')+'">'+fK(dlNet)+'</div><div class="cpb-chg" style="color:'+(dlChg>=0?'var(--grn)':'var(--red)')+'">'+(dlChg>=0?'+':'')+Math.round(dlChg/1000)+'K W/W</div></div>';
+  html+='<div class="cot-panel-box"><div class="cpb-label">Z-Score BP (2Y)</div><div class="cpb-val">'+(zsVal!=null?zsVal.toFixed(2):'\u2014')+'</div><div class="cpb-tag" style="color:'+zsCol+';background:'+zsBg+'">'+zsTag+'</div></div>';
+  html+='</div>';
+  html+='<div class="cot-sparkline"><canvas id="cot-spark-'+c.sym+'"></canvas></div>';
+  html+='</div>';
+  panel.innerHTML=html;
+  panel.style.maxHeight=panel.scrollHeight+'px';
+  // Sparkline
+  var last26=bp.net.slice(-26);
+  if(cotSparkCharts[c.sym])cotSparkCharts[c.sym].destroy();
+  cotSparkCharts[c.sym]=new Chart(document.getElementById('cot-spark-'+c.sym).getContext('2d'),{type:'line',data:{labels:last26.map(function(){return''}),datasets:[{data:last26,borderColor:'#3b82f6',borderWidth:1.5,pointRadius:0,fill:false,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
 }
 
 function refreshData(){
