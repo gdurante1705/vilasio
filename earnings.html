@@ -382,8 +382,8 @@ footer{
           <canvas id="eps-chart"></canvas>
         </div>
         <div class="eps-legend">
-          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#c8a84b"></div> Actual EPS</div>
-          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#06b6d4"></div> Estimate</div>
+          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#ec4899"></div> Actual EPS</div>
+          <div class="eps-legend-item"><div class="eps-legend-dot" style="background:#a78bfa"></div> Estimate</div>
         </div>
       </div>
     </div>
@@ -670,6 +670,10 @@ function loadEpsHistory(symbol) {
       var actuals = data.quarters.map(function(q) { return q.epsActual; }).reverse();
       var estimates = data.quarters.map(function(q) { return q.epsEstimate; }).reverse();
 
+      var gradActual=ctx.createLinearGradient(0,0,0,220);
+      gradActual.addColorStop(0,'rgba(236,72,153,0.85)');gradActual.addColorStop(1,'rgba(236,72,153,0.1)');
+      var gradEst=ctx.createLinearGradient(0,0,0,220);
+      gradEst.addColorStop(0,'rgba(167,139,250,0.5)');gradEst.addColorStop(1,'rgba(167,139,250,0.08)');
       epsChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -678,22 +682,22 @@ function loadEpsHistory(symbol) {
             {
               label: 'Actual EPS',
               data: actuals,
-              backgroundColor: 'rgba(200,168,75,0.85)',
-              borderColor: '#c8a84b',
+              backgroundColor: gradActual,
+              borderColor: '#ec4899',
               borderWidth: 1,
-              borderRadius: 6,
-              barPercentage: 0.85,
-              categoryPercentage: 0.6
+              borderRadius: 4,
+              barPercentage: 0.4,
+              categoryPercentage: 0.7
             },
             {
               label: 'Estimate',
               data: estimates,
-              backgroundColor: 'rgba(6,182,212,0.4)',
-              borderColor: 'rgba(6,182,212,0.6)',
+              backgroundColor: gradEst,
+              borderColor: 'rgba(167,139,250,0.6)',
               borderWidth: 1,
-              borderRadius: 6,
-              barPercentage: 0.85,
-              categoryPercentage: 0.6
+              borderRadius: 4,
+              barPercentage: 0.4,
+              categoryPercentage: 0.7
             }
           ]
         },
@@ -709,7 +713,7 @@ function loadEpsHistory(symbol) {
               bodyFont: { family: "'DM Mono', monospace", size: 10 },
               titleColor: '#f0f0f0',
               bodyColor: '#c0c0c4',
-              borderColor: 'rgba(200,168,75,0.12)',
+              borderColor: 'rgba(255,255,255,0.06)',
               borderWidth: 1,
               padding: 12,
               cornerRadius: 10,
