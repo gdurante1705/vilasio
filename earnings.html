@@ -701,21 +701,9 @@ function loadEpsHistory(symbol) {
         return Math.round((a - e) / Math.abs(e) * 10000) / 100;
       });
       var drifts = quarters.map(function(q) { return q.driftPct != null ? q.driftPct : null; });
-      var driftColors = drifts.map(function(d) { return d == null ? 'rgba(255,255,255,0.1)' : d >= 0 ? 'rgba(34,197,94,0.7)' : 'rgba(239,68,68,0.7)'; });
-      var driftBorders = drifts.map(function(d) { return d == null ? 'rgba(255,255,255,0.1)' : d >= 0 ? '#22c55e' : '#ef4444'; });
-      var driftLabels = quarters.map(function(q) { return q.driftLabel || ''; });
-      var hasDrift = drifts.some(function(d) { return d != null; });
 
       var gradGrn = ctx.createLinearGradient(0, 0, 0, 220);
       gradGrn.addColorStop(0, 'rgba(34,197,94,0.9)'); gradGrn.addColorStop(1, 'rgba(34,197,94,0.2)');
-
-      var datasets = [
-        {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7, yAxisID: 'y'},
-        {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7, yAxisID: 'y'}
-      ];
-      if (hasDrift) {
-        datasets.push({label: 'Post-Earnings Drift', data: drifts, backgroundColor: driftColors, borderColor: driftBorders, borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7, yAxisID: 'y1'});
-      }
 
       var epsLabelPlugin = {id: 'epsLabels', afterDatasetsDraw: function(chart) {
         var c2 = chart.ctx; c2.save(); c2.textAlign = 'center';
@@ -731,47 +719,38 @@ function loadEpsHistory(symbol) {
           c2.fillStyle = '#06b6d4';
           c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
         });
-        c2.font = '700 11px DM Mono'; c2.textBaseline = 'top';
         var area = chart.chartArea;
+        c2.textBaseline = 'top';
         metaA.data.forEach(function(bar, i) {
-          var v = surprises[i]; if (v == null) return;
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
-          c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-          c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 12);
-        });
-        if (hasDrift && chart.data.datasets.length > 2) {
-          var metaD = chart.getDatasetMeta(2);
-          c2.font = '500 10px DM Mono'; c2.textBaseline = 'bottom';
-          metaD.data.forEach(function(bar, i) {
-            var d = drifts[i]; if (d == null) return;
+          // Surprise % line
+          var v = surprises[i];
+          if (v != null) {
+            c2.font = '700 11px DM Mono';
+            c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
+            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 12);
+          }
+          // Drift % line below surprise
+          var d = drifts[i];
+          if (d != null) {
+            c2.font = '500 9px DM Mono';
             c2.fillStyle = d >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '%', bar.x, bar.y - 4);
-          });
-          c2.font = '300 7px DM Mono'; c2.textBaseline = 'top';
-          c2.fillStyle = '#50505a';
-          metaD.data.forEach(function(bar, i) {
-            var lbl = driftLabels[i]; if (!lbl) return;
-            c2.fillText(lbl, bar.x, area.bottom + 28);
-          });
-        }
+            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, area.bottom + 28);
+          }
+        });
         c2.restore();
       }};
 
-      var scales = {
-        x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 18}},
-        y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
-      };
-      if (hasDrift) {
-        scales.y1 = {position: 'right', display: true, grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return v.toFixed(0) + '%'}}};
-      }
-
       epsChart = new Chart(ctx, {
         type: 'bar',
-        data: {labels: labels, datasets: datasets},
+        data: {labels: labels, datasets: [
+          {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7},
+          {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7}
+        ]},
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: hasDrift ? 44 : 24}},
+          layout: {padding: {top: 20, bottom: 44}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
@@ -780,19 +759,20 @@ function loadEpsHistory(symbol) {
               titleColor: '#f0f0f0', bodyColor: '#c0c0c4', borderColor: 'rgba(255,255,255,0.06)', borderWidth: 1, padding: 12, cornerRadius: 10,
               callbacks: {
                 title: function(items) { var l = labels[items[0].dataIndex]; return l[0] + ' \u00b7 ' + l[1]; },
-                label: function(c) {
-                  var v = c.parsed.y;
-                  if (c.datasetIndex === 2) return 'Drift: ' + (v != null ? ((v >= 0 ? '+' : '') + v.toFixed(1) + '%') : '\u2014');
-                  return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014');
-                },
+                label: function(c) { var v = c.parsed.y; return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014'); },
                 afterBody: function(items) {
-                  var i = items[0].dataIndex, s = surprises[i]; if (s == null) return '';
-                  return (s >= 0 ? 'Beat +' : 'Miss ') + s.toFixed(1) + '%';
+                  var i = items[0].dataIndex, parts = [];
+                  var s = surprises[i]; if (s != null) parts.push((s >= 0 ? 'Beat +' : 'Miss ') + s.toFixed(1) + '%');
+                  var d = drifts[i]; if (d != null) parts.push('Drift: ' + (d >= 0 ? '+' : '') + d.toFixed(1) + '%');
+                  return parts.join('\n');
                 }
               }
             }
           },
-          scales: scales
+          scales: {
+            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 18}},
+            y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
+          }
         },
         plugins: [epsLabelPlugin]
       });
@@ -800,10 +780,7 @@ function loadEpsHistory(symbol) {
       // Legend
       var legendEl = document.getElementById('eps-legend');
       if (legendEl) {
-        var lh = '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:#22c55e"></span> Actual EPS</div>';
-        lh += '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:#06b6d4"></span> Estimate</div>';
-        if (hasDrift) lh += '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:var(--t2)"></span> Post-Earnings Drift</div>';
-        legendEl.innerHTML = lh;
+        legendEl.innerHTML = '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:#22c55e"></span> Actual EPS</div><div class="eps-legend-item"><span class="eps-legend-dot" style="background:#06b6d4"></span> Estimate</div>';
       }
 
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
