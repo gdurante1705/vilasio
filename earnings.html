@@ -148,7 +148,7 @@ nav{
 
 /* ─── PEAD SIGNAL CARDS ─── */
 .signals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-.sig-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:20px 24px;position:relative;overflow:hidden;transition:all .2s;cursor:pointer}
+.sig-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:20px 24px;position:relative;overflow:hidden;transition:all .2s}
 .sig-card:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
 .sig-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
 .sig-card.sector-bull::before{background:var(--grn)}
@@ -165,9 +165,12 @@ nav{
 .sig-metric-val{font-family:"Alata",sans-serif;font-size:16px;font-weight:400;line-height:1}
 .sig-metric-val.pos{color:var(--grn)}.sig-metric-val.neg{color:var(--red)}
 .sig-metric-val.gold{color:var(--gold)}
-.sig-levels{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--brd)}
+.sig-levels{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--brd)}
 .sig-level-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t2)}
 .sig-level-val{font-family:"DM Mono",monospace;font-size:11px;color:var(--white);margin-top:2px}
+.sig-eps-btn{display:block;width:100%;margin-top:12px;padding:8px 0;font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);background:none;border:1px solid rgba(200,168,75,0.1);border-radius:100px;cursor:pointer;transition:all .2s}
+.sig-eps-btn:hover{color:var(--t1);border-color:var(--card-border-hover)}
+.sig-eps-btn.open{color:var(--white);border-color:rgba(200,168,75,0.2)}
 
 /* ─── EPS HISTORY CHART (modal-like panel) ─── */
 .eps-panel{display:none;margin-top:16px}
@@ -381,6 +384,7 @@ footer{
         <div class="eps-chart-wrap">
           <canvas id="eps-chart"></canvas>
         </div>
+        <div class="eps-legend" id="eps-legend"></div>
       </div>
     </div>
   </div>
@@ -514,6 +518,8 @@ function applyFilter(items) {
 }
 
 /* ─── RENDER MARKET TREND ─── */
+var ETF_SECTOR_NAME = {'SPX':'S&P 500','XLK':'Technology','XLF':'Financials','XLE':'Energy','XLV':'Healthcare','XLY':'Consumer Cycl.','XLP':'Consumer Def.','XLI':'Industrials','XLC':'Communication','XLRE':'Real Estate','XLB':'Materials','XLU':'Utilities'};
+
 function renderTrendStrip(trend) {
   var strip = document.getElementById('trend-strip');
   if (!trend || Object.keys(trend).length === 0) { strip.innerHTML = ''; return; }
@@ -527,6 +533,7 @@ function renderTrendStrip(trend) {
     var extraStyle = isSpx ? 'border:1px solid rgba(200,168,75,0.35);box-shadow:0 0 12px rgba(200,168,75,0.08)' : '';
     html += '<div class="trend-chip"' + (extraStyle ? ' style="' + extraStyle + '"' : '') + '>';
     html += '<div class="trend-label"' + (isSpx ? ' style="color:var(--gold)"' : '') + '>' + key + '</div>';
+    html += '<div style="font-family:DM Mono,monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-top:1px">' + (ETF_SECTOR_NAME[key] || '') + '</div>';
     html += '<div class="trend-val"' + (isSpx ? ' style="font-size:17px"' : '') + '>' + t.price.toLocaleString() + '</div>';
     html += '<span class="trend-tag ' + cls + '">' + t.trend + '</span>';
     html += '</div>';
@@ -614,11 +621,14 @@ function renderSignals(signals) {
 
     var secTrend = s.sectorTrend || 'bearish';
     var secCls = secTrend === 'bullish' ? 'sector-bull' : 'sector-bear';
-    html += '<div class="sig-card ' + secCls + activeCls + '" onclick="loadEpsHistory(\'' + s.symbol + '\')">';
+    html += '<div class="sig-card ' + secCls + activeCls + '">';
     html += '<div class="sig-top">';
     html += '<div><div class="sig-sym">' + s.symbol + '</div><div class="sig-name">' + (s.name || s.symbol) + '</div>';
     html += '<div style="display:flex;align-items:center;gap:6px;margin-top:4px">';
-    html += '<span style="font-family:DM Mono,monospace;font-size:8px;letter-spacing:1px;color:var(--t2)">' + (s.sector || '') + '</span>';
+    var secEtf = s.sectorEtf || '';
+    html += '<span style="font-family:DM Mono,monospace;font-size:8px;letter-spacing:1px"><span style="color:var(--gold)">' + secEtf + '</span>';
+    if (secEtf && s.sector) html += ' <span style="color:var(--t3)">&middot;</span> <span style="color:var(--t2)">' + s.sector + '</span>';
+    html += '</span>';
     html += '<span class="trend-tag ' + secTrend + '">' + secTrend.toUpperCase() + '</span>';
     html += '</div></div>';
     html += '<span class="sig-badge ' + badgeCls + '">' + badgeText + '</span>';
@@ -633,9 +643,9 @@ function renderSignals(signals) {
     html += '<div class="sig-levels">';
     html += '<div><div class="sig-level-label">Entry</div><div class="sig-level-val">$' + s.entryLevel + '</div></div>';
     html += '<div><div class="sig-level-label">Stop</div><div class="sig-level-val">$' + s.stopLevel + '</div></div>';
-    html += '<div><div class="sig-level-label">Target</div><div class="sig-level-val">$' + s.targetLevel + '</div></div>';
-    html += '<div><div class="sig-level-label">R:R</div><div class="sig-level-val">1:' + s.riskReward + '</div></div>';
     html += '</div>';
+
+    html += '<button class="sig-eps-btn" data-symbol="' + s.symbol + '" onclick="event.stopPropagation();toggleEpsHistory(this,\'' + s.symbol + '\')">EPS History &#8595;</button>';
 
     html += '</div>';
   });
@@ -644,10 +654,26 @@ function renderSignals(signals) {
 }
 
 /* ─── EPS HISTORY ─── */
+var currentEpsSymbol = null;
+
+function toggleEpsHistory(btn, symbol) {
+  var panel = document.getElementById('eps-panel');
+  if (currentEpsSymbol === symbol && panel.classList.contains('open')) {
+    closeEpsPanel();
+    return;
+  }
+  document.querySelectorAll('.sig-eps-btn').forEach(function(b) {
+    b.classList.remove('open'); b.innerHTML = 'EPS History &#8595;';
+  });
+  currentEpsSymbol = symbol;
+  if (btn) { btn.classList.add('open'); btn.innerHTML = 'EPS History &#8593;'; }
+  loadEpsHistory(symbol);
+}
+
 function loadEpsHistory(symbol) {
   var panel = document.getElementById('eps-panel');
   panel.classList.add('open');
-  document.getElementById('eps-panel-title').textContent = symbol + ' — EPS History';
+  document.getElementById('eps-panel-title').textContent = symbol + ' \u2014 EPS History';
 
   if (epsChart) { epsChart.destroy(); epsChart = null; }
 
@@ -674,12 +700,26 @@ function loadEpsHistory(symbol) {
         if (a == null || e == null || e === 0) return null;
         return Math.round((a - e) / Math.abs(e) * 10000) / 100;
       });
+      var drifts = quarters.map(function(q) { return q.driftPct != null ? q.driftPct : null; });
+      var driftColors = drifts.map(function(d) { return d == null ? 'rgba(255,255,255,0.1)' : d >= 0 ? 'rgba(34,197,94,0.7)' : 'rgba(239,68,68,0.7)'; });
+      var driftBorders = drifts.map(function(d) { return d == null ? 'rgba(255,255,255,0.1)' : d >= 0 ? '#22c55e' : '#ef4444'; });
+      var driftLabels = quarters.map(function(q) { return q.driftLabel || ''; });
+      var hasDrift = drifts.some(function(d) { return d != null; });
+
       var gradGrn = ctx.createLinearGradient(0, 0, 0, 220);
       gradGrn.addColorStop(0, 'rgba(34,197,94,0.9)'); gradGrn.addColorStop(1, 'rgba(34,197,94,0.2)');
+
+      var datasets = [
+        {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7, yAxisID: 'y'},
+        {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7, yAxisID: 'y'}
+      ];
+      if (hasDrift) {
+        datasets.push({label: 'Post-Earnings Drift', data: drifts, backgroundColor: driftColors, borderColor: driftBorders, borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7, yAxisID: 'y1'});
+      }
+
       var epsLabelPlugin = {id: 'epsLabels', afterDatasetsDraw: function(chart) {
         var c2 = chart.ctx; c2.save(); c2.textAlign = 'center';
         var metaA = chart.getDatasetMeta(0), metaE = chart.getDatasetMeta(1);
-        // $ values above bars
         c2.font = '500 11px DM Mono'; c2.textBaseline = 'bottom';
         metaA.data.forEach(function(bar, i) {
           var a = actuals[i]; if (a == null) return;
@@ -691,7 +731,6 @@ function loadEpsHistory(symbol) {
           c2.fillStyle = '#06b6d4';
           c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
         });
-        // Surprise % below bars, centered between the two bars
         c2.font = '700 11px DM Mono'; c2.textBaseline = 'top';
         var area = chart.chartArea;
         metaA.data.forEach(function(bar, i) {
@@ -700,21 +739,39 @@ function loadEpsHistory(symbol) {
           c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
           c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 12);
         });
+        if (hasDrift && chart.data.datasets.length > 2) {
+          var metaD = chart.getDatasetMeta(2);
+          c2.font = '500 10px DM Mono'; c2.textBaseline = 'bottom';
+          metaD.data.forEach(function(bar, i) {
+            var d = drifts[i]; if (d == null) return;
+            c2.fillStyle = d >= 0 ? '#22c55e' : '#ef4444';
+            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '%', bar.x, bar.y - 4);
+          });
+          c2.font = '300 7px DM Mono'; c2.textBaseline = 'top';
+          c2.fillStyle = '#50505a';
+          metaD.data.forEach(function(bar, i) {
+            var lbl = driftLabels[i]; if (!lbl) return;
+            c2.fillText(lbl, bar.x, area.bottom + 28);
+          });
+        }
         c2.restore();
       }};
+
+      var scales = {
+        x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 18}},
+        y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
+      };
+      if (hasDrift) {
+        scales.y1 = {position: 'right', display: true, grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return v.toFixed(0) + '%'}}};
+      }
+
       epsChart = new Chart(ctx, {
         type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7},
-            {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7}
-          ]
-        },
+        data: {labels: labels, datasets: datasets},
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: 24}},
+          layout: {padding: {top: 20, bottom: hasDrift ? 44 : 24}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
@@ -723,7 +780,11 @@ function loadEpsHistory(symbol) {
               titleColor: '#f0f0f0', bodyColor: '#c0c0c4', borderColor: 'rgba(255,255,255,0.06)', borderWidth: 1, padding: 12, cornerRadius: 10,
               callbacks: {
                 title: function(items) { var l = labels[items[0].dataIndex]; return l[0] + ' \u00b7 ' + l[1]; },
-                label: function(c) { var v = c.parsed.y; return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014'); },
+                label: function(c) {
+                  var v = c.parsed.y;
+                  if (c.datasetIndex === 2) return 'Drift: ' + (v != null ? ((v >= 0 ? '+' : '') + v.toFixed(1) + '%') : '\u2014');
+                  return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014');
+                },
                 afterBody: function(items) {
                   var i = items[0].dataIndex, s = surprises[i]; if (s == null) return '';
                   return (s >= 0 ? 'Beat +' : 'Miss ') + s.toFixed(1) + '%';
@@ -731,13 +792,19 @@ function loadEpsHistory(symbol) {
               }
             }
           },
-          scales: {
-            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 18}},
-            y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
-          }
+          scales: scales
         },
         plugins: [epsLabelPlugin]
       });
+
+      // Legend
+      var legendEl = document.getElementById('eps-legend');
+      if (legendEl) {
+        var lh = '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:#22c55e"></span> Actual EPS</div>';
+        lh += '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:#06b6d4"></span> Estimate</div>';
+        if (hasDrift) lh += '<div class="eps-legend-item"><span class="eps-legend-dot" style="background:var(--t2)"></span> Post-Earnings Drift</div>';
+        legendEl.innerHTML = lh;
+      }
 
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     })
@@ -750,6 +817,10 @@ function loadEpsHistory(symbol) {
 function closeEpsPanel() {
   document.getElementById('eps-panel').classList.remove('open');
   if (epsChart) { epsChart.destroy(); epsChart = null; }
+  document.querySelectorAll('.sig-eps-btn').forEach(function(b) {
+    b.classList.remove('open'); b.innerHTML = 'EPS History &#8595;';
+  });
+  currentEpsSymbol = null;
 }
 
 /* ─── FETCH DATA ─── */
