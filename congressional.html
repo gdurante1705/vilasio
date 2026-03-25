@@ -103,25 +103,23 @@ nav{
 .refresh-btn:hover{color:var(--white);border-color:var(--card-border-hover)}
 .refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
 
-/* ─── STATUS ROW ─── */
-.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+/* ─── STATUS CARDS ─── */
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
 .status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:24px 28px;position:relative;overflow:hidden;transition:border-color .2s}
 .status-card:hover{border-color:var(--card-border-hover)}
 .status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r-sm) var(--r-sm) 0 0}
-.status-card.up::before{background:var(--grn)}
-.status-card.dn::before{background:var(--red)}
-.status-card.neut::before{background:var(--t2)}
 .sc-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
-.sc-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;letter-spacing:-0.5px;line-height:1}
-.sc-val-sm{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;letter-spacing:-0.3px;line-height:1.2}
-.sc-sub{display:flex;align-items:center;gap:8px;margin-top:10px}
-.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
+.sc-val{font-family:"Alata",sans-serif;font-size:36px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
+.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;color:var(--t2)}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-delta.neut{color:var(--t2)}
-.sc-note{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
+.sc-note{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:inherit}
+
+/* ─── MAIN ─── */
+main{padding:0 48px 64px}
 
 /* ─── CHART SECTIONS ─── */
-.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden;transition:border-color .2s}
+.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden;transition:border-color .2s}
 .chart-section:hover{border-color:var(--card-border-hover)}
 .chart-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .chart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--brd)}
@@ -144,7 +142,7 @@ nav{
 /* ─── TABLE ─── */
 .tbl-wrap{padding:0 28px 16px;overflow-x:auto}
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
-.data-table th{padding:10px 8px;font-weight:400;color:var(--t1);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd);cursor:default}
+.data-table th{padding:10px 8px;font-weight:400;color:var(--t2);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd);cursor:default}
 .data-table th[onclick]{cursor:pointer;user-select:none;transition:color .2s}
 .data-table th[onclick]:hover{color:var(--gold)}
 .data-table td{padding:8px 8px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
@@ -164,8 +162,6 @@ th.col-role,td.col-role{text-align:left;width:auto}
 .badge.violet{color:var(--violet);border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.1)}
 .badge.amb{color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)}
 
-.owner-buy{color:var(--grn)}.owner-sale{color:var(--red)}.owner-proposed{color:var(--amb)}.owner-option{color:var(--t2)}
-
 /* ─── CHART EXPLAIN DROPDOWNS ─── */
 .chart-explain{margin-top:12px}
 .chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
@@ -182,42 +178,38 @@ th.col-role,td.col-role{text-align:left;width:auto}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 
 /* ─── FOOTER ─── */
-footer{
-  padding:32px 64px;
-  border-top:1px solid var(--brd);
-  display:flex;align-items:center;justify-content:space-between;gap:24px;
-  background:var(--bg);
-  position:relative;z-index:1;
-}
-.footer-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.footer-logo{width:22px;height:22px;opacity:0.7}
-.footer-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;color:var(--t2)}
-.footer-links{display:flex;gap:28px}
-.footer-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t3);text-decoration:none;transition:color .3s}
-.footer-link:hover{color:var(--t1)}
-.footer-copy{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t3)}
+footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.foot-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.foot-logo{width:22px;height:22px;opacity:0.7}
+.foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.foot-links{display:flex;gap:28px}
+.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
+.foot-links a:hover{color:var(--white)}
+.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t2)}
 
 /* ─── DISCLAIMER ─── */
-.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0;position:relative;z-index:1}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;gap:24px;align-items:flex-start}
+.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0}
-.disclaimer-bar p strong{color:var(--t2);font-weight:500}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
+.disclaimer-bar p strong{color:var(--t2);font-weight:400}
 
 /* ─── RESPONSIVE ─── */
-@media(max-width:900px){
-  nav{gap:20px;padding:12px 20px}
+@media(max-width:960px){
+  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
   .nav-links{display:none}
   .nav-mobile-btn{display:block}
-  .hero{padding:80px 20px 16px}
-  .hero-top{flex-direction:column;align-items:flex-start;gap:16px}
-  .hero-badges{align-items:flex-start}
+}
+@media(max-width:768px){
+  .hero{padding:76px 16px 16px}
   main{padding:0 16px 40px}
   .status-row{grid-template-columns:1fr 1fr}
   .tab-bar{overflow-x:auto}
   .tab-btn{font-size:8px;padding:10px 12px}
-  footer{padding:24px 20px;flex-direction:column;gap:16px;align-items:flex-start}
-  .disclaimer-inner{padding:0 20px;flex-direction:column;gap:10px}
+  footer{flex-direction:column;padding:32px 24px;text-align:center}
+  .foot-links{flex-wrap:wrap;justify-content:center}
+  .foot-right{text-align:center}
+  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
 }
 @media(max-width:480px){
   .status-row{grid-template-columns:1fr}
@@ -228,24 +220,22 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-brand">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
+  <a class="nav-brand" href="index.html">
+    <img class="nav-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
     <span class="nav-name">Vilasio</span>
   </a>
   <div class="nav-links">
-    <a href="owl.html" class="nav-link">The Owl</a>
-    <a href="liquidity.html" class="nav-link">Liquidity</a>
-    <a href="bonds.html" class="nav-link">Bonds</a>
-    <a href="macro.html" class="nav-link">Macro</a>
-    <a href="crossmarket.html" class="nav-link">Cross-Market</a>
-    <a href="earnings.html" class="nav-link">Earnings</a>
-    <a href="congressional.html" class="nav-link active">Congressional</a>
-    <a href="geopolitical.html" class="nav-link">Geopolitical</a>
+    <a class="nav-link" href="owl.html">The Owl</a>
+    <a class="nav-link" href="liquidity.html">Liquidity</a>
+    <a class="nav-link" href="bonds.html">Bonds</a>
+    <a class="nav-link" href="macro.html">Macro</a>
+    <a class="nav-link" href="crossmarket.html">Cross-Market</a>
+    <a class="nav-link" href="earnings.html">Earnings</a>
+    <a class="nav-link active" href="congressional.html">Congressional</a>
+    <a class="nav-link" href="geopolitical.html">Geopolitical</a>
   </div>
-  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">&#9776;</button>
+  <button class="nav-mobile-btn" onclick="document.getElementById('mobileMenu').classList.toggle('open');this.textContent=this.textContent==='\u2630'?'\u2715':'\u2630'">&#9776;</button>
 </nav>
-
-<!-- Mobile menu -->
 <div class="nav-mobile-menu" id="mobileMenu">
   <a href="owl.html">The Owl</a>
   <a href="liquidity.html">Liquidity</a>
@@ -257,15 +247,14 @@ footer{
   <a href="geopolitical.html">Geopolitical</a>
 </div>
 
-<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
-</div>
+<!-- SCROLL TOP -->
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-top">
     <div>
-      <div class="hero-tag"><span class="pulse"></span> Insider Filings &#183; Congressional Disclosures</div>
+      <div class="hero-tag"><span class="pulse"></span> SEC Form 4 &#183; Insider Trades &#183; Congressional Disclosures</div>
       <h1 class="hero-h1">Follow the <em>money</em>.</h1>
       <p class="hero-desc">Track insider trades from corporate executives and members of Congress &#8212; the ultimate smart money signal.</p>
     </div>
@@ -278,30 +267,32 @@ footer{
   </div>
 </section>
 
+<!-- MAIN -->
 <main>
+  <!-- STATUS CARDS -->
   <div class="status-row reveal">
     <div class="status-card neut" id="sc-net">
       <div class="sc-label">Insider Sentiment</div>
       <div class="sc-val" id="sc-net-val">&#8212;</div>
       <div class="sc-sub"><span class="sc-delta" id="sc-net-ratio">&#8212;</span></div>
-      <div class="sc-sub" style="margin-top:4px"><span class="sc-note">buy / sell ratio this week</span></div>
+      <div class="sc-sub"><span class="sc-note" style="color:var(--t3)">buy / sell ratio this week</span></div>
     </div>
     <div class="status-card neut" id="sc-big">
       <div class="sc-label">Largest Insider Buy</div>
       <div class="sc-val" id="sc-big-val">&#8212;</div>
       <div class="sc-sub"><span class="sc-delta" id="sc-big-amount">&#8212;</span></div>
-      <div class="sc-sub" style="margin-top:4px"><span class="sc-note" id="sc-big-who">&#8212;</span></div>
+      <div class="sc-sub"><span class="sc-note" id="sc-big-who" style="color:var(--t3)">&#8212;</span></div>
     </div>
     <div class="status-card neut" id="sc-cnt">
       <div class="sc-label">Total Insider Trades</div>
       <div class="sc-val" id="sc-cnt-val">&#8212;</div>
       <div class="sc-sub"><span class="sc-delta neut" id="sc-cnt-ptr">&#8212;</span></div>
-      <div class="sc-sub" style="margin-top:4px"><span class="sc-note">excl. option exercises</span></div>
+      <div class="sc-sub"><span class="sc-note" style="color:var(--t3)">excl. option exercises</span></div>
     </div>
     <div class="status-card neut" id="sc-ovr">
       <div class="sc-label">Signal Confluence</div>
       <div class="sc-val" id="sc-ovr-val">&#8212;</div>
-      <div class="sc-sub"><span class="sc-note">earnings + insider buy overlap</span></div>
+      <div class="sc-sub"><span class="sc-note" style="color:var(--t3)">earnings + insider buy overlap</span></div>
     </div>
   </div>
 
@@ -324,21 +315,14 @@ footer{
         <option value="proposed">Proposed Sales</option>
       </select>
     </div>
-    <div style="padding:0 28px 8px">
-      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none'" style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);cursor:pointer">Transaction Legend &#9662;</div>
-      <div style="display:none;gap:16px;align-items:center;flex-wrap:wrap;padding:8px 0">
-        <span><span class="badge grn" style="font-size:7px">BUY</span> <span style="font-size:8px;color:var(--t1)">Open market purchase &#8212; strongest signal</span></span>
-        <span><span class="badge red" style="font-size:7px">SALE</span> <span style="font-size:8px;color:var(--t1)">Direct market sale</span></span>
-        <span><span class="badge amb" style="font-size:7px">PROPOSED SALE</span> <span style="font-size:8px;color:var(--t1)">Pre-planned (Rule 10b5-1) &#8212; weak signal</span></span>
-      </div>
-    </div>
     <div class="tbl-wrap"><table class="data-table" id="insider-table"><tr><td style="color:var(--t2)">Loading insider trades...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this table</button>
       <div class="chart-explain-content">
-        <p><strong>Why insider trades matter:</strong> Corporate insiders (CEO, CFO, directors, 10%+ owners) must report stock transactions to the SEC via Form 4 within two business days. These filings are the closest you get to seeing what management actually thinks about their own stock.</p>
-        <p><strong>Buying vs selling signal strength:</strong> Insider buying is a much stronger signal than selling. Executives sell for many reasons (diversification, taxes, estate planning, scheduled 10b5-1 plans) but they buy for only one reason &#8212; they believe the stock is undervalued. A cluster of insider buys across multiple executives at the same company is the strongest signal.</p>
-        <p><strong>What to watch for:</strong> Sort by Value to find the largest conviction bets. Filter to Buy only to see pure directional signals. The &#8220;Top by Value&#8221; tab shows the biggest trades of the week. &#8220;10% Owners&#8221; tracks activist investors and institutional block holders. <strong>Proposed Sales</strong> (marked amber) are pre-planned Rule 10b5-1 trades &#8212; these carry the weakest signal since they were scheduled months in advance.</p>
+        <p><strong>Role levels:</strong> &#9632;&#9632;&#9632; C-Suite (CEO, CFO, COO, CTO, President, Chairman) &#8212; highest relevance. &#9632;&#9632;&#9633; Director / Board member. &#9632;&#9633;&#9633; Officer, affiliate, or other role. In the 10% Owners tab, all entries show &#9632;&#9632;&#9632; as maximum relevance.</p>
+        <p><strong>Name colors:</strong> White names are individual persons. <span style="color:#60a5fa">Blue names</span> are corporate entities (LLC, Holdings, Fund, etc.) &#8212; institutional block holders.</p>
+        <p><strong>Transaction types:</strong> <strong style="color:var(--grn)">Buy</strong> &#8212; open market purchase, strongest signal. <strong style="color:var(--red)">Sale</strong> &#8212; direct market sale. <strong style="color:var(--amb)">Proposed Sale</strong> &#8212; pre-planned Rule 10b5-1, weakest signal. Option exercises are filtered out automatically.</p>
+        <p><strong>Why insider trades matter:</strong> Executives sell for many reasons (diversification, taxes, estate planning) but buy for only one &#8212; they believe the stock is undervalued. Clusters of insider buying at the same company represent the strongest signal.</p>
       </div>
     </div>
   </div>
@@ -353,11 +337,11 @@ footer{
     </div>
     <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--t2)">Loading congressional filings...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this table</button>
       <div class="chart-explain-content">
         <p><strong>What are PTR filings?</strong> Under the STOCK Act (2012), members of Congress must disclose securities transactions exceeding $1,000 within 45 days via Periodic Transaction Reports. Each row represents a filing &#8212; click <strong>View PDF</strong> to see the actual tickers, amounts, and transaction types.</p>
         <p><strong>Why this matters:</strong> Members of Congress sit on committees that oversee specific industries, giving them access to non-public information about regulatory changes, government contracts, and legislative outcomes. Academic research shows that congressional portfolios have historically outperformed the market.</p>
-        <p><strong>How to use this data:</strong> Watch for members who file frequently &#8212; they are the most active traders. Look for clusters of filings around the same date, which may indicate reaction to non-public legislative developments. Cross-reference with committee assignments for the strongest signals.</p>
+        <p><strong>How to use this data:</strong> Watch for members who file frequently &#8212; they are the most active traders (marked with an amber frequency badge). Look for clusters of filings around the same date, which may indicate reaction to non-public legislative developments.</p>
       </div>
     </div>
   </div>
@@ -367,7 +351,7 @@ footer{
     <div class="chart-header"><div><div class="ch-title">Signal Confluence</div><div class="ch-sub">Dual Confirmation &#183; Earnings Surprise + Insider Buy on Same Ticker</div></div></div>
     <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--t2)">Loading overlap...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
+      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this table</button>
       <div class="chart-explain-content">
         <p><strong>What is signal confluence?</strong> This section identifies stocks that appear in both the <strong>PEAD Scanner</strong> (Earnings Intelligence page) and the insider buy table simultaneously. When a company beats earnings expectations and insiders are buying their own stock at the same time, you have dual confirmation from two independent data sources.</p>
         <p><strong>Why it matters:</strong> Each signal alone is useful. Together they represent the highest-conviction setup available from public data: the market underreacted to positive earnings (PEAD) and the people with the deepest knowledge of the company are putting their own money in (insider buy). This combination is rare &#8212; when it appears, it deserves close attention.</p>
@@ -376,18 +360,19 @@ footer{
   </div>
 </main>
 
+<!-- FOOTER (bonds.html pattern) -->
 <footer>
-  <a href="index.html" class="footer-brand">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="footer-logo" alt="Vilasio">
-    <span class="footer-name">VILASIO</span>
+  <a class="foot-brand" href="index.html">
+    <img class="foot-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="Vilasio">
+    <span class="foot-name">Vilasio</span>
   </a>
-  <div class="footer-links">
-    <a href="privacy.html" class="footer-link">Privacy Policy</a>
-    <a href="terms.html" class="footer-link">Terms of Use</a>
-    <a href="cookie.html" class="footer-link">Cookie Policy</a>
-    <a href="contact.html" class="footer-link">Contact</a>
+  <div class="foot-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="cookie.html">Cookie Policy</a>
+    <a href="contact.html">Contact</a>
   </div>
-  <div class="footer-copy">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
+  <div class="foot-right">&copy; 2026 VILASIO</div>
 </footer>
 
 <div class="disclaimer-bar">
@@ -532,7 +517,6 @@ function sortRows(arr,col,asc){
 
 function renderInsiderTable(){
   var raw=getTabData();
-  // Always filter out Option Exercise
   var trades=raw.filter(function(t){return!isOptionExercise(t.transaction)});
   var filter=document.getElementById('insider-filter').value;
   var el=document.getElementById('insider-table');
@@ -543,7 +527,6 @@ function renderInsiderTable(){
   if(filter==='sale')filtered=trades.filter(function(t){return txnClass(t.transaction)==='sale'});
   if(filter==='proposed')filtered=trades.filter(function(t){return txnClass(t.transaction)==='proposed'});
 
-  // Sort
   filtered=sortRows(filtered,sortCol,sortAsc);
 
   document.getElementById('insider-count').textContent=filtered.length+' of '+trades.length+' trades';
@@ -583,13 +566,11 @@ function renderInsiderTable(){
 
 function renderCards(){
   var st=D.stats||{};
-  /* Sentiment card */
   var cls=st.netSentiment==='bullish'?'up':(st.netSentiment==='bearish'?'dn':'neut');
   document.getElementById('sc-net').className='status-card '+cls;
   document.getElementById('sc-net-val').textContent=(st.netSentiment||'--').toUpperCase();
   document.getElementById('sc-net-ratio').textContent=(st.insiderBuys||0)+' buys / '+(st.insiderSells||0)+' sells';
   document.getElementById('sc-net-ratio').className='sc-delta '+cls;
-  /* Biggest buy card */
   var big=st.biggestInsiderBuy||{};
   document.getElementById('sc-big').className='status-card '+(big.ticker?'up':'neut');
   document.getElementById('sc-big-val').textContent=big.ticker||'\u2014';
@@ -597,19 +578,15 @@ function renderCards(){
   document.getElementById('sc-big-amount').className='sc-delta up';
   var ownerShort=big.owner||'';if(ownerShort.length>28)ownerShort=ownerShort.substring(0,28)+'\u2026';
   document.getElementById('sc-big-who').textContent=ownerShort||'No data';
-  /* Trade count card */
   document.getElementById('sc-cnt-val').textContent=st.totalInsiderTrades||st.totalTrades||0;
   document.getElementById('sc-cnt').className='status-card neut';
   var ct=D.congressional_trades||{};
   document.getElementById('sc-cnt-ptr').textContent=(ct.stats?ct.stats.total_trades:0)+' House PTR filings';
-  /* Signal confluence card */
   var ovr=(D.smartMoneyOverlap||[]).length;
   document.getElementById('sc-ovr-val').textContent=ovr;
   document.getElementById('sc-ovr').className='status-card '+(ovr>0?'up':'neut');
-  /* Congress count in section header */
   var ccl=document.getElementById('congress-count-label');
   if(ccl&&ct.stats)ccl.textContent=ct.stats.unique_politicians;
-  /* Update badge */
   if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
 }
 
@@ -619,11 +596,9 @@ function renderCongress(){
   var el=document.getElementById('congress-table');
   if(!trades.length){el.innerHTML='<tr><td style="color:var(--t2);padding:20px 6px">No House PTR filings found.</td></tr>';return}
 
-  /* Count filings per rep for frequency badge */
   var freq={};
   trades.forEach(function(t){freq[t.name]=(freq[t.name]||0)+1});
 
-  // Sort
   trades=sortRows(trades,houseSortCol,houseSortAsc);
 
   var html='<thead><tr>';
@@ -679,9 +654,6 @@ function refreshData(){
     D=d;renderAll();btn.textContent='REFRESH';btn.classList.remove('loading');
   }).catch(function(){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000)});
 }
-
-/* Mobile menu toggle */
-function toggleMobileMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
 
 /* Scroll-to-top button */
 window.addEventListener('scroll',function(){document.getElementById('scrollTop').classList.toggle('show',window.scrollY>300)});
