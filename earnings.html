@@ -689,9 +689,13 @@ function loadEpsHistory(symbol) {
 
       var quarters = data.quarters.slice().reverse();
       var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var labels = quarters.map(function(q) {
-        var p = q.date.split('-'); var m = parseInt(p[1]); var d = parseInt(p[2]); var qn = Math.ceil(m / 3);
-        return ['Q' + qn + ' ' + p[0], d + ' ' + MON[m-1]];
+      var qLabels = quarters.map(function(q) {
+        var p = q.date.split('-'); var m = parseInt(p[1]); var qn = Math.ceil(m / 3);
+        return 'Q' + qn + ' ' + p[0];
+      });
+      var dateLabels = quarters.map(function(q) {
+        var p = q.date.split('-'); var m = parseInt(p[1]); var d = parseInt(p[2]);
+        return d + ' ' + MON[m-1];
       });
       var actuals = quarters.map(function(q) { return q.epsActual; });
       var estimates = quarters.map(function(q) { return q.epsEstimate; });
@@ -708,6 +712,7 @@ function loadEpsHistory(symbol) {
       var epsLabelPlugin = {id: 'epsLabels', afterDatasetsDraw: function(chart) {
         var c2 = chart.ctx; c2.save(); c2.textAlign = 'center';
         var metaA = chart.getDatasetMeta(0), metaE = chart.getDatasetMeta(1);
+        /* Value labels above bars */
         c2.font = '500 11px DM Mono'; c2.textBaseline = 'bottom';
         metaA.data.forEach(function(bar, i) {
           var a = actuals[i]; if (a == null) return;
@@ -719,38 +724,45 @@ function loadEpsHistory(symbol) {
           c2.fillStyle = '#06b6d4';
           c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
         });
+        /* 3 rows below bars: beat/miss → drift → date */
         var area = chart.chartArea;
+        var baseY = area.bottom + 6;
+        var rowGap = 16;
         c2.textBaseline = 'top';
         metaA.data.forEach(function(bar, i) {
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
-          // Surprise % line
+          /* Row 1: surprise beat/miss */
           var v = surprises[i];
           if (v != null) {
-            c2.font = '700 11px DM Mono';
+            c2.font = '500 10px DM Mono';
             c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, area.bottom + 12);
+            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, baseY);
           }
-          // Drift % line below surprise
+          /* Row 2: drift */
           var d = drifts[i];
           if (d != null) {
-            c2.font = '500 9px DM Mono';
-            c2.fillStyle = d >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, area.bottom + 28);
+            c2.font = '400 9px DM Mono';
+            c2.fillStyle = '#50505a';
+            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, baseY + rowGap);
           }
+          /* Row 3: date */
+          c2.font = '400 9px DM Mono';
+          c2.fillStyle = '#50505a';
+          c2.fillText(dateLabels[i], midX, baseY + rowGap * 2);
         });
         c2.restore();
       }};
 
       epsChart = new Chart(ctx, {
         type: 'bar',
-        data: {labels: labels, datasets: [
+        data: {labels: qLabels, datasets: [
           {label: 'Actual EPS', data: actuals, backgroundColor: gradGrn, borderColor: '#22c55e', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7},
           {label: 'Estimate', data: estimates, backgroundColor: 'rgba(6,182,212,0.35)', borderColor: 'rgba(6,182,212,0.5)', borderWidth: 1, borderRadius: 4, barPercentage: 0.42, categoryPercentage: 0.7}
         ]},
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: 44}},
+          layout: {padding: {top: 20, bottom: 70}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
@@ -758,7 +770,7 @@ function loadEpsHistory(symbol) {
               backgroundColor: '#0c0c10', titleFont: {family: "'DM Mono', monospace", size: 10}, bodyFont: {family: "'DM Mono', monospace", size: 10},
               titleColor: '#f0f0f0', bodyColor: '#c0c0c4', borderColor: 'rgba(255,255,255,0.06)', borderWidth: 1, padding: 12, cornerRadius: 10,
               callbacks: {
-                title: function(items) { var l = labels[items[0].dataIndex]; return l[0] + ' \u00b7 ' + l[1]; },
+                title: function(items) { return qLabels[items[0].dataIndex] + ' \u00b7 ' + dateLabels[items[0].dataIndex]; },
                 label: function(c) { var v = c.parsed.y; return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014'); },
                 afterBody: function(items) {
                   var i = items[0].dataIndex, parts = [];
@@ -770,7 +782,7 @@ function loadEpsHistory(symbol) {
             }
           },
           scales: {
-            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 18}},
+            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 4}, afterFit: function(axis) { axis.paddingBottom = 0; }},
             y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
           }
         },
