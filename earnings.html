@@ -726,32 +726,32 @@ function loadEpsHistory(symbol) {
         });
         /* 4 rows below bars: quarter → beat/miss → drift → date */
         var area = chart.chartArea;
-        var yBase = area.bottom + 12;
+        var yBase = area.bottom + 14;
         c2.textBaseline = 'top';
         metaA.data.forEach(function(bar, i) {
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
-          /* Row 1: quarter label */
-          c2.font = '700 8px DM Mono';
-          c2.fillStyle = '#6b7280';
+          /* Row 1: quarter label — subdued context */
+          c2.font = '500 9px DM Mono';
+          c2.fillStyle = '#4b5563';
           c2.fillText(qLabels[i], midX, yBase);
-          /* Row 2: surprise beat/miss */
+          /* Row 2: surprise beat/miss — primary element */
           var v = surprises[i];
           if (v != null) {
-            c2.font = '700 10px DM Mono';
+            c2.font = '800 13px DM Mono';
             c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, yBase + 15);
+            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, yBase + 18);
           }
-          /* Row 3: drift */
+          /* Row 3: drift — colored by sign */
           var d = drifts[i];
           if (d != null) {
-            c2.font = '400 9px DM Mono';
-            c2.fillStyle = '#50505a';
-            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, yBase + 30);
+            c2.font = '600 10px DM Mono';
+            c2.fillStyle = d >= 0 ? '#22c55e' : '#ef4444';
+            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, yBase + 34);
           }
-          /* Row 4: date */
-          c2.font = '400 9px DM Mono';
-          c2.fillStyle = '#50505a';
-          c2.fillText(dateLabels[i], midX, yBase + 45);
+          /* Row 4: date — subtle context */
+          c2.font = '400 8px DM Mono';
+          c2.fillStyle = '#374151';
+          c2.fillText(dateLabels[i], midX, yBase + 48);
         });
         c2.restore();
       }};
@@ -765,7 +765,7 @@ function loadEpsHistory(symbol) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: 80}},
+          layout: {padding: {top: 20, bottom: 90}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
