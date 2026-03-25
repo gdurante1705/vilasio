@@ -153,12 +153,15 @@ main{padding:0 48px 64px}
 .badge.gray{color:var(--t1);border:1px solid var(--brd);background:var(--surf)}
 
 /* ─── D3 WORLD MAP ─── */
-.map-wrap{padding:8px 16px 16px;width:100%;height:560px;overflow:hidden}
-#world-map{width:100%;height:100%;background:#050507;border:1px solid var(--brd);border-radius:var(--r);cursor:grab}
+.map-wrap{padding:8px 16px 16px;width:100%;height:600px;overflow:hidden;position:relative}
+#world-map{width:100%;height:100%;background:#020408;border:1px solid var(--brd);border-radius:var(--r);cursor:grab}
 #world-map:active{cursor:grabbing}
 #world-map path.country{stroke:#050507;stroke-width:0.4;cursor:pointer}
 #world-map path.country:hover{stroke:rgba(255,255,255,0.5);stroke-width:1}
 #world-map path.country.selected{stroke:var(--gold);stroke-width:1.5}
+@keyframes twinkle{0%,100%{opacity:0.2}50%{opacity:0.9}}
+.globe-toggle{position:absolute;top:16px;right:16px;z-index:10;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--gold);color:var(--gold);cursor:pointer;border-radius:4px;transition:all 0.2s}
+.globe-toggle.off{border-color:rgba(255,255,255,0.15);color:#6b7280}
 .map-tooltip{position:fixed;z-index:200;background:rgba(12,12,16,0.95);border:1px solid var(--brd);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px;min-width:140px}
 .map-tooltip .tt-name{color:var(--white);font-weight:500;margin-bottom:4px;font-size:10px}
 .map-tooltip .tt-val{color:var(--t1);margin-bottom:2px}
@@ -320,7 +323,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <!-- D3 WORLD MAP -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">World Risk Map</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
-    <div class="map-wrap"><svg id="world-map"></svg></div>
+    <div class="map-wrap"><button class="globe-toggle" id="globe-rotate-toggle" onclick="toggleGlobeRotate()">&#x27F3; Auto-Rotate On</button><svg id="world-map"></svg></div>
     <div class="map-tooltip" id="map-tooltip"><div class="tt-name"></div><div class="tt-val"></div><div class="tt-chg"></div><div class="tt-level"></div></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
@@ -578,41 +581,93 @@ function renderCards(){
 var _mapProjection,_mapPath,_mapLand;
 var _globeRotate=[-10,-20,0];
 var _globeAutoRotate=true;
+var _globeUserDisabled=false;
 var _globeAnimFrame=null;
 var _globeRestartTimer=null;
+var _globeSvg=null;
+
+function toggleGlobeRotate(){
+  var btn=document.getElementById('globe-rotate-toggle');
+  if(_globeUserDisabled){
+    _globeUserDisabled=false;
+    _globeAutoRotate=true;
+    btn.innerHTML='&#x27F3; Auto-Rotate On';
+    btn.classList.remove('off');
+    _startAutoRotate();
+  }else{
+    _globeUserDisabled=true;
+    _globeAutoRotate=false;
+    if(_globeAnimFrame){cancelAnimationFrame(_globeAnimFrame);_globeAnimFrame=null}
+    if(_globeRestartTimer){clearTimeout(_globeRestartTimer);_globeRestartTimer=null}
+    btn.innerHTML='&#x23F8; Auto-Rotate Off';
+    btn.classList.add('off');
+  }
+}
+
+function _startAutoRotate(){
+  if(!_globeAutoRotate||!_globeSvg)return;
+  function tick(){
+    if(!_globeAutoRotate)return;
+    _globeRotate[0]+=0.15;
+    _mapProjection.rotate(_globeRotate);
+    _globeSvg.selectAll('path').attr('d',_mapPath);
+    _globeAnimFrame=requestAnimationFrame(tick);
+  }
+  tick();
+}
 
 function renderWorldMap(){
   if(!_worldTopo||!D)return;
-  // Stop any running animation
   if(_globeAnimFrame){cancelAnimationFrame(_globeAnimFrame);_globeAnimFrame=null}
   if(_globeRestartTimer){clearTimeout(_globeRestartTimer);_globeRestartTimer=null}
 
   var countries=D.countries||{};
   var svg=d3.select('#world-map');
+  _globeSvg=svg;
   svg.selectAll('*').remove();
   var wrap=document.querySelector('.map-wrap');
   var W=wrap.clientWidth;
-  var H=560;
+  var H=600;
   svg.attr('width',W).attr('height',H);
 
+  var globeR=Math.min(W,H)/2.05;
   _mapProjection=d3.geoOrthographic()
-    .scale(H/2.1)
+    .scale(globeR)
     .translate([W/2,H/2])
     .clipAngle(90)
     .rotate(_globeRotate);
   _mapPath=d3.geoPath().projection(_mapProjection);
   _mapLand=topojson.feature(_worldTopo,_worldTopo.objects.countries);
 
-  // Defs — glow filter
+  // Defs
   var defs=svg.append('defs');
-  var filter=defs.append('filter').attr('id','globe-glow');
-  filter.append('feDropShadow').attr('dx',0).attr('dy',0).attr('stdDeviation',12).attr('flood-color','#1a3a6b').attr('flood-opacity',0.6);
+  var fGlow=defs.append('filter').attr('id','globe-glow');
+  fGlow.append('feDropShadow').attr('dx',0).attr('dy',0).attr('stdDeviation',16).attr('flood-color','#1a3a6b').attr('flood-opacity',0.6);
+  var fStar=defs.append('filter').attr('id','star-glow');
+  fStar.append('feGaussianBlur').attr('stdDeviation',1.5).attr('result','blur');
+  var mg=fStar.append('feMerge');mg.append('feMergeNode').attr('in','blur');mg.append('feMergeNode').attr('in','SourceGraphic');
+  var atmo=defs.append('radialGradient').attr('id','atmosphere').attr('cx','50%').attr('cy','50%').attr('r','50%');
+  atmo.append('stop').attr('offset','85%').attr('stop-color','#1a4a8a').attr('stop-opacity',0);
+  atmo.append('stop').attr('offset','95%').attr('stop-color','#3b82f6').attr('stop-opacity',0.15);
+  atmo.append('stop').attr('offset','100%').attr('stop-color','#60a5fa').attr('stop-opacity',0.3);
 
   // Space background
-  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#050507');
+  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#020408');
+
+  // Stars — small
+  var i;
+  for(i=0;i<300;i++){
+    var sx=Math.random()*W,sy=Math.random()*H,sr=Math.random()*1.2+0.2,so=Math.random()*0.6+0.2;
+    var st=svg.append('circle').attr('cx',sx).attr('cy',sy).attr('r',sr).attr('fill','white').attr('opacity',so);
+    if(i<50)st.style('animation','twinkle '+(Math.random()*3+2).toFixed(1)+'s ease-in-out '+(Math.random()*4).toFixed(1)+'s infinite');
+  }
+  // Stars — big with glow
+  for(i=0;i<15;i++){
+    svg.append('circle').attr('cx',Math.random()*W).attr('cy',Math.random()*H).attr('r',Math.random()*1.5+1).attr('fill','white').attr('opacity',0.9).attr('filter','url(#star-glow)');
+  }
 
   // Glow circle behind globe
-  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',_mapProjection.scale()+2).attr('fill','#0a0f1a').attr('filter','url(#globe-glow)');
+  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',globeR+3).attr('fill','#0a0f1a').attr('filter','url(#globe-glow)');
 
   // Ocean sphere
   svg.append('path').datum({type:'Sphere'}).attr('d',_mapPath).attr('fill','#0c1a35').attr('stroke','rgba(255,255,255,0.08)').attr('stroke-width',0.5);
@@ -654,12 +709,10 @@ function renderWorldMap(){
     });
   if(_unmatched.length)console.log('No GPR match for:',_unmatched.join(', '));
 
-  // --- Drag to rotate ---
-  function updatePaths(){
-    _mapProjection.rotate(_globeRotate);
-    svg.selectAll('path').attr('d',_mapPath);
-    svg.select('circle').attr('cx',W/2).attr('cy',H/2);
-  }
+  // Atmosphere glow overlay
+  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',globeR+8).attr('fill','url(#atmosphere)').attr('pointer-events','none');
+
+  // Drag to rotate
   var drag=d3.drag()
     .on('start',function(){
       _globeAutoRotate=false;
@@ -670,25 +723,21 @@ function renderWorldMap(){
       _globeRotate[0]+=ev.dx*0.3;
       _globeRotate[1]-=ev.dy*0.3;
       _globeRotate[1]=Math.max(-90,Math.min(90,_globeRotate[1]));
-      updatePaths();
+      _mapProjection.rotate(_globeRotate);
+      svg.selectAll('path').attr('d',_mapPath);
     })
     .on('end',function(){
-      _globeRestartTimer=setTimeout(function(){
-        _globeAutoRotate=true;
-        autoRotateGlobe();
-      },2000);
+      if(!_globeUserDisabled){
+        _globeRestartTimer=setTimeout(function(){
+          _globeAutoRotate=true;
+          _startAutoRotate();
+        },2000);
+      }
     });
   svg.call(drag);
 
-  // --- Autorotate ---
-  function autoRotateGlobe(){
-    if(!_globeAutoRotate)return;
-    _globeRotate[0]+=0.15;
-    updatePaths();
-    _globeAnimFrame=requestAnimationFrame(autoRotateGlobe);
-  }
-  _globeAutoRotate=true;
-  autoRotateGlobe();
+  // Start autorotate
+  if(!_globeUserDisabled){_globeAutoRotate=true;_startAutoRotate()}
 }
 
 var _mapResizeTimer;
