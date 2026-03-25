@@ -456,8 +456,8 @@ function roleCell(rel){
   if(lv===3){c1=on3;c2=on3;c3=on3;lc=on3}
   else if(lv===2){c1=on2;c2=on2;c3=off;lc=on2}
   else{c1=on1;c2=off;c3=off;lc='#6b7280'}
-  var h='<div style="display:flex;align-items:center;gap:6px;justify-content:center">';
-  h+='<span style="'+blk+';background:'+c1+'"></span><span style="'+blk+';background:'+c2+'"></span><span style="'+blk+';background:'+c3+'"></span>';
+  var h='<div style="display:inline-flex;align-items:center;gap:6px">';
+  h+='<span style="display:flex;align-items:center;gap:2px"><span style="'+blk+';background:'+c1+'"></span><span style="'+blk+';background:'+c2+'"></span><span style="'+blk+';background:'+c3+'"></span></span>';
   if(rel)h+='<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:'+lc+';white-space:nowrap">'+rel+'</span>';
   h+='</div>';
   return h;
@@ -565,7 +565,7 @@ function renderInsiderTable(){
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
     html+='<td>'+ownerName(t.owner)+'</td>';
-    html+='<td style="width:200px;text-align:center">'+roleCell(t.relationship)+'</td>';
+    html+='<td style="width:200px;text-align:center;vertical-align:middle">'+roleCell(t.relationship)+'</td>';
     html+='<td style="color:#e5e7eb">'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
     html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
