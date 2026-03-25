@@ -584,6 +584,7 @@ var _gRotate=[0,-20,0];
 var _gAutoRotate=true,_gUserDisabled=false;
 var _gAnimFrame=null,_gRestartTimer=null;
 var _gInitialized=false;
+var _gScale=0,_gMinScale=0,_gMaxScale=0;
 
 function toggleGlobeRotate(){
   var btn=document.getElementById('globe-rotate-toggle');
@@ -618,25 +619,8 @@ function _updateGlobeSelection(){
     .classed('selected',function(f){return resolveGprName(f.properties.name)===_selectedCountry});
 }
 
-function renderWorldMap(){
-  if(!_worldTopo||!D)return;
-  if(_gAnimFrame){cancelAnimationFrame(_gAnimFrame);_gAnimFrame=null}
-  if(_gRestartTimer){clearTimeout(_gRestartTimer);_gRestartTimer=null}
-
-  var container=document.getElementById('globe-container');
-  container.innerHTML='';
-  var W=container.clientWidth;
-  var H=600;
-  container.style.height=H+'px';
-  var countries=D.countries||{};
-  _gLand=topojson.feature(_worldTopo,_worldTopo.objects.countries);
-  var R=Math.min(W,H)/2.45;
-
-  _gProj=d3.geoOrthographic().scale(R).translate([W/2,H/2]).clipAngle(90).rotate(_gRotate);
-  _gPath=d3.geoPath().projection(_gProj);
-
+function _initGlobeSvg(container,W,H){
   var svg=d3.select(container).append('svg').attr('width',W).attr('height',H);
-  _gSvg=svg;
 
   // Defs
   var defs=svg.append('defs');
@@ -655,7 +639,6 @@ function renderWorldMap(){
   var gOcean=defs.append('radialGradient').attr('id','ocean-grad').attr('cx','38%').attr('cy','35%').attr('r','65%');
   gOcean.append('stop').attr('offset','0%').attr('stop-color','#0d2137');
   gOcean.append('stop').attr('offset','100%').attr('stop-color','#060d1a');
-  // Nebula gradients
   var nebColors=['#1d4ed8','#7c3aed','#1d4ed8'];
   for(var ni=0;ni<3;ni++){
     var gNeb=defs.append('radialGradient').attr('id','neb'+ni).attr('cx','50%').attr('cy','50%').attr('r','50%');
@@ -663,19 +646,20 @@ function renderWorldMap(){
     gNeb.append('stop').attr('offset','100%').attr('stop-color',nebColors[ni]).attr('stop-opacity',0);
   }
 
-  // L1: Space background
-  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#020408');
+  // Space background
+  svg.append('rect').attr('class','space-bg').attr('width',W).attr('height',H).attr('fill','#020408');
 
-  // Stars
+  // Stars (generated once, never recreated)
   var starTypes=[
     {count:340,fill:'#ffffff',rMin:0.3,rMax:1.2,oMin:0.2,oMax:0.7},
     {count:100,fill:'#93c5fd',rMin:0.3,rMax:0.8,oMin:0.2,oMax:0.5},
     {count:60,fill:'#fcd34d',rMin:0.2,rMax:0.6,oMin:0.15,oMax:0.4}
   ];
+  var starsG=svg.append('g').attr('class','stars-layer');
   var twinkleCount=0;
   starTypes.forEach(function(st){
     for(var si=0;si<st.count;si++){
-      var star=svg.append('circle')
+      var star=starsG.append('circle')
         .attr('cx',Math.random()*W).attr('cy',Math.random()*H)
         .attr('r',Math.random()*(st.rMax-st.rMin)+st.rMin)
         .attr('fill',st.fill)
@@ -686,30 +670,65 @@ function renderWorldMap(){
       }
     }
   });
-  // Big glowing stars
   for(var bi=0;bi<12;bi++){
-    svg.append('circle').attr('cx',Math.random()*W).attr('cy',Math.random()*H)
+    starsG.append('circle').attr('cx',Math.random()*W).attr('cy',Math.random()*H)
       .attr('r',Math.random()*1.5+1).attr('fill','#fff').attr('opacity',0.85)
       .attr('filter','url(#star-glow)');
   }
-  // Nebulae
   var nebPos=[[W*0.1,H*0.15,160],[W*0.85,H*0.8,140],[W*0.08,H*0.85,120]];
   nebPos.forEach(function(n,i){
-    svg.append('circle').attr('cx',n[0]).attr('cy',n[1]).attr('r',n[2]).attr('fill','url(#neb'+i+')');
+    starsG.append('circle').attr('cx',n[0]).attr('cy',n[1]).attr('r',n[2]).attr('fill','url(#neb'+i+')');
   });
 
-  // L2: Globe shadow
-  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',R+4).attr('fill','#060d1a').attr('filter','url(#globe-drop-shadow)');
+  // Globe layers group (recreated on data update, stars stay)
+  svg.append('g').attr('class','globe-layer');
+  return svg;
+}
+
+function renderWorldMap(){
+  if(!_worldTopo||!D)return;
+  if(_gAnimFrame){cancelAnimationFrame(_gAnimFrame);_gAnimFrame=null}
+  if(_gRestartTimer){clearTimeout(_gRestartTimer);_gRestartTimer=null}
+
+  var container=document.getElementById('globe-container');
+  var W=container.clientWidth;
+  var H=600;
+  container.style.height=H+'px';
+  var countries=D.countries||{};
+  _gLand=topojson.feature(_worldTopo,_worldTopo.objects.countries);
+
+  if(!_gInitialized){
+    _gInitialized=true;
+    _gScale=Math.min(W,H)/2.45;
+    _gMinScale=Math.min(W,H)/3.5;
+    _gMaxScale=Math.min(W,H)/1.3;
+    container.innerHTML='';
+    _gSvg=_initGlobeSvg(container,W,H);
+  }else{
+    _gSvg.attr('width',W).attr('height',H);
+    _gSvg.select('.space-bg').attr('width',W).attr('height',H);
+  }
+  var svg=_gSvg;
+
+  // Clear only globe layer, keep stars
+  svg.select('.globe-layer').selectAll('*').remove();
+  var gl=svg.select('.globe-layer');
+
+  _gProj=d3.geoOrthographic().scale(_gScale).translate([W/2,H/2]).clipAngle(90).rotate(_gRotate);
+  _gPath=d3.geoPath().projection(_gProj);
+
+  // Globe shadow
+  gl.append('circle').attr('class','globe-shadow').attr('cx',W/2).attr('cy',H/2).attr('r',_gScale+4).attr('fill','#060d1a').attr('filter','url(#globe-drop-shadow)');
 
   // L3: Ocean
-  svg.append('path').datum({type:'Sphere'}).attr('d',_gPath).attr('fill','url(#ocean-grad)').attr('class','ocean-path');
+  gl.append('path').datum({type:'Sphere'}).attr('d',_gPath).attr('fill','url(#ocean-grad)').attr('class','ocean-path');
 
   // L4: Graticule
-  svg.append('path').datum(d3.geoGraticule()()).attr('d',_gPath).attr('fill','none').attr('stroke','rgba(100,160,255,0.07)').attr('stroke-width',0.4).attr('class','graticule-path');
+  gl.append('path').datum(d3.geoGraticule()()).attr('d',_gPath).attr('fill','none').attr('stroke','rgba(100,160,255,0.07)').attr('stroke-width',0.4).attr('class','graticule-path');
 
   // L5: Countries
   var tooltip=document.getElementById('map-tooltip');
-  svg.selectAll('.country-path')
+  gl.selectAll('.country-path')
     .data(_gLand.features.filter(function(f){return f.properties.name!=='Antarctica'}))
     .enter().append('path')
     .attr('class',function(f){
@@ -761,7 +780,7 @@ function renderWorldMap(){
     ;// click handled separately below
 
   // L6: Atmosphere
-  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',R+10).attr('fill','url(#atmos)').style('pointer-events','none');
+  gl.append('circle').attr('class','atmos-circle').attr('cx',W/2).attr('cy',H/2).attr('r',_gScale+10).attr('fill','url(#atmos)').style('pointer-events','none');
 
   // Drag to rotate — separated from click
   var isDragging=false,hasDragged=false,prevX=0,prevY=0,downX=0,downY=0;
@@ -803,6 +822,19 @@ function renderWorldMap(){
       if(!_gUserDisabled){_gRestartTimer=setTimeout(function(){_gAutoRotate=true;_startGlobeRotate()},hasDragged?2000:100)}
     });
   svg.call(drag);
+
+  // Wheel zoom
+  svg.on('wheel',function(ev){
+    ev.preventDefault();
+    var factor=ev.deltaY>0?0.92:1.08;
+    _gScale=Math.max(_gMinScale,Math.min(_gMaxScale,_gScale*factor));
+    _gProj.scale(_gScale);
+    svg.selectAll('.country-path').attr('d',_gPath);
+    svg.select('.graticule-path').attr('d',_gPath);
+    svg.select('.ocean-path').attr('d',_gPath);
+    svg.select('.globe-shadow').attr('r',_gScale+4);
+    svg.select('.atmos-circle').attr('r',_gScale+10);
+  },{passive:false});
 
   // Start autorotate
   if(!_gUserDisabled){_gAutoRotate=true;_startGlobeRotate()}
