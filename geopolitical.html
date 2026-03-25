@@ -178,25 +178,32 @@ main{padding:0 48px 64px}
 .heat-change{font-family:"DM Mono",monospace;font-size:8px;margin-top:4px}
 
 /* ─── COUNTRY DETAIL PANEL ─── */
-.country-panel{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:16px;max-height:0;overflow:hidden;transition:max-height .5s ease;position:relative}
-.country-panel::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.country-panel.open{max-height:420px}
-.country-inner{padding:24px 28px;display:flex;gap:24px}
-.cp-info{display:flex;flex-direction:column;gap:12px;min-width:200px}
-.cp-name{font-family:"Alata",sans-serif;font-size:22px;font-weight:400}
-.cp-score{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;color:var(--gold)}
-.cp-change{font-family:"DM Mono",monospace;font-size:12px;font-weight:500}
-.cp-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:4px}
-.cp-roles{display:flex;flex-direction:column;gap:6px;min-width:180px}
+/* ─── SIDE PANELS (glassmorphism) ─── */
+#globe-wrapper{display:grid;grid-template-columns:280px 1fr 280px;gap:0;align-items:center;min-height:600px;position:relative}
+.side-panel{background:rgba(5,5,15,0.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s ease;z-index:2;max-height:580px;overflow-y:auto;scrollbar-width:none}
+.side-panel::-webkit-scrollbar{display:none}
+.side-panel.visible{opacity:1;pointer-events:auto}
+.side-panel .sp-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:200px;color:#374151;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:center;gap:12px}
+.side-panel .sp-placeholder svg{width:32px;height:32px;opacity:0.3}
+.sp-sep{height:1px;background:rgba(255,255,255,0.07);margin:14px 0}
+.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#4b5563;margin-bottom:4px}
+.cp-name{font-family:'Alata',sans-serif;font-size:28px;font-weight:400;color:#fff}
+.cp-score{font-family:'Alata',sans-serif;font-size:48px;font-weight:400;color:var(--gold);line-height:1}
+.cp-change{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;margin-top:4px}
+.cp-roles{display:flex;flex-direction:column;gap:6px}
 .role-bar-wrap{display:flex;align-items:center;gap:8px}
 .role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);width:70px;text-align:right}
-.role-bar{height:14px;border-radius:2px;min-width:2px;transition:width .3s}
+.role-bar{height:4px;border-radius:2px;min-width:2px;transition:width .3s}
 .role-val{font-family:"DM Mono",monospace;font-size:9px;color:var(--white);min-width:35px}
-.cp-chart-wrap{flex:1;min-width:0;height:200px}
-.cp-macro{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
-.macro-item{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xs);padding:8px 10px}
-.macro-label{font-family:"DM Mono",monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:3px}
-.macro-val{font-family:"Alata",sans-serif;font-size:14px;font-weight:400}
+.cp-chart-wrap{width:100%;height:220px}
+.cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:0}
+.cp-macro-3{grid-template-columns:1fr 1fr 1fr}
+.macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px 12px}
+.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:#4b5563;margin-bottom:3px}
+.macro-val{font-family:'Alata',sans-serif;font-size:14px;font-weight:400}
+.sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:12px}
+.sp-mini-stat .sp-label{margin-bottom:2px}
+.sp-mini-stat .sp-val{font-family:'Alata',sans-serif;font-size:16px;font-weight:400;color:var(--white)}
 
 /* ─── TABLE ─── */
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
@@ -251,9 +258,8 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   main{padding:0 16px 40px}
   .status-row{grid-template-columns:1fr 1fr}
   .heat-grid{grid-template-columns:repeat(3,1fr)}
-  .country-inner{flex-direction:column}
-  .cp-chart-wrap{height:160px;width:100%}
-  .cp-macro{grid-template-columns:repeat(3,1fr)}
+  #globe-wrapper{grid-template-columns:1fr;gap:12px}
+  .side-panel{max-height:none}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
@@ -320,50 +326,65 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     <div class="status-card neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
   </div>
 
-  <!-- D3 WORLD MAP -->
+  <!-- D3 WORLD MAP + SIDE PANELS -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">World Risk Map</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
-    <div class="map-wrap"><button class="globe-toggle" id="globe-rotate-toggle" onclick="toggleGlobeRotate()">&#x27F3; Auto-Rotate On</button><div id="globe-container"></div></div>
+    <div class="map-wrap">
+      <button class="globe-toggle" id="globe-rotate-toggle" onclick="toggleGlobeRotate()">&#x27F3; Auto-Rotate On</button>
+      <div id="globe-wrapper">
+        <!-- LEFT PANEL -->
+        <div class="side-panel" id="panel-left">
+          <div class="sp-placeholder" id="pl-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Click a country</div>
+          <div id="pl-content" style="display:none">
+            <div class="sp-label">Country</div>
+            <div class="cp-name" id="cp-name">&#8212;</div>
+            <div class="sp-sep"></div>
+            <div class="sp-label">GPR Score</div>
+            <div class="cp-score" id="cp-score">&#8212;</div>
+            <div class="cp-change" id="cp-change">&#8212;</div>
+            <div id="cp-level" style="margin-top:6px">&#8212;</div>
+            <div class="sp-sep"></div>
+            <div class="cp-roles">
+              <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar" id="cp-bar-init" style="background:linear-gradient(90deg,var(--red),transparent)"></div><span class="role-val" id="cp-init">0</span></div>
+              <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar" id="cp-bar-resp" style="background:linear-gradient(90deg,var(--amb),transparent)"></div><span class="role-val" id="cp-resp">0</span></div>
+              <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar" id="cp-bar-spill" style="background:linear-gradient(90deg,var(--bp),transparent)"></div><span class="role-val" id="cp-spill">0</span></div>
+            </div>
+            <div class="sp-sep"></div>
+            <div class="cp-macro" id="cp-macro">
+              <div class="macro-item"><div class="macro-label">GDP Growth</div><div class="macro-val" id="mc-gdp">&#8212;</div></div>
+              <div class="macro-item"><div class="macro-label">Inflation</div><div class="macro-val" id="mc-cpi">&#8212;</div></div>
+            </div>
+            <div class="cp-macro cp-macro-3" style="margin-top:6px">
+              <div class="macro-item"><div class="macro-label">Unemployment</div><div class="macro-val" id="mc-unemp">&#8212;</div></div>
+              <div class="macro-item"><div class="macro-label">Real Int. Rate</div><div class="macro-val" id="mc-rate">&#8212;</div></div>
+              <div class="macro-item"><div class="macro-label">Debt / GDP</div><div class="macro-val" id="mc-debt">&#8212;</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- GLOBE CENTER -->
+        <div id="globe-container" style="z-index:1"></div>
+        <!-- RIGHT PANEL -->
+        <div class="side-panel" id="panel-right">
+          <div class="sp-placeholder" id="pr-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Click a country</div>
+          <div id="pr-content" style="display:none">
+            <div class="sp-label" style="color:var(--gold)">GPR History</div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:#6b7280;margin-bottom:12px" id="pr-subtitle">&#8212;</div>
+            <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
+            <div class="sp-mini-stats" id="pr-stats">
+              <div class="sp-mini-stat"><div class="sp-label">Current</div><div class="sp-val" id="pr-current">&#8212;</div></div>
+              <div class="sp-mini-stat"><div class="sp-label">Peak (10Y)</div><div class="sp-val" id="pr-peak">&#8212;</div></div>
+              <div class="sp-mini-stat"><div class="sp-label">Avg (10Y)</div><div class="sp-val" id="pr-avg">&#8212;</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="map-tooltip" id="map-tooltip"><div class="tt-name"></div><div class="tt-val"></div><div class="tt-chg"></div><div class="tt-level"></div></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
       <div class="chart-explain-content">
-        <p>The map visualizes the <strong>AI-GPR (Geopolitical Risk) index</strong> by country. The GPR measures the intensity of geopolitical threats, tensions, and conflicts using AI analysis of news articles. Higher values (darker red) indicate elevated geopolitical risk.</p>
-        <p>Geopolitical crises create specific trading opportunities: <strong>defense stocks, gold, oil, and safe-haven currencies</strong> (USD, CHF, JPY) tend to rally during geopolitical escalations. The correlation between GPR spikes and commodity price shocks is historically significant.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- COUNTRY DETAIL PANEL -->
-  <div class="country-panel" id="country-panel">
-    <div class="country-inner">
-      <div class="cp-info">
-        <div><div class="cp-label">Country</div><div class="cp-name" id="cp-name">&#8212;</div></div>
-        <div style="display:flex;gap:24px;align-items:flex-end">
-          <div><div class="cp-label">GPR Score</div><div class="cp-score" id="cp-score">&#8212;</div></div>
-          <div><div class="cp-label">M/M Change</div><div class="cp-change" id="cp-change">&#8212;</div></div>
-          <div><div class="cp-label">Level</div><div id="cp-level">&#8212;</div></div>
-        </div>
-        <div class="cp-roles">
-          <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar" id="cp-bar-init" style="background:var(--red)"></div><span class="role-val" id="cp-init">0</span></div>
-          <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar" id="cp-bar-resp" style="background:var(--amb)"></div><span class="role-val" id="cp-resp">0</span></div>
-          <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar" id="cp-bar-spill" style="background:var(--bp)"></div><span class="role-val" id="cp-spill">0</span></div>
-        </div>
-        <div class="cp-macro" id="cp-macro">
-          <div class="macro-item"><div class="macro-label">GDP Growth</div><div class="macro-val" id="mc-gdp">&#8212;</div></div>
-          <div class="macro-item"><div class="macro-label">Inflation</div><div class="macro-val" id="mc-cpi">&#8212;</div></div>
-          <div class="macro-item"><div class="macro-label">Unemployment</div><div class="macro-val" id="mc-unemp">&#8212;</div></div>
-          <div class="macro-item"><div class="macro-label">Real Int. Rate</div><div class="macro-val" id="mc-rate">&#8212;</div></div>
-          <div class="macro-item"><div class="macro-label">Debt / GDP</div><div class="macro-val" id="mc-debt">&#8212;</div></div>
-        </div>
-      </div>
-      <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
-    </div>
-    <div class="chart-explain" style="padding:0 28px 12px">
-      <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
-      <div class="chart-explain-content">
-        <p>When you click a country, the detail panel shows its individual <strong>GPR trajectory</strong>, economic indicators (GDP, population, trade), and risk context. Countries with chronically high GPR (above 200) represent structural geopolitical risk zones.</p>
-        <p>For commodity traders: monitor GPR in major producing countries (<strong>Saudi Arabia, Russia, Iran</strong> for oil; <strong>Chile, Peru</strong> for copper; <strong>Ukraine</strong> for grain).</p>
+        <p>The map visualizes the <strong>AI-GPR (Geopolitical Risk) index</strong> by country. Click any country to see detailed risk data and historical GPR trajectory in the side panels.</p>
+        <p>Geopolitical crises create trading opportunities: <strong>defense stocks, gold, oil, and safe-haven currencies</strong> (USD, CHF, JPY) tend to rally during escalations.</p>
       </div>
     </div>
   </div>
@@ -865,31 +886,66 @@ function renderHeatmap(){
 }
 
 function selectCountry(key){
-  var panel=document.getElementById('country-panel');
-  if(_selectedCountry===key){_selectedCountry=null;panel.classList.remove('open');if(_countryChart){_countryChart.destroy();_countryChart=null}_updateGlobeSelection();renderHeatmap();return}
+  var pl=document.getElementById('panel-left'),pr=document.getElementById('panel-right');
+  var plC=document.getElementById('pl-content'),prC=document.getElementById('pr-content');
+  var plP=document.getElementById('pl-placeholder'),prP=document.getElementById('pr-placeholder');
+
+  if(_selectedCountry===key){
+    // Deselect
+    _selectedCountry=null;
+    pl.classList.remove('visible');pr.classList.remove('visible');
+    setTimeout(function(){plC.style.display='none';prC.style.display='none';plP.style.display='';prP.style.display=''},300);
+    if(_countryChart){_countryChart.destroy();_countryChart=null}
+    _updateGlobeSelection();renderHeatmap();return;
+  }
+
+  // Fade out, update, fade in
+  pl.classList.remove('visible');pr.classList.remove('visible');
   _selectedCountry=key;
   _updateGlobeSelection();
   var c=(D.countries||{})[key];
-  if(!c){panel.classList.remove('open');return}
-  var lv=gprLevel(c.latest);
-  document.getElementById('cp-name').textContent=c.name;
-  document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
-  var chgEl=document.getElementById('cp-change');chgEl.textContent=fmtChg(c.change)+' M/M';chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
-  document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-  var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,0.1);
-  document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
-  document.getElementById('cp-bar-init').style.width=Math.round((c.initiator||0)/maxBar*80)+'px';
-  document.getElementById('cp-bar-resp').style.width=Math.round((c.respondent||0)/maxBar*80)+'px';
-  document.getElementById('cp-bar-spill').style.width=Math.round((c.spillover||0)/maxBar*80)+'px';
-  fetchMacro(key);
-  panel.classList.add('open');
-  if(_countryChart){_countryChart.destroy();_countryChart=null}
-  var s=c.series;
-  if(s&&s.dates&&s.dates.length){
-    var ctx=document.getElementById('countryChart');
-    _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:_xOpts,y:_yOpts}}});
-  }
-  renderWorldMap();renderHeatmap();
+  if(!c)return;
+
+  setTimeout(function(){
+    plP.style.display='none';prP.style.display='none';
+    plC.style.display='';prC.style.display='';
+
+    // Left panel data
+    var lv=gprLevel(c.latest);
+    document.getElementById('cp-name').textContent=c.name;
+    document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
+    var chgEl=document.getElementById('cp-change');chgEl.textContent=fmtChg(c.change)+' M/M';chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
+    document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
+    var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,0.1);
+    document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);
+    document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);
+    document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
+    document.getElementById('cp-bar-init').style.width=Math.round((c.initiator||0)/maxBar*80)+'px';
+    document.getElementById('cp-bar-resp').style.width=Math.round((c.respondent||0)/maxBar*80)+'px';
+    document.getElementById('cp-bar-spill').style.width=Math.round((c.spillover||0)/maxBar*80)+'px';
+    fetchMacro(key);
+
+    // Right panel data
+    document.getElementById('pr-subtitle').textContent=c.name+' \u00b7 Last 10 Years';
+    if(_countryChart){_countryChart.destroy();_countryChart=null}
+    var s=c.series;
+    if(s&&s.dates&&s.dates.length){
+      var ctx=document.getElementById('countryChart');
+      _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#374151',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:6},grid:{color:'rgba(255,255,255,0.03)'}},y:{ticks:{color:'#374151',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'rgba(255,255,255,0.03)'}}}}});
+      // Mini stats
+      var vals=s.values.filter(function(v){return v!=null});
+      var peak=vals.length?Math.max.apply(null,vals):null;
+      var avg=vals.length?(vals.reduce(function(a,b){return a+b},0)/vals.length):null;
+      document.getElementById('pr-current').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
+      document.getElementById('pr-peak').textContent=peak!=null?peak.toFixed(1):'\u2014';
+      document.getElementById('pr-avg').textContent=avg!=null?avg.toFixed(1):'\u2014';
+    }
+
+    // Fade in
+    pl.classList.add('visible');pr.classList.add('visible');
+  },150);
+
+  renderHeatmap();
 }
 
 function setRange(m){_range=m;document.querySelectorAll('.ch-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-rw'))===m)});renderMonthlyChart()}
