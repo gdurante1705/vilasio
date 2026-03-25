@@ -433,7 +433,17 @@ function ownerClass(t){
   if(cls==='proposed')return'owner-proposed';
   return'';
 }
-function roleBadge(r){if(!r)return'';var u=r.toUpperCase();if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CHIEF')>=0)return'<span class="badge gold">'+r+'</span>';if(u.indexOf('DIRECTOR')>=0||u.indexOf('10%')>=0)return'<span class="badge violet">'+r+'</span>';if(u.indexOf('VP')>=0||u.indexOf('PRESIDENT')>=0)return'<span class="badge blu">'+r+'</span>';return'<span style="color:var(--t1)">'+r+'</span>'}
+function roleBadge(r){
+  if(!r)return'';var u=r.toUpperCase();
+  /* Level 1: C-Suite / Top Executive */
+  if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CTO')>=0||u.indexOf('CHAIRMAN')>=0||u.indexOf('CHIEF')>=0||u.indexOf('PRESIDENT')>=0)
+    return'<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.3);color:#eab308;display:inline-block">'+r+'</span>';
+  /* Level 2: Board / Director */
+  if(u.indexOf('DIRECTOR')>=0||u.indexOf('BOARD')>=0)
+    return'<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#818cf8;display:inline-block">'+r+'</span>';
+  /* Level 3: Other (Officer, 10% Owner, Affiliate, etc.) */
+  return'<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:#9ca3af">'+r+'</span>';
+}
 
 function getTabData(){
   if(!D)return[];
@@ -545,7 +555,7 @@ function renderInsiderTable(){
     html+='<td>'+fmtNum(t.shares)+'</td>';
     html+='<td class="'+valCls+'">'+fmtVal(t.value)+'</td>';
     html+='<td>'+fmtNum(t.sharesTotal)+'</td>';
-    html+='<td style="color:var(--t2);font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
+    html+='<td style="font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
