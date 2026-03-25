@@ -630,7 +630,7 @@ function renderWorldMap(){
   container.style.height=H+'px';
   var countries=D.countries||{};
   _gLand=topojson.feature(_worldTopo,_worldTopo.objects.countries);
-  var R=Math.min(W,H)/2.08;
+  var R=Math.min(W,H)/2.45;
 
   _gProj=d3.geoOrthographic().scale(R).translate([W/2,H/2]).clipAngle(90).rotate(_gRotate);
   _gPath=d3.geoPath().projection(_gProj);
@@ -758,26 +758,29 @@ function renderWorldMap(){
       else if(c&&c.latest!=null&&c.latest>100){d3.select(this).attr('stroke','rgba(255,100,80,0.7)').attr('stroke-width',1)}
       else{d3.select(this).attr('stroke','rgba(150,200,255,0.18)').attr('stroke-width',0.4)}
     })
-    .on('click',function(ev,f){
-      var n=resolveGprName(f.properties.name);
-      if(countries[n])selectCountry(n);
-    });
+    ;// click handled separately below
 
   // L6: Atmosphere
   svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',R+10).attr('fill','url(#atmos)').style('pointer-events','none');
 
-  // Drag to rotate
-  var isDragging=false,prevX=0,prevY=0;
+  // Drag to rotate — separated from click
+  var isDragging=false,hasDragged=false,prevX=0,prevY=0,downX=0,downY=0;
+  var wasAutoRotating=false;
   var drag=d3.drag()
     .on('start',function(ev){
-      isDragging=true;_gAutoRotate=false;
+      isDragging=true;hasDragged=false;
+      downX=ev.sourceEvent.clientX;downY=ev.sourceEvent.clientY;
+      prevX=ev.x;prevY=ev.y;
+      wasAutoRotating=_gAutoRotate;
+      _gAutoRotate=false;
       if(_gAnimFrame){cancelAnimationFrame(_gAnimFrame);_gAnimFrame=null}
       if(_gRestartTimer){clearTimeout(_gRestartTimer);_gRestartTimer=null}
-      prevX=ev.x;prevY=ev.y;
     })
     .on('drag',function(ev){
-      _gRotate[0]+=(ev.x-prevX)*0.3;
-      _gRotate[1]-=(ev.y-prevY)*0.3;
+      var dx=ev.x-prevX,dy=ev.y-prevY;
+      if(Math.abs(dx)>1||Math.abs(dy)>1)hasDragged=true;
+      _gRotate[0]+=dx*0.3;
+      _gRotate[1]-=dy*0.3;
       _gRotate[1]=Math.max(-90,Math.min(90,_gRotate[1]));
       _gProj.rotate(_gRotate);
       svg.selectAll('.country-path').attr('d',_gPath);
@@ -785,9 +788,19 @@ function renderWorldMap(){
       svg.select('.ocean-path').attr('d',_gPath);
       prevX=ev.x;prevY=ev.y;
     })
-    .on('end',function(){
+    .on('end',function(ev){
       isDragging=false;
-      if(!_gUserDisabled){_gRestartTimer=setTimeout(function(){_gAutoRotate=true;_startGlobeRotate()},2000)}
+      if(!hasDragged){
+        // It was a click, not a drag — find country under cursor
+        var se=ev.sourceEvent;
+        var el=document.elementFromPoint(se.clientX,se.clientY);
+        if(el&&el.__data__){
+          var n=resolveGprName(el.__data__.properties.name);
+          if(countries[n])selectCountry(n);
+        }
+      }
+      // Restart autorotate if it was on (or user hasn't disabled)
+      if(!_gUserDisabled){_gRestartTimer=setTimeout(function(){_gAutoRotate=true;_startGlobeRotate()},hasDragged?2000:100)}
     });
   svg.call(drag);
 
