@@ -11,7 +11,7 @@
 <meta property="og:url" content="https://vilasio.com">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -726,32 +726,28 @@ function loadEpsHistory(symbol) {
         });
         /* 4 rows below bars: quarter → beat/miss → drift → date */
         var area = chart.chartArea;
-        var yBase = area.bottom + 14;
+        var yBase = area.bottom + 16;
         c2.textBaseline = 'top';
         metaA.data.forEach(function(bar, i) {
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
-          /* Row 1: quarter label — subdued context */
-          c2.font = '500 9px DM Mono';
-          c2.fillStyle = '#4b5563';
-          c2.fillText(qLabels[i], midX, yBase);
-          /* Row 2: surprise beat/miss — primary element */
+          /* Row 1: date + quarter */
+          c2.font = "500 10px 'DM Sans'";
+          c2.fillStyle = '#9ca3af';
+          c2.fillText(dateLabels[i] + '  \u00b7  ' + qLabels[i], midX, yBase);
+          /* Row 2: surprise % */
           var v = surprises[i];
           if (v != null) {
-            c2.font = '800 13px DM Mono';
+            c2.font = "600 11px 'DM Sans'";
             c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, yBase + 18);
+            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% surprise', midX, yBase + 18);
           }
-          /* Row 3: drift — colored by sign */
+          /* Row 3: drift % */
           var d = drifts[i];
           if (d != null) {
-            c2.font = '600 10px DM Mono';
+            c2.font = "500 10px 'DM Sans'";
             c2.fillStyle = d >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, yBase + 34);
+            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift (3M)', midX, yBase + 34);
           }
-          /* Row 4: date — subtle context */
-          c2.font = '400 8px DM Mono';
-          c2.fillStyle = '#374151';
-          c2.fillText(dateLabels[i], midX, yBase + 48);
         });
         c2.restore();
       }};
@@ -765,7 +761,7 @@ function loadEpsHistory(symbol) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: 90}},
+          layout: {padding: {top: 20, bottom: 85}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
