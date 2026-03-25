@@ -153,10 +153,11 @@ main{padding:0 48px 64px}
 .badge.gray{color:var(--t1);border:1px solid var(--brd);background:var(--surf)}
 
 /* ─── D3 WORLD MAP ─── */
-.map-wrap{padding:8px 16px 16px;width:100%;height:520px;overflow:hidden}
-#world-map{width:100%;height:100%;background:#050507;border:1px solid var(--brd);border-radius:var(--r)}
-#world-map path.country{stroke:#050507;stroke-width:0.4;cursor:pointer;transition:opacity .15s}
-#world-map path.country:hover{stroke:rgba(255,255,255,0.5);stroke-width:1;opacity:0.85}
+.map-wrap{padding:8px 16px 16px;width:100%;height:560px;overflow:hidden}
+#world-map{width:100%;height:100%;background:#050507;border:1px solid var(--brd);border-radius:var(--r);cursor:grab}
+#world-map:active{cursor:grabbing}
+#world-map path.country{stroke:#050507;stroke-width:0.4;cursor:pointer}
+#world-map path.country:hover{stroke:rgba(255,255,255,0.5);stroke-width:1}
 #world-map path.country.selected{stroke:var(--gold);stroke-width:1.5}
 .map-tooltip{position:fixed;z-index:200;background:rgba(12,12,16,0.95);border:1px solid var(--brd);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px;min-width:140px}
 .map-tooltip .tt-name{color:var(--white);font-weight:500;margin-bottom:4px;font-size:10px}
@@ -575,26 +576,50 @@ function renderCards(){
 }
 
 var _mapProjection,_mapPath,_mapLand;
+var _globeRotate=[-10,-20,0];
+var _globeAutoRotate=true;
+var _globeAnimFrame=null;
+var _globeRestartTimer=null;
+
 function renderWorldMap(){
   if(!_worldTopo||!D)return;
+  // Stop any running animation
+  if(_globeAnimFrame){cancelAnimationFrame(_globeAnimFrame);_globeAnimFrame=null}
+  if(_globeRestartTimer){clearTimeout(_globeRestartTimer);_globeRestartTimer=null}
+
   var countries=D.countries||{};
   var svg=d3.select('#world-map');
   svg.selectAll('*').remove();
   var wrap=document.querySelector('.map-wrap');
   var W=wrap.clientWidth;
-  var H=520;
+  var H=560;
   svg.attr('width',W).attr('height',H);
-  _mapProjection=d3.geoNaturalEarth1()
-    .scale(W/4.8)
-    .translate([W/2,H/2+40])
-    .rotate([-10,0]);
+
+  _mapProjection=d3.geoOrthographic()
+    .scale(H/2.1)
+    .translate([W/2,H/2])
+    .clipAngle(90)
+    .rotate(_globeRotate);
   _mapPath=d3.geoPath().projection(_mapProjection);
   _mapLand=topojson.feature(_worldTopo,_worldTopo.objects.countries);
-  // Ocean background
+
+  // Defs — glow filter
+  var defs=svg.append('defs');
+  var filter=defs.append('filter').attr('id','globe-glow');
+  filter.append('feDropShadow').attr('dx',0).attr('dy',0).attr('stdDeviation',12).attr('flood-color','#1a3a6b').attr('flood-opacity',0.6);
+
+  // Space background
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#050507');
-  svg.append('path').datum({type:'Sphere'}).attr('d',_mapPath).attr('fill','#0c1528').attr('stroke','none');
+
+  // Glow circle behind globe
+  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',_mapProjection.scale()+2).attr('fill','#0a0f1a').attr('filter','url(#globe-glow)');
+
+  // Ocean sphere
+  svg.append('path').datum({type:'Sphere'}).attr('d',_mapPath).attr('fill','#0c1a35').attr('stroke','rgba(255,255,255,0.08)').attr('stroke-width',0.5);
+
   // Graticule
-  svg.append('path').datum(d3.geoGraticule()()).attr('d',_mapPath).attr('fill','none').attr('stroke','rgba(255,255,255,0.04)').attr('stroke-width',0.5);
+  svg.append('path').datum(d3.geoGraticule()()).attr('d',_mapPath).attr('fill','none').attr('stroke','rgba(255,255,255,0.06)').attr('stroke-width',0.5);
+
   // Countries
   var tooltip=document.getElementById('map-tooltip');
   var _unmatched=[];
@@ -628,7 +653,44 @@ function renderWorldMap(){
       if(countries[n])selectCountry(n);
     });
   if(_unmatched.length)console.log('No GPR match for:',_unmatched.join(', '));
+
+  // --- Drag to rotate ---
+  function updatePaths(){
+    _mapProjection.rotate(_globeRotate);
+    svg.selectAll('path').attr('d',_mapPath);
+    svg.select('circle').attr('cx',W/2).attr('cy',H/2);
+  }
+  var drag=d3.drag()
+    .on('start',function(){
+      _globeAutoRotate=false;
+      if(_globeAnimFrame){cancelAnimationFrame(_globeAnimFrame);_globeAnimFrame=null}
+      if(_globeRestartTimer){clearTimeout(_globeRestartTimer);_globeRestartTimer=null}
+    })
+    .on('drag',function(ev){
+      _globeRotate[0]+=ev.dx*0.3;
+      _globeRotate[1]-=ev.dy*0.3;
+      _globeRotate[1]=Math.max(-90,Math.min(90,_globeRotate[1]));
+      updatePaths();
+    })
+    .on('end',function(){
+      _globeRestartTimer=setTimeout(function(){
+        _globeAutoRotate=true;
+        autoRotateGlobe();
+      },2000);
+    });
+  svg.call(drag);
+
+  // --- Autorotate ---
+  function autoRotateGlobe(){
+    if(!_globeAutoRotate)return;
+    _globeRotate[0]+=0.15;
+    updatePaths();
+    _globeAnimFrame=requestAnimationFrame(autoRotateGlobe);
+  }
+  _globeAutoRotate=true;
+  autoRotateGlobe();
 }
+
 var _mapResizeTimer;
 window.addEventListener('resize',function(){
   clearTimeout(_mapResizeTimer);
