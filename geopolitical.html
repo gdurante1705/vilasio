@@ -155,7 +155,7 @@ main{padding:0 48px 64px}
 /* ─── D3 WORLD MAP ─── */
 .map-wrap{padding:8px 16px 16px;width:100%;height:520px;overflow:hidden}
 #world-map{width:100%;height:100%;background:#050507;border:1px solid var(--brd);border-radius:var(--r)}
-#world-map path.country{stroke:#0a0a14;stroke-width:0.3;cursor:pointer;transition:opacity .15s}
+#world-map path.country{stroke:#050507;stroke-width:0.4;cursor:pointer;transition:opacity .15s}
 #world-map path.country:hover{stroke:rgba(255,255,255,0.5);stroke-width:1;opacity:0.85}
 #world-map path.country.selected{stroke:var(--gold);stroke-width:1.5}
 .map-tooltip{position:fixed;z-index:200;background:rgba(12,12,16,0.95);border:1px solid var(--brd);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px;min-width:140px}
@@ -482,7 +482,7 @@ var NAME_MAP={
 
 function gprLevel(v){if(v==null)return{label:'N/A',cls:'gray'};if(v<80)return{label:'LOW',cls:'grn'};if(v<=120)return{label:'ELEVATED',cls:'amb'};if(v<=200)return{label:'HIGH',cls:'red'};return{label:'EXTREME',cls:'extreme'}}
 function gprCardClass(v){if(v==null)return'neut';if(v<80)return'up';if(v<=120)return'warn';if(v<=200)return'dn';return'dn'}
-function mapFill(v,hasData){if(v==null&&!hasData)return'#1a1a2e';if(v==null||v<10)return'#1a2e1a';if(v<30)return'#1e3a1e';if(v<70)return'#2d4a1e';if(v<150)return'#8b6914';if(v<250)return'#8b2a0f';return'#8b0f0f'}
+function mapFill(v,hasData){if(v==null&&!hasData)return'#111827';if(v==null||v<5)return'#0f2318';if(v<20)return'#14532d';if(v<50)return'#166534';if(v<100)return'#854d0e';if(v<200)return'#7f1d1d';return'#dc2626'}
 function heatColor(v){if(v==null)return'var(--surf)';if(v<1)return'rgba(34,197,94,0.06)';if(v<20)return'rgba(34,197,94,0.12)';if(v<80)return'rgba(245,158,11,0.12)';if(v<200)return'rgba(239,68,68,0.15)';return'rgba(220,38,38,0.25)'}
 function heatBorder(v){if(v==null)return'var(--card-border)';if(v<1)return'rgba(34,197,94,0.15)';if(v<20)return'rgba(34,197,94,0.3)';if(v<80)return'rgba(245,158,11,0.3)';if(v<200)return'rgba(239,68,68,0.3)';return'rgba(220,38,38,0.5)'}
 function heatTopColor(v){if(v==null)return'var(--t2)';if(v<1)return'rgba(34,197,94,0.4)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
@@ -585,14 +585,14 @@ function renderWorldMap(){
   var H=520;
   svg.attr('width',W).attr('height',H);
   _mapProjection=d3.geoNaturalEarth1()
-    .scale(W/5.8)
-    .translate([W/2,H/2+20])
+    .scale(W/4.8)
+    .translate([W/2,H/2+40])
     .rotate([-10,0]);
   _mapPath=d3.geoPath().projection(_mapProjection);
   _mapLand=topojson.feature(_worldTopo,_worldTopo.objects.countries);
   // Ocean background
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#050507');
-  svg.append('path').datum({type:'Sphere'}).attr('d',_mapPath).attr('fill','#0a0f1a').attr('stroke','none');
+  svg.append('path').datum({type:'Sphere'}).attr('d',_mapPath).attr('fill','#0c1528').attr('stroke','none');
   // Graticule
   svg.append('path').datum(d3.geoGraticule()()).attr('d',_mapPath).attr('fill','none').attr('stroke','rgba(255,255,255,0.04)').attr('stroke-width',0.5);
   // Countries
