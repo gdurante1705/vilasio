@@ -633,12 +633,23 @@ function renderWorldMap(){
   _3renderer.setClearColor(0x000000,1);
   container.insertBefore(_3renderer.domElement,overlay);
 
-  // Stars
+  // Stars — white, blue, warm
+  var starCount=6000;
   var starGeo=new THREE.BufferGeometry();
-  var starPos=new Float32Array(3000*3);
-  for(var i=0;i<3000*3;i++)starPos[i]=(Math.random()-0.5)*300;
+  var starPos=new Float32Array(starCount*3);
+  var starColors=new Float32Array(starCount*3);
+  for(var i=0;i<starCount;i++){
+    starPos[i*3]=(Math.random()-0.5)*300;
+    starPos[i*3+1]=(Math.random()-0.5)*300;
+    starPos[i*3+2]=(Math.random()-0.5)*300;
+    var rnd=Math.random();
+    if(rnd<0.7){starColors[i*3]=1;starColors[i*3+1]=1;starColors[i*3+2]=1}
+    else if(rnd<0.9){starColors[i*3]=0.576;starColors[i*3+1]=0.773;starColors[i*3+2]=0.992}
+    else{starColors[i*3]=0.988;starColors[i*3+1]=0.827;starColors[i*3+2]=0.302}
+  }
   starGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
-  _3stars=new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xffffff,size:0.15,transparent:true,opacity:0.8}));
+  starGeo.setAttribute('color',new THREE.BufferAttribute(starColors,3));
+  _3stars=new THREE.Points(starGeo,new THREE.PointsMaterial({size:0.15,transparent:true,opacity:0.8,vertexColors:true}));
   _3scene.add(_3stars);
 
   // Earth
@@ -719,64 +730,50 @@ function renderWorldMap(){
     if(!_3userDisabled){_3restartTimer=setTimeout(function(){_3autoRotate=true},2000)}
   });
 
-  // Click → raycasting → country select
-  el.addEventListener('click',function(e){
-    if(!D||!_worldTopo)return;
+  // Shared raycasting helper
+  function _3raycastLatLon(e){
     var rect=el.getBoundingClientRect();
     var mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
     var raycaster=new THREE.Raycaster();
     raycaster.setFromCamera(mouse,_3camera);
     var hits=raycaster.intersectObject(_3earth);
-    if(!hits.length)return;
+    if(!hits.length)return null;
     var pt=hits[0].point.clone();
-    // Convert 3D point to lat/lon
-    // Earth mesh rotation affects the point — undo it
     var inv=new THREE.Matrix4().copy(_3earth.matrixWorld).invert();
     pt.applyMatrix4(inv);
-    var lat=Math.asin(pt.y)*180/Math.PI;
-    var lon=Math.atan2(pt.x,pt.z)*180/Math.PI;
-    // Find closest country centroid
-    var countries=D.countries||{};
+    return{lat:Math.asin(pt.y)*180/Math.PI,lon:Math.atan2(pt.x,pt.z)*180/Math.PI};
+  }
+  function _3findCountry(lat,lon){
     var features=_3d3land.features;
-    var proj=d3.geoOrthographic().scale(1).translate([0,0]).clipAngle(180);
     var best=null,bestDist=Infinity;
     features.forEach(function(f){
       var c=d3.geoCentroid(f);
       var dx=c[0]-lon,dy=c[1]-lat;
-      var dist=dx*dx+dy*dy;
+      var dist=Math.sqrt(dx*dx+dy*dy);
       if(dist<bestDist){bestDist=dist;best=f}
     });
-    if(best&&bestDist<400){
-      var name=resolveGprName(best.properties.name);
-      if(countries[name])selectCountry(name);
-    }
+    return bestDist<25?best:null;
+  }
+
+  // Click → raycasting → country select
+  el.addEventListener('click',function(e){
+    if(!D||!_worldTopo)return;
+    var ll=_3raycastLatLon(e);if(!ll)return;
+    var f=_3findCountry(ll.lat,ll.lon);if(!f)return;
+    var name=resolveGprName(f.properties.name);
+    var countries=D.countries||{};
+    if(countries[name])selectCountry(name);
   });
 
   // Hover tooltip via mousemove raycasting
   var tooltip=document.getElementById('map-tooltip');
   el.addEventListener('mousemove',function(e){
     if(_3isDragging||!D||!_worldTopo){tooltip.style.display='none';return}
-    var rect=el.getBoundingClientRect();
-    var mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
-    var raycaster=new THREE.Raycaster();
-    raycaster.setFromCamera(mouse,_3camera);
-    var hits=raycaster.intersectObject(_3earth);
-    if(!hits.length){tooltip.style.display='none';return}
-    var pt=hits[0].point.clone();
-    var inv=new THREE.Matrix4().copy(_3earth.matrixWorld).invert();
-    pt.applyMatrix4(inv);
-    var lat=Math.asin(pt.y)*180/Math.PI;
-    var lon=Math.atan2(pt.x,pt.z)*180/Math.PI;
+    var ll=_3raycastLatLon(e);
+    if(!ll){tooltip.style.display='none';return}
+    var best=_3findCountry(ll.lat,ll.lon);
+    if(!best){tooltip.style.display='none';return}
     var countries=D.countries||{};
-    var features=_3d3land.features;
-    var best=null,bestDist=Infinity;
-    features.forEach(function(f){
-      var c=d3.geoCentroid(f);
-      var dx=c[0]-lon,dy=c[1]-lat;
-      var dist=dx*dx+dy*dy;
-      if(dist<bestDist){bestDist=dist;best=f}
-    });
-    if(!best||bestDist>400){tooltip.style.display='none';return}
     var name=resolveGprName(best.properties.name);
     var c=countries[name];
     tooltip.querySelector('.tt-name').textContent=best.properties.name;
@@ -804,15 +801,24 @@ function renderWorldMap(){
   animate();
 }
 
+function _overlayFill(v,hasData){
+  if(v==null&&!hasData)return'rgba(30,40,60,0.5)';
+  if(v==null||v<5)return'rgba(20,50,35,0.45)';
+  if(v<20)return'rgba(20,50,35,0.55)';
+  if(v<50)return'rgba(30,80,50,0.6)';
+  if(v<100)return'rgba(120,80,10,0.65)';
+  if(v<200)return'rgba(140,30,20,0.7)';
+  return'rgba(200,30,20,0.75)';
+}
+
 function _syncOverlay(){
   if(!_3overlayCtx||!_3d3land||!D)return;
   var ctx=_3overlayCtx,W=_3overlayW,H=_3overlayH;
   ctx.clearRect(0,0,W,H);
   var countries=D.countries||{};
-  // Sync D3 projection with Three.js earth rotation
   var ry=_3earth.rotation.y*180/Math.PI;
   var rx=-_3earth.rotation.x*180/Math.PI;
-  var fov=_3camera.fov,aspect=W/H,dist=_3camera.position.z;
+  var fov=_3camera.fov,dist=_3camera.position.z;
   var globeScreenR=H/(2*Math.tan(fov*Math.PI/360))/dist;
   _3d3proj=d3.geoOrthographic()
     .scale(globeScreenR)
@@ -820,27 +826,52 @@ function _syncOverlay(){
     .clipAngle(90)
     .rotate([-ry,-rx,0]);
   _3d3path=d3.geoPath().projection(_3d3proj).context(ctx);
-  _3d3land.features.forEach(function(f){
-    var name=resolveGprName(f.properties.name);
-    var c=countries[name];
-    if(!c||c.latest==null||c.latest<50)return;
-    var fillHex=mapFill(c.latest,true);
-    var rgb=_3hexToRgb(fillHex);
+
+  // Graticule
+  ctx.beginPath();
+  _3d3path(d3.geoGraticule()());
+  ctx.strokeStyle='rgba(100,160,255,0.08)';
+  ctx.lineWidth=0.4;
+  ctx.stroke();
+
+  // All countries — low risk first, high risk on top
+  var sorted=_3d3land.features.slice().sort(function(a,b){
+    var na=resolveGprName(a.properties.name),nb=resolveGprName(b.properties.name);
+    var ca=countries[na],cb=countries[nb];
+    return((ca?ca.latest:0)||0)-((cb?cb.latest:0)||0);
+  });
+  sorted.forEach(function(f){
+    if(f.properties.name==='Antarctica')return;
     ctx.beginPath();
     _3d3path(f);
-    ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.35)';
+    // clipAngle(90) makes path return null for back hemisphere
+    // check if anything was drawn by testing currentPath
+    var name=resolveGprName(f.properties.name);
+    var c=countries[name];
+    var v=c?c.latest:null;
+    var hasData=!!c;
+    ctx.fillStyle=_overlayFill(v,hasData);
     ctx.fill();
-    ctx.strokeStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.7)';
-    ctx.lineWidth=1;
+    // Borders
+    if(v!=null&&v>100){
+      ctx.shadowColor='rgba(255,60,60,0.4)';ctx.shadowBlur=8;
+      ctx.strokeStyle='rgba(255,100,80,0.8)';ctx.lineWidth=1.2;
+    }else{
+      ctx.shadowBlur=0;
+      ctx.strokeStyle='rgba(150,200,255,0.5)';ctx.lineWidth=0.8;
+    }
     ctx.stroke();
+    ctx.shadowBlur=0;
   });
-  // Draw selected country border
+  // Selected country gold border
   if(_selectedCountry){
-    _3d3land.features.forEach(function(f){
+    sorted.forEach(function(f){
       var name=resolveGprName(f.properties.name);
       if(name!==_selectedCountry)return;
       ctx.beginPath();_3d3path(f);
-      ctx.strokeStyle='#c8a84b';ctx.lineWidth=2;ctx.stroke();
+      ctx.shadowColor='rgba(200,168,75,0.6)';ctx.shadowBlur=10;
+      ctx.strokeStyle='#c8a84b';ctx.lineWidth=2.5;ctx.stroke();
+      ctx.shadowBlur=0;
     });
   }
 }
