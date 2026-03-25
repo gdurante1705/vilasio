@@ -82,7 +82,7 @@ nav{
 .nav-mobile-menu a:hover{color:var(--white)}
 
 /* ─── SCROLL TOP ─── */
-.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
+.scroll-top{position:fixed;bottom:24px;right:16px;z-index:100;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
 .scroll-top.show{opacity:1;pointer-events:auto}
 .scroll-top:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
 .scroll-top svg{width:16px;height:16px;stroke:var(--t1);fill:none;stroke-width:2}
@@ -449,8 +449,8 @@ function isCorporate(n){
 function ownerName(name){
   return'<span style="color:'+(isCorporate(name)?'#60a5fa':'#fff')+'">'+name+'</span>';
 }
-function roleCell(rel){
-  var lv=getRelLevel(rel);
+function roleCell(rel,forceLevel){
+  var lv=forceLevel||getRelLevel(rel);
   var blk='display:inline-block;width:6px;height:6px;border-radius:1px;margin:0 1px';
   var on3='#eab308',on2='#a78bfa',on1='#4b5563',off='#1f2937';
   var c1,c2,c3,lc;
@@ -567,7 +567,7 @@ function renderInsiderTable(){
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
     html+='<td>'+ownerName(t.owner)+'</td>';
-    html+='<td class="col-role">'+roleCell(t.relationship)+'</td>';
+    html+='<td class="col-role">'+roleCell(t.relationship,currentTab==='topowner'?3:0)+'</td>';
     html+='<td style="color:#e5e7eb">'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
     html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
