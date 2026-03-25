@@ -154,7 +154,7 @@ main{padding:0 48px 64px}
 
 /* ─── D3 GLOBE ─── */
 .map-wrap{padding:8px 16px 16px;width:100%;height:600px;overflow:hidden;position:relative}
-#globe-container{width:100%;height:100%;background:#020408;border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;position:relative;cursor:grab}
+#globe-container{width:100%;height:100%;background:transparent;overflow:hidden;position:relative;cursor:grab;z-index:1}
 #globe-container:active{cursor:grabbing}
 #globe-container svg{display:block}
 .globe-toggle{position:absolute;top:16px;right:16px;z-index:10;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--gold);color:var(--gold);cursor:pointer;border-radius:4px;transition:all 0.2s}
@@ -179,28 +179,28 @@ main{padding:0 48px 64px}
 
 /* ─── COUNTRY DETAIL PANEL ─── */
 /* ─── SIDE PANELS (glassmorphism) ─── */
-#globe-wrapper{display:grid;grid-template-columns:280px 1fr 280px;gap:0;align-items:center;min-height:600px;position:relative}
-.side-panel{background:rgba(5,5,15,0.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s ease;z-index:2;max-height:580px;overflow-y:auto;scrollbar-width:none}
+#globe-wrapper{display:grid;grid-template-columns:280px 1fr 280px;gap:0;align-items:center;min-height:600px;position:relative;background:transparent}
+.side-panel{background:rgba(8,10,20,0.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s ease;z-index:2;max-height:580px;overflow-y:auto;scrollbar-width:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 0 40px rgba(0,0,0,0.3)}
 .side-panel::-webkit-scrollbar{display:none}
 .side-panel.visible{opacity:1;pointer-events:auto}
-.side-panel .sp-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:200px;color:#374151;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:center;gap:12px}
-.side-panel .sp-placeholder svg{width:32px;height:32px;opacity:0.3}
-.sp-sep{height:1px;background:rgba(255,255,255,0.07);margin:14px 0}
-.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#4b5563;margin-bottom:4px}
-.cp-name{font-family:'Alata',sans-serif;font-size:28px;font-weight:400;color:#fff}
-.cp-score{font-family:'Alata',sans-serif;font-size:48px;font-weight:400;color:var(--gold);line-height:1}
+.side-panel .sp-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:200px;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:center;gap:12px}
+.side-panel .sp-placeholder svg{width:32px;height:32px;opacity:0.25}
+.sp-sep{height:1px;background:rgba(255,255,255,0.05);margin:14px 0}
+.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px}
+.cp-name{font-family:'Alata',sans-serif;font-size:28px;font-weight:400;color:#fff;text-shadow:0 0 20px rgba(255,255,255,0.15)}
+.cp-score{font-family:'Alata',sans-serif;font-size:48px;font-weight:400;color:var(--gold);line-height:1;text-shadow:0 0 15px rgba(200,168,75,0.3)}
 .cp-change{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;margin-top:4px}
 .cp-roles{display:flex;flex-direction:column;gap:6px}
 .role-bar-wrap{display:flex;align-items:center;gap:8px}
 .role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);width:70px;text-align:right}
 .role-bar{height:4px;border-radius:2px;min-width:2px;transition:width .3s}
-.role-val{font-family:"DM Mono",monospace;font-size:9px;color:var(--white);min-width:35px}
+.role-val{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,0.85);min-width:35px}
 .cp-chart-wrap{width:100%;height:220px}
 .cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:0}
 .cp-macro-3{grid-template-columns:1fr 1fr 1fr}
-.macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px 12px}
-.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:#4b5563;margin-bottom:3px}
-.macro-val{font-family:'Alata',sans-serif;font-size:14px;font-weight:400}
+.macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px}
+.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:3px}
+.macro-val{font-family:'Alata',sans-serif;font-size:14px;font-weight:400;color:rgba(255,255,255,0.85)}
 .sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:12px}
 .sp-mini-stat .sp-label{margin-bottom:2px}
 .sp-mini-stat .sp-val{font-family:'Alata',sans-serif;font-size:16px;font-weight:400;color:var(--white)}
@@ -640,47 +640,40 @@ function _updateGlobeSelection(){
     .classed('selected',function(f){return resolveGprName(f.properties.name)===_selectedCountry});
 }
 
-function _initGlobeSvg(container,W,H){
-  var svg=d3.select(container).append('svg').attr('width',W).attr('height',H);
-
-  // Defs
-  var defs=svg.append('defs');
-  var fBorder=defs.append('filter').attr('id','border-glow');
-  fBorder.append('feGaussianBlur').attr('stdDeviation',2).attr('result','blur');
-  var mg1=fBorder.append('feMerge');mg1.append('feMergeNode').attr('in','blur');mg1.append('feMergeNode').attr('in','SourceGraphic');
-  var fShadow=defs.append('filter').attr('id','globe-drop-shadow');
-  fShadow.append('feDropShadow').attr('dx',0).attr('dy',0).attr('stdDeviation',20).attr('flood-color','#1a3a6b').attr('flood-opacity',0.5);
+var _gStarsInit=false;
+function _initStarsSvg(){
+  if(_gStarsInit)return;_gStarsInit=true;
+  var wrapper=document.getElementById('globe-wrapper');
+  var W=wrapper.clientWidth,H=wrapper.clientHeight||600;
+  var starSvg=d3.select(wrapper).append('svg')
+    .attr('class','stars-svg')
+    .attr('width',W).attr('height',H)
+    .style('position','absolute').style('top','0').style('left','0')
+    .style('width','100%').style('height','100%')
+    .style('z-index','0').style('pointer-events','none');
+  // Star glow filter
+  var defs=starSvg.append('defs');
   var fStar=defs.append('filter').attr('id','star-glow');
   fStar.append('feGaussianBlur').attr('stdDeviation',1.2).attr('result','blur');
-  var mg2=fStar.append('feMerge');mg2.append('feMergeNode').attr('in','blur');mg2.append('feMergeNode').attr('in','SourceGraphic');
-  var gAtmos=defs.append('radialGradient').attr('id','atmos').attr('cx','38%').attr('cy','35%').attr('r','60%');
-  gAtmos.append('stop').attr('offset','0%').attr('stop-color','#1e3a5f').attr('stop-opacity',0.3);
-  gAtmos.append('stop').attr('offset','70%').attr('stop-color','#0a1628').attr('stop-opacity',0.1);
-  gAtmos.append('stop').attr('offset','100%').attr('stop-color','#3b82f6').attr('stop-opacity',0.25);
-  var gOcean=defs.append('radialGradient').attr('id','ocean-grad').attr('cx','38%').attr('cy','35%').attr('r','65%');
-  gOcean.append('stop').attr('offset','0%').attr('stop-color','#0d2137');
-  gOcean.append('stop').attr('offset','100%').attr('stop-color','#060d1a');
+  var mg=fStar.append('feMerge');mg.append('feMergeNode').attr('in','blur');mg.append('feMergeNode').attr('in','SourceGraphic');
   var nebColors=['#1d4ed8','#7c3aed','#1d4ed8'];
   for(var ni=0;ni<3;ni++){
     var gNeb=defs.append('radialGradient').attr('id','neb'+ni).attr('cx','50%').attr('cy','50%').attr('r','50%');
     gNeb.append('stop').attr('offset','0%').attr('stop-color',nebColors[ni]).attr('stop-opacity',0.06);
     gNeb.append('stop').attr('offset','100%').attr('stop-color',nebColors[ni]).attr('stop-opacity',0);
   }
-
-  // Space background
-  svg.append('rect').attr('class','space-bg').attr('width',W).attr('height',H).attr('fill','#020408');
-
-  // Stars (generated once, never recreated)
+  // Space bg
+  starSvg.append('rect').attr('width','100%').attr('height','100%').attr('fill','#020408');
+  // Stars
   var starTypes=[
     {count:340,fill:'#ffffff',rMin:0.3,rMax:1.2,oMin:0.2,oMax:0.7},
     {count:100,fill:'#93c5fd',rMin:0.3,rMax:0.8,oMin:0.2,oMax:0.5},
     {count:60,fill:'#fcd34d',rMin:0.2,rMax:0.6,oMin:0.15,oMax:0.4}
   ];
-  var starsG=svg.append('g').attr('class','stars-layer');
   var twinkleCount=0;
   starTypes.forEach(function(st){
     for(var si=0;si<st.count;si++){
-      var star=starsG.append('circle')
+      var star=starSvg.append('circle')
         .attr('cx',Math.random()*W).attr('cy',Math.random()*H)
         .attr('r',Math.random()*(st.rMax-st.rMin)+st.rMin)
         .attr('fill',st.fill)
@@ -692,16 +685,31 @@ function _initGlobeSvg(container,W,H){
     }
   });
   for(var bi=0;bi<12;bi++){
-    starsG.append('circle').attr('cx',Math.random()*W).attr('cy',Math.random()*H)
+    starSvg.append('circle').attr('cx',Math.random()*W).attr('cy',Math.random()*H)
       .attr('r',Math.random()*1.5+1).attr('fill','#fff').attr('opacity',0.85)
       .attr('filter','url(#star-glow)');
   }
   var nebPos=[[W*0.1,H*0.15,160],[W*0.85,H*0.8,140],[W*0.08,H*0.85,120]];
   nebPos.forEach(function(n,i){
-    starsG.append('circle').attr('cx',n[0]).attr('cy',n[1]).attr('r',n[2]).attr('fill','url(#neb'+i+')');
+    starSvg.append('circle').attr('cx',n[0]).attr('cy',n[1]).attr('r',n[2]).attr('fill','url(#neb'+i+')');
   });
+}
 
-  // Globe layers group (recreated on data update, stars stay)
+function _initGlobeSvg(container,W,H){
+  var svg=d3.select(container).append('svg').attr('width',W).attr('height',H).style('position','relative').style('z-index','1');
+  var defs=svg.append('defs');
+  var fBorder=defs.append('filter').attr('id','border-glow');
+  fBorder.append('feGaussianBlur').attr('stdDeviation',2).attr('result','blur');
+  var mg1=fBorder.append('feMerge');mg1.append('feMergeNode').attr('in','blur');mg1.append('feMergeNode').attr('in','SourceGraphic');
+  var fShadow=defs.append('filter').attr('id','globe-drop-shadow');
+  fShadow.append('feDropShadow').attr('dx',0).attr('dy',0).attr('stdDeviation',20).attr('flood-color','#1a3a6b').attr('flood-opacity',0.5);
+  var gAtmos=defs.append('radialGradient').attr('id','atmos').attr('cx','38%').attr('cy','35%').attr('r','60%');
+  gAtmos.append('stop').attr('offset','0%').attr('stop-color','#1e3a5f').attr('stop-opacity',0.3);
+  gAtmos.append('stop').attr('offset','70%').attr('stop-color','#0a1628').attr('stop-opacity',0.1);
+  gAtmos.append('stop').attr('offset','100%').attr('stop-color','#3b82f6').attr('stop-opacity',0.25);
+  var gOcean=defs.append('radialGradient').attr('id','ocean-grad').attr('cx','38%').attr('cy','35%').attr('r','65%');
+  gOcean.append('stop').attr('offset','0%').attr('stop-color','#0d2137');
+  gOcean.append('stop').attr('offset','100%').attr('stop-color','#060d1a');
   svg.append('g').attr('class','globe-layer');
   return svg;
 }
@@ -720,6 +728,7 @@ function renderWorldMap(){
 
   if(!_gInitialized){
     _gInitialized=true;
+    _initStarsSvg();
     _gScale=Math.min(W,H)/2.45;
     _gMinScale=Math.min(W,H)/3.5;
     _gMaxScale=Math.min(W,H)/1.3;
