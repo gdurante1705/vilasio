@@ -724,31 +724,34 @@ function loadEpsHistory(symbol) {
           c2.fillStyle = '#06b6d4';
           c2.fillText('$' + e.toFixed(2), bar.x, bar.y - 4);
         });
-        /* 3 rows below bars: beat/miss → drift → date */
+        /* 4 rows below bars: quarter → beat/miss → drift → date */
         var area = chart.chartArea;
-        var baseY = area.bottom + 6;
-        var rowGap = 16;
+        var yBase = area.bottom + 12;
         c2.textBaseline = 'top';
         metaA.data.forEach(function(bar, i) {
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
-          /* Row 1: surprise beat/miss */
+          /* Row 1: quarter label */
+          c2.font = '700 8px DM Mono';
+          c2.fillStyle = '#6b7280';
+          c2.fillText(qLabels[i], midX, yBase);
+          /* Row 2: surprise beat/miss */
           var v = surprises[i];
           if (v != null) {
-            c2.font = '500 10px DM Mono';
+            c2.font = '700 10px DM Mono';
             c2.fillStyle = v >= 0 ? '#22c55e' : '#ef4444';
-            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, baseY);
+            c2.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + '% ' + (v >= 0 ? 'beat' : 'miss'), midX, yBase + 15);
           }
-          /* Row 2: drift */
+          /* Row 3: drift */
           var d = drifts[i];
           if (d != null) {
             c2.font = '400 9px DM Mono';
             c2.fillStyle = '#50505a';
-            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, baseY + rowGap);
+            c2.fillText((d >= 0 ? '+' : '') + d.toFixed(1) + '% drift', midX, yBase + 30);
           }
-          /* Row 3: date */
+          /* Row 4: date */
           c2.font = '400 9px DM Mono';
           c2.fillStyle = '#50505a';
-          c2.fillText(dateLabels[i], midX, baseY + rowGap * 2);
+          c2.fillText(dateLabels[i], midX, yBase + 45);
         });
         c2.restore();
       }};
@@ -762,7 +765,7 @@ function loadEpsHistory(symbol) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {padding: {top: 20, bottom: 70}},
+          layout: {padding: {top: 20, bottom: 80}},
           interaction: {mode: 'index', intersect: false},
           plugins: {
             legend: {display: false},
@@ -782,7 +785,7 @@ function loadEpsHistory(symbol) {
             }
           },
           scales: {
-            x: {grid: {display: false}, ticks: {font: {family: "'DM Mono', monospace", size: 10}, color: '#78787f', padding: 4}, afterFit: function(axis) { axis.paddingBottom = 0; }},
+            x: {display: false},
             y: {grid: {color: 'rgba(255,255,255,0.04)'}, ticks: {font: {family: "'DM Mono', monospace", size: 8}, color: '#50505a', callback: function(v) {return '$' + v.toFixed(2)}}}
           }
         },
