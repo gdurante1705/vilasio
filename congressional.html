@@ -152,6 +152,7 @@ nav{
 .data-table tr:nth-child(even) td{background:rgba(255,255,255,0.015)}
 .val-big{color:var(--gold);font-weight:500}
 .val-huge{color:var(--gold2);font-weight:500;text-shadow:0 0 12px rgba(200,168,75,0.2)}
+th.col-role,td.col-role{text-align:center;width:220px}
 
 /* ─── BADGES ─── */
 .badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block;border-radius:100px}
@@ -550,7 +551,8 @@ function renderInsiderTable(){
   var html='<thead><tr>';
   html+=thSort('Ticker','ticker',sortCol,sortAsc);
   html+=thSort('Owner','owner',sortCol,sortAsc);
-  html+=thSort('Role','relationship',sortCol,sortAsc);
+  var ra=sortCol==='relationship'?(sortAsc?' \u25B2':' \u25BC'):'';var rs=sortCol==='relationship'?'color:var(--gold)':'';
+  html+='<th class="col-role" onclick="sortInsider(\'relationship\')" style="'+rs+'">Role'+ra+'</th>';
   html+=thSort('Date','date',sortCol,sortAsc);
   html+=thSort('Transaction','transaction',sortCol,sortAsc);
   html+=thSort('Price','cost',sortCol,sortAsc);
@@ -565,7 +567,7 @@ function renderInsiderTable(){
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
     html+='<td>'+ownerName(t.owner)+'</td>';
-    html+='<td style="width:200px;text-align:center;vertical-align:middle">'+roleCell(t.relationship)+'</td>';
+    html+='<td class="col-role">'+roleCell(t.relationship)+'</td>';
     html+='<td style="color:#e5e7eb">'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
     html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
