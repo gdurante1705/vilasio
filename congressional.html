@@ -433,16 +433,25 @@ function ownerClass(t){
   if(cls==='proposed')return'owner-proposed';
   return'';
 }
-function roleBadge(r){
-  if(!r)return'';var u=r.toUpperCase();
-  /* Level 1: C-Suite / Top Executive */
-  if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CTO')>=0||u.indexOf('CHAIRMAN')>=0||u.indexOf('CHIEF')>=0||u.indexOf('PRESIDENT')>=0)
-    return'<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.3);color:#eab308;display:inline-block">'+r+'</span>';
-  /* Level 2: Board / Director */
-  if(u.indexOf('DIRECTOR')>=0||u.indexOf('BOARD')>=0)
-    return'<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#818cf8;display:inline-block">'+r+'</span>';
-  /* Level 3: Other (Officer, 10% Owner, Affiliate, etc.) */
-  return'<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:#9ca3af">'+r+'</span>';
+function getRelLevel(r){
+  if(!r)return 1;var u=r.toUpperCase();
+  if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CTO')>=0||u.indexOf('CHAIRMAN')>=0||u.indexOf('CHIEF')>=0||u.indexOf('PRESIDENT')>=0)return 3;
+  if(u.indexOf('DIRECTOR')>=0||u.indexOf('BOARD')>=0)return 2;
+  return 1;
+}
+function ownerRelCell(name,rel,txnCls){
+  var lv=getRelLevel(rel);
+  var blk='display:inline-block;width:6px;height:6px;border-radius:1px;margin:0 1px;vertical-align:middle';
+  var on3='#eab308',on2='#818cf8',on1='#4b5563',off='#1f2937';
+  var c1,c2,c3,lc;
+  if(lv===3){c1=on3;c2=on3;c3=on3;lc=on3}
+  else if(lv===2){c1=on2;c2=on2;c3=off;lc=on2}
+  else{c1=on1;c2=off;c3=off;lc='#6b7280'}
+  var nameCls=txnCls?'class="'+txnCls+'"':'style="color:#fff"';
+  var h='<span '+nameCls+'>'+name+'</span>';
+  h+=' <span style="margin-left:8px"><span style="'+blk+';background:'+c1+'"></span><span style="'+blk+';background:'+c2+'"></span><span style="'+blk+';background:'+c3+'"></span></span>';
+  if(rel)h+=' <span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:'+lc+'">'+rel+'</span>';
+  return h;
 }
 
 function getTabData(){
@@ -532,7 +541,6 @@ function renderInsiderTable(){
   var html='<thead><tr>';
   html+=thSort('Ticker','ticker',sortCol,sortAsc);
   html+=thSort('Owner','owner',sortCol,sortAsc);
-  html+=thSort('Relationship','relationship',sortCol,sortAsc);
   html+=thSort('Date','date',sortCol,sortAsc);
   html+=thSort('Transaction','transaction',sortCol,sortAsc);
   html+=thSort('Price','cost',sortCol,sortAsc);
@@ -547,15 +555,14 @@ function renderInsiderTable(){
     var valCls=rawVal>=100e6?'val-huge':rawVal>=10e6?'val-big':'';
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
-    html+='<td class="'+oc+'">'+t.owner+'</td>';
-    html+='<td>'+roleBadge(t.relationship)+'</td>';
-    html+='<td>'+t.date+'</td>';
+    html+='<td style="white-space:normal">'+ownerRelCell(t.owner,t.relationship,oc)+'</td>';
+    html+='<td style="color:#e5e7eb">'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
-    html+='<td>'+fmtMoney(t.cost)+'</td>';
-    html+='<td>'+fmtNum(t.shares)+'</td>';
-    html+='<td class="'+valCls+'">'+fmtVal(t.value)+'</td>';
-    html+='<td>'+fmtNum(t.sharesTotal)+'</td>';
-    html+='<td style="font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
+    html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
+    html+='<td style="color:#e5e7eb">'+fmtNum(t.shares)+'</td>';
+    html+='<td class="'+valCls+'" style="color:#e5e7eb">'+fmtVal(t.value)+'</td>';
+    html+='<td style="color:#e5e7eb">'+fmtNum(t.sharesTotal)+'</td>';
+    html+='<td style="color:#e5e7eb;font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
