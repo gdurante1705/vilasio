@@ -421,8 +421,8 @@ function ownerClass(t){
 }
 function getRelLevel(r){
   if(!r)return 1;var u=r.toUpperCase();
-  if(u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CTO')>=0||u.indexOf('CHAIRMAN')>=0||u.indexOf('CHIEF')>=0||u.indexOf('PRESIDENT')>=0)return 3;
-  if(u.indexOf('DIRECTOR')>=0||u.indexOf('BOARD')>=0)return 2;
+  if(u.indexOf('10%')>=0||u.indexOf('OWNER')>=0||u.indexOf('CEO')>=0||u.indexOf('CFO')>=0||u.indexOf('COO')>=0||u.indexOf('CTO')>=0||u.indexOf('CHAIRMAN')>=0||u.indexOf('CHIEF')>=0||u.indexOf('PRESIDENT')>=0)return 3;
+  if(u.indexOf('DIRECTOR')>=0||u.indexOf('BOARD')>=0||u.indexOf('FOUNDER')>=0||u.indexOf('PARTNER')>=0||u.indexOf('VICE PRESIDENT')>=0||u.indexOf('VP ')>=0||u.indexOf('GENERAL COUNSEL')>=0||u.indexOf('SECRETARY')>=0||u.indexOf('TREASURER')>=0||u.indexOf('CONTROLLER')>=0)return 2;
   return 1;
 }
 function isCorporate(n){
@@ -550,7 +550,7 @@ function renderInsiderTable(){
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
     html+='<td>'+ownerName(t.owner)+'</td>';
-    html+='<td class="col-role">'+roleCell(t.relationship,currentTab==='topowner'?3:0)+'</td>';
+    html+='<td class="col-role">'+roleCell(t.relationship)+'</td>';
     html+='<td style="color:#e5e7eb">'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
     html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
