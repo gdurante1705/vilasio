@@ -105,24 +105,26 @@ nav{
 
 /* ─── STATUS ROW ─── */
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px 24px;position:relative;overflow:hidden;transition:border-color .2s}
+.status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:24px 28px;position:relative;overflow:hidden;transition:border-color .2s}
 .status-card:hover{border-color:var(--card-border-hover)}
-.status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.06),transparent)}
+.status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
 .status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r-sm) var(--r-sm) 0 0}
 .status-card.up::before{background:var(--grn)}
 .status-card.dn::before{background:var(--red)}
 .status-card.neut::before{background:var(--t2)}
-.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
-.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
-.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
+.sc-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
+.sc-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.sc-val-sm{font-family:"Alata",sans-serif;font-size:18px;font-weight:400;letter-spacing:-0.3px;line-height:1.2}
+.sc-sub{display:flex;align-items:center;gap:8px;margin-top:10px}
 .sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-delta.neut{color:var(--t2)}
-.sc-note{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
+.sc-note{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
 
 /* ─── CHART SECTIONS ─── */
-.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden}
+.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden;transition:border-color .2s}
+.chart-section:hover{border-color:var(--card-border-hover)}
 .chart-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.chart-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--brd)}
+.chart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--brd)}
 .ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
 .ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
 
@@ -142,12 +144,14 @@ nav{
 /* ─── TABLE ─── */
 .tbl-wrap{padding:0 28px 16px;overflow-x:auto}
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
-.data-table th{padding:8px 6px;font-weight:400;color:var(--t1);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd);cursor:default}
+.data-table th{padding:10px 8px;font-weight:400;color:var(--t1);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd);cursor:default}
 .data-table th[onclick]{cursor:pointer;user-select:none;transition:color .2s}
 .data-table th[onclick]:hover{color:var(--gold)}
-.data-table td{padding:7px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
-.data-table tr:hover td{background:rgba(200,168,75,0.02)}
+.data-table td{padding:8px 8px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
+.data-table tr:hover td{background:rgba(200,168,75,0.03)}
 .data-table tr:nth-child(even) td{background:rgba(255,255,255,0.015)}
+.val-big{color:var(--gold);font-weight:500}
+.val-huge{color:var(--gold2);font-weight:500;text-shadow:0 0 12px rgba(200,168,75,0.2)}
 
 /* ─── BADGES ─── */
 .badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block;border-radius:100px}
@@ -275,21 +279,40 @@ footer{
 
 <main>
   <div class="status-row reveal">
-    <div class="status-card neut" id="sc-net"><div class="sc-label">Insider Sentiment</div><div class="sc-val" id="sc-net-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-net-ratio">&#8212;</span><span class="sc-note">buy vs sell</span></div></div>
-    <div class="status-card neut" id="sc-big"><div class="sc-label">Top Insider Buy</div><div class="sc-val" id="sc-big-val">&#8212;</div><div class="sc-sub"><span class="sc-note" id="sc-big-who">&#8212;</span></div></div>
-    <div class="status-card neut" id="sc-cnt"><div class="sc-label">House PTR Filings</div><div class="sc-val" id="sc-cnt-val">&#8212;</div><div class="sc-sub"><span class="sc-note">2026 disclosures</span></div></div>
-    <div class="status-card neut" id="sc-ovr"><div class="sc-label">Signal Confluence</div><div class="sc-val" id="sc-ovr-val">&#8212;</div><div class="sc-sub"><span class="sc-note">earnings + insider buy</span></div></div>
+    <div class="status-card neut" id="sc-net">
+      <div class="sc-label">Insider Sentiment</div>
+      <div class="sc-val" id="sc-net-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta" id="sc-net-ratio">&#8212;</span></div>
+      <div class="sc-sub" style="margin-top:4px"><span class="sc-note">buy / sell ratio this week</span></div>
+    </div>
+    <div class="status-card neut" id="sc-big">
+      <div class="sc-label">Largest Insider Buy</div>
+      <div class="sc-val" id="sc-big-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta" id="sc-big-amount">&#8212;</span></div>
+      <div class="sc-sub" style="margin-top:4px"><span class="sc-note" id="sc-big-who">&#8212;</span></div>
+    </div>
+    <div class="status-card neut" id="sc-cnt">
+      <div class="sc-label">Total Insider Trades</div>
+      <div class="sc-val" id="sc-cnt-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-delta neut" id="sc-cnt-ptr">&#8212;</span></div>
+      <div class="sc-sub" style="margin-top:4px"><span class="sc-note">excl. option exercises</span></div>
+    </div>
+    <div class="status-card neut" id="sc-ovr">
+      <div class="sc-label">Signal Confluence</div>
+      <div class="sc-val" id="sc-ovr-val">&#8212;</div>
+      <div class="sc-sub"><span class="sc-note">earnings + insider buy overlap</span></div>
+    </div>
   </div>
 
   <!-- INSIDER TRADING -->
   <div class="chart-section reveal" id="insider-section">
     <div class="chart-header">
-      <div><div class="ch-title">Insider Trading</div><div class="ch-sub">Corporate Insider Activity &#183; Executive &amp; Director Trades</div></div>
+      <div><div class="ch-title">Insider Trading</div><div class="ch-sub">SEC Form 4 Filings &#183; Executive &amp; Director Transactions &#183; 10% Owners</div></div>
     </div>
     <div class="tab-bar">
-      <button class="tab-btn active" data-tab="latest" onclick="switchTab('latest')">Latest Insider Trading</button>
-      <button class="tab-btn" data-tab="topweek" onclick="switchTab('topweek')">Top Insider Trading Recent Week</button>
-      <button class="tab-btn" data-tab="topowner" onclick="switchTab('topowner')">Top 10% Owner Trading Recent Week</button>
+      <button class="tab-btn active" data-tab="latest" onclick="switchTab('latest')">Latest Filings</button>
+      <button class="tab-btn" data-tab="topweek" onclick="switchTab('topweek')">Top by Value</button>
+      <button class="tab-btn" data-tab="topowner" onclick="switchTab('topowner')">10% Owners</button>
     </div>
     <div class="filter-bar">
       <div class="filter-count" id="insider-count">&#8212;</div>
@@ -312,7 +335,9 @@ footer{
     <div class="chart-explain" style="padding:0 28px 16px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
       <div class="chart-explain-content">
-        <p>Corporate insider transactions (CEO, CFO, directors buying or selling their own company stock) provide signals about management confidence. <strong>Insider buying is generally more significant than selling</strong> &#8212; executives have many reasons to sell (diversification, taxes) but only one reason to buy (they believe the stock is undervalued). Clusters of insider buying across a sector can signal institutional-level conviction.</p>
+        <p><strong>Why insider trades matter:</strong> Corporate insiders (CEO, CFO, directors, 10%+ owners) must report stock transactions to the SEC via Form 4 within two business days. These filings are the closest you get to seeing what management actually thinks about their own stock.</p>
+        <p><strong>Buying vs selling signal strength:</strong> Insider buying is a much stronger signal than selling. Executives sell for many reasons (diversification, taxes, estate planning, scheduled 10b5-1 plans) but they buy for only one reason &#8212; they believe the stock is undervalued. A cluster of insider buys across multiple executives at the same company is the strongest signal.</p>
+        <p><strong>What to watch for:</strong> Sort by Value to find the largest conviction bets. Filter to Buy only to see pure directional signals. The &#8220;Top by Value&#8221; tab shows the biggest trades of the week. &#8220;10% Owners&#8221; tracks activist investors and institutional block holders. <strong>Proposed Sales</strong> (marked amber) are pre-planned Rule 10b5-1 trades &#8212; these carry the weakest signal since they were scheduled months in advance.</p>
       </div>
     </div>
   </div>
@@ -320,28 +345,31 @@ footer{
   <!-- HOUSE FINANCIAL DISCLOSURES -->
   <div class="chart-section reveal" id="congress-section">
     <div class="chart-header">
-      <div><div class="ch-title">House Financial Disclosures</div><div class="ch-sub">Periodic Transaction Reports &#183; STOCK Act Filings</div></div>
+      <div><div class="ch-title">Congressional Disclosures</div><div class="ch-sub">House PTR Filings &#183; STOCK Act &#183; <span id="congress-count-label">&#8212;</span> Unique Filers</div></div>
     </div>
     <div style="padding:8px 28px">
-      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--t1);padding:10px 14px;border:1px solid var(--card-border);background:var(--surf);border-radius:var(--r-xs)">&#9432; Each row is a Periodic Transaction Report (PTR) filed under the STOCK Act. Click &#8220;View PDF&#8221; to see actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently are the most active traders to monitor. Senate disclosures temporarily unavailable.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.5px;color:var(--t1);padding:12px 16px;border:1px solid var(--card-border);background:var(--surf);border-radius:var(--r-xs);line-height:1.7">Each row is a <strong style="color:var(--white)">Periodic Transaction Report (PTR)</strong> filed under the STOCK Act. Click <strong style="color:var(--gold)">View PDF</strong> to see the actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently are the most active traders to monitor.</div>
     </div>
     <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--t2)">Loading congressional filings...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
       <div class="chart-explain-content">
-        <p>Congressional trading data tracks stock transactions by US Senators and Representatives, who are required to disclose trades within 45 days under the STOCK Act. These disclosures reveal potential informational advantages &#8212; <strong>members of Congress often sit on committees overseeing industries they trade in</strong>. Watch for clusters of purchases in the same sector by multiple members, especially around legislative events.</p>
+        <p><strong>What are PTR filings?</strong> Under the STOCK Act (2012), members of Congress must disclose securities transactions exceeding $1,000 within 45 days via Periodic Transaction Reports. Each row represents a filing &#8212; click <strong>View PDF</strong> to see the actual tickers, amounts, and transaction types.</p>
+        <p><strong>Why this matters:</strong> Members of Congress sit on committees that oversee specific industries, giving them access to non-public information about regulatory changes, government contracts, and legislative outcomes. Academic research shows that congressional portfolios have historically outperformed the market.</p>
+        <p><strong>How to use this data:</strong> Watch for members who file frequently &#8212; they are the most active traders. Look for clusters of filings around the same date, which may indicate reaction to non-public legislative developments. Cross-reference with committee assignments for the strongest signals.</p>
       </div>
     </div>
   </div>
 
   <!-- SMART MONEY OVERLAP -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Signal Confluence</div><div class="ch-sub">Stocks with Earnings Signal + Insider Buy</div></div></div>
+    <div class="chart-header"><div><div class="ch-title">Signal Confluence</div><div class="ch-sub">Dual Confirmation &#183; Earnings Surprise + Insider Buy on Same Ticker</div></div></div>
     <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--t2)">Loading overlap...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
       <div class="chart-explain-content">
-        <p>The most powerful signal on this page is when a stock appears in both <strong>Earnings Intelligence</strong> (positive earnings surprise with bullish price reaction) and the insider buy table. This dual confirmation means the company beat expectations AND those closest to the company are buying with their own money. This represents institutional-grade conviction.</p>
+        <p><strong>What is signal confluence?</strong> This section identifies stocks that appear in both the <strong>PEAD Scanner</strong> (Earnings Intelligence page) and the insider buy table simultaneously. When a company beats earnings expectations and insiders are buying their own stock at the same time, you have dual confirmation from two independent data sources.</p>
+        <p><strong>Why it matters:</strong> Each signal alone is useful. Together they represent the highest-conviction setup available from public data: the market underreacted to positive earnings (PEAD) and the people with the deepest knowledge of the company are putting their own money in (insider buy). This combination is rare &#8212; when it appears, it deserves close attention.</p>
       </div>
     </div>
   </div>
@@ -505,6 +533,8 @@ function renderInsiderTable(){
   html+='</tr></thead><tbody>';
   filtered.forEach(function(t){
     var oc=ownerClass(t.transaction);
+    var rawVal=parseFloat(String(t.value||'0').replace(/[$,]/g,''))||0;
+    var valCls=rawVal>=100e6?'val-huge':rawVal>=10e6?'val-big':'';
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
     html+='<td class="'+oc+'">'+t.owner+'</td>';
@@ -513,7 +543,7 @@ function renderInsiderTable(){
     html+='<td>'+txnBadge(t.transaction)+'</td>';
     html+='<td>'+fmtMoney(t.cost)+'</td>';
     html+='<td>'+fmtNum(t.shares)+'</td>';
-    html+='<td>'+fmtNum(t.value)+'</td>';
+    html+='<td class="'+valCls+'">'+fmtVal(t.value)+'</td>';
     html+='<td>'+fmtNum(t.sharesTotal)+'</td>';
     html+='<td style="color:var(--t2);font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
     html+='</tr>';
@@ -524,20 +554,33 @@ function renderInsiderTable(){
 
 function renderCards(){
   var st=D.stats||{};
-  document.getElementById('sc-net-val').textContent=(st.netSentiment||'--').toUpperCase();
+  /* Sentiment card */
   var cls=st.netSentiment==='bullish'?'up':(st.netSentiment==='bearish'?'dn':'neut');
   document.getElementById('sc-net').className='status-card '+cls;
+  document.getElementById('sc-net-val').textContent=(st.netSentiment||'--').toUpperCase();
   document.getElementById('sc-net-ratio').textContent=(st.insiderBuys||0)+' buys / '+(st.insiderSells||0)+' sells';
   document.getElementById('sc-net-ratio').className='sc-delta '+cls;
+  /* Biggest buy card */
   var big=st.biggestInsiderBuy||{};
-  document.getElementById('sc-big-val').textContent=big.ticker||'\u2014';
   document.getElementById('sc-big').className='status-card '+(big.ticker?'up':'neut');
-  document.getElementById('sc-big-who').textContent=big.owner?(big.owner+' \u00B7 '+big.value):'No data';
-  document.getElementById('sc-cnt-val').textContent=st.totalTrades||0;
-  document.getElementById('sc-cnt').className='status-card '+(st.totalTrades>0?'up':'neut');
+  document.getElementById('sc-big-val').textContent=big.ticker||'\u2014';
+  document.getElementById('sc-big-amount').textContent=big.value?fmtVal(big.value):'\u2014';
+  document.getElementById('sc-big-amount').className='sc-delta up';
+  var ownerShort=big.owner||'';if(ownerShort.length>28)ownerShort=ownerShort.substring(0,28)+'\u2026';
+  document.getElementById('sc-big-who').textContent=ownerShort||'No data';
+  /* Trade count card */
+  document.getElementById('sc-cnt-val').textContent=st.totalInsiderTrades||st.totalTrades||0;
+  document.getElementById('sc-cnt').className='status-card neut';
+  var ct=D.congressional_trades||{};
+  document.getElementById('sc-cnt-ptr').textContent=(ct.stats?ct.stats.total_trades:0)+' House PTR filings';
+  /* Signal confluence card */
   var ovr=(D.smartMoneyOverlap||[]).length;
   document.getElementById('sc-ovr-val').textContent=ovr;
   document.getElementById('sc-ovr').className='status-card '+(ovr>0?'up':'neut');
+  /* Congress count in section header */
+  var ccl=document.getElementById('congress-count-label');
+  if(ccl&&ct.stats)ccl.textContent=ct.stats.unique_politicians;
+  /* Update badge */
   if(D.lastUpdate)document.getElementById('update-badge').textContent='DATA UPDATED: '+D.lastUpdate;
 }
 
@@ -546,6 +589,11 @@ function renderCongress(){
   var trades=ct.trades||[];
   var el=document.getElementById('congress-table');
   if(!trades.length){el.innerHTML='<tr><td style="color:var(--t2);padding:20px 6px">No House PTR filings found.</td></tr>';return}
+
+  /* Count filings per rep for frequency badge */
+  var freq={};
+  trades.forEach(function(t){freq[t.name]=(freq[t.name]||0)+1});
+
   // Sort
   trades=sortRows(trades,houseSortCol,houseSortAsc);
 
@@ -553,7 +601,7 @@ function renderCongress(){
   html+=thSortH('Filing Date','date');
   html+=thSortH('Representative','name');
   html+=thSortH('State','state');
-  html+=thSortH('Filing','filing_type');
+  html+=thSortH('Filings','filing_type');
   html+='<th>Document</th>';
   html+='</tr></thead><tbody>';
   trades.forEach(function(t){
@@ -561,9 +609,11 @@ function renderCongress(){
     if(t.pdf_url){pdfLink='<a href="'+t.pdf_url+'" target="_blank" rel="noopener" class="badge gold" style="text-decoration:none;font-size:8px;cursor:pointer">View PDF</a>'}
     else if(t.doc_id){pdfLink='<a href="https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2026/'+t.doc_id+'.pdf" target="_blank" rel="noopener" class="badge gold" style="text-decoration:none;font-size:8px;cursor:pointer">View PDF</a>'}
     else{pdfLink='<span class="badge gray" style="font-size:8px">N/A</span>'}
+    var fc=freq[t.name]||0;
+    var freqBadge=fc>=3?' <span class="badge amb" style="font-size:7px;margin-left:6px">'+fc+'x</span>':'';
     html+='<tr>';
     html+='<td>'+(t.date||'')+'</td>';
-    html+='<td>'+(t.name||'')+'</td>';
+    html+='<td>'+(t.name||'')+freqBadge+'</td>';
     html+='<td>'+(t.state?'<span class="badge gray" style="font-size:8px">'+t.state+'</span>':'')+'</td>';
     html+='<td><span class="badge violet" style="font-size:8px">'+(t.filing_type||'PTR')+'</span></td>';
     html+='<td>'+pdfLink+'</td>';
