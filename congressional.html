@@ -445,7 +445,7 @@ function isCorporate(n){
   for(var i=0;i<kw.length;i++){if(u.indexOf(kw[i])>=0)return true}
   return false;
 }
-function ownerRelCell(name,rel,txnCls){
+function ownerRelCell(name,rel){
   var lv=getRelLevel(rel);
   var blk='display:inline-block;width:6px;height:6px;border-radius:1px;margin:0 1px';
   var on3='#eab308',on2='#818cf8',on1='#4b5563',off='#1f2937';
@@ -453,15 +453,13 @@ function ownerRelCell(name,rel,txnCls){
   if(lv===3){c1=on3;c2=on3;c3=on3;lc=on3}
   else if(lv===2){c1=on2;c2=on2;c3=off;lc=on2}
   else{c1=on1;c2=off;c3=off;lc='#6b7280'}
-  var nameColor=txnCls?'':isCorporate(name)?'color:#60a5fa':'color:#fff';
-  var nameAttr=txnCls?'class="'+txnCls+'"':'style="'+nameColor+'"';
-  var h='<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:320px">';
-  h+='<div style="display:flex;align-items:center;gap:8px">';
-  h+='<span '+nameAttr+'>'+name+'</span>';
-  h+='<span style="display:flex;align-items:center"><span style="'+blk+';background:'+c1+'"></span><span style="'+blk+';background:'+c2+'"></span><span style="'+blk+';background:'+c3+'"></span></span>';
-  h+='</div>';
-  if(rel)h+='<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:'+lc+';white-space:nowrap;text-align:right">'+rel+'</span>';
-  h+='</div>';
+  var nc=isCorporate(name)?'#60a5fa':'#fff';
+  var h='<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:320px">';
+  h+='<span style="color:'+nc+'">'+name+'</span>';
+  h+='<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">';
+  h+='<span style="'+blk+';background:'+c1+'"></span><span style="'+blk+';background:'+c2+'"></span><span style="'+blk+';background:'+c3+'"></span>';
+  if(rel)h+='<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:'+lc+';white-space:nowrap">'+rel+'</span>';
+  h+='</div></div>';
   return h;
 }
 
@@ -566,7 +564,7 @@ function renderInsiderTable(){
     var valCls=rawVal>=100e6?'val-huge':rawVal>=10e6?'val-big':'';
     html+='<tr>';
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
-    html+='<td style="white-space:normal">'+ownerRelCell(t.owner,t.relationship,oc)+'</td>';
+    html+='<td style="white-space:normal">'+ownerRelCell(t.owner,t.relationship)+'</td>';
     html+='<td style="color:#e5e7eb">'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
     html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
