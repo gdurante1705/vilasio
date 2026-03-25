@@ -154,13 +154,15 @@ main{padding:0 48px 64px}
 
 /* ─── D3 WORLD MAP ─── */
 .map-wrap{padding:8px 16px 16px}
-#world-map{width:100%;background:#07070c;border:1px solid var(--brd);border-radius:var(--r-xs)}
-#world-map path.country{stroke:rgba(255,255,255,0.08);stroke-width:0.5;cursor:pointer;transition:opacity .15s}
-#world-map path.country:hover{stroke:rgba(255,255,255,0.4);stroke-width:1;opacity:0.85}
+#world-map{width:100%;background:var(--bg);border:1px solid var(--brd);border-radius:var(--r)}
+#world-map path.country{stroke:#0a0a14;stroke-width:0.3;cursor:pointer;transition:opacity .15s}
+#world-map path.country:hover{stroke:rgba(255,255,255,0.5);stroke-width:1;opacity:0.85}
 #world-map path.country.selected{stroke:var(--gold);stroke-width:1.5}
-.map-tooltip{position:fixed;z-index:200;background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xs);padding:8px 12px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px}
-.map-tooltip .tt-name{color:var(--gold);font-weight:500;margin-bottom:2px}
-.map-tooltip .tt-val{color:var(--white)}
+.map-tooltip{position:fixed;z-index:200;background:rgba(12,12,16,0.95);border:1px solid var(--brd);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;font-family:"DM Mono",monospace;font-size:9px;min-width:140px}
+.map-tooltip .tt-name{color:var(--white);font-weight:500;margin-bottom:4px;font-size:10px}
+.map-tooltip .tt-val{color:var(--t1);margin-bottom:2px}
+.map-tooltip .tt-chg{font-size:8px;margin-bottom:2px}
+.map-tooltip .tt-level{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;padding:2px 6px;border-radius:3px;display:inline-block}
 
 /* ─── HEATMAP GRID ─── */
 .heat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:16px 28px}
@@ -318,7 +320,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">World Risk Map</div><div class="ch-sub">GPR Score by Country &#183; Click for details</div></div></div>
     <div class="map-wrap"><svg id="world-map"></svg></div>
-    <div class="map-tooltip" id="map-tooltip"><div class="tt-name"></div><div class="tt-val"></div></div>
+    <div class="map-tooltip" id="map-tooltip"><div class="tt-name"></div><div class="tt-val"></div><div class="tt-chg"></div><div class="tt-level"></div></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
       <div class="chart-explain-content">
@@ -480,7 +482,7 @@ var NAME_MAP={
 
 function gprLevel(v){if(v==null)return{label:'N/A',cls:'gray'};if(v<80)return{label:'LOW',cls:'grn'};if(v<=120)return{label:'ELEVATED',cls:'amb'};if(v<=200)return{label:'HIGH',cls:'red'};return{label:'EXTREME',cls:'extreme'}}
 function gprCardClass(v){if(v==null)return'neut';if(v<80)return'up';if(v<=120)return'warn';if(v<=200)return'dn';return'dn'}
-function mapFill(v,hasData){if(v==null&&!hasData)return'#1a1a28';if(v==null||v<1)return'#131f18';if(v<20)return'#1a4a2e';if(v<50)return'#2d6b3f';if(v<80)return'#7a6520';if(v<120)return'#9a7a1a';if(v<200)return'#8b2020';return'#c02020'}
+function mapFill(v,hasData){if(v==null&&!hasData)return'#1a1a2e';if(v==null||v<10)return'#1a2e1a';if(v<30)return'#1e3a1e';if(v<70)return'#2d4a1e';if(v<150)return'#8b6914';if(v<250)return'#8b2a0f';return'#8b0f0f'}
 function heatColor(v){if(v==null)return'var(--surf)';if(v<1)return'rgba(34,197,94,0.06)';if(v<20)return'rgba(34,197,94,0.12)';if(v<80)return'rgba(245,158,11,0.12)';if(v<200)return'rgba(239,68,68,0.15)';return'rgba(220,38,38,0.25)'}
 function heatBorder(v){if(v==null)return'var(--card-border)';if(v<1)return'rgba(34,197,94,0.15)';if(v<20)return'rgba(34,197,94,0.3)';if(v<80)return'rgba(245,158,11,0.3)';if(v<200)return'rgba(239,68,68,0.3)';return'rgba(220,38,38,0.5)'}
 function heatTopColor(v){if(v==null)return'var(--t2)';if(v<1)return'rgba(34,197,94,0.4)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
@@ -580,9 +582,8 @@ function renderWorldMap(){
   var wrap=document.querySelector('.map-wrap');
   var w=wrap.clientWidth-32;
   var h=Math.round(w*0.5);
-  svg.attr('viewBox','0 0 '+w+' '+h).attr('width',w).attr('height',h);
-  // Background
-  svg.append('rect').attr('width',w).attr('height',h).attr('fill','#07070c');
+  svg.attr('viewBox','0 0 '+w+' '+h).attr('preserveAspectRatio','xMidYMid meet');
+  svg.append('rect').attr('width',w).attr('height',h).attr('fill','var(--bg)');
   var projection=d3.geoNaturalEarth1().fitSize([w,h],{type:'Sphere'});
   var path=d3.geoPath().projection(projection);
   var land=topojson.feature(_worldTopo,_worldTopo.objects.countries);
@@ -604,6 +605,10 @@ function renderWorldMap(){
       var c=countries[n];
       tooltip.querySelector('.tt-name').textContent=f.properties.name;
       tooltip.querySelector('.tt-val').textContent=c?(c.latest>0?'GPR '+c.latest.toFixed(1):'Low Risk'):'No data';
+      var chgEl=tooltip.querySelector('.tt-chg');
+      var lvlEl=tooltip.querySelector('.tt-level');
+      if(c&&c.change!=null){var mm=c.change;chgEl.textContent='M/M: '+(mm>=0?'+':'')+mm.toFixed(1);chgEl.style.color=mm>=0?'var(--red)':'var(--grn)';chgEl.style.display='block'}else{chgEl.style.display='none'}
+      if(c){var lv=gprLevel(c.latest);lvlEl.textContent=lv.label;lvlEl.style.color=lv.cls==='grn'?'var(--grn)':lv.cls==='amb'?'var(--amb)':lv.cls==='red'||lv.cls==='extreme'?'var(--red)':'var(--t2)';lvlEl.style.background=lv.cls==='grn'?'rgba(34,197,94,0.1)':lv.cls==='amb'?'rgba(245,158,11,0.1)':lv.cls==='red'||lv.cls==='extreme'?'rgba(239,68,68,0.1)':'rgba(255,255,255,0.05)';lvlEl.style.display='inline-block'}else{lvlEl.style.display='none'}
       tooltip.style.display='block';
       tooltip.style.left=(ev.clientX+14)+'px';
       tooltip.style.top=(ev.clientY-32)+'px';
