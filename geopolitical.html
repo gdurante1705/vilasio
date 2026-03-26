@@ -186,7 +186,7 @@ main{padding:0 48px 64px}
 .side-panel .sp-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:200px;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:center;gap:12px}
 .side-panel .sp-placeholder svg{width:32px;height:32px;opacity:0.25}
 .sp-sep{height:1px;background:rgba(255,255,255,0.06);margin:14px 0}
-.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#4b5563;margin-bottom:6px}
+.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px}
 .cp-name{font-family:'Alata',sans-serif;font-size:26px;font-weight:400;color:#fff;text-shadow:0 0 20px rgba(255,255,255,0.15)}
 .cp-score-row{display:flex;align-items:baseline;gap:16px}
 .cp-score{font-family:'Alata',sans-serif;font-size:42px;font-weight:400;color:var(--gold);line-height:1;text-shadow:0 0 15px rgba(200,168,75,0.3)}
@@ -194,15 +194,15 @@ main{padding:0 48px 64px}
 .cp-change{font-family:'DM Mono',monospace;font-size:11px;font-weight:500}
 .cp-roles{display:flex;flex-direction:column;gap:8px}
 .role-bar-wrap{display:flex;align-items:center;justify-content:space-between}
-.role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:#4b5563;width:80px}
+.role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);width:80px}
 .role-bar{flex:1;height:3px;border-radius:2px;min-width:2px;transition:width .3s;margin:0 10px}
-.role-val{font-family:"DM Mono",monospace;font-size:9px;color:#9ca3af;width:35px;text-align:right}
+.role-val{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,0.8);width:35px;text-align:right}
 .cp-chart-wrap{width:100%;height:200px}
 .cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.cp-macro-3{grid-template-columns:1fr 1fr 1fr}
-.macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:8px 10px}
-.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:#374151;margin-bottom:3px}
-.macro-val{font-family:'Alata',sans-serif;font-size:15px;font-weight:400;color:rgba(255,255,255,0.85)}
+.macro-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;min-height:60px;display:flex;flex-direction:column;justify-content:space-between}
+.macro-item.span2{grid-column:span 2}
+.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px}
+.macro-val{font-family:'Alata',sans-serif;font-size:16px;font-weight:400;color:#fff}
 .gpr-tog{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid rgba(255,255,255,0.12);color:#6b7280;cursor:pointer;border-radius:3px;transition:all .15s}
 .gpr-tog.active{border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.08)}
 .sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;justify-items:center}
@@ -361,11 +361,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
             <div class="cp-macro" id="cp-macro">
               <div class="macro-item"><div class="macro-label">GDP Growth</div><div class="macro-val" id="mc-gdp">&#8212;</div></div>
               <div class="macro-item"><div class="macro-label">Inflation</div><div class="macro-val" id="mc-cpi">&#8212;</div></div>
-            </div>
-            <div class="cp-macro cp-macro-3" style="margin-top:6px">
               <div class="macro-item"><div class="macro-label">Unemployment</div><div class="macro-val" id="mc-unemp">&#8212;</div></div>
               <div class="macro-item"><div class="macro-label">Real Int. Rate</div><div class="macro-val" id="mc-rate">&#8212;</div></div>
-              <div class="macro-item"><div class="macro-label">Debt / GDP</div><div class="macro-val" id="mc-debt">&#8212;</div></div>
+              <div class="macro-item span2"><div class="macro-label">Debt / GDP</div><div class="macro-val" id="mc-debt">&#8212;</div></div>
             </div>
           </div>
         </div>
@@ -585,13 +583,14 @@ function fetchMacro(gprName){
       .then(function(d){
         var el=document.getElementById(ind.id);
         if(d&&d[1]&&d[1][0]&&d[1][0].value!=null){
-          el.textContent=d[1][0].value.toFixed(1)+ind.suffix;
-          el.style.color=ind.id==='mc-gdp'?(d[1][0].value>=0?'var(--grn)':'var(--red)'):
-                         ind.id==='mc-cpi'?(d[1][0].value>5?'var(--red)':d[1][0].value>3?'var(--amb)':'var(--grn)'):
-                         ind.id==='mc-unemp'?(d[1][0].value>10?'var(--red)':d[1][0].value>6?'var(--amb)':'var(--grn)'):
-                         ind.id==='mc-debt'?(d[1][0].value>100?'var(--red)':d[1][0].value>60?'var(--amb)':'var(--grn)'):
-                         'var(--white)';
-        }else{el.textContent='\u2014';el.style.color='var(--t2)'}
+          var v=d[1][0].value;el.textContent=v.toFixed(1)+ind.suffix;
+          el.style.color=ind.id==='mc-gdp'?(v>=0?'#22c55e':'#ef4444'):
+                         ind.id==='mc-cpi'?'#f59e0b':
+                         ind.id==='mc-unemp'?'#fff':
+                         ind.id==='mc-rate'?(v>=0?'#22c55e':'#ef4444'):
+                         ind.id==='mc-debt'?(v>60?'#f59e0b':'#fff'):
+                         '#fff';
+        }else{el.textContent='\u2014';el.style.color='rgba(255,255,255,0.4)'}
       }).catch(function(){document.getElementById(ind.id).textContent='\u2014'});
   });
 }
