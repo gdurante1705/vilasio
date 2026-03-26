@@ -205,6 +205,12 @@ main{padding:0 48px 64px}
 .macro-val{font-family:'Alata',sans-serif;font-size:16px;font-weight:400;color:#fff}
 .gpr-tog{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid rgba(255,255,255,0.12);color:#6b7280;cursor:pointer;border-radius:3px;transition:all .15s}
 .gpr-tog.active{border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.08)}
+.overlay-pill{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(12,12,16,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r-xs);cursor:default;transition:all .2s}
+.overlay-pill:hover{background:rgba(20,20,28,0.8);border-color:rgba(255,255,255,0.14);transform:translateY(-1px)}
+.overlay-pill .op-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.overlay-pill .op-code{font-family:'Alata',sans-serif;font-size:12px;color:var(--gold)}
+.overlay-pill .op-name{font-family:'DM Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:1px;text-transform:uppercase}
+.overlay-pill .op-impact{font-family:'DM Mono',monospace;font-size:7px;padding:2px 6px;border-radius:2px;margin-left:auto;white-space:nowrap;letter-spacing:0.5px}
 .sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;justify-items:center}
 .sp-mini-stat{text-align:center}
 .sp-mini-stat .sp-label{margin-bottom:2px;color:rgba(255,255,255,0.4);letter-spacing:1.5px}
@@ -408,6 +414,22 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 
+  <!-- GEOPOLITICAL OVERLAY -->
+  <div id="geo-overlay" class="reveal" style="display:none;margin:0 0 20px;padding:20px 24px;background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);position:relative;overflow:hidden;transition:opacity 0.3s ease">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:4px">Geopolitical Overlay</div>
+        <div style="font-family:'Alata',sans-serif;font-size:16px;color:var(--white)">Markets Impacted by <span id="overlay-country" style="color:var(--gold)"></span></div>
+        <div id="overlay-reason" style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t2);margin-top:4px"></div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--t3);letter-spacing:1px;white-space:nowrap">GPR SCORE: <span id="overlay-score" style="color:var(--gold)"></span></div>
+    </div>
+    <div id="overlay-markets" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    <div id="overlay-nomap" style="display:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);padding:12px 0;text-align:center">No market mapping available for this country</div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--brd);font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);line-height:1.7"><span style="color:var(--t2);font-weight:500">HOW TO READ THIS</span> &#8212; Markets shown are historically correlated with geopolitical events in this country. High GPR scores typically precede volatility in the listed instruments.</div>
+  </div>
+
   <!-- COUNTRY HEATMAP (grid view) -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Country Risk Grid</div><div class="ch-sub">Top 50 Countries &#183; Alternative View</div></div></div>
@@ -510,6 +532,73 @@ var _chart=null,_dailyChart=null,_countryChart=null;
 var _fullSeriesDates=null,_fullSeriesValues=null,_gprYears=10;
 var _range=0,_riskSort='score',_selectedCountry=null;
 var _worldTopo=null; // cached TopoJSON
+
+var MARKET_IMPACT={
+"USA":{markets:["ES","NQ","DX","ZN","ZB","GC"],reason:"World's largest economy & reserve currency"},
+"Iran":{markets:["CL","GC","NG","SI"],reason:"Major oil producer, sanctions impact energy"},
+"Israel":{markets:["GC","SI","CL","ZN"],reason:"Middle East conflict drives safe haven flows"},
+"Saudi Arabia":{markets:["CL","RB","HO","GC"],reason:"OPEC+ leader, controls oil supply"},
+"Russia":{markets:["NG","CL","GC","ZW","ZC"],reason:"Major energy & grain exporter"},
+"China":{markets:["HG","CL","ZS","ZC","6A","NQ"],reason:"World's largest commodity consumer"},
+"Ukraine":{markets:["ZW","ZC","ZS","NG"],reason:"Major grain exporter, energy transit hub"},
+"Japan":{markets:["6J","NKD","ZN"],reason:"BOJ policy drives yen & global carry trades"},
+"Germany":{markets:["6E","NG","ZN"],reason:"Eurozone's largest economy"},
+"UK":{markets:["6B","ZN"],reason:"Major financial center"},
+"Venezuela":{markets:["CL","RB"],reason:"Oil reserves & supply disruption risk"},
+"UAE":{markets:["CL","GC"],reason:"OPEC member & financial hub"},
+"Qatar":{markets:["NG","CL"],reason:"World's largest LNG exporter"},
+"Kuwait":{markets:["CL","RB","HO"],reason:"Major Gulf oil producer"},
+"Australia":{markets:["6A","HG","GC"],reason:"Major metals & commodities exporter"},
+"Canada":{markets:["6C","CL","ZC","ZW"],reason:"Energy & grain exporter"},
+"Brazil":{markets:["ZS","ZC","KC","SB","6E"],reason:"Major agricultural exporter"},
+"Mexico":{markets:["6M","CL","ZC"],reason:"Oil exporter & US trade partner"},
+"India":{markets:["GC","CL","6E"],reason:"Fast-growing economy, gold demand"},
+"Turkey":{markets:["GC","6E","CL"],reason:"Strategic location, inflation proxy"},
+"Lebanon":{markets:["GC","CL"],reason:"Middle East instability proxy"},
+"South Korea":{markets:["HG","NQ","6E"],reason:"Tech & semiconductor hub"},
+"Nigeria":{markets:["CL","NG"],reason:"Major African oil producer"},
+"South Africa":{markets:["GC","HG","6E"],reason:"Mining & metals exporter"},
+"Poland":{markets:["6E","NG","ZW"],reason:"Eastern European frontier, energy transit"}
+};
+var MKT_NAMES={ES:"E-Mini S&P",NQ:"Nasdaq",DX:"USD Index",ZN:"10Y Note",ZB:"30Y Bond",GC:"Gold",SI:"Silver",CL:"Crude Oil",NG:"Nat Gas",RB:"RBOB Gas",HO:"Heating Oil",HG:"Copper",ZW:"Wheat",ZC:"Corn",ZS:"Soybeans",KC:"Coffee",SB:"Sugar","6E":"Euro FX","6J":"Yen","6B":"GBP","6A":"AUD","6C":"CAD","6M":"MXN",NKD:"Nikkei"};
+var MKT_CAT={CL:'energy',NG:'energy',RB:'energy',HO:'energy',GC:'metals',SI:'metals',HG:'metals',ES:'index',NQ:'index',NKD:'index',DX:'fx',"6E":'fx',"6J":'fx',"6B":'fx',"6A":'fx',"6C":'fx',"6M":'fx',ZN:'rates',ZB:'rates',ZW:'agri',ZC:'agri',ZS:'agri',KC:'agri',SB:'agri'};
+var CAT_COLORS={energy:'#f97316',metals:'#eab308',index:'#3b82f6',fx:'#8b5cf6',rates:'#06b6d4',agri:'#22c55e'};
+function impactLevel(score){
+  if(score>200)return{label:'EXTREME IMPACT',color:'#ef4444',bg:'rgba(239,68,68,0.12)',border:'rgba(239,68,68,0.2)'};
+  if(score>100)return{label:'HIGH IMPACT',color:'#f97316',bg:'rgba(249,115,22,0.12)',border:'rgba(249,115,22,0.2)'};
+  if(score>50)return{label:'ELEVATED',color:'#eab308',bg:'rgba(234,179,8,0.12)',border:'rgba(234,179,8,0.2)'};
+  return{label:'WATCH',color:'#6b7280',bg:'rgba(107,114,128,0.1)',border:'rgba(107,114,128,0.2)'};
+}
+function updateOverlay(countryName,score){
+  var el=document.getElementById('geo-overlay');
+  var mkts=document.getElementById('overlay-markets');
+  var nomap=document.getElementById('overlay-nomap');
+  if(!countryName){el.style.display='none';return}
+  var imp=MARKET_IMPACT[countryName];
+  el.style.display='block';el.style.opacity='0';
+  document.getElementById('overlay-country').textContent=countryName;
+  document.getElementById('overlay-score').textContent=score!=null?score.toFixed(1):'\u2014';
+  if(!imp){
+    mkts.style.display='none';nomap.style.display='block';
+    document.getElementById('overlay-reason').textContent='';
+    setTimeout(function(){el.style.opacity='1'},30);return;
+  }
+  nomap.style.display='none';mkts.style.display='flex';
+  document.getElementById('overlay-reason').textContent=imp.reason;
+  var il=impactLevel(score||0);
+  var h='';
+  imp.markets.forEach(function(m){
+    var cat=MKT_CAT[m]||'index';var dc=CAT_COLORS[cat]||'#6b7280';
+    h+='<div class="overlay-pill">';
+    h+='<div class="op-dot" style="background:'+dc+'"></div>';
+    h+='<span class="op-code">'+m+'</span>';
+    h+='<span class="op-name">'+(MKT_NAMES[m]||m)+'</span>';
+    h+='<span class="op-impact" style="color:'+il.color+';background:'+il.bg+';border:1px solid '+il.border+'">'+il.label+'</span>';
+    h+='</div>';
+  });
+  mkts.innerHTML=h;
+  setTimeout(function(){el.style.opacity='1'},30);
+}
 
 // Name mapping: TopoJSON name → GPR data name
 // TopoJSON name → GPR data name
@@ -935,7 +1024,7 @@ function selectCountry(key){
     pl.classList.remove('visible');pr.classList.remove('visible');
     setTimeout(function(){plC.style.display='none';prC.style.display='none';plP.style.display='';prP.style.display=''},300);
     if(_countryChart){_countryChart.destroy();_countryChart=null}
-    _updateGlobeSelection();renderHeatmap();return;
+    _updateGlobeSelection();updateOverlay(null);renderHeatmap();return;
   }
 
   // Fade out, update, fade in
@@ -989,6 +1078,9 @@ function selectCountry(key){
       document.getElementById('pr-peak').textContent='\u2014';
       document.getElementById('pr-avg').textContent='\u2014';
     }
+
+    // Geopolitical overlay
+    updateOverlay(c.name,c.latest);
 
     // Fade in
     pl.classList.add('visible');pr.classList.add('visible');
