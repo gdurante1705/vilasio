@@ -427,7 +427,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
     <div id="overlay-markets" style="display:flex;flex-wrap:wrap;gap:8px"></div>
     <div id="overlay-nomap" style="display:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);padding:12px 0;text-align:center">No market mapping available for this country</div>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--brd);font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);line-height:1.7"><span style="color:var(--t2);font-weight:500">HOW TO READ THIS</span> &#8212; Markets shown are historically correlated with geopolitical events in this country. High GPR scores typically precede volatility in the listed instruments.</div>
+    <div class="chart-explain" style="padding:12px 0 0"><button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button><div class="chart-explain-content"><p>Markets shown are historically correlated with geopolitical events in this country. High GPR scores typically precede volatility in the listed instruments.</p><p>Use this overlay to identify which <strong>futures markets</strong> are most exposed when geopolitical risk rises in a specific country. Cross-reference with COT positioning data for confluence signals.</p></div></div>
   </div>
 
   <!-- COUNTRY HEATMAP (grid view) -->
