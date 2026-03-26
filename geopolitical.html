@@ -117,8 +117,9 @@ nav{
 .status-card.dn::before{background:var(--red)}
 .status-card.neut::before{background:var(--t2)}
 .status-card.warn::before{background:var(--amb)}
+.status-card.bt-gold::before{background:var(--gold)}.status-card.bt-red::before{background:#ef4444}.status-card.bt-orange::before{background:#f97316}.status-card.bt-blue::before{background:#3b82f6}
 .sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
-.sc-val{font-family:"Alata",sans-serif;font-size:24px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.sc-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;letter-spacing:-0.5px;line-height:1}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
 .sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
@@ -137,7 +138,7 @@ main{padding:0 48px 64px}
 .ch-toggles{display:flex;gap:3px}
 .ch-tog{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid var(--brd);color:var(--t1);cursor:pointer;transition:all .2s;border-radius:100px}
 .ch-tog:hover{color:var(--white);border-color:var(--card-border-hover)}
-.ch-tog.active{background:var(--white);color:var(--bg);border-color:var(--white)}
+.ch-tog.active{background:rgba(255,255,255,0.06);color:var(--white);border-color:rgba(255,255,255,0.15)}
 .chart-wrap{padding:12px 20px 16px}
 .chart-canvas-wrap{position:relative;height:340px}
 .chart-legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 28px;border-top:1px solid var(--brd);font-family:"DM Mono",monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
@@ -227,10 +228,10 @@ main{padding:0 48px 64px}
 .sp-mini-stat .sp-val{font-family:'Alata',sans-serif;font-size:20px;font-weight:400;color:#fff}
 
 /* ─── TABLE ─── */
-.data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
-.data-table th{padding:8px 6px;font-weight:400;color:var(--t1);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd)}
-.data-table td{padding:8px 6px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
-.data-table tr:hover td{background:rgba(200,168,75,0.03)}
+.data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px}
+.data-table th{padding:10px 16px;font-weight:400;color:var(--t2);letter-spacing:2px;text-transform:uppercase;font-size:7px;text-align:left;border-bottom:1px solid var(--brd)}
+.data-table td{padding:12px 16px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
+.data-table tr:hover td{background:rgba(255,255,255,0.02)}
 .tbl-wrap{padding:0 28px 16px;overflow-x:auto}
 .sort-btn{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid var(--brd);color:var(--t2);cursor:pointer;transition:all .2s;border-radius:100px}
 .sort-btn:hover{border-color:var(--card-border-hover);color:var(--t1)}
@@ -341,10 +342,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <main>
   <div class="status-row reveal">
-    <div class="status-card neut" id="sc-gpr"><div class="sc-label">AI-GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
-    <div class="status-card neut" id="sc-mil"><div class="sc-label">Military Conflict</div><div class="sc-val" id="sc-mil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-mil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
-    <div class="status-card neut" id="sc-ter"><div class="sc-label">Terrorism</div><div class="sc-val" id="sc-ter-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ter-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
-    <div class="status-card neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card bt-gold neut" id="sc-gpr"><div class="sc-label">AI-GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
+    <div class="status-card bt-red neut" id="sc-mil"><div class="sc-label">Military Conflict</div><div class="sc-val" id="sc-mil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-mil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card bt-orange neut" id="sc-ter"><div class="sc-label">Terrorism</div><div class="sc-val" id="sc-ter-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ter-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card bt-blue neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
   </div>
 
   <!-- D3 WORLD MAP + SIDE PANELS -->
@@ -760,20 +761,20 @@ function renderCards(){
   var lv=gprLevel(latest);
   document.getElementById('sc-gpr-val').textContent=latest!=null?latest.toFixed(1):'\u2014';
   document.getElementById('sc-gpr-badge').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-  document.getElementById('sc-gpr').className='status-card '+gprCardClass(latest);
+  document.getElementById('sc-gpr').className='status-card bt-gold '+gprCardClass(latest);
   var el=D.evtLatest||{},ep=D.evtPrev||{};
   var mil=el.military_conflict,milP=ep.military_conflict;
   document.getElementById('sc-mil-val').textContent=mil!=null?mil.toFixed(1):'\u2014';
   var mc=fmtEvtChg(mil,milP);document.getElementById('sc-mil-chg').textContent=mc.text;document.getElementById('sc-mil-chg').className='sc-delta '+mc.cls;
-  document.getElementById('sc-mil').className='status-card '+gprCardClass(mil);
+  document.getElementById('sc-mil').className='status-card bt-red '+gprCardClass(mil);
   var ter=el.terrorism,terP=ep.terrorism;
   document.getElementById('sc-ter-val').textContent=ter!=null?ter.toFixed(1):'\u2014';
   var tc=fmtEvtChg(ter,terP);document.getElementById('sc-ter-chg').textContent=tc.text;document.getElementById('sc-ter-chg').className='sc-delta '+tc.cls;
-  document.getElementById('sc-ter').className='status-card '+gprCardClass(ter);
+  document.getElementById('sc-ter').className='status-card bt-orange '+gprCardClass(ter);
   var oilV=oil.length?oil[oil.length-1]:null,oilP=oil.length>=2?oil[oil.length-2]:null;
   document.getElementById('sc-oil-val').textContent=oilV!=null?oilV.toFixed(1):'\u2014';
   var oc=fmtEvtChg(oilV,oilP);document.getElementById('sc-oil-chg').textContent=oc.text;document.getElementById('sc-oil-chg').className='sc-delta '+oc.cls;
-  document.getElementById('sc-oil').className='status-card '+gprCardClass(oilV);
+  document.getElementById('sc-oil').className='status-card bt-blue '+gprCardClass(oilV);
   if(D.lastDate)document.getElementById('update-badge').textContent='DATA: '+D.lastDate;
 }
 
@@ -1239,8 +1240,8 @@ function renderMonthlyChart(){
   if(_chart){_chart.destroy();_chart=null}
   var ctx=document.getElementById('gprChart');if(!ctx)return;
   _chart=new Chart(ctx,{type:'line',data:{labels:d,datasets:[
-    {label:'AI-GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3,yAxisID:'y'},
-    {label:'Oil/Energy',data:v2,borderColor:'#06b6d4',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0.3,yAxisID:'y2'}
+    {label:'AI-GPR',data:v1,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:1.5,pointRadius:0,fill:true,tension:0,yAxisID:'y'},
+    {label:'Oil/Energy',data:v2,borderColor:'#06b6d4',backgroundColor:'transparent',borderWidth:1,pointRadius:0,borderDash:[4,2],tension:0,yAxisID:'y2'}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:_xOpts,y:_yOpts,y2:{position:'right',ticks:{color:'#06b6d4',font:{family:'"DM Mono",monospace',size:8}},grid:{display:false}}}},plugins:[_zonePlugin]});
 }
 
@@ -1248,7 +1249,7 @@ function renderDailyChart(){
   var g=D.gpr||{},dates=g.dailyDates||[],vals=g.dailyValues||[];
   if(_dailyChart){_dailyChart.destroy();_dailyChart=null}
   var ctx=document.getElementById('dailyChart');if(!ctx||!dates.length)return;
-  _dailyChart=new Chart(ctx,{type:'line',data:{labels:dates,datasets:[{label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.06)',borderWidth:1,pointRadius:0,fill:true,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#50505a',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:12},grid:{color:'rgba(255,255,255,0.04)'}},y:_yOpts}},plugins:[_zonePlugin]});
+  _dailyChart=new Chart(ctx,{type:'line',data:{labels:dates,datasets:[{label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#50505a',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:8},grid:{color:'rgba(255,255,255,0.04)'}},y:_yOpts}},plugins:[_zonePlugin]});
 }
 
 function sortRisks(mode){_riskSort=mode;document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});renderRisks()}
@@ -1259,7 +1260,16 @@ function renderRisks(){
   var el=document.getElementById('risks-table');
   if(!risks.length){el.innerHTML='<tr><td style="color:var(--t2)">No risk data available.</td></tr>';return}
   var html='<thead><tr><th>#</th><th>Country</th><th>GPR Score</th><th>M/M Change</th><th>Level</th></tr></thead><tbody>';
-  risks.forEach(function(r,i){var lv=gprLevel(r.gpr);var cc=r.change!=null&&r.change>=0?'var(--red)':'var(--grn)';html+='<tr><td style="color:var(--t3)">'+(i+1)+'</td><td style="color:var(--gold);font-weight:500">'+r.name+'</td><td>'+r.gpr.toFixed(1)+'</td><td style="color:'+cc+'">'+fmtChg(r.change)+'</td><td><span class="badge '+lv.cls+'">'+lv.label+'</span></td></tr>'});
+  risks.forEach(function(r,i){
+    var lv=gprLevel(r.gpr);var cc=r.change!=null&&r.change>=0?'var(--red)':'var(--grn)';
+    var esc=r.name.replace(/'/g,"\\'");
+    html+='<tr style="cursor:pointer" onclick="selectCountry(\''+esc+'\')">';
+    html+='<td style="color:var(--t3);font-family:\'DM Mono\',monospace;font-size:10px">'+(i+1)+'</td>';
+    html+='<td style="color:var(--gold);font-family:\'Alata\',sans-serif;font-size:12px">'+r.name+'</td>';
+    html+='<td style="font-family:\'DM Mono\',monospace;font-size:12px;font-weight:600;color:var(--white)">'+r.gpr.toFixed(1)+'</td>';
+    html+='<td style="color:'+cc+';font-family:\'DM Mono\',monospace;font-size:10px">'+fmtChg(r.change)+'</td>';
+    html+='<td><span class="badge '+lv.cls+'">'+lv.label+'</span></td></tr>';
+  });
   el.innerHTML=html+'</tbody>';
 }
 
