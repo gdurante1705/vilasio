@@ -169,7 +169,17 @@ main{padding:0 48px 64px}
 .map-tooltip .tt-level{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;padding:2px 6px;border-radius:3px;display:inline-block}
 
 /* ─── HEATMAP GRID ─── */
-.heat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:16px 28px}
+.continent-section{border-bottom:1px solid var(--brd)}
+.continent-section:last-child{border-bottom:none}
+.continent-header{display:flex;justify-content:space-between;align-items:center;padding:16px 8px;cursor:pointer;transition:background .15s;border-radius:var(--r-sm)}
+.continent-header:hover{background:rgba(255,255,255,0.02)}
+.continent-arrow{font-size:8px;color:var(--t3);transition:transform .2s;display:inline-block}
+.continent-arrow.open{transform:rotate(90deg)}
+.cont-name{font-family:'Alata',sans-serif;font-size:14px;color:var(--white)}
+.cont-count{font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);letter-spacing:1px}
+.cont-stat-label{font-family:'DM Mono',monospace;font-size:7px;color:var(--t3);letter-spacing:1px}
+.cont-stat-val{font-family:'Alata',sans-serif;font-size:14px}
+.continent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:0 8px 16px}
 .heat-cell{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .heat-cell:hover{border-color:var(--card-border-hover);transform:translateY(-1px)}
 .heat-cell.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(200,168,75,0.15)}
@@ -432,8 +442,8 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
   <!-- COUNTRY HEATMAP (grid view) -->
   <div class="chart-section reveal">
-    <div class="chart-header"><div><div class="ch-title">Country Risk Grid</div><div class="ch-sub">Top 50 Countries &#183; Alternative View</div></div></div>
-    <div class="heat-grid" id="heat-grid"><div style="color:var(--t2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
+    <div class="chart-header"><div><div class="ch-title">Country Risk Grid</div><div class="ch-sub">Top 50 Countries &#183; Grouped by Region</div></div><button id="expand-all-btn" class="ch-tog" onclick="toggleAllContinents()" style="font-size:7px;letter-spacing:1.5px">Expand All</button></div>
+    <div id="heat-grid" style="padding:0 20px 16px"><div style="color:var(--t2);font-family:'DM Mono',monospace;font-size:10px;padding:12px">Loading country data...</div></div>
     <div class="chart-explain" style="padding:0 28px 12px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this</button>
       <div class="chart-explain-content">
@@ -568,6 +578,42 @@ function impactLevel(score){
   if(score>100)return{label:'HIGH IMPACT',color:'#f97316',bg:'rgba(249,115,22,0.12)',border:'rgba(249,115,22,0.2)'};
   if(score>50)return{label:'ELEVATED',color:'#eab308',bg:'rgba(234,179,8,0.12)',border:'rgba(234,179,8,0.2)'};
   return{label:'WATCH',color:'#6b7280',bg:'rgba(107,114,128,0.1)',border:'rgba(107,114,128,0.2)'};
+}
+var CONTINENT_MAP={
+"Middle East":["Iran","Israel","Saudi Arabia","UAE","Qatar","Kuwait","Lebanon","Iraq","Syria","Yemen","Turkey","Jordan","Bahrain","Oman","Palestine"],
+"Europe":["UK","Germany","France","Italy","Spain","Poland","Ukraine","Russia","Belarus","Hungary","Romania","Sweden","Norway","Denmark","Netherlands","Belgium","Switzerland","Austria","Czech Republic","Slovakia","Bulgaria","Serbia","Croatia","Greece","Portugal","Lithuania","Estonia","Latvia","Finland","Ireland","Albania","Bosnia","Georgia","Armenia","Azerbaijan"],
+"Americas":["USA","Canada","Mexico","Brazil","Venezuela","Colombia","Ecuador","Peru","Argentina","Chile","Dominican Republic","Guatemala","Honduras","El Salvador","Panama","Cuba","Haiti","Bolivia","Nicaragua","Costa Rica"],
+"Asia":["China","Japan","South Korea","India","Pakistan","Afghanistan","North Korea","Taiwan","Myanmar","Thailand","Vietnam","Indonesia","Malaysia","Philippines","Bangladesh","Sri Lanka","Cambodia"],
+"Africa":["Egypt","Nigeria","South Africa","Libya","Sudan","South Sudan","Somalia","Ethiopia","Kenya","Ghana","Tanzania","DRC","Rwanda","Burundi","Mozambique","Zimbabwe","Angola","Cameroon","Ivory Coast","Morocco","Algeria","Tunisia","Senegal","Mali","Burkina Faso","Niger","Chad","Uganda","Zambia"]
+};
+var CONTINENT_ORDER=["Middle East","Europe","Americas","Asia","Africa","Other"];
+function getContinent(countryName){
+  for(var c in CONTINENT_MAP){if(CONTINENT_MAP[c].indexOf(countryName)>=0)return c}
+  return"Other";
+}
+function contRiskBadge(maxGpr){
+  if(maxGpr>200)return'<span class="badge extreme">EXTREME</span>';
+  if(maxGpr>100)return'<span class="badge red">HIGH</span>';
+  if(maxGpr>50)return'<span class="badge amb">ELEVATED</span>';
+  return'<span class="badge grn">LOW</span>';
+}
+function toggleContinent(header){
+  var grid=header.nextElementSibling;
+  var arrow=header.querySelector('.continent-arrow');
+  var isOpen=grid.style.display!=='none';
+  grid.style.display=isOpen?'none':'grid';
+  arrow.classList.toggle('open',!isOpen);
+}
+function toggleAllContinents(){
+  var sections=document.querySelectorAll('.continent-grid');
+  var arrows=document.querySelectorAll('.continent-arrow');
+  var btn=document.getElementById('expand-all-btn');
+  var anyOpen=false;
+  sections.forEach(function(s){if(s.style.display!=='none')anyOpen=true});
+  var newState=!anyOpen;
+  sections.forEach(function(s){s.style.display=newState?'grid':'none'});
+  arrows.forEach(function(a){a.classList.toggle('open',newState)});
+  btn.textContent=newState?'Collapse All':'Expand All';
 }
 function updateOverlay(countryName,score){
   var el=document.getElementById('geo-overlay');
@@ -998,17 +1044,50 @@ window.addEventListener('resize',function(){
 function renderHeatmap(){
   var countries=D.countries||{};
   var el=document.getElementById('heat-grid');
-  var keys=Object.keys(countries).sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
+  // Group by continent
+  var groups={};
+  CONTINENT_ORDER.forEach(function(c){groups[c]=[]});
+  Object.keys(countries).forEach(function(k){
+    var cont=getContinent(countries[k].name);
+    if(!groups[cont])groups[cont]=[];
+    groups[cont].push(k);
+  });
+  // Sort each group by score desc
+  Object.keys(groups).forEach(function(g){
+    groups[g].sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
+  });
   var html='';
-  keys.forEach(function(k){
-    var c=countries[k],v=c.latest;
-    var esc=k.replace(/'/g,"\\'");
-    html+='<div class="heat-cell'+(k===_selectedCountry?' selected':'')+'" onclick="selectCountry(\''+esc+'\')" style="background:'+heatColor(v)+';border-color:'+heatBorder(v)+'">';
-    html+='<div style="position:absolute;top:0;left:0;right:0;height:2px;background:'+heatTopColor(v)+'"></div>';
-    html+='<div class="heat-name" style="color:'+heatTopColor(v)+'">'+c.name+'</div>';
-    html+='<div class="heat-score">'+(v!=null?v.toFixed(1):'\u2014')+'</div>';
-    html+='<div class="heat-change" style="color:'+(c.change!=null&&c.change>=0?'var(--red)':'var(--grn)')+'">'+fmtChg(c.change)+' M/M</div>';
+  CONTINENT_ORDER.forEach(function(cont){
+    var keys=groups[cont];
+    if(!keys||!keys.length)return;
+    var maxGpr=0,sumGpr=0,cnt=0;
+    keys.forEach(function(k){var v=countries[k].latest||0;if(v>maxGpr)maxGpr=v;sumGpr+=v;cnt++});
+    var avgGpr=cnt?sumGpr/cnt:0;
+    var isOpen=cont==='Middle East';
+    html+='<div class="continent-section">';
+    html+='<div class="continent-header" onclick="toggleContinent(this)">';
+    html+='<div style="display:flex;align-items:center;gap:12px">';
+    html+='<span class="continent-arrow'+(isOpen?' open':'')+'">&#9654;</span>';
+    html+='<span class="cont-name">'+cont+'</span>';
+    html+='<span class="cont-count">'+cnt+' COUNTRIES</span>';
     html+='</div>';
+    html+='<div style="display:flex;gap:20px;align-items:center">';
+    html+='<div style="text-align:right"><div class="cont-stat-label">MAX GPR</div><div class="cont-stat-val" style="color:var(--gold)">'+maxGpr.toFixed(1)+'</div></div>';
+    html+='<div style="text-align:right"><div class="cont-stat-label">AVG GPR</div><div class="cont-stat-val" style="color:var(--white)">'+avgGpr.toFixed(1)+'</div></div>';
+    html+=contRiskBadge(maxGpr);
+    html+='</div></div>';
+    html+='<div class="continent-grid" style="display:'+(isOpen?'grid':'none')+'">';
+    keys.forEach(function(k){
+      var c=countries[k],v=c.latest;
+      var esc=k.replace(/'/g,"\\'");
+      html+='<div class="heat-cell'+(k===_selectedCountry?' selected':'')+'" onclick="selectCountry(\''+esc+'\')" style="background:'+heatColor(v)+';border-color:'+heatBorder(v)+'">';
+      html+='<div style="position:absolute;top:0;left:0;right:0;height:2px;background:'+heatTopColor(v)+'"></div>';
+      html+='<div class="heat-name" style="color:'+heatTopColor(v)+'">'+c.name+'</div>';
+      html+='<div class="heat-score">'+(v!=null?v.toFixed(1):'\u2014')+'</div>';
+      html+='<div class="heat-change" style="color:'+(c.change!=null&&c.change>=0?'var(--red)':'var(--grn)')+'">'+fmtChg(c.change)+' M/M</div>';
+      html+='</div>';
+    });
+    html+='</div></div>';
   });
   el.innerHTML=html||'<div style="color:var(--t2)">No country data available.</div>';
 }
