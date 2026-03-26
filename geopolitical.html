@@ -185,22 +185,26 @@ main{padding:0 48px 64px}
 .side-panel.visible{opacity:1;pointer-events:auto}
 .side-panel .sp-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:200px;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:center;gap:12px}
 .side-panel .sp-placeholder svg{width:32px;height:32px;opacity:0.25}
-.sp-sep{height:1px;background:rgba(255,255,255,0.05);margin:14px 0}
-.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px}
-.cp-name{font-family:'Alata',sans-serif;font-size:28px;font-weight:400;color:#fff;text-shadow:0 0 20px rgba(255,255,255,0.15)}
-.cp-score{font-family:'Alata',sans-serif;font-size:48px;font-weight:400;color:var(--gold);line-height:1;text-shadow:0 0 15px rgba(200,168,75,0.3)}
-.cp-change{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;margin-top:4px}
-.cp-roles{display:flex;flex-direction:column;gap:6px}
-.role-bar-wrap{display:flex;align-items:center;gap:8px}
-.role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);width:70px;text-align:right}
-.role-bar{height:4px;border-radius:2px;min-width:2px;transition:width .3s}
-.role-val{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,0.85);min-width:35px}
+.sp-sep{height:1px;background:rgba(255,255,255,0.06);margin:14px 0}
+.sp-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#4b5563;margin-bottom:6px}
+.cp-name{font-family:'Alata',sans-serif;font-size:26px;font-weight:400;color:#fff;text-shadow:0 0 20px rgba(255,255,255,0.15)}
+.cp-score-row{display:flex;align-items:baseline;gap:16px}
+.cp-score{font-family:'Alata',sans-serif;font-size:42px;font-weight:400;color:var(--gold);line-height:1;text-shadow:0 0 15px rgba(200,168,75,0.3)}
+.cp-score-meta{display:flex;flex-direction:column}
+.cp-change{font-family:'DM Mono',monospace;font-size:11px;font-weight:500}
+.cp-roles{display:flex;flex-direction:column;gap:8px}
+.role-bar-wrap{display:flex;align-items:center;justify-content:space-between}
+.role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:#4b5563;width:80px}
+.role-bar{flex:1;height:3px;border-radius:2px;min-width:2px;transition:width .3s;margin:0 10px}
+.role-val{font-family:"DM Mono",monospace;font-size:9px;color:#9ca3af;width:35px;text-align:right}
 .cp-chart-wrap{width:100%;height:200px}
-.cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:0}
+.cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .cp-macro-3{grid-template-columns:1fr 1fr 1fr}
-.macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px}
-.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:3px}
-.macro-val{font-family:'Alata',sans-serif;font-size:14px;font-weight:400;color:rgba(255,255,255,0.85)}
+.macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:8px 10px}
+.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:#374151;margin-bottom:3px}
+.macro-val{font-family:'Alata',sans-serif;font-size:15px;font-weight:400;color:rgba(255,255,255,0.85)}
+.gpr-tog{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid rgba(255,255,255,0.12);color:#6b7280;cursor:pointer;border-radius:3px;transition:all .15s}
+.gpr-tog.active{border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.08)}
 .sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;justify-items:center}
 .sp-mini-stat{text-align:center}
 .sp-mini-stat .sp-label{margin-bottom:2px;color:rgba(255,255,255,0.4);letter-spacing:1.5px}
@@ -340,18 +344,21 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
             <div class="sp-label">Country</div>
             <div class="cp-name" id="cp-name">&#8212;</div>
             <div class="sp-sep"></div>
-            <div class="sp-label" style="margin-top:16px">GPR Score</div>
-            <div class="cp-score" id="cp-score">&#8212;</div>
-            <div class="cp-change" id="cp-change">&#8212;</div>
-            <div id="cp-level" style="margin-top:6px">&#8212;</div>
+            <div class="cp-score-row">
+              <div class="cp-score" id="cp-score">&#8212;</div>
+              <div class="cp-score-meta">
+                <div class="cp-change" id="cp-change">&#8212;</div>
+                <div id="cp-level" style="margin-top:4px">&#8212;</div>
+              </div>
+            </div>
             <div class="sp-sep"></div>
-            <div class="cp-roles" style="margin-top:14px">
+            <div class="cp-roles">
               <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar" id="cp-bar-init" style="background:linear-gradient(90deg,var(--red),transparent)"></div><span class="role-val" id="cp-init">0</span></div>
               <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar" id="cp-bar-resp" style="background:linear-gradient(90deg,var(--amb),transparent)"></div><span class="role-val" id="cp-resp">0</span></div>
               <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar" id="cp-bar-spill" style="background:linear-gradient(90deg,var(--bp),transparent)"></div><span class="role-val" id="cp-spill">0</span></div>
             </div>
             <div class="sp-sep"></div>
-            <div class="cp-macro" id="cp-macro" style="margin-top:16px">
+            <div class="cp-macro" id="cp-macro">
               <div class="macro-item"><div class="macro-label">GDP Growth</div><div class="macro-val" id="mc-gdp">&#8212;</div></div>
               <div class="macro-item"><div class="macro-label">Inflation</div><div class="macro-val" id="mc-cpi">&#8212;</div></div>
             </div>
@@ -369,7 +376,14 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
           <div class="sp-placeholder" id="pr-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Click a country</div>
           <div id="pr-content" style="display:none">
             <div class="sp-label" style="color:#c8a84b;font-size:9px">GPR HISTORY</div>
-            <div style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:12px" id="pr-subtitle">&#8212;</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.6)" id="pr-subtitle">&#8212;</div>
+              <div style="display:flex;gap:4px" id="gpr-range-toggles">
+                <button class="gpr-tog active" data-years="10" onclick="setGprRange(10,this)">10Y</button>
+                <button class="gpr-tog" data-years="3" onclick="setGprRange(3,this)">3Y</button>
+                <button class="gpr-tog" data-years="1" onclick="setGprRange(1,this)">1Y</button>
+              </div>
+            </div>
             <div id="pr-nodata" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:8px;opacity:0.4">
               <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280;text-transform:uppercase">No historical data</div>
               <div class="nd-name" style="font-family:'DM Mono',monospace;font-size:7px;color:#374151"></div>
@@ -495,6 +509,7 @@ function togExplain(el){el.classList.toggle('open');el.nextElementSibling.classL
 var API="https://vilasio-cot-backend.onrender.com";
 var D=null;
 var _chart=null,_dailyChart=null,_countryChart=null;
+var _fullSeriesDates=null,_fullSeriesValues=null,_gprYears=10;
 var _range=0,_riskSort='score',_selectedCountry=null;
 var _worldTopo=null; // cached TopoJSON
 
@@ -943,23 +958,23 @@ function selectCountry(key){
 
     // Right panel data
     if(_countryChart){_countryChart.destroy();_countryChart=null}
+    _fullSeriesDates=null;_fullSeriesValues=null;
     var s=c.series;
     var noDataEl=document.getElementById('pr-nodata');
     var chartWrap=document.getElementById('pr-chart-area');
+    var toggles=document.getElementById('gpr-range-toggles');
     if(s&&s.dates&&s.dates.length){
-      document.getElementById('pr-subtitle').textContent=c.name+' \u00b7 Last 10 Years';
+      _fullSeriesDates=s.dates;_fullSeriesValues=s.values;
+      _gprYears=10;
+      document.querySelectorAll('.gpr-tog').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-years')==='10')});
       if(noDataEl)noDataEl.style.display='none';
       if(chartWrap)chartWrap.style.display='';
-      var ctx=document.getElementById('countryChart');
-      _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10,bottom:10,left:0,right:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:7},maxTicksLimit:5},grid:{display:false}},y:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
-      var vals=s.values.filter(function(v){return v!=null});
-      var peak=vals.length?Math.max.apply(null,vals):null;
-      var avg=vals.length?(vals.reduce(function(a,b){return a+b},0)/vals.length):null;
-      document.getElementById('pr-current').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
-      document.getElementById('pr-peak').textContent=peak!=null?peak.toFixed(1):'\u2014';
-      document.getElementById('pr-avg').textContent=avg!=null?avg.toFixed(1):'\u2014';
+      if(toggles)toggles.style.display='flex';
+      _buildCountryChart(c.name,c.latest);
     } else {
+      _fullSeriesDates=null;_fullSeriesValues=null;
       if(chartWrap)chartWrap.style.display='none';
+      if(toggles)toggles.style.display='none';
       document.getElementById('pr-subtitle').textContent='';
       if(noDataEl){noDataEl.style.display='flex';noDataEl.querySelector('.nd-name').textContent=c.name}
       document.getElementById('pr-current').textContent='\u2014';
@@ -972,6 +987,34 @@ function selectCountry(key){
   },150);
 
   renderHeatmap();
+}
+
+function _sliceSeries(years){
+  if(!_fullSeriesDates||!_fullSeriesValues)return{dates:[],values:[]};
+  if(years>=10)return{dates:_fullSeriesDates,values:_fullSeriesValues};
+  var n=years*12;var start=Math.max(0,_fullSeriesDates.length-n);
+  return{dates:_fullSeriesDates.slice(start),values:_fullSeriesValues.slice(start)};
+}
+function _buildCountryChart(name,latest){
+  if(_countryChart){_countryChart.destroy();_countryChart=null}
+  var sl=_sliceSeries(_gprYears);
+  var label=_gprYears>=10?'Last 10 Years':('Last '+_gprYears+'Y');
+  document.getElementById('pr-subtitle').textContent=name+' \u00b7 '+label;
+  var ctx=document.getElementById('countryChart');
+  _countryChart=new Chart(ctx,{type:'line',data:{labels:sl.dates,datasets:[{label:name+' GPR',data:sl.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10,bottom:10,left:0,right:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:7},maxTicksLimit:5},grid:{display:false}},y:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+  var vals=sl.values.filter(function(v){return v!=null});
+  var peak=vals.length?Math.max.apply(null,vals):null;
+  var avg=vals.length?(vals.reduce(function(a,b){return a+b},0)/vals.length):null;
+  document.getElementById('pr-current').textContent=latest!=null?latest.toFixed(1):'\u2014';
+  document.getElementById('pr-peak').textContent=peak!=null?peak.toFixed(1):'\u2014';
+  document.getElementById('pr-avg').textContent=avg!=null?avg.toFixed(1):'\u2014';
+}
+function setGprRange(years,btn){
+  _gprYears=years;
+  document.querySelectorAll('.gpr-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-years'))===years)});
+  if(!_selectedCountry||!D||!D.countries)return;
+  var c=D.countries[_selectedCountry];if(!c)return;
+  _buildCountryChart(c.name,c.latest);
 }
 
 function setRange(m){_range=m;document.querySelectorAll('.ch-tog').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-rw'))===m)});renderMonthlyChart()}
