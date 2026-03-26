@@ -1133,13 +1133,13 @@ function selectCountry(key){
     document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
     var chgEl=document.getElementById('cp-change');chgEl.textContent=fmtChg(c.change)+' M/M';chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
     document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-    var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,0.1);
+    var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,1);
     document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);
     document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);
     document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
-    document.getElementById('cp-bar-init').style.width=Math.round((c.initiator||0)/maxBar*80)+'px';
-    document.getElementById('cp-bar-resp').style.width=Math.round((c.respondent||0)/maxBar*80)+'px';
-    document.getElementById('cp-bar-spill').style.width=Math.round((c.spillover||0)/maxBar*80)+'px';
+    document.getElementById('cp-bar-init').style.width=((c.initiator||0)/maxBar*100).toFixed(1)+'%';
+    document.getElementById('cp-bar-resp').style.width=((c.respondent||0)/maxBar*100).toFixed(1)+'%';
+    document.getElementById('cp-bar-spill').style.width=((c.spillover||0)/maxBar*100).toFixed(1)+'%';
     fetchMacro(key);
 
     // Right panel data
