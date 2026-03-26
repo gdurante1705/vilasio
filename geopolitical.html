@@ -109,14 +109,9 @@ nav{
 
 /* ─── STATUS CARDS ─── */
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:20px 24px;position:relative;overflow:hidden;box-shadow:var(--card-shadow);transition:border-color .2s}
+.status-card{background:var(--card,var(--surf));border:1px solid var(--card-border,var(--brd));border-radius:var(--r-sm);padding:24px 28px;position:relative;overflow:hidden;box-shadow:var(--card-shadow);transition:border-color .2s}
 .status-card:hover{border-color:var(--card-border-hover)}
 .status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.status-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.status-card.up::before{background:var(--grn)}
-.status-card.dn::before{background:var(--red)}
-.status-card.neut::before{background:var(--t2)}
-.status-card.warn::before{background:var(--amb)}
 .sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px}
 .sc-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;letter-spacing:-0.5px;line-height:1;color:#fff}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
@@ -189,7 +184,7 @@ main{padding:0 48px 64px}
 
 /* ─── COUNTRY DETAIL PANEL ─── */
 /* ─── SIDE PANELS (glassmorphism) ─── */
-#globe-wrapper{display:grid;grid-template-columns:280px 1fr 280px;gap:16px;align-items:center;min-height:600px;position:relative;background:transparent;padding:0 16px}
+#globe-wrapper{display:grid;grid-template-columns:320px 1fr 320px;gap:16px;align-items:center;min-height:600px;position:relative;background:transparent;padding:0 16px}
 .side-panel{background:rgba(8,10,20,0.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s ease;z-index:2;max-height:580px;overflow-y:auto;scrollbar-width:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 0 40px rgba(0,0,0,0.3)}
 .side-panel::-webkit-scrollbar{display:none}
 .side-panel.visible{opacity:1;pointer-events:auto}
