@@ -117,9 +117,8 @@ nav{
 .status-card.dn::before{background:var(--red)}
 .status-card.neut::before{background:var(--t2)}
 .status-card.warn::before{background:var(--amb)}
-.status-card.bt-gold::before{background:var(--gold)}.status-card.bt-red::before{background:#ef4444}.status-card.bt-orange::before{background:#f97316}.status-card.bt-blue::before{background:#3b82f6}
-.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
-.sc-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.sc-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px}
+.sc-val{font-family:"Alata",sans-serif;font-size:32px;font-weight:400;letter-spacing:-0.5px;line-height:1;color:#fff}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
 .sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500}
 .sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}
@@ -342,10 +341,10 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <main>
   <div class="status-row reveal">
-    <div class="status-card bt-gold neut" id="sc-gpr"><div class="sc-label">AI-GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
-    <div class="status-card bt-red neut" id="sc-mil"><div class="sc-label">Military Conflict</div><div class="sc-val" id="sc-mil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-mil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
-    <div class="status-card bt-orange neut" id="sc-ter"><div class="sc-label">Terrorism</div><div class="sc-val" id="sc-ter-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ter-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
-    <div class="status-card bt-blue neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card neut" id="sc-gpr"><div class="sc-label">AI-GPR Index</div><div class="sc-val" id="sc-gpr-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-gpr-badge">&#8212;</span></div></div>
+    <div class="status-card neut" id="sc-mil"><div class="sc-label">Military Conflict</div><div class="sc-val" id="sc-mil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-mil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card neut" id="sc-ter"><div class="sc-label">Terrorism</div><div class="sc-val" id="sc-ter-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-ter-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
+    <div class="status-card neut" id="sc-oil"><div class="sc-label">Oil / Energy Risk</div><div class="sc-val" id="sc-oil-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-oil-chg">&#8212;</span><span class="sc-note">M/M</span></div></div>
   </div>
 
   <!-- D3 WORLD MAP + SIDE PANELS -->
@@ -761,20 +760,20 @@ function renderCards(){
   var lv=gprLevel(latest);
   document.getElementById('sc-gpr-val').textContent=latest!=null?latest.toFixed(1):'\u2014';
   document.getElementById('sc-gpr-badge').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-  document.getElementById('sc-gpr').className='status-card bt-gold '+gprCardClass(latest);
+  document.getElementById('sc-gpr').className='status-card '+gprCardClass(latest);
   var el=D.evtLatest||{},ep=D.evtPrev||{};
   var mil=el.military_conflict,milP=ep.military_conflict;
   document.getElementById('sc-mil-val').textContent=mil!=null?mil.toFixed(1):'\u2014';
   var mc=fmtEvtChg(mil,milP);document.getElementById('sc-mil-chg').textContent=mc.text;document.getElementById('sc-mil-chg').className='sc-delta '+mc.cls;
-  document.getElementById('sc-mil').className='status-card bt-red '+gprCardClass(mil);
+  document.getElementById('sc-mil').className='status-card '+gprCardClass(mil);
   var ter=el.terrorism,terP=ep.terrorism;
   document.getElementById('sc-ter-val').textContent=ter!=null?ter.toFixed(1):'\u2014';
   var tc=fmtEvtChg(ter,terP);document.getElementById('sc-ter-chg').textContent=tc.text;document.getElementById('sc-ter-chg').className='sc-delta '+tc.cls;
-  document.getElementById('sc-ter').className='status-card bt-orange '+gprCardClass(ter);
+  document.getElementById('sc-ter').className='status-card '+gprCardClass(ter);
   var oilV=oil.length?oil[oil.length-1]:null,oilP=oil.length>=2?oil[oil.length-2]:null;
   document.getElementById('sc-oil-val').textContent=oilV!=null?oilV.toFixed(1):'\u2014';
   var oc=fmtEvtChg(oilV,oilP);document.getElementById('sc-oil-chg').textContent=oc.text;document.getElementById('sc-oil-chg').className='sc-delta '+oc.cls;
-  document.getElementById('sc-oil').className='status-card bt-blue '+gprCardClass(oilV);
+  document.getElementById('sc-oil').className='status-card '+gprCardClass(oilV);
   if(D.lastDate)document.getElementById('update-badge').textContent='DATA: '+D.lastDate;
 }
 
@@ -1040,19 +1039,6 @@ function renderWorldMap(){
       if(!_gUserDisabled){_gRestartTimer=setTimeout(function(){_gAutoRotate=true;_startGlobeRotate()},hasDragged?2000:100)}
     });
   svg.call(drag);
-
-  // Wheel zoom
-  svg.on('wheel',function(ev){
-    ev.preventDefault();
-    var factor=ev.deltaY>0?0.92:1.08;
-    _gScale=Math.max(_gMinScale,Math.min(_gMaxScale,_gScale*factor));
-    _gProj.scale(_gScale);
-    svg.selectAll('.country-path').attr('d',_gPath);
-    svg.select('.graticule-path').attr('d',_gPath);
-    svg.select('.ocean-path').attr('d',_gPath);
-    svg.select('.globe-shadow').attr('r',_gScale+4);
-    svg.select('.atmos-circle').attr('r',_gScale+10);
-  },{passive:false});
 
   // Start autorotate
   if(!_gUserDisabled){_gAutoRotate=true;_startGlobeRotate()}
