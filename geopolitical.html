@@ -1099,10 +1099,10 @@ function renderHeatmap(){
     html+='<span class="cont-name">'+cont+'</span>';
     html+='<span class="cont-count">'+cnt+' COUNTRIES</span>';
     html+='</div>';
-    html+='<div style="display:flex;gap:20px;align-items:center">';
-    html+='<div style="text-align:right"><div class="cont-stat-label">MAX GPR</div><div class="cont-stat-val" style="color:var(--gold)">'+maxGpr.toFixed(1)+'</div></div>';
-    html+='<div style="text-align:right"><div class="cont-stat-label">AVG GPR</div><div class="cont-stat-val" style="color:var(--white)">'+avgGpr.toFixed(1)+'</div></div>';
-    html+=contRiskBadge(maxGpr);
+    html+='<div style="display:flex;align-items:center;gap:24px">';
+    html+='<div style="text-align:right;min-width:60px"><div class="cont-stat-label" style="margin-bottom:2px">MAX GPR</div><div class="cont-stat-val" style="color:var(--gold)">'+maxGpr.toFixed(1)+'</div></div>';
+    html+='<div style="text-align:right;min-width:50px"><div class="cont-stat-label" style="margin-bottom:2px">AVG GPR</div><div class="cont-stat-val" style="color:var(--white)">'+avgGpr.toFixed(1)+'</div></div>';
+    html+='<div style="min-width:80px;text-align:center">'+contRiskBadge(maxGpr)+'</div>';
     html+='</div></div>';
     html+='<div class="continent-grid" style="display:'+(isOpen?'grid':'none')+'">';
     keys.forEach(function(k){
