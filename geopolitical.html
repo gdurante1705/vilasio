@@ -179,8 +179,7 @@ main{padding:0 48px 64px}
 .cont-count{font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);letter-spacing:1px}
 .cont-stat-label{font-family:'DM Mono',monospace;font-size:7px;color:var(--t3);letter-spacing:1px}
 .cont-stat-val{font-family:'Alata',sans-serif;font-size:14px}
-.continent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:0 8px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
-.continent-grid.open{max-height:2000px;padding:0 8px 16px}
+.continent-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:0 8px 16px}
 .heat-cell{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .heat-cell:hover{border-color:var(--card-border-hover);transform:translateY(-1px)}
 .heat-cell.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(200,168,75,0.15)}
@@ -588,6 +587,28 @@ var CONTINENT_MAP={
 "Africa":["Egypt","Nigeria","South Africa","Libya","Sudan","South Sudan","Somalia","Ethiopia","Kenya","Ghana","Tanzania","DRC","Rwanda","Burundi","Mozambique","Zimbabwe","Angola","Cameroon","Ivory Coast","Morocco","Algeria","Tunisia","Senegal","Mali","Burkina Faso","Niger","Chad","Uganda","Zambia"]
 };
 var CONTINENT_ORDER=["Middle East","Europe","Americas","Asia","Africa","Other"];
+var COUNTRY_CENTROIDS={"USA":[38,-97],"Iran":[32,53],"Israel":[31,35],"Saudi Arabia":[24,45],"UAE":[24,54],"Russia":[60,90],"China":[35,105],"UK":[54,-2],"Germany":[51,10],"France":[46,2],"Ukraine":[49,32],"Japan":[36,138],"Brazil":[-10,-55],"India":[20,78],"Turkey":[39,35],"Egypt":[26,30],"Nigeria":[10,8],"South Africa":[-29,25],"Australia":[-25,133],"Canada":[56,-96],"Mexico":[23,-102],"Pakistan":[30,70],"Argentina":[-34,-64],"Iraq":[33,44],"Syria":[35,38],"Lebanon":[34,36],"Qatar":[25,51],"Kuwait":[29,48],"Venezuela":[8,-66],"Libya":[27,17],"Yemen":[15,48],"North Korea":[40,127],"Taiwan":[24,121],"Poland":[52,20],"Sweden":[62,15],"South Korea":[36,128],"Italy":[42,12],"Spain":[40,-4],"Colombia":[4,-72],"Indonesia":[-5,120],"Thailand":[15,100],"Philippines":[13,122],"Afghanistan":[34,66],"Somalia":[6,46],"Sudan":[12,30],"Myanmar":[20,96]};
+function rotateToCountry(lat,lon){
+  if(!_gProj||!_gSvg)return;
+  var startR=[_gRotate[0],_gRotate[1]];
+  var targetR=[-lon,-lat];
+  var dur=800,start=performance.now();
+  var wasAuto=_gAutoRotate;_gAutoRotate=false;
+  if(_gAnimFrame){cancelAnimationFrame(_gAnimFrame);_gAnimFrame=null}
+  function step(now){
+    var t=Math.min((now-start)/dur,1);
+    var e=t<0.5?2*t*t:-1+(4-2*t)*t;
+    _gRotate[0]=startR[0]+(targetR[0]-startR[0])*e;
+    _gRotate[1]=startR[1]+(targetR[1]-startR[1])*e;
+    _gProj.rotate(_gRotate);
+    _gSvg.selectAll('.country-path').attr('d',_gPath);
+    _gSvg.select('.graticule-path').attr('d',_gPath);
+    _gSvg.select('.ocean-path').attr('d',_gPath);
+    if(t<1){requestAnimationFrame(step)}
+    else if(wasAuto){_gRestartTimer=setTimeout(function(){_gAutoRotate=true;_startGlobeRotate()},2000)}
+  }
+  requestAnimationFrame(step);
+}
 function getContinent(countryName){
   for(var c in CONTINENT_MAP){if(CONTINENT_MAP[c].indexOf(countryName)>=0)return c}
   return"Other";
@@ -601,24 +622,20 @@ function contRiskBadge(maxGpr){
 function toggleContinent(header){
   var grid=header.nextElementSibling;
   var arrow=header.querySelector('.continent-arrow');
-  var isOpen=grid.classList.contains('open');
-  var scrollY=window.scrollY;
-  grid.classList.toggle('open',!isOpen);
+  var isOpen=grid.style.display==='grid';
+  grid.style.display=isOpen?'none':'grid';
   arrow.classList.toggle('open',!isOpen);
-  requestAnimationFrame(function(){window.scrollTo({top:scrollY,behavior:'instant'})});
 }
 function toggleAllContinents(){
   var sections=document.querySelectorAll('.continent-grid');
   var arrows=document.querySelectorAll('.continent-arrow');
   var btn=document.getElementById('expand-all-btn');
   var anyOpen=false;
-  sections.forEach(function(s){if(s.classList.contains('open'))anyOpen=true});
+  sections.forEach(function(s){if(s.style.display==='grid')anyOpen=true});
   var newState=!anyOpen;
-  var scrollY=window.scrollY;
-  sections.forEach(function(s){s.classList.toggle('open',newState)});
+  sections.forEach(function(s){s.style.display=newState?'grid':'none'});
   arrows.forEach(function(a){a.classList.toggle('open',newState)});
   btn.textContent=newState?'Collapse All':'Expand All';
-  requestAnimationFrame(function(){window.scrollTo({top:scrollY,behavior:'instant'})});
 }
 function updateOverlay(countryName,score){
   var el=document.getElementById('geo-overlay');
@@ -1081,7 +1098,7 @@ function renderHeatmap(){
     html+='<div style="text-align:right"><div class="cont-stat-label">AVG GPR</div><div class="cont-stat-val" style="color:var(--white)">'+avgGpr.toFixed(1)+'</div></div>';
     html+=contRiskBadge(maxGpr);
     html+='</div></div>';
-    html+='<div class="continent-grid'+(isOpen?' open':'')+'">';
+    html+='<div class="continent-grid" style="display:'+(isOpen?'grid':'none')+'">';
     keys.forEach(function(k){
       var c=countries[k],v=c.latest;
       var esc=k.replace(/'/g,"\\'");
@@ -1168,6 +1185,12 @@ function selectCountry(key){
 
     // Fade in
     pl.classList.add('visible');pr.classList.add('visible');
+
+    // Scroll to globe and rotate to country
+    var globeEl=document.getElementById('globe-wrapper');
+    if(globeEl){globeEl.scrollIntoView({behavior:'smooth',block:'center'})}
+    var centroid=COUNTRY_CENTROIDS[c.name];
+    if(centroid){setTimeout(function(){rotateToCountry(centroid[0],centroid[1])},400)}
   },150);
 
   renderHeatmap();
