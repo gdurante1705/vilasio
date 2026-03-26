@@ -370,7 +370,13 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
           <div id="pr-content" style="display:none">
             <div class="sp-label" style="color:#c8a84b;font-size:9px">GPR HISTORY</div>
             <div style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:12px" id="pr-subtitle">&#8212;</div>
-            <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
+            <div id="pr-nodata" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:8px;opacity:0.4">
+              <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#6b7280;text-transform:uppercase">No historical data</div>
+              <div class="nd-name" style="font-family:'DM Mono',monospace;font-size:7px;color:#374151"></div>
+            </div>
+            <div id="pr-chart-area">
+              <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
+            </div>
             <div class="sp-mini-stats" id="pr-stats">
               <div class="sp-mini-stat"><div class="sp-label">Current</div><div class="sp-val" id="pr-current">&#8212;</div></div>
               <div class="sp-mini-stat"><div class="sp-label">Peak (10Y)</div><div class="sp-val" id="pr-peak">&#8212;</div></div>
@@ -936,19 +942,29 @@ function selectCountry(key){
     fetchMacro(key);
 
     // Right panel data
-    document.getElementById('pr-subtitle').textContent=c.name+' \u00b7 Last 10 Years';
     if(_countryChart){_countryChart.destroy();_countryChart=null}
     var s=c.series;
+    var noDataEl=document.getElementById('pr-nodata');
+    var chartWrap=document.getElementById('pr-chart-area');
     if(s&&s.dates&&s.dates.length){
+      document.getElementById('pr-subtitle').textContent=c.name+' \u00b7 Last 10 Years';
+      if(noDataEl)noDataEl.style.display='none';
+      if(chartWrap)chartWrap.style.display='';
       var ctx=document.getElementById('countryChart');
       _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10,bottom:10,left:0,right:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:7},maxTicksLimit:5},grid:{display:false}},y:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
-      // Mini stats
       var vals=s.values.filter(function(v){return v!=null});
       var peak=vals.length?Math.max.apply(null,vals):null;
       var avg=vals.length?(vals.reduce(function(a,b){return a+b},0)/vals.length):null;
       document.getElementById('pr-current').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
       document.getElementById('pr-peak').textContent=peak!=null?peak.toFixed(1):'\u2014';
       document.getElementById('pr-avg').textContent=avg!=null?avg.toFixed(1):'\u2014';
+    } else {
+      if(chartWrap)chartWrap.style.display='none';
+      document.getElementById('pr-subtitle').textContent='';
+      if(noDataEl){noDataEl.style.display='flex';noDataEl.querySelector('.nd-name').textContent=c.name}
+      document.getElementById('pr-current').textContent='\u2014';
+      document.getElementById('pr-peak').textContent='\u2014';
+      document.getElementById('pr-avg').textContent='\u2014';
     }
 
     // Fade in
