@@ -207,6 +207,14 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .foot-right{text-align:center}
   .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
 }
+
+/* Skeleton loader */
+.skeleton{background:linear-gradient(90deg,rgba(18,18,22,0.9) 25%,rgba(30,30,38,0.9) 50%,rgba(18,18,22,0.9) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:10px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-stat{height:80px;margin-bottom:12px}
+.skel-chart{height:300px;margin:16px 0}
+.skel-row{height:40px;margin:6px 0}
+.skel-hide{display:none}
 </style>
 </head>
 <body>
@@ -260,12 +268,28 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 </section>
 
 <main>
+  <!-- SKELETON: STATUS CARDS -->
+  <div class="skel-wrap" id="skel-stats">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:0 48px 16px">
+      <div class="skeleton skel-stat"></div>
+      <div class="skeleton skel-stat"></div>
+      <div class="skeleton skel-stat"></div>
+      <div class="skeleton skel-stat"></div>
+    </div>
+  </div>
+
   <!-- STATUS CARDS -->
   <div class="status-row reveal">
     <div class="status-card" id="sc-dxy"><div class="sc-label">DXY</div><div class="sc-val" id="sc-dxy-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-dxy-chg">&#8212;</span><span class="sc-note">vs prior close</span></div></div>
     <div class="status-card" id="sc-eur"><div class="sc-label">EUR/USD</div><div class="sc-val" id="sc-eur-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-eur-chg">&#8212;</span><span class="sc-note">vs prior close</span></div></div>
     <div class="status-card" id="sc-corr1"><div class="sc-label">SPX-Gold Corr</div><div class="sc-val" id="sc-corr1-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr1-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
     <div class="status-card" id="sc-corr2"><div class="sc-label">BTC-SPX Corr</div><div class="sc-val" id="sc-corr2-val">&#8212;</div><div class="sc-sub"><span class="sc-delta" id="sc-corr2-chg">&#8212;</span><span class="sc-note">90-day rolling</span></div></div>
+  </div>
+
+  <!-- SKELETON: CHARTS -->
+  <div class="skel-wrap" id="skel-charts" style="padding:0 48px">
+    <div class="skeleton skel-chart" style="margin-bottom:24px"></div>
+    <div class="skeleton skel-chart"></div>
   </div>
 
   <!-- SECTOR ROTATION -->
@@ -747,7 +771,7 @@ var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isInte
 document.querySelectorAll(".reveal").forEach(function(e){obs.observe(e)});
 
 /* --- INIT --- */
-(function(){fetch(API+"/api/crossmarket").then(function(r){return r.json()}).then(function(d){if(d.status!=="ok"){console.error("API error:",d.message);return}D=d;renderAll()}).catch(function(e){console.error("CrossMarket fetch failed:",e)})})();
+(function(){fetch(API+"/api/crossmarket").then(function(r){return r.json()}).then(function(d){if(d.status!=="ok"){console.error("API error:",d.message);return}D=d;renderAll();document.querySelectorAll('.skel-wrap').forEach(function(el){el.classList.add('skel-hide')})}).catch(function(e){console.error("CrossMarket fetch failed:",e)})})();
 </script>
 </body>
 </html>
