@@ -179,7 +179,7 @@ main{padding:0 48px 64px}
 
 /* ─── COUNTRY DETAIL PANEL ─── */
 /* ─── SIDE PANELS (glassmorphism) ─── */
-#globe-wrapper{display:grid;grid-template-columns:280px 1fr 280px;gap:0;align-items:center;min-height:600px;position:relative;background:transparent}
+#globe-wrapper{display:grid;grid-template-columns:280px 1fr 280px;gap:16px;align-items:center;min-height:600px;position:relative;background:transparent;padding:0 16px}
 .side-panel{background:rgba(8,10,20,0.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s ease;z-index:2;max-height:580px;overflow-y:auto;scrollbar-width:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 0 40px rgba(0,0,0,0.3)}
 .side-panel::-webkit-scrollbar{display:none}
 .side-panel.visible{opacity:1;pointer-events:auto}
@@ -195,15 +195,16 @@ main{padding:0 48px 64px}
 .role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);width:70px;text-align:right}
 .role-bar{height:4px;border-radius:2px;min-width:2px;transition:width .3s}
 .role-val{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,0.85);min-width:35px}
-.cp-chart-wrap{width:100%;height:220px}
+.cp-chart-wrap{width:100%;height:200px}
 .cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:0}
 .cp-macro-3{grid-template-columns:1fr 1fr 1fr}
 .macro-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px}
 .macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:3px}
 .macro-val{font-family:'Alata',sans-serif;font-size:14px;font-weight:400;color:rgba(255,255,255,0.85)}
-.sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:12px}
-.sp-mini-stat .sp-label{margin-bottom:2px}
-.sp-mini-stat .sp-val{font-family:'Alata',sans-serif;font-size:16px;font-weight:400;color:var(--white)}
+.sp-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;justify-items:center}
+.sp-mini-stat{text-align:center}
+.sp-mini-stat .sp-label{margin-bottom:2px;color:rgba(255,255,255,0.4);letter-spacing:1.5px}
+.sp-mini-stat .sp-val{font-family:'Alata',sans-serif;font-size:20px;font-weight:400;color:#fff}
 
 /* ─── TABLE ─── */
 .data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
@@ -339,18 +340,18 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
             <div class="sp-label">Country</div>
             <div class="cp-name" id="cp-name">&#8212;</div>
             <div class="sp-sep"></div>
-            <div class="sp-label">GPR Score</div>
+            <div class="sp-label" style="margin-top:16px">GPR Score</div>
             <div class="cp-score" id="cp-score">&#8212;</div>
             <div class="cp-change" id="cp-change">&#8212;</div>
             <div id="cp-level" style="margin-top:6px">&#8212;</div>
             <div class="sp-sep"></div>
-            <div class="cp-roles">
+            <div class="cp-roles" style="margin-top:14px">
               <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar" id="cp-bar-init" style="background:linear-gradient(90deg,var(--red),transparent)"></div><span class="role-val" id="cp-init">0</span></div>
               <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar" id="cp-bar-resp" style="background:linear-gradient(90deg,var(--amb),transparent)"></div><span class="role-val" id="cp-resp">0</span></div>
               <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar" id="cp-bar-spill" style="background:linear-gradient(90deg,var(--bp),transparent)"></div><span class="role-val" id="cp-spill">0</span></div>
             </div>
             <div class="sp-sep"></div>
-            <div class="cp-macro" id="cp-macro">
+            <div class="cp-macro" id="cp-macro" style="margin-top:16px">
               <div class="macro-item"><div class="macro-label">GDP Growth</div><div class="macro-val" id="mc-gdp">&#8212;</div></div>
               <div class="macro-item"><div class="macro-label">Inflation</div><div class="macro-val" id="mc-cpi">&#8212;</div></div>
             </div>
@@ -367,8 +368,8 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
         <div class="side-panel" id="panel-right">
           <div class="sp-placeholder" id="pr-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Click a country</div>
           <div id="pr-content" style="display:none">
-            <div class="sp-label" style="color:var(--gold)">GPR History</div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;color:#6b7280;margin-bottom:12px" id="pr-subtitle">&#8212;</div>
+            <div class="sp-label" style="color:#c8a84b;font-size:9px">GPR HISTORY</div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:12px" id="pr-subtitle">&#8212;</div>
             <div class="cp-chart-wrap"><canvas id="countryChart"></canvas></div>
             <div class="sp-mini-stats" id="pr-stats">
               <div class="sp-mini-stat"><div class="sp-label">Current</div><div class="sp-val" id="pr-current">&#8212;</div></div>
@@ -940,7 +941,7 @@ function selectCountry(key){
     var s=c.series;
     if(s&&s.dates&&s.dates.length){
       var ctx=document.getElementById('countryChart');
-      _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#374151',font:{family:'"DM Mono",monospace',size:8},maxTicksLimit:6},grid:{color:'rgba(255,255,255,0.03)'}},y:{ticks:{color:'#374151',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'rgba(255,255,255,0.03)'}}}}});
+      _countryChart=new Chart(ctx,{type:'line',data:{labels:s.dates,datasets:[{label:c.name+' GPR',data:s.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10,bottom:10,left:0,right:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:7},maxTicksLimit:5},grid:{display:false}},y:{ticks:{color:'rgba(255,255,255,0.3)',font:{family:'"DM Mono",monospace',size:8}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
       // Mini stats
       var vals=s.values.filter(function(v){return v!=null});
       var peak=vals.length?Math.max.apply(null,vals):null;
