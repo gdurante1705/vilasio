@@ -179,7 +179,8 @@ main{padding:0 48px 64px}
 .cont-count{font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);letter-spacing:1px}
 .cont-stat-label{font-family:'DM Mono',monospace;font-size:7px;color:var(--t3);letter-spacing:1px}
 .cont-stat-val{font-family:'Alata',sans-serif;font-size:14px}
-.continent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:0 8px 16px}
+.continent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:0 8px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.continent-grid.open{max-height:2000px;padding:0 8px 16px}
 .heat-cell{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-xs);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .heat-cell:hover{border-color:var(--card-border-hover);transform:translateY(-1px)}
 .heat-cell.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(200,168,75,0.15)}
@@ -600,20 +601,24 @@ function contRiskBadge(maxGpr){
 function toggleContinent(header){
   var grid=header.nextElementSibling;
   var arrow=header.querySelector('.continent-arrow');
-  var isOpen=grid.style.display!=='none';
-  grid.style.display=isOpen?'none':'grid';
+  var isOpen=grid.classList.contains('open');
+  var scrollY=window.scrollY;
+  grid.classList.toggle('open',!isOpen);
   arrow.classList.toggle('open',!isOpen);
+  requestAnimationFrame(function(){window.scrollTo({top:scrollY,behavior:'instant'})});
 }
 function toggleAllContinents(){
   var sections=document.querySelectorAll('.continent-grid');
   var arrows=document.querySelectorAll('.continent-arrow');
   var btn=document.getElementById('expand-all-btn');
   var anyOpen=false;
-  sections.forEach(function(s){if(s.style.display!=='none')anyOpen=true});
+  sections.forEach(function(s){if(s.classList.contains('open'))anyOpen=true});
   var newState=!anyOpen;
-  sections.forEach(function(s){s.style.display=newState?'grid':'none'});
+  var scrollY=window.scrollY;
+  sections.forEach(function(s){s.classList.toggle('open',newState)});
   arrows.forEach(function(a){a.classList.toggle('open',newState)});
   btn.textContent=newState?'Collapse All':'Expand All';
+  requestAnimationFrame(function(){window.scrollTo({top:scrollY,behavior:'instant'})});
 }
 function updateOverlay(countryName,score){
   var el=document.getElementById('geo-overlay');
@@ -1076,7 +1081,7 @@ function renderHeatmap(){
     html+='<div style="text-align:right"><div class="cont-stat-label">AVG GPR</div><div class="cont-stat-val" style="color:var(--white)">'+avgGpr.toFixed(1)+'</div></div>';
     html+=contRiskBadge(maxGpr);
     html+='</div></div>';
-    html+='<div class="continent-grid" style="display:'+(isOpen?'grid':'none')+'">';
+    html+='<div class="continent-grid'+(isOpen?' open':'')+'">';
     keys.forEach(function(k){
       var c=countries[k],v=c.latest;
       var esc=k.replace(/'/g,"\\'");
