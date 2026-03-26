@@ -201,7 +201,7 @@ main{padding:0 48px 64px}
 .cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .macro-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;min-height:60px;display:flex;flex-direction:column;justify-content:space-between}
 .macro-item.span2{grid-column:span 2}
-.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px}
+.macro-label{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px}
 .macro-val{font-family:'Alata',sans-serif;font-size:16px;font-weight:400;color:#fff}
 .gpr-tog{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:none;border:1px solid rgba(255,255,255,0.12);color:#6b7280;cursor:pointer;border-radius:3px;transition:all .15s}
 .gpr-tog.active{border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.08)}
@@ -657,8 +657,17 @@ function _startGlobeRotate(){
 
 function _updateGlobeSelection(){
   if(!_gSvg)return;
-  _gSvg.selectAll('.country-path')
-    .classed('selected',function(f){return resolveGprName(f.properties.name)===_selectedCountry});
+  _gSvg.selectAll('.country-path').each(function(f){
+    var n=resolveGprName(f.properties.name);
+    var isSel=n===_selectedCountry;
+    d3.select(this).classed('selected',isSel);
+    if(isSel){d3.select(this).attr('stroke','#c8a84b').attr('stroke-width',1.8)}
+    else{
+      var c=D&&D.countries?D.countries[n]:null;
+      var hr=c&&c.latest!=null&&c.latest>100;
+      d3.select(this).attr('stroke',hr?'rgba(255,100,80,0.9)':'rgba(255,255,255,0.55)').attr('stroke-width',hr?1.3:0.7);
+    }
+  });
 }
 
 var _gStarsInit=false;
