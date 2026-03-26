@@ -1066,6 +1066,13 @@ window.addEventListener('resize',function(){
 function renderHeatmap(){
   var countries=D.countries||{};
   var el=document.getElementById('heat-grid');
+  // Save open state before re-render
+  var openSet={};
+  el.querySelectorAll('.continent-section').forEach(function(sec){
+    var grid=sec.querySelector('.continent-grid');
+    var nameEl=sec.querySelector('.cont-name');
+    if(grid&&nameEl&&grid.style.display==='grid')openSet[nameEl.textContent.trim()]=true;
+  });
   // Group by continent
   var groups={};
   CONTINENT_ORDER.forEach(function(c){groups[c]=[]});
@@ -1074,7 +1081,6 @@ function renderHeatmap(){
     if(!groups[cont])groups[cont]=[];
     groups[cont].push(k);
   });
-  // Sort each group by score desc
   Object.keys(groups).forEach(function(g){
     groups[g].sort(function(a,b){return(countries[b].latest||0)-(countries[a].latest||0)});
   });
@@ -1085,7 +1091,7 @@ function renderHeatmap(){
     var maxGpr=0,sumGpr=0,cnt=0;
     keys.forEach(function(k){var v=countries[k].latest||0;if(v>maxGpr)maxGpr=v;sumGpr+=v;cnt++});
     var avgGpr=cnt?sumGpr/cnt:0;
-    var isOpen=cont==='Middle East';
+    var isOpen=!!openSet[cont];
     html+='<div class="continent-section">';
     html+='<div class="continent-header" onclick="toggleContinent(this)">';
     html+='<div style="display:flex;align-items:center;gap:12px">';
