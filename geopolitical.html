@@ -200,7 +200,7 @@ main{padding:0 48px 64px}
 .cp-roles{display:flex;flex-direction:column;gap:8px}
 .role-bar-wrap{display:flex;align-items:center;justify-content:space-between}
 .role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);width:80px}
-.role-bar{flex:1;height:3px;border-radius:2px;min-width:2px;transition:width .3s;margin:0 10px}
+.role-bar{flex:0 0 auto;height:3px;border-radius:2px;min-width:2px;max-width:100%;transition:width .3s;margin:0 10px}
 .role-val{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,0.8);width:35px;text-align:right}
 .cp-chart-wrap{width:100%;height:200px}
 .cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -1148,13 +1148,16 @@ function selectCountry(key){
     document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
     var chgEl=document.getElementById('cp-change');chgEl.textContent=fmtChg(c.change)+' M/M';chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
     document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-    var maxBar=Math.max(c.initiator||0,c.respondent||0,c.spillover||0,1);
-    document.getElementById('cp-init').textContent=(c.initiator||0).toFixed(1);
-    document.getElementById('cp-resp').textContent=(c.respondent||0).toFixed(1);
-    document.getElementById('cp-spill').textContent=(c.spillover||0).toFixed(1);
-    document.getElementById('cp-bar-init').style.width=((c.initiator||0)/maxBar*100).toFixed(1)+'%';
-    document.getElementById('cp-bar-resp').style.width=((c.respondent||0)/maxBar*100).toFixed(1)+'%';
-    document.getElementById('cp-bar-spill').style.width=((c.spillover||0)/maxBar*100).toFixed(1)+'%';
+    var iv=parseFloat(c.initiator)||0;
+    var rv=parseFloat(c.respondent)||0;
+    var sv=parseFloat(c.spillover)||0;
+    var maxV=Math.max(iv,rv,sv,0.001);
+    document.getElementById('cp-init').textContent=iv.toFixed(1);
+    document.getElementById('cp-resp').textContent=rv.toFixed(1);
+    document.getElementById('cp-spill').textContent=sv.toFixed(1);
+    document.getElementById('cp-bar-init').style.width=(iv/maxV*100).toFixed(1)+'%';
+    document.getElementById('cp-bar-resp').style.width=(rv/maxV*100).toFixed(1)+'%';
+    document.getElementById('cp-bar-spill').style.width=(sv/maxV*100).toFixed(1)+'%';
     fetchMacro(key);
 
     // Right panel data
