@@ -234,7 +234,8 @@ nav{
 .pillars-h2{font-family:"Alata",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-1px;line-height:1.1;margin-bottom:52px}
 .pillars-h2 em{font-style:italic;color:var(--gold2)}
 
-.pillars-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.pillars-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:1200px){.pillars-grid{grid-template-columns:repeat(2,1fr)}}
 
 .pillar{
   background:var(--card);
@@ -342,7 +343,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .hero{padding:120px 24px 80px}
   .ticker{display:none}
   .pillars{padding:60px 24px}
-  .pillars-grid{grid-template-columns:1fr}
+  .pillars-grid{grid-template-columns:repeat(2,1fr)}
   .manifesto{padding:60px 24px}
   .stats-strip{grid-template-columns:1fr 1fr;padding:40px 24px;gap:16px}
   .divider{margin:0 24px}
@@ -354,6 +355,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
   .stats-strip{grid-template-columns:1fr 1fr}
 }
+@media(max-width:600px){.pillars-grid{grid-template-columns:1fr}}
 @media(max-width:480px){
   .hero-h1{font-size:clamp(40px,12vw,60px)}
   .hero-ctas{flex-direction:column;gap:12px}
@@ -376,7 +378,19 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   </a>
   <div class="nav-links">
     <a href="index.html" class="nav-link active">Home</a>
-    <a href="cot.html" class="nav-link">COT Intelligence</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-dropdown-arrow" id="tools-arrow">▾</span></button>
+      <div class="nav-dropdown-menu">
+        <a href="cot.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#5b8af0"></span>COT Intelligence</a>
+        <a href="liquidity.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#06b6d4"></span>Liquidity Monitor</a>
+        <a href="bonds.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Bonds &amp; Rates</a>
+        <a href="macro.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#f59e0b"></span>Macro Dashboard</a>
+        <a href="crossmarket.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#8b5cf6"></span>Cross-Market</a>
+        <a href="earnings.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Earnings Intelligence</a>
+        <a href="congressional.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#c8a84b"></span>Congressional</a>
+        <a href="geopolitical.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#ef4444"></span>Geopolitical Risk</a>
+      </div>
+    </div>
     <a href="owl.html" class="nav-link">The Owl</a>
     <a href="blog.html" class="nav-link">Insights</a>
     <a href="about.html" class="nav-link">About</a>
@@ -388,7 +402,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <!-- Mobile menu -->
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Home</a>
+  <div class="nav-mobile-divider"></div>
+  <div class="nav-mobile-sublabel">Tools</div>
   <a href="cot.html">COT Intelligence</a>
+  <a href="liquidity.html">Liquidity Monitor</a>
+  <a href="bonds.html">Bonds &amp; Rates</a>
+  <a href="macro.html">Macro Dashboard</a>
+  <a href="crossmarket.html">Cross-Market</a>
+  <a href="earnings.html">Earnings Intelligence</a>
+  <a href="congressional.html">Congressional</a>
+  <a href="geopolitical.html">Geopolitical Risk</a>
+  <div class="nav-mobile-divider"></div>
   <a href="owl.html">The Owl</a>
   <a href="blog.html">Insights</a>
   <a href="about.html">About</a>
@@ -399,26 +423,24 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <section class="hero">
   <div class="hero-content">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="hero-logo" alt="Vilasio">
-    <div class="hero-tag">Financial Analytics &amp; Market Research</div>
-    <h1 class="hero-h1">Vilasio</h1>
-    <p class="hero-tagline">Market Structure · Institutional Positioning · Macro Analytics</p>
+    <div class="hero-tag">Financial Intelligence Platform</div>
+    <h1 class="hero-h1">See the market.<br>Before it moves.</h1>
+    <p class="hero-tagline">8 INSTITUTIONAL-GRADE TOOLS · REAL-TIME DATA · SMART MONEY SIGNALS</p>
     <p class="hero-desc">
-      We build tools and analytics for traders who care about
-      <strong>how</strong> they perform — not just <strong>how much</strong>.
-      Institutional positioning data, market structure and actionable insights.
+      Vilasio aggregates COT positioning, liquidity flows, macro regimes, geopolitical risk and insider intelligence into one unified platform — built for traders who think before they act.
     </p>
     <div class="hero-ctas">
-      <a href="cot.html" class="btn-primary">COT Intelligence</a>
+      <a href="cot.html" class="btn-primary">Explore the Platform</a>
       <a href="about.html" class="btn-ghost">About VILASIO</a>
     </div>
   </div>
   <div class="ticker">
+    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Tools</span><span class="ticker-val">8 Premium</span></div>
     <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Markets</span><span class="ticker-val">39 Futures</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Data</span><span class="ticker-val">CFTC Weekly</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Categories</span><span class="ticker-val">8 Sectors</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Analysis</span><span class="ticker-val">Flow & Positioning</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Signal</span><span class="ticker-val">Z-Score Extremes</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Focus</span><span class="ticker-val">Institutional Edge</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Countries</span><span class="ticker-val">120+ Monitored</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Data</span><span class="ticker-val">Real-Time</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Signals</span><span class="ticker-val">COT · Liquidity · Macro</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-label">Intelligence</span><span class="ticker-val">Insider + Geopolitical</span></div>
   </div>
 </section>
 
@@ -426,32 +448,111 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <!-- PILLARS -->
 <section class="pillars">
-  <p class="pillars-tag reveal">What we do</p>
-  <h2 class="pillars-h2 reveal">Two ways to build<br><em>a deeper edge.</em></h2>
+  <p class="pillars-tag reveal">The Platform</p>
+  <h2 class="pillars-h2 reveal">Every edge,<br><em>in one place.</em></h2>
+  <p class="reveal" style="font-size:15px;color:var(--t2);max-width:560px;margin-bottom:52px;font-family:'Roboto Slab',serif;font-weight:300;line-height:1.7">From central bank liquidity to congressional insider trades — Vilasio monitors the signals that institutional traders track.</p>
 
   <div class="pillars-grid">
     <a href="cot.html" class="pillar reveal">
+      <div style="height:2px;background:#5b8af0"></div>
       <div class="pillar-body">
         <div class="pillar-num">01</div>
-        <div class="pillar-icon">◈</div>
         <div class="pillar-title">COT Intelligence</div>
-        <div class="pillar-desc">Institutional positioning data across 39 futures markets. Capital flow analysis, correlation-based Sankey diagrams, Z-Score extremes and weekly CFTC reports — all in one dashboard.</div>
+        <div class="pillar-desc">CFTC commitment of traders across 39 futures markets. Track institutional positioning, Z-Score extremes and capital flows.</div>
       </div>
       <div class="pillar-footer">
-        <span class="pillar-cta">Explore COT Intelligence</span>
+        <span class="pillar-cta">Explore</span>
         <span class="pillar-arrow">→</span>
       </div>
     </a>
 
-    <a href="blog.html" class="pillar reveal reveal-d1">
+    <a href="liquidity.html" class="pillar reveal reveal-d1">
+      <div style="height:2px;background:#06b6d4"></div>
       <div class="pillar-body">
         <div class="pillar-num">02</div>
-        <div class="pillar-icon">◻</div>
-        <div class="pillar-title">Insights</div>
-        <div class="pillar-desc">Frameworks, analysis and perspectives on NQ Futures, order flow dynamics, options structure and performance quality from the Vilasio team.</div>
+        <div class="pillar-title">Liquidity Monitor</div>
+        <div class="pillar-desc">Fed balance sheet, RRP, TGA and SOFR spreads. Net liquidity is the tide that moves all boats.</div>
       </div>
       <div class="pillar-footer">
-        <span class="pillar-cta">Read Insights</span>
+        <span class="pillar-cta">Explore</span>
+        <span class="pillar-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="bonds.html" class="pillar reveal reveal-d2">
+      <div style="height:2px;background:#22c55e"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">Bonds &amp; Rates</div>
+        <div class="pillar-desc">Treasury yields, credit spreads and MOVE index. The macro backbone behind every risk-on/off decision.</div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-cta">Explore</span>
+        <span class="pillar-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="macro.html" class="pillar reveal reveal-d3">
+      <div style="height:2px;background:#f59e0b"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">04</div>
+        <div class="pillar-title">Macro Dashboard</div>
+        <div class="pillar-desc">Regime quadrant, inflation monitor, labor market and banking system health — the full macro picture.</div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-cta">Explore</span>
+        <span class="pillar-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="crossmarket.html" class="pillar reveal">
+      <div style="height:2px;background:#8b5cf6"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">05</div>
+        <div class="pillar-title">Cross-Market</div>
+        <div class="pillar-desc">Sector rotation, currency strength, commodity flows and cross-asset correlations in one view.</div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-cta">Explore</span>
+        <span class="pillar-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="earnings.html" class="pillar reveal reveal-d1">
+      <div style="height:2px;background:#22c55e"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">06</div>
+        <div class="pillar-title">Earnings Intelligence</div>
+        <div class="pillar-desc">PEAD scanner, EPS surprise history and post-earnings drift — find the trades institutional money is making.</div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-cta">Explore</span>
+        <span class="pillar-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="congressional.html" class="pillar reveal reveal-d2">
+      <div style="height:2px;background:#c8a84b"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">07</div>
+        <div class="pillar-title">Congressional</div>
+        <div class="pillar-desc">SEC Form 4 insider trades and congressional financial disclosures. Follow where smart money goes.</div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-cta">Explore</span>
+        <span class="pillar-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="geopolitical.html" class="pillar reveal reveal-d3">
+      <div style="height:2px;background:#ef4444"></div>
+      <div class="pillar-body">
+        <div class="pillar-num">08</div>
+        <div class="pillar-title">Geopolitical Risk</div>
+        <div class="pillar-desc">AI-GPR index for 120+ countries, interactive 3D globe and market impact overlay.</div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-cta">Explore</span>
         <span class="pillar-arrow">→</span>
       </div>
     </a>
@@ -464,12 +565,11 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <section class="manifesto">
   <div class="manifesto-eyebrow reveal">The Vilasio Philosophy</div>
   <div class="manifesto-lines">
-    <div class="manifesto-line reveal">Profit is visible.</div>
-    <div class="manifesto-line lit reveal reveal-d1"><em>Depth is invisible.</em></div>
-    <div class="manifesto-line reveal reveal-d1">Most metrics measure the result.</div>
-    <div class="manifesto-line lit reveal reveal-d2">We measure <em>the structure behind it.</em></div>
-    <div class="manifesto-line reveal reveal-d2">Because a system that wins once</div>
-    <div class="manifesto-line lit reveal reveal-d3">is not the same as a system that <em>keeps winning.</em></div>
+    <div class="manifesto-line reveal">We don't guess.</div>
+    <div class="manifesto-line lit reveal reveal-d1"><em>We read the data.</em></div>
+    <div class="manifesto-line reveal reveal-d1">COT. Liquidity. Macro. Geopolitics.</div>
+    <div class="manifesto-line lit reveal reveal-d2"><em>The full picture, not a fragment.</em></div>
+    <div class="manifesto-line reveal reveal-d3">Trade with institutional intelligence.</div>
   </div>
   <div class="manifesto-cta reveal">
     <a href="about.html" class="btn-ghost">Learn more about VILASIO</a>
@@ -481,20 +581,20 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <!-- STATS -->
 <div class="stats-strip">
   <div class="stat-item reveal">
+    <div class="stat-num">8</div>
+    <div class="stat-label">Intelligence Tools</div>
+  </div>
+  <div class="stat-item reveal reveal-d1">
     <div class="stat-num">39</div>
     <div class="stat-label">Futures Markets</div>
   </div>
-  <div class="stat-item reveal reveal-d1">
-    <div class="stat-num">8</div>
-    <div class="stat-label">Asset Categories</div>
-  </div>
   <div class="stat-item reveal reveal-d2">
-    <div class="stat-num">CFTC</div>
-    <div class="stat-label">Weekly Data Source</div>
+    <div class="stat-num">120+</div>
+    <div class="stat-label">Countries Monitored</div>
   </div>
   <div class="stat-item reveal reveal-d3">
-    <div class="stat-num">Weekly</div>
-    <div class="stat-label">Report Frequency</div>
+    <div class="stat-num">LIVE</div>
+    <div class="stat-label">Real-Time Data</div>
   </div>
 </div>
 

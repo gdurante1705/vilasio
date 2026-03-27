@@ -78,6 +78,19 @@ nav{
 .nav-mobile-menu.open{display:flex}
 .nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
 .nav-mobile-menu a:hover{color:var(--white)}
+.nav-mobile-divider{height:1px;background:var(--brd)}
+.nav-mobile-sublabel{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--t3);margin-top:4px}
+.nav-dropdown{position:relative}
+.nav-dropdown-toggle{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:5px;background:none;border:none;padding:0;transition:color .3s}
+.nav-dropdown-toggle:hover,.nav-dropdown-toggle.active{color:var(--white)}
+.nav-dropdown-arrow{font-size:7px;opacity:.4;transition:transform .2s;margin-left:2px}
+.nav-dropdown-arrow.open{transform:rotate(180deg)}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 18px);left:50%;transform:translateX(-50%);background:rgba(12,12,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(200,168,75,0.06);border-radius:var(--r-sm);padding:6px;min-width:200px;z-index:200}
+.nav-dropdown-menu.open{display:block}
+.nav-dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-xs);text-decoration:none;color:var(--t2);font-family:"DM Mono",monospace;font-size:10px;letter-spacing:1px;transition:all .15s;white-space:nowrap}
+.nav-dropdown-item:hover{background:rgba(255,255,255,0.04);color:var(--white)}
+.nav-dropdown-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.about-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
 
 /* ─── HERO ─── */
 .about-hero{padding:160px 64px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;min-height:80vh;max-width:1280px;margin:0 auto}
@@ -180,6 +193,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .nav-mobile-btn{display:block}
   .about-hero{grid-template-columns:1fr;padding:120px 24px 60px;gap:48px}
   .about-grid{grid-template-columns:1fr}
+  .about-grid-3{grid-template-columns:1fr}
   section.about-body{padding:60px 24px}
   .about-mission{padding:40px 24px}
   .divider{margin:0 24px}
@@ -207,7 +221,19 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   </a>
   <div class="nav-links">
     <a href="index.html" class="nav-link">Home</a>
-    <a href="cot.html" class="nav-link">COT Intelligence</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-dropdown-arrow" id="tools-arrow">▾</span></button>
+      <div class="nav-dropdown-menu">
+        <a href="cot.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#5b8af0"></span>COT Intelligence</a>
+        <a href="liquidity.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#06b6d4"></span>Liquidity Monitor</a>
+        <a href="bonds.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Bonds &amp; Rates</a>
+        <a href="macro.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#f59e0b"></span>Macro Dashboard</a>
+        <a href="crossmarket.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#8b5cf6"></span>Cross-Market</a>
+        <a href="earnings.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Earnings Intelligence</a>
+        <a href="congressional.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#c8a84b"></span>Congressional</a>
+        <a href="geopolitical.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#ef4444"></span>Geopolitical Risk</a>
+      </div>
+    </div>
     <a href="owl.html" class="nav-link">The Owl</a>
     <a href="blog.html" class="nav-link">Insights</a>
     <a href="about.html" class="nav-link active">About</a>
@@ -219,7 +245,17 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <!-- Mobile menu -->
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Home</a>
+  <div class="nav-mobile-divider"></div>
+  <div class="nav-mobile-sublabel">Tools</div>
   <a href="cot.html">COT Intelligence</a>
+  <a href="liquidity.html">Liquidity Monitor</a>
+  <a href="bonds.html">Bonds &amp; Rates</a>
+  <a href="macro.html">Macro Dashboard</a>
+  <a href="crossmarket.html">Cross-Market</a>
+  <a href="earnings.html">Earnings Intelligence</a>
+  <a href="congressional.html">Congressional</a>
+  <a href="geopolitical.html">Geopolitical Risk</a>
+  <div class="nav-mobile-divider"></div>
   <a href="owl.html">The Owl</a>
   <a href="blog.html">Insights</a>
   <a href="about.html">About</a>
@@ -230,14 +266,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <div class="about-hero">
   <div>
     <div class="ah-tag">About Vilasio</div>
-    <h1 class="ah-h1">We built the tools<br>we <em>needed</em> ourselves.</h1>
+    <h1 class="ah-h1">Built for traders<br>who <em>think.</em></h1>
     <p class="ah-desc">
-      Vilasio was created by professional traders who spent years across global futures, commodities and financial markets and
-      found that <strong>no existing tool could surface what actually mattered</strong> —
-      the structural positioning behind price.<br><br>
-      Deep experience across <strong>multiple asset classes, timeframes and trading styles</strong>
-      gave us the perspective to build something different.
-      COT Intelligence is the result.
+      Vilasio is a financial intelligence platform that turns institutional-grade data into clear, actionable tools for serious traders.
     </p>
   </div>
   <div class="ah-visual">
@@ -260,35 +291,79 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <!-- ABOUT BODY -->
 <section class="about-body">
-  <p class="s-tag reveal">What we focus on</p>
-  <h2 class="s-h2 reveal">Built on depth.<br><em>Not theory.</em></h2>
+  <p class="s-tag reveal">The Mission</p>
+  <h2 class="s-h2 reveal">We close the gap.<br><em>Retail meets institutional.</em></h2>
+  <p class="s-sub reveal" style="margin-top:20px">Most retail traders are blind to what institutions actually do. They trade price — we trade positioning, liquidity, and regime. Vilasio was built to close that gap.</p>
+  <p class="s-sub reveal" style="margin-top:16px;margin-bottom:64px">We take the same data that hedge funds and institutional desks use — COT reports, Fed liquidity flows, macro indicators, geopolitical risk models, insider trades — and make it accessible, visual, and actionable. No noise. No hype. Just the data that moves markets.</p>
 
-  <div class="about-grid">
+  <p class="s-tag reveal">What we track</p>
+  <h2 class="s-h2 reveal">8 tools.<br><em>One platform.</em></h2>
+
+  <div class="about-grid" style="margin-top:32px">
     <div class="ag-card reveal">
-      <div class="ag-icon">⬡</div>
-      <div class="ag-title">Institutional Positioning</div>
-      <div class="ag-desc">We analyze CFTC Commitment of Traders data to reveal how large speculators and commercial hedgers are positioned — and where the smart money is moving.</div>
+      <div class="ag-title">COT Intelligence</div>
+      <div class="ag-desc">CFTC positioning across 39 futures markets. Z-Score extremes, capital flows and institutional sentiment.</div>
     </div>
     <div class="ag-card reveal reveal-d1">
-      <div class="ag-icon">◈</div>
-      <div class="ag-title">Multi-Market Coverage</div>
-      <div class="ag-desc">From equity indices and energy to agriculture and metals — we track 39 futures markets so you can find opportunity wherever institutional flows are shifting.</div>
+      <div class="ag-title">Liquidity Monitor</div>
+      <div class="ag-desc">Fed balance sheet, RRP, TGA and SOFR spreads. Net liquidity is the tide that moves all boats.</div>
     </div>
     <div class="ag-card reveal reveal-d2">
-      <div class="ag-icon">◎</div>
-      <div class="ag-title">Quantitative Analytics</div>
-      <div class="ag-desc">Z-Score normalization, capital flow mapping, net positioning trends and spread analysis — our dashboards turn raw COT data into actionable intelligence.</div>
+      <div class="ag-title">Bonds &amp; Rates</div>
+      <div class="ag-desc">Treasury yields, credit spreads and MOVE index. The macro backbone behind every risk-on/off decision.</div>
     </div>
     <div class="ag-card reveal reveal-d3">
-      <div class="ag-icon">◻</div>
-      <div class="ag-title">Global Macro Framework</div>
-      <div class="ag-desc">Institutional positioning sits inside a macro context. Cross-market capital flows, sector rotation and seasonal patterns help align tactical decisions with the bigger picture.</div>
+      <div class="ag-title">Macro Dashboard</div>
+      <div class="ag-desc">Regime quadrant, inflation monitor, labor market and banking system health.</div>
+    </div>
+    <div class="ag-card reveal">
+      <div class="ag-title">Cross-Market</div>
+      <div class="ag-desc">Sector rotation, currency strength, commodity flows and cross-asset correlations in one view.</div>
+    </div>
+    <div class="ag-card reveal reveal-d1">
+      <div class="ag-title">Earnings Intelligence</div>
+      <div class="ag-desc">PEAD scanner, EPS surprise history and post-earnings drift — where institutional money moves after earnings.</div>
+    </div>
+    <div class="ag-card reveal reveal-d2">
+      <div class="ag-title">Congressional</div>
+      <div class="ag-desc">SEC Form 4 insider trades and congressional financial disclosures. Follow where smart money goes.</div>
+    </div>
+    <div class="ag-card reveal reveal-d3">
+      <div class="ag-title">Geopolitical Risk</div>
+      <div class="ag-desc">AI-GPR index for 120+ countries, interactive globe and market impact overlay.</div>
     </div>
   </div>
+</section>
 
+<div class="divider"></div>
+
+<!-- PHILOSOPHY -->
+<section class="about-body">
+  <p class="s-tag reveal">Philosophy</p>
+  <h2 class="s-h2 reveal">How we approach<br><em>the data.</em></h2>
+  <div class="about-grid-3">
+    <div class="ag-card reveal">
+      <div class="ag-title">Data Over Noise</div>
+      <div class="ag-desc">We only show data that institutional traders actually use. If it doesn't move markets, it's not on Vilasio.</div>
+    </div>
+    <div class="ag-card reveal reveal-d1">
+      <div class="ag-title">Positioning Over Price</div>
+      <div class="ag-desc">Price is the last thing to move. We track COT positioning, liquidity flows and macro regimes — the signals that precede price action.</div>
+    </div>
+    <div class="ag-card reveal reveal-d2">
+      <div class="ag-title">Clarity Over Complexity</div>
+      <div class="ag-desc">Financial data is complex. Our job is to make it clear, visual and instantly readable for any serious trader.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOUNDER -->
+<section class="about-body">
   <div class="about-mission reveal">
-    <div class="am-quote">"Price shows what happened. <em>Positioning shows what's next.</em><br>We built COT Intelligence to make institutional flows visible."</div>
-    <div class="am-source">Vilasio — Core Philosophy</div>
+    <div class="am-quote" style="text-align:left;max-width:680px;margin:0">"Vilasio started as a personal tool — a dashboard I built because I couldn't find anything that showed me the full picture.<br><br>COT data, central bank liquidity, macro regime, geopolitical risk, insider trades — all in one place, all updated in real-time.<br><br>If you're a trader who thinks before you act, <em>this is built for you.</em>"</div>
+    <div class="am-source" style="text-align:left;margin-top:28px">— Giuseppe Durante, Founder &nbsp;·&nbsp; info@vilasio.com</div>
   </div>
 </section>
 
@@ -324,6 +399,25 @@ const obs=new IntersectionObserver((entries)=>{
   entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*60)});
 },{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Dropdown toggle
+function toggleToolsMenu(e){
+  e.stopPropagation();
+  const menu=document.querySelector('.nav-dropdown-menu');
+  const arrow=document.getElementById('tools-arrow');
+  const toggle=document.querySelector('.nav-dropdown-toggle');
+  menu.classList.toggle('open');
+  arrow.classList.toggle('open');
+  toggle.classList.toggle('active');
+}
+document.addEventListener('click',function(){
+  const menu=document.querySelector('.nav-dropdown-menu');
+  const arrow=document.getElementById('tools-arrow');
+  const toggle=document.querySelector('.nav-dropdown-toggle');
+  if(menu)menu.classList.remove('open');
+  if(arrow)arrow.classList.remove('open');
+  if(toggle)toggle.classList.remove('active');
+});
 
 // Mobile menu
 function toggleMobileMenu(){
