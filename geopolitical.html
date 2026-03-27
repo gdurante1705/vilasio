@@ -197,12 +197,7 @@ main{padding:0 48px 64px}
 .cp-score{font-family:'Alata',sans-serif;font-size:42px;font-weight:400;color:var(--gold);line-height:1;text-shadow:0 0 15px rgba(200,168,75,0.3)}
 .cp-score-meta{display:flex;flex-direction:column}
 .cp-change{font-family:'DM Mono',monospace;font-size:11px;font-weight:500}
-.cp-roles{display:flex;flex-direction:column;gap:8px}
-.role-bar-wrap{display:flex;align-items:center;gap:8px}
-.role-label{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);width:80px;flex-shrink:0}
-.role-bar-track{flex:1;position:relative;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
-.role-bar-fill{position:absolute;left:0;top:0;height:100%;border-radius:2px;width:0%;transition:width .4s ease}
-.role-val{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,0.8);width:35px;text-align:right;flex-shrink:0}
+.cp-roles{display:flex;flex-direction:column}
 .cp-chart-wrap{width:100%;height:200px}
 .cp-macro{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .macro-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;min-height:60px;display:flex;flex-direction:column;justify-content:space-between}
@@ -380,9 +375,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
             </div>
             <div class="sp-sep"></div>
             <div class="cp-roles">
-              <div class="role-bar-wrap"><span class="role-label">Initiator</span><div class="role-bar-track"><div class="role-bar-fill" id="cp-bar-init" style="background:linear-gradient(90deg,var(--red),transparent)"></div></div><span class="role-val" id="cp-init">0</span></div>
-              <div class="role-bar-wrap"><span class="role-label">Respondent</span><div class="role-bar-track"><div class="role-bar-fill" id="cp-bar-resp" style="background:linear-gradient(90deg,var(--amb),transparent)"></div></div><span class="role-val" id="cp-resp">0</span></div>
-              <div class="role-bar-wrap"><span class="role-label">Spillover</span><div class="role-bar-track"><div class="role-bar-fill" id="cp-bar-spill" style="background:linear-gradient(90deg,var(--bp),transparent)"></div></div><span class="role-val" id="cp-spill">0</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4)">Initiator</span><span id="cp-init" style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:rgba(255,255,255,0.85)">—</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4)">Respondent</span><span id="cp-resp" style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:rgba(255,255,255,0.85)">—</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4)">Spillover</span><span id="cp-spill" style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:rgba(255,255,255,0.85)">—</span></div>
             </div>
             <div class="sp-sep"></div>
             <div class="cp-macro" id="cp-macro">
@@ -1149,16 +1144,9 @@ function selectCountry(key){
     document.getElementById('cp-score').textContent=c.latest!=null?c.latest.toFixed(1):'\u2014';
     var chgEl=document.getElementById('cp-change');chgEl.textContent=fmtChg(c.change)+' M/M';chgEl.style.color=c.change!=null&&c.change>=0?'var(--red)':'var(--grn)';
     document.getElementById('cp-level').innerHTML='<span class="badge '+lv.cls+'">'+lv.label+'</span>';
-    var iv=parseFloat(c.initiator)||0;
-    var rv=parseFloat(c.respondent)||0;
-    var sv=parseFloat(c.spillover)||0;
-    var GLOBAL_MAX_INITIATOR=300,GLOBAL_MAX_RESPONDENT=300,GLOBAL_MAX_SPILLOVER=50;
-    document.getElementById('cp-init').textContent=iv.toFixed(1);
-    document.getElementById('cp-resp').textContent=rv.toFixed(1);
-    document.getElementById('cp-spill').textContent=sv.toFixed(1);
-    document.getElementById('cp-bar-init').style.width=Math.min(iv/GLOBAL_MAX_INITIATOR*100,100).toFixed(1)+'%';
-    document.getElementById('cp-bar-resp').style.width=Math.min(rv/GLOBAL_MAX_RESPONDENT*100,100).toFixed(1)+'%';
-    document.getElementById('cp-bar-spill').style.width=Math.min(sv/GLOBAL_MAX_SPILLOVER*100,100).toFixed(1)+'%';
+    document.getElementById('cp-init').textContent=(parseFloat(c.initiator)||0).toFixed(1);
+    document.getElementById('cp-resp').textContent=(parseFloat(c.respondent)||0).toFixed(1);
+    document.getElementById('cp-spill').textContent=(parseFloat(c.spillover)||0).toFixed(1);
     fetchMacro(key);
 
     // Right panel data
