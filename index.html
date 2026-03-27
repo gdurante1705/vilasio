@@ -229,6 +229,30 @@ nav{
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--brd),transparent);margin:0 64px}
 
 /* ─── PILLARS ─── */
+/* LAYERS SECTION */
+.layers-section{padding:120px 64px;overflow:hidden}
+.layers-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.layers-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.layers-title{font-family:"Alata",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-1px;line-height:1.1;margin-bottom:20px}
+.layers-title em{font-style:normal;color:var(--gold)}
+.layers-desc{font-family:"Roboto Slab",serif;font-size:15px;color:var(--t2);line-height:1.7;font-weight:300;max-width:340px}
+.layers-stack{position:relative;height:420px;perspective:1200px;transform-style:preserve-3d}
+.layer{position:absolute;width:100%;height:72px;transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94),opacity 0.8s ease;transform-style:preserve-3d;cursor:pointer}
+.layer-inner{width:100%;height:100%;background:var(--surf);border:1px solid var(--brd);border-radius:8px;position:relative;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.4)}
+.layer[data-index="0"] .layer-inner{border-color:rgba(200,168,75,0.3);box-shadow:0 0 20px rgba(200,168,75,0.08)}
+.layer[data-index="1"] .layer-inner{border-color:rgba(91,138,240,0.3);box-shadow:0 0 20px rgba(91,138,240,0.08)}
+.layer[data-index="2"] .layer-inner{border-color:rgba(6,182,212,0.3);box-shadow:0 0 20px rgba(6,182,212,0.08)}
+.layer[data-index="3"] .layer-inner{border-color:rgba(245,158,11,0.3);box-shadow:0 0 20px rgba(245,158,11,0.08)}
+.layer[data-index="4"] .layer-inner{border-color:rgba(239,68,68,0.3);box-shadow:0 0 20px rgba(239,68,68,0.08)}
+.layer-badge{position:absolute;right:-160px;top:50%;transform:rotateX(-55deg) rotateZ(8deg) translateY(-50%);font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);white-space:nowrap;opacity:0;transition:opacity 0.4s ease}
+.layers-stack.exploded .layer-badge{opacity:1}
+.layer[data-index="0"] .layer-inner::after{content:"";position:absolute;inset:8px;background:repeating-linear-gradient(90deg,transparent 0px,transparent 8px,rgba(200,168,75,0.15) 8px,rgba(200,168,75,0.15) 9px)}
+.layer-cot::before{content:"";position:absolute;top:30%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#5b8af0,transparent)}
+.layer-cot::after{content:"";position:absolute;top:65%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#c8a84b,transparent)}
+.layer-liquidity::after{content:"";position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(6,182,212,0.15),transparent);clip-path:polygon(0 100%,15% 60%,30% 40%,50% 55%,70% 20%,85% 35%,100% 10%,100% 100%)}
+.layer-macro::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(245,158,11,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,0.06) 1px,transparent 1px);background-size:20% 25%}
+.layer-geo::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;border:1px solid rgba(239,68,68,0.3);box-shadow:0 0 12px rgba(239,68,68,0.15)}
+@media(max-width:960px){.layers-container{grid-template-columns:1fr;gap:48px}.layers-stack{height:320px}.layers-section{padding:80px 24px}}
 .pillars{padding:100px 64px;max-width:1280px;margin:0 auto}
 .pillars-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .pillars-h2{font-family:"Alata",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-1px;line-height:1.1;margin-bottom:52px}
@@ -446,6 +470,41 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <div class="divider"></div>
 
+<!-- LAYERS -->
+<section class="layers-section reveal">
+  <div class="layers-container">
+    <div class="layers-label">
+      <p class="layers-tag">HOW WE SEE THE MARKET</p>
+      <h2 class="layers-title">Every layer.<br><em>At once.</em></h2>
+      <p class="layers-desc">Most traders see only price. Vilasio reads every layer beneath it.</p>
+    </div>
+    <div class="layers-stack" id="layers-stack">
+      <div class="layer" data-index="0">
+        <div class="layer-inner"></div>
+        <div class="layer-badge">PRICE ACTION</div>
+      </div>
+      <div class="layer" data-index="1">
+        <div class="layer-inner layer-cot"></div>
+        <div class="layer-badge">COT POSITIONING</div>
+      </div>
+      <div class="layer" data-index="2">
+        <div class="layer-inner layer-liquidity"></div>
+        <div class="layer-badge">LIQUIDITY FLOWS</div>
+      </div>
+      <div class="layer" data-index="3">
+        <div class="layer-inner layer-macro"></div>
+        <div class="layer-badge">MACRO REGIME</div>
+      </div>
+      <div class="layer" data-index="4">
+        <div class="layer-inner layer-geo"></div>
+        <div class="layer-badge">GEOPOLITICAL RISK</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- PILLARS -->
 <section class="pillars">
   <p class="pillars-tag reveal">WHAT WE TRACK</p>
@@ -595,6 +654,39 @@ document.addEventListener('click',function(e){
   }
 });
 window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)});
+
+// Layers stack
+document.querySelectorAll('.layer').forEach(function(layer){
+  layer.style.setProperty('--i',parseInt(layer.dataset.index));
+  var i=parseInt(layer.dataset.index);
+  layer.style.transform='rotateX(55deg) rotateZ(-8deg) translateY('+(i*8)+'px) translateZ('+(i*4)+'px)';
+});
+var layersStack=document.getElementById('layers-stack');
+var layersObserver=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      setTimeout(function(){layersStack.classList.add('exploded');},300);
+      document.querySelectorAll('.layer').forEach(function(layer,i){
+        var idx=parseInt(layer.dataset.index);
+        layer.style.transform='rotateX(55deg) rotateZ(-8deg) translateY('+(idx*-68)+'px) translateZ('+(idx*4)+'px)';
+      });
+    } else {
+      layersStack.classList.remove('exploded');
+      document.querySelectorAll('.layer').forEach(function(layer){
+        var idx=parseInt(layer.dataset.index);
+        layer.style.transform='rotateX(55deg) rotateZ(-8deg) translateY('+(idx*8)+'px) translateZ('+(idx*4)+'px)';
+      });
+    }
+  });
+},{threshold:0.4});
+if(layersStack)layersObserver.observe(layersStack);
+layersStack&&layersStack.addEventListener('mouseenter',function(){
+  layersStack.classList.add('exploded');
+  document.querySelectorAll('.layer').forEach(function(layer){
+    var idx=parseInt(layer.dataset.index);
+    layer.style.transform='rotateX(55deg) rotateZ(-8deg) translateY('+(idx*-68)+'px) translateZ('+(idx*4)+'px)';
+  });
+});
 </script>
 <div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 </body>
