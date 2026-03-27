@@ -229,15 +229,13 @@ nav{
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--brd),transparent);margin:0 64px}
 
 /* ─── PILLARS ─── */
-/* LAYERS SECTION */
-.layers-section{overflow:hidden}
-.layer-row{display:grid;grid-template-columns:3px 48px 220px 1fr;align-items:center;gap:24px;padding:20px 24px;background:var(--surf);border:1px solid var(--brd);transition:border-color .2s,background .2s}
-.layer-row:hover{border-color:rgba(255,255,255,0.1);background:rgba(18,18,22,0.95)}
-.layer-row-accent{width:3px;height:40px;background:var(--c);border-radius:2px;flex-shrink:0}
-.layer-row-num{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t3)}
-.layer-row-name{font-family:"Alata",sans-serif;font-size:16px;color:var(--white)}
-.layer-row-desc{font-family:"Roboto Slab",serif;font-size:13px;color:var(--t2);font-weight:300;line-height:1.6}
-@media(max-width:768px){.layer-row{grid-template-columns:3px 1fr;gap:16px}.layer-row-num{display:none}.layer-row-desc{grid-column:2}}
+/* LAYERS SCROLL ANIMATION */
+#layers-anim{background:var(--bg)}
+@media(max-width:768px){
+  #layers-sticky{flex-direction:column!important}
+  #layers-label{position:relative!important;left:auto!important;top:auto!important;transform:none!important;padding:24px;text-align:center}
+  #layers-sticky img{width:90vw!important}
+}
 .pillars{padding:100px 64px;max-width:1280px;margin:0 auto}
 .pillars-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .pillars-h2{font-family:"Alata",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-1px;line-height:1.1;margin-bottom:52px}
@@ -455,42 +453,15 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 
 <div class="divider"></div>
 
-<!-- LAYERS -->
-<section class="layers-section reveal">
-  <div style="max-width:1200px;margin:0 auto;padding:120px 64px">
-    <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">HOW WE SEE THE MARKET</p>
-    <h2 style="font-family:'Alata',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-1px;line-height:1.1;margin-bottom:60px">Every layer.<br><span style="color:var(--gold)">At once.</span></h2>
-    <div style="display:flex;flex-direction:column;gap:2px">
-      <div class="layer-row reveal" style="--c:#c8a84b">
-        <div class="layer-row-accent"></div>
-        <div class="layer-row-num">01</div>
-        <div class="layer-row-name">Price Action</div>
-        <div class="layer-row-desc">The surface — what everyone sees.</div>
-      </div>
-      <div class="layer-row reveal reveal-d1" style="--c:#5b8af0">
-        <div class="layer-row-accent"></div>
-        <div class="layer-row-num">02</div>
-        <div class="layer-row-name">COT Positioning</div>
-        <div class="layer-row-desc">Where institutional money is building — before price confirms.</div>
-      </div>
-      <div class="layer-row reveal reveal-d2" style="--c:#06b6d4">
-        <div class="layer-row-accent"></div>
-        <div class="layer-row-num">03</div>
-        <div class="layer-row-name">Liquidity Flows</div>
-        <div class="layer-row-desc">The tide that moves all boats — Fed balance sheet and net liquidity.</div>
-      </div>
-      <div class="layer-row reveal reveal-d3" style="--c:#f59e0b">
-        <div class="layer-row-accent"></div>
-        <div class="layer-row-num">04</div>
-        <div class="layer-row-name">Macro Regime</div>
-        <div class="layer-row-desc">Growth, inflation and risk cycles — the environment that dictates strategy.</div>
-      </div>
-      <div class="layer-row reveal" style="--c:#ef4444;transition-delay:.4s">
-        <div class="layer-row-accent"></div>
-        <div class="layer-row-num">05</div>
-        <div class="layer-row-name">Geopolitical Risk</div>
-        <div class="layer-row-desc">The chaos layer — 120+ countries, real-time risk scores.</div>
-      </div>
+<!-- LAYERS SCROLL ANIMATION -->
+<section id="layers-anim" style="height:300vh;position:relative">
+  <div id="layers-sticky" style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <img id="img-closed" src="layers-closed.png" style="position:absolute;width:min(600px,90vw);will-change:opacity,transform">
+    <img id="img-open" src="layers-open.png" style="position:absolute;width:min(600px,90vw);opacity:0;will-change:opacity,transform">
+    <div id="layers-label" style="position:absolute;left:max(40px,5vw);top:50%;transform:translateY(-50%);opacity:0;transition:opacity 0.3s ease">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">HOW WE SEE THE MARKET</div>
+      <div style="font-family:'Alata',sans-serif;font-size:clamp(24px,3vw,42px);font-weight:400;line-height:1.1;color:var(--white)">Every layer.<br><span style="color:var(--gold)">At once.</span></div>
+      <div style="font-family:'Roboto Slab',serif;font-size:14px;color:var(--t2);margin-top:16px;max-width:260px;line-height:1.65;font-weight:300">Most traders see only price.<br>Vilasio reads every layer beneath it.</div>
     </div>
   </div>
 </section>
@@ -646,6 +617,41 @@ document.addEventListener('click',function(e){
   }
 });
 window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)});
+
+// Layers scroll animation
+(function(){
+  var section=document.getElementById('layers-anim');
+  var imgClosed=document.getElementById('img-closed');
+  var imgOpen=document.getElementById('img-open');
+  var label=document.getElementById('layers-label');
+  if(!section)return;
+  new Image().src='layers-open.png';
+  var ticking=false;
+  function updateLayersAnim(){
+    ticking=false;
+    var rect=section.getBoundingClientRect();
+    var total=section.offsetHeight-window.innerHeight;
+    var progress=Math.max(0,Math.min(1,-rect.top/total));
+    if(progress<0.3){
+      imgClosed.style.opacity='1';imgClosed.style.transform='scale(1)';
+      imgOpen.style.opacity='0';imgOpen.style.transform='scale(1.05)';
+      label.style.opacity='0';
+    } else if(progress<0.7){
+      var t=(progress-0.3)/0.4;
+      var ease=t<0.5?2*t*t:-1+(4-2*t)*t;
+      imgClosed.style.opacity=String(1-ease);imgClosed.style.transform='scale('+(1-ease*0.05)+')';
+      imgOpen.style.opacity=String(ease);imgOpen.style.transform='scale('+(1.05-ease*0.05)+')';
+      label.style.opacity=String(ease*0.5);
+    } else {
+      var t2=(progress-0.7)/0.3;
+      imgClosed.style.opacity='0';
+      imgOpen.style.opacity='1';imgOpen.style.transform='scale(1)';
+      label.style.opacity=String(0.5+t2*0.5);
+    }
+  }
+  window.addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(updateLayersAnim);ticking=true;}});
+  updateLayersAnim();
+})();
 
 
 </script>
