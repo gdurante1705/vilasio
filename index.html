@@ -4,240 +4,295 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>VILASIO — Financial Analytics &amp; Market Research</title>
-<meta name="description" content="Vilasio provides financial market analytics and research tools. Institutional positioning data, COT Intelligence, market structure analysis and macro insights.">
+<meta name="description" content="VILASIO delivers institutional-grade analytics across futures, macro, rates and geopolitical risk — built for professionals who trade on structure, not noise.">
 <meta property="og:title" content="VILASIO — Financial Analytics & Market Research">
 <meta property="og:description" content="Institutional positioning, macro regime, cross-market correlations and geopolitical risk for professional traders.">
 <meta property="og:image" content="https://vilasio.com/Social_Profile.jpg">
 <meta property="og:url" content="https://vilasio.com">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#FAFAFA;
-  --bg2:#F2F2F2;
-  --surf:#EBEBEB;
+  --bg:#FAFAF8;
+  --bg2:#F2F1ED;
   --white:#FFFFFF;
-  --ink:#0A0A0A;
-  --ink2:#1A1A1A;
-  --ink3:#4A4A4A;
-  --muted:#888888;
-  --accent:#F0C419;
-  --accent2:#D4A800;
-  --brd:rgba(0,0,0,0.08);
-  --brd2:rgba(0,0,0,0.15);
+  --ink:#111111;
+  --ink2:#222222;
+  --ink3:#6B6B6B;
+  --muted:#9A9A9A;
+  --brd:#D4D4D4;
+  --brd2:rgba(0,0,0,0.06);
+  --gold:#C5A33C;
+  --gold2:#A8882A;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.7}
+body{background:var(--bg);color:var(--ink);font-family:'Source Sans 3',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.7}
+
+/* ─── UTILITY ─── */
+.mono{font-family:'IBM Plex Mono',monospace}
+.serif{font-family:'Lora',serif}
 
 /* ─── NAV ─── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 64px;
-  background:var(--white);
-  border-bottom:1px solid var(--brd);
+  padding:0 64px;height:64px;
+  background:rgba(250,250,248,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.06);
 }
 .nav-brand{text-decoration:none;display:flex;align-items:center}
-.nav-links{display:flex;align-items:center;gap:32px}
-.nav-link{font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--ink3);text-decoration:none;transition:color .2s}
+.nav-brand img{height:26px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{
+  font-family:'Source Sans 3',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;transition:color .2s;
+}
 .nav-link:hover,.nav-link.active{color:var(--ink)}
 
-/* Nav dropdown */
+/* Dropdown */
 .nav-dropdown{position:relative}
 .nav-dropdown-toggle{
-  font-family:'Inter',sans-serif;font-size:13px;font-weight:400;
-  color:var(--ink3);cursor:pointer;display:flex;align-items:center;gap:5px;
+  font-family:'Source Sans 3',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--ink3);cursor:pointer;display:flex;align-items:center;gap:4px;
   background:none;border:none;padding:0;transition:color .2s;
 }
 .nav-dropdown-toggle:hover,.nav-dropdown-toggle.active{color:var(--ink)}
-.nav-dropdown-arrow{font-size:8px;opacity:.4;transition:transform .2s;margin-left:2px}
-.nav-dropdown-arrow.open{transform:rotate(180deg)}
+.nav-arrow{font-size:7px;opacity:.4;transition:transform .2s}
+.nav-arrow.open{transform:rotate(180deg)}
 .nav-dropdown-menu{
-  display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);
+  display:none;position:absolute;top:calc(100% + 20px);left:50%;transform:translateX(-50%);
   background:var(--white);border:1px solid var(--brd);
-  padding:6px;min-width:210px;z-index:200;
-  box-shadow:0 8px 32px rgba(0,0,0,0.08);
+  padding:6px;min-width:220px;z-index:300;
+  box-shadow:0 12px 40px rgba(0,0,0,0.08);
 }
 .nav-dropdown-menu.open{display:block}
 .nav-dropdown-item{
   display:flex;align-items:center;gap:10px;padding:10px 14px;
-  text-decoration:none;color:var(--ink3);font-family:'Inter',sans-serif;font-size:13px;
+  text-decoration:none;color:var(--ink3);
+  font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:400;
   transition:all .15s;white-space:nowrap;
 }
 .nav-dropdown-item:hover{background:var(--bg);color:var(--ink)}
-.nav-dropdown-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.nav-dd-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 
-.nav-cta{
-  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
-  color:var(--white);background:var(--ink);
-  padding:10px 24px;text-decoration:none;
-  border-radius:0;transition:background .2s,color .2s;
-  white-space:nowrap;
-}
-.nav-cta:hover{background:var(--accent);color:var(--ink)}
-
-/* Mobile nav */
 .nav-mobile-btn{display:none;background:none;border:none;color:var(--ink);font-size:20px;cursor:pointer;padding:0;line-height:1}
 .nav-mobile-menu{
-  display:none;position:fixed;top:65px;left:0;right:0;
+  display:none;position:fixed;top:64px;left:0;right:0;
   background:var(--white);border-bottom:1px solid var(--brd);
-  flex-direction:column;padding:24px 32px;gap:16px;z-index:99;
+  flex-direction:column;padding:24px 32px;gap:14px;z-index:199;
   box-shadow:0 8px 24px rgba(0,0,0,0.06);
 }
 .nav-mobile-menu.open{display:flex}
-.nav-mobile-menu a{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink3);text-decoration:none;transition:color .2s}
+.nav-mobile-menu a{font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:400;color:var(--ink3);text-decoration:none;transition:color .2s}
 .nav-mobile-menu a:hover{color:var(--ink)}
 .nav-mobile-divider{height:1px;background:var(--brd)}
-.nav-mobile-sublabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.nav-mobile-sublabel{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding-top:4px}
 
 /* ─── HERO ─── */
 .hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:180px 64px 120px;
-  background:var(--white);
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:140px 64px 80px;
+  background:var(--bg);position:relative;
 }
-.hero-content{max-width:700px}
-.hero-eyebrow{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:4px;
-  text-transform:uppercase;color:var(--muted);margin-bottom:32px;
-  animation:fadeUp .8s ease forwards .1s;opacity:0;
+.hero-overline{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:28px;
+  animation:fadeUp .7s ease forwards .1s;opacity:0;
 }
 .hero-h1{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(56px,7vw,96px);
-  font-weight:900;line-height:1.0;letter-spacing:-3px;
-  color:var(--ink);margin-bottom:32px;
-  animation:fadeUp .8s ease forwards .25s;opacity:0;
+  font-family:'Lora',serif;
+  font-size:clamp(44px,6.5vw,90px);
+  font-weight:700;line-height:1.0;letter-spacing:-2px;
+  color:var(--ink);margin-bottom:28px;
+  animation:fadeUp .7s ease forwards .2s;opacity:0;
 }
-.hero-h1 em{font-style:italic;color:var(--accent)}
+.hero-h1 em{font-style:italic;color:var(--gold)}
 .hero-desc{
-  font-family:'Inter',sans-serif;font-size:17px;font-weight:300;
-  color:var(--ink3);line-height:1.8;max-width:480px;margin-bottom:48px;
-  animation:fadeUp .8s ease forwards .4s;opacity:0;
+  font-family:'Source Sans 3',sans-serif;font-size:17px;font-weight:300;
+  color:var(--ink3);line-height:1.8;max-width:560px;margin:0 auto 44px;
+  animation:fadeUp .7s ease forwards .35s;opacity:0;
 }
 .hero-ctas{
-  display:flex;gap:16px;align-items:center;
-  animation:fadeUp .8s ease forwards .55s;opacity:0;
+  display:flex;gap:14px;align-items:center;justify-content:center;
+  animation:fadeUp .7s ease forwards .5s;opacity:0;
 }
 .btn-primary{
   background:var(--ink);color:var(--white);
-  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
+  font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
   padding:14px 40px;text-decoration:none;display:inline-block;
-  border-radius:0;transition:background .2s,color .2s;
+  transition:background .2s,color .2s;
 }
-.btn-primary:hover{background:var(--accent);color:var(--ink)}
-.btn-text{
-  color:var(--ink3);font-family:'Inter',sans-serif;font-size:13px;font-weight:400;
-  text-decoration:none;border-bottom:1px solid var(--brd2);padding-bottom:2px;
+.btn-primary:hover{background:var(--gold);color:var(--ink)}
+.btn-ghost{
+  color:var(--ink3);font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--brd);padding:13px 32px;
   transition:color .2s,border-color .2s;
 }
-.btn-text:hover{color:var(--ink);border-color:var(--ink)}
+.btn-ghost:hover{color:var(--ink);border-color:var(--ink)}
 
-/* ─── DIVIDER ─── */
+/* Scroll indicator */
+.hero-scroll{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeUp .7s ease forwards .7s;opacity:0;
+}
+.hero-scroll span{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:1px;height:32px;background:var(--brd);position:relative;overflow:hidden}
+.scroll-line::after{content:"";position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--gold);animation:scrollDrop 1.6s ease infinite .8s}
+@keyframes scrollDrop{0%{top:-100%}100%{top:100%}}
+
+/* ─── SECTION COMMON ─── */
+.section-overline{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.section-h2{font-family:'Lora',serif;font-size:clamp(32px,4vw,50px);font-weight:700;line-height:1.1;color:var(--ink);margin-bottom:52px}
+.section-h2 em{font-style:italic;color:var(--gold)}
 .divider{height:1px;background:var(--brd);margin:0 64px}
 
 /* ─── WHAT WE TRACK ─── */
-.pillars{padding:100px 64px;max-width:1280px;margin:0 auto}
-.pillars-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-.pillars-h2{
-  font-family:'Playfair Display',serif;font-style:italic;
-  font-size:clamp(36px,4vw,56px);font-weight:700;line-height:1.1;
-  color:var(--ink);margin-bottom:52px;
+.track{padding:100px 64px;max-width:1320px;margin:0 auto}
+.track-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--brd)}
+.track-card{
+  background:var(--white);padding:48px;
+  position:relative;overflow:hidden;
+  transition:background .2s;
 }
-.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.pillar{
-  background:var(--white);
-  border:1px solid var(--brd);
-  border-top:3px solid var(--ink);
-  padding:40px;
-  text-decoration:none;color:inherit;display:block;
-  transition:border-color .2s,box-shadow .2s;
+.track-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:transparent;transition:background .2s;
 }
-.pillar:hover{box-shadow:0 4px 24px rgba(0,0,0,0.07)}
-.pillar-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:20px}
-.pillar-title{font-family:'Inter',sans-serif;font-size:18px;font-weight:500;color:var(--ink);margin-bottom:12px}
-.pillar-desc{font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--ink3);line-height:1.7}
+.track-card:hover{background:var(--bg)}
+.track-card:hover::before{background:var(--gold)}
+.track-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:20px}
+.track-title{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.2}
+.track-desc{font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:300;color:var(--ink3);line-height:1.7}
+
+/* ─── STATS STRIP ─── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--brd);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
+.stat-item{background:var(--white);padding:52px 40px;text-align:center}
+.stat-num{font-family:'Lora',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1;margin-bottom:10px}
+.stat-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
 
 /* ─── MANIFESTO ─── */
-.manifesto{padding:120px 64px;background:var(--ink);text-align:center}
-.manifesto-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:40px}
-.manifesto-lines{display:flex;flex-direction:column;gap:8px;margin-bottom:48px}
-.manifesto-line{
-  font-family:'Playfair Display',serif;font-style:italic;
-  font-size:clamp(26px,3vw,48px);font-weight:700;
-  color:rgba(255,255,255,0.25);line-height:1.2;transition:color .3s;
+.manifesto{
+  padding:120px 64px;background:var(--ink);text-align:center;position:relative;overflow:hidden;
 }
-.manifesto-line.lit{color:var(--white)}
-.manifesto-line.accent{color:var(--accent)}
-.manifesto-cta{margin-top:48px}
-.btn-ghost-light{
-  color:rgba(255,255,255,0.6);font-family:'Inter',sans-serif;font-size:13px;font-weight:400;
+.manifesto::before{
+  content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(197,163,60,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.manifesto-overline{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(197,163,60,0.6);margin-bottom:52px}
+.manifesto-lines{display:flex;flex-direction:column;gap:6px;margin-bottom:52px}
+.manifesto-line{
+  font-family:'Lora',serif;font-style:italic;
+  font-size:clamp(22px,3vw,42px);font-weight:500;
+  color:rgba(255,255,255,0.2);line-height:1.25;transition:color .3s;
+}
+.manifesto-line.lit{color:rgba(255,255,255,0.92)}
+.manifesto-line.gold{color:var(--gold)}
+.manifesto-cta{position:relative;z-index:1}
+.btn-ghost-inv{
+  color:rgba(255,255,255,0.5);font-family:'Source Sans 3',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
   border:1px solid rgba(255,255,255,0.15);padding:12px 32px;
   text-decoration:none;display:inline-block;transition:all .2s;
 }
-.btn-ghost-light:hover{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.btn-ghost-inv:hover{color:var(--ink);background:var(--gold);border-color:var(--gold)}
 
-/* ─── STATS STRIP ─── */
-.stats-strip{
-  background:var(--bg2);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);
-  padding:60px 64px;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+/* ─── PLATFORM ─── */
+.platform{padding:100px 64px;max-width:1320px;margin:0 auto}
+.platform-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--brd)}
+.platform-card{
+  background:var(--white);padding:56px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:340px;transition:background .2s;
+  position:relative;overflow:hidden;
 }
-.stat-item{text-align:center}
-.stat-num{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:10px}
-.stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.platform-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+.platform-card-primary::before{background:var(--gold)}
+.platform-card-secondary::before{background:var(--ink)}
+.platform-card:hover{background:var(--bg)}
+.platform-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.platform-title{font-family:'Lora',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.1}
+.platform-desc{font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:300;color:var(--ink3);line-height:1.7;max-width:420px}
+.platform-footer{display:flex;align-items:center;justify-content:space-between;margin-top:40px}
+.platform-cta{
+  font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;transition:color .2s;
+}
+.platform-cta:hover{color:var(--gold)}
+.platform-arrow{font-size:18px;color:var(--muted);transition:transform .2s,color .2s}
+.platform-card:hover .platform-arrow{transform:translateX(4px);color:var(--ink)}
 
 /* ─── FOOTER ─── */
-footer{padding:40px 64px;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:24px}
-.foot-links{display:flex;gap:28px}
-.foot-links a{font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color .2s}
-.foot-links a:hover{color:var(--accent)}
-.foot-right{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(255,255,255,0.25)}
+footer{
+  background:var(--white);border-top:1px solid var(--brd);
+  padding:32px 64px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.foot-brand img{height:22px;width:auto;display:block}
+.foot-links{display:flex;gap:24px;flex-wrap:wrap}
+.foot-links a{
+  font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.foot-links a:hover{color:var(--ink)}
+.foot-copy{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.5px;color:var(--muted);white-space:nowrap}
 
 /* ─── DISCLAIMER ─── */
-.disclaimer-bar{background:var(--bg2);border-top:1px solid var(--brd);padding:32px 0}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px}
-.disclaimer-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--muted);margin:0;font-family:'Inter',sans-serif;font-weight:300}
+.disclaimer{background:var(--bg2);border-top:1px solid var(--brd);padding:28px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:10px}
+.disclaimer-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.disclaimer p{font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:300;line-height:1.75;color:var(--muted);margin:0}
 
 /* ─── ANIMATIONS ─── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:none}
-.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}.reveal-d5{transition-delay:.5s}
 
 /* ─── SCROLL TOP ─── */
-.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:var(--white);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none}
+.scroll-top{position:fixed;bottom:24px;right:20px;z-index:90;width:36px;height:36px;background:var(--white);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none}
 .scroll-top.show{opacity:1;pointer-events:auto}
-.scroll-top:hover{border-color:var(--brd2);transform:translateY(-2px)}
-.scroll-top svg{width:16px;height:16px;stroke:var(--ink3);fill:none;stroke-width:2}
+.scroll-top:hover{border-color:var(--ink);transform:translateY(-2px)}
+.scroll-top svg{width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:960px){
-  nav{padding:16px 24px}
-  .nav-links{display:none}
-  .nav-cta{display:none}
+  nav{padding:0 24px}
+  .nav-links,.nav-cta-wrap{display:none}
   .nav-mobile-btn{display:block}
   .hero{padding:120px 24px 80px}
-  .hero-h1{font-size:clamp(42px,10vw,64px)}
-  .pillars{padding:60px 24px}
-  .pillars-grid{grid-template-columns:1fr}
-  .manifesto{padding:80px 24px}
-  .stats-strip{grid-template-columns:1fr 1fr;padding:40px 24px;gap:16px}
+  .hero-h1{font-size:clamp(38px,10vw,62px)}
   .divider{margin:0 24px}
-  footer{flex-direction:column;padding:32px 24px;text-align:center}
-  .foot-links{flex-wrap:wrap;justify-content:center}
-  .foot-right{text-align:center}
+  .track{padding:60px 24px}
+  .track-grid{grid-template-columns:1fr;background:transparent;gap:2px}
+  .track-card{background:var(--white);border:1px solid var(--brd)}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat-item{padding:40px 24px}
+  .manifesto{padding:80px 24px}
+  .platform{padding:60px 24px}
+  .platform-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;padding:24px;text-align:center;gap:16px}
+  .foot-links{justify-content:center}
   .disclaimer-inner{padding:0 24px}
 }
 @media(max-width:600px){
-  .hero-ctas{flex-direction:column;align-items:flex-start;gap:12px}
-  .stats-strip{grid-template-columns:1fr 1fr}
+  .hero-ctas{flex-direction:column;align-items:center;gap:10px}
+  .stats{grid-template-columns:1fr 1fr}
 }
 @media(max-width:480px){
-  .stats-strip{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -246,152 +301,197 @@ footer{padding:40px 64px;background:var(--ink);display:flex;align-items:center;j
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-brand">
-    <img src="noBgBlack.png" alt="VILASIO" style="height:28px;width:auto">
+    <img src="noBgBlack.png" alt="VILASIO">
   </a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link active">Home</a>
+    <a href="about.html" class="nav-link">About</a>
     <div class="nav-dropdown">
-      <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-dropdown-arrow" id="tools-arrow">▾</span></button>
-      <div class="nav-dropdown-menu">
-        <a href="cot.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#5b8af0"></span>COT Intelligence</a>
-        <a href="liquidity.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#06b6d4"></span>Liquidity Monitor</a>
-        <a href="bonds.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Bonds &amp; Rates</a>
-        <a href="macro.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#f59e0b"></span>Macro Dashboard</a>
-        <a href="crossmarket.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#8b5cf6"></span>Cross-Market</a>
-        <a href="earnings.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Earnings Intelligence</a>
-        <a href="congressional.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#c8a84b"></span>Congressional</a>
-        <a href="geopolitical.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#ef4444"></span>Geopolitical Risk</a>
+      <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-arrow" id="tools-arrow">▾</span></button>
+      <div class="nav-dropdown-menu" id="tools-menu">
+        <a href="cot.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#5b8af0"></span>COT Intelligence</a>
+        <a href="macro.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#f59e0b"></span>Macro Dashboard</a>
+        <a href="bonds.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#22c55e"></span>Bonds &amp; Rates</a>
+        <a href="liquidity.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#06b6d4"></span>Liquidity Monitor</a>
+        <a href="crossmarket.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#8b5cf6"></span>Cross-Market</a>
+        <a href="earnings.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#22c55e"></span>Earnings Intelligence</a>
+        <a href="congressional.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#c8a84b"></span>Congressional</a>
+        <a href="geopolitical.html" class="nav-dropdown-item"><span class="nav-dd-dot" style="background:#ef4444"></span>Geopolitical Risk</a>
       </div>
     </div>
-    <a href="owl.html" class="nav-link">The Owl</a>
     <a href="blog.html" class="nav-link">Insights</a>
-    <a href="about.html" class="nav-link">About</a>
     <a href="contact.html" class="nav-link">Contact</a>
   </div>
-  <a href="cot.html" class="nav-cta">Enter Platform</a>
   <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
 </nav>
 
 <!-- Mobile menu -->
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Home</a>
+  <a href="about.html">About</a>
   <div class="nav-mobile-divider"></div>
   <div class="nav-mobile-sublabel">Tools</div>
   <a href="cot.html">COT Intelligence</a>
-  <a href="liquidity.html">Liquidity Monitor</a>
-  <a href="bonds.html">Bonds &amp; Rates</a>
   <a href="macro.html">Macro Dashboard</a>
+  <a href="bonds.html">Bonds &amp; Rates</a>
+  <a href="liquidity.html">Liquidity Monitor</a>
   <a href="crossmarket.html">Cross-Market</a>
   <a href="earnings.html">Earnings Intelligence</a>
   <a href="congressional.html">Congressional</a>
   <a href="geopolitical.html">Geopolitical Risk</a>
   <div class="nav-mobile-divider"></div>
-  <a href="owl.html">The Owl</a>
   <a href="blog.html">Insights</a>
-  <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
-  <div class="nav-mobile-divider"></div>
-  <a href="cot.html" style="font-weight:500;color:var(--ink)">Enter Platform →</a>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <p class="hero-eyebrow">Financial Intelligence Platform</p>
-    <h1 class="hero-h1">The market<br>has layers.<br><em>We see all of them.</em></h1>
-    <p class="hero-desc">Vilasio aggregates COT positioning, liquidity flows, macro regimes, geopolitical risk and insider intelligence into one unified platform.</p>
-    <div class="hero-ctas">
-      <a href="cot.html" class="btn-primary">Enter Platform</a>
-      <a href="about.html" class="btn-text">About Vilasio →</a>
-    </div>
+  <div class="hero-overline">Financial Analytics &amp; Market Research</div>
+  <h1 class="hero-h1">Institutional positioning<br>meets <em>analytical depth.</em></h1>
+  <p class="hero-desc">VILASIO delivers institutional-grade analytics across futures, macro, rates, and geopolitical risk — built for professionals who trade on structure, not noise.</p>
+  <div class="hero-ctas">
+    <a href="cot.html" class="btn-primary">Explore Tools</a>
+    <a href="about.html" class="btn-ghost">About VILASIO</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
 <div class="divider"></div>
 
 <!-- WHAT WE TRACK -->
-<section class="pillars">
-  <p class="pillars-eyebrow reveal">What we track</p>
-  <h2 class="pillars-h2 reveal">The signals that move <em>markets.</em></h2>
-
-  <div class="pillars-grid">
-    <div class="pillar reveal">
-      <div class="pillar-num">POSITIONING</div>
-      <div class="pillar-title">Institutional Flows</div>
-      <div class="pillar-desc">COT reports, capital flows and Z-Score extremes across 39 futures markets.</div>
+<section class="track">
+  <p class="section-overline reveal">What We Track</p>
+  <h2 class="section-h2 reveal">Eight dimensions of <em>market intelligence.</em></h2>
+  <div class="track-grid">
+    <div class="track-card reveal">
+      <div class="track-num">01</div>
+      <div class="track-title">Institutional Positioning</div>
+      <div class="track-desc">CFTC Commitment of Traders across 39 futures markets. Z-Score extremes, capital flow regime and net positioning history.</div>
     </div>
-    <div class="pillar reveal reveal-d1">
-      <div class="pillar-num">MACRO</div>
-      <div class="pillar-title">Regime &amp; Liquidity</div>
-      <div class="pillar-desc">Fed balance sheet, yield curve, inflation and macro regime detection in real-time.</div>
+    <div class="track-card reveal reveal-d1">
+      <div class="track-num">02</div>
+      <div class="track-title">Macro Regime Analysis</div>
+      <div class="track-desc">Inflation monitor, labor market, banking health and regime quadrant — the full macro picture in one view.</div>
     </div>
-    <div class="pillar reveal reveal-d2">
-      <div class="pillar-num">INTELLIGENCE</div>
-      <div class="pillar-title">Smart Money Signals</div>
-      <div class="pillar-desc">Geopolitical risk, insider trades and cross-asset correlations — the full picture.</div>
+    <div class="track-card reveal reveal-d2">
+      <div class="track-num">03</div>
+      <div class="track-title">Rates &amp; Credit</div>
+      <div class="track-desc">Treasury yield curve, credit spreads and MOVE Index. The macro backbone behind every risk-on/off decision.</div>
+    </div>
+    <div class="track-card reveal reveal-d3">
+      <div class="track-num">04</div>
+      <div class="track-title">Liquidity Conditions</div>
+      <div class="track-desc">Net liquidity, Fed balance sheet, Reverse Repo and TGA. The tide that moves all asset classes.</div>
+    </div>
+    <div class="track-card reveal reveal-d4">
+      <div class="track-num">05</div>
+      <div class="track-title">Cross-Market Flows</div>
+      <div class="track-desc">Sector rotation, currency strength index, commodity flows and cross-asset correlation matrix.</div>
+    </div>
+    <div class="track-card reveal reveal-d5">
+      <div class="track-num">06</div>
+      <div class="track-title">Earnings &amp; Drift</div>
+      <div class="track-desc">Post-Earnings Announcement Drift scanner, EPS surprise history and institutional-grade setup identification.</div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- MANIFESTO -->
-<section class="manifesto">
-  <div class="manifesto-eyebrow reveal">The Vilasio Philosophy</div>
-  <div class="manifesto-lines">
-    <div class="manifesto-line reveal">We don't guess.</div>
-    <div class="manifesto-line lit reveal reveal-d1">We read the data.</div>
-    <div class="manifesto-line accent reveal reveal-d1">COT. Liquidity. Macro. Geopolitics.</div>
-    <div class="manifesto-line lit reveal reveal-d2">The full picture, not a fragment.</div>
-    <div class="manifesto-line reveal reveal-d3">Trade with institutional intelligence.</div>
-  </div>
-  <div class="manifesto-cta reveal">
-    <a href="about.html" class="btn-ghost-light">Learn more about VILASIO</a>
-  </div>
-</section>
-
 <!-- STATS -->
-<div class="stats-strip">
+<div class="stats">
   <div class="stat-item reveal">
-    <div class="stat-num">8</div>
-    <div class="stat-label">Intelligence Tools</div>
-  </div>
-  <div class="stat-item reveal reveal-d1">
     <div class="stat-num">39</div>
     <div class="stat-label">Futures Markets</div>
   </div>
+  <div class="stat-item reveal reveal-d1">
+    <div class="stat-num">8</div>
+    <div class="stat-label">Analytics Tools</div>
+  </div>
   <div class="stat-item reveal reveal-d2">
-    <div class="stat-num">120+</div>
-    <div class="stat-label">Countries Monitored</div>
+    <div class="stat-num">CFTC</div>
+    <div class="stat-label">Primary Data Source</div>
   </div>
   <div class="stat-item reveal reveal-d3">
-    <div class="stat-num">LIVE</div>
-    <div class="stat-label">Real-Time Data</div>
+    <div class="stat-num">Weekly</div>
+    <div class="stat-label">Report Frequency</div>
   </div>
 </div>
 
+<div class="divider"></div>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div class="manifesto-overline reveal">The VILASIO Philosophy</div>
+  <div class="manifesto-lines">
+    <div class="manifesto-line reveal">Price tells you what happened.</div>
+    <div class="manifesto-line gold reveal reveal-d1">Positioning tells you what&rsquo;s next.</div>
+    <div class="manifesto-line reveal reveal-d1">Most platforms show you charts.</div>
+    <div class="manifesto-line lit reveal reveal-d2">We show you the structure underneath.</div>
+    <div class="manifesto-line reveal reveal-d3">Because the edge isn&rsquo;t in the data —</div>
+    <div class="manifesto-line gold reveal reveal-d3">it&rsquo;s in how you read it.</div>
+  </div>
+  <div class="manifesto-cta reveal">
+    <a href="about.html" class="btn-ghost-inv">Our approach</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PLATFORM -->
+<section class="platform">
+  <p class="section-overline reveal">Platform</p>
+  <h2 class="section-h2 reveal">Built for traders who <em>think in structure.</em></h2>
+  <div class="platform-grid">
+    <div class="platform-card platform-card-primary reveal">
+      <div>
+        <div class="platform-label">Primary Tool</div>
+        <div class="platform-title">COT Intelligence</div>
+        <div class="platform-desc">Track institutional positioning across 39 futures markets. Z-Score extremes, net position history and capital flow regime — the most direct signal of where smart money is building.</div>
+      </div>
+      <div class="platform-footer">
+        <a href="cot.html" class="platform-cta">Open Tool</a>
+        <span class="platform-arrow">→</span>
+      </div>
+    </div>
+    <div class="platform-card platform-card-secondary reveal reveal-d1">
+      <div>
+        <div class="platform-label">Research</div>
+        <div class="platform-title">Insights &amp; Analysis</div>
+        <div class="platform-desc">Market structure analysis, macro regime commentary and positioning breakdowns — written for traders who want context, not just data.</div>
+      </div>
+      <div class="platform-footer">
+        <a href="blog.html" class="platform-cta">Read Insights</a>
+        <span class="platform-arrow">→</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
-  <a href="index.html">
-    <img src="noBgWhite.png" alt="VILASIO" style="height:24px;width:auto">
-  </a>
-  <div class="foot-links">
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms of Use</a>
-    <a href="cookie.html">Cookie Policy</a>
-    <a href="contact.html">Contact</a>
+  <div class="foot-brand">
+    <a href="index.html"><img src="noBgBlack.png" alt="VILASIO"></a>
   </div>
-  <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
+  <div class="foot-links">
+    <a href="about.html">About</a>
+    <a href="cot.html">COT Intelligence</a>
+    <a href="blog.html">Insights</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+  <div class="foot-copy">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
 
 <!-- DISCLAIMER -->
-<div class="disclaimer-bar">
+<div class="disclaimer">
   <div class="disclaimer-inner">
     <span class="disclaimer-label">Disclaimer</span>
-    <p>The information, data visualizations, and analytical tools provided on this website are intended strictly for informational, educational, and research purposes. Vilasio provides financial market analytics designed to help users better understand market structure, institutional positioning, and statistical patterns in financial markets. The content available on this platform does not constitute financial advice, investment advice, trading advice, or recommendations to buy or sell financial instruments.</p>
-    <p>Trading and investing in financial markets involve substantial risk, including the potential loss of capital. Users are solely responsible for their own financial and trading decisions and should conduct their own research or consult a qualified financial professional before making any investment decisions.</p>
-    <p>While reasonable efforts are made to ensure the accuracy and reliability of the information provided, Vilasio makes no guarantees regarding completeness, accuracy, or timeliness of any data or analysis.</p>
-    <p>By using this website and its tools, users acknowledge that Vilasio and its creators cannot be held liable for any financial losses or damages resulting from the use of the information or analytical tools provided.</p>
+    <p>The information, data visualizations, and analytical tools provided on this website are intended strictly for informational, educational, and research purposes. VILASIO provides financial market analytics designed to help users better understand market structure, institutional positioning, and statistical patterns in financial markets. The content available on this platform does not constitute financial advice, investment advice, trading advice, or recommendations to buy or sell financial instruments.</p>
+    <p>Trading and investing in financial markets involve substantial risk, including the potential loss of capital. Users are solely responsible for their own financial and trading decisions and should conduct their own research or consult a qualified financial professional before making any investment decisions. While reasonable efforts are made to ensure accuracy and reliability, VILASIO makes no guarantees regarding completeness, accuracy, or timeliness of any data or analysis.</p>
   </div>
 </div>
 
@@ -399,35 +499,35 @@ footer{padding:40px 64px;background:var(--ink);display:flex;align-items:center;j
 // Reveal on scroll
 const obs=new IntersectionObserver((entries)=>{
   entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*60)});
-},{threshold:0.08});
+},{threshold:0.07});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// Manifesto scroll reveal with stagger
-const lines=document.querySelectorAll('.manifesto-line');
+// Manifesto stagger
+const mLines=document.querySelectorAll('.manifesto-line');
 const mObs=new IntersectionObserver((entries)=>{
   if(entries[0].isIntersecting){
-    lines.forEach((l,i)=>setTimeout(()=>l.classList.add('visible'),i*120));
+    mLines.forEach((l,i)=>setTimeout(()=>l.classList.add('visible'),i*110));
     mObs.disconnect();
   }
-},{threshold:0.3});
-if(lines.length)mObs.observe(lines[0]);
+},{threshold:0.2});
+if(mLines.length)mObs.observe(mLines[0]);
 
-// Dropdown toggle
+// Tools dropdown
 function toggleToolsMenu(e){
   e.stopPropagation();
-  const menu=document.querySelector('.nav-dropdown-menu');
+  const menu=document.getElementById('tools-menu');
   const arrow=document.getElementById('tools-arrow');
-  const toggle=document.querySelector('.nav-dropdown-toggle');
+  const toggle=e.currentTarget;
+  const isOpen=menu.classList.contains('open');
   menu.classList.toggle('open');
   arrow.classList.toggle('open');
   toggle.classList.toggle('active');
 }
 document.addEventListener('click',function(){
-  const menu=document.querySelector('.nav-dropdown-menu');
+  const menu=document.getElementById('tools-menu');
   const arrow=document.getElementById('tools-arrow');
+  if(menu){menu.classList.remove('open');arrow.classList.remove('open');}
   const toggle=document.querySelector('.nav-dropdown-toggle');
-  if(menu)menu.classList.remove('open');
-  if(arrow)arrow.classList.remove('open');
   if(toggle)toggle.classList.remove('active');
 });
 
@@ -438,14 +538,15 @@ function toggleMobileMenu(){
 document.addEventListener('click',function(e){
   const menu=document.getElementById('mobile-menu');
   const btn=document.querySelector('.nav-mobile-btn');
-  if(menu && !menu.contains(e.target) && !btn.contains(e.target)){
+  if(menu&&btn&&!menu.contains(e.target)&&!btn.contains(e.target)){
     menu.classList.remove('open');
   }
 });
 
+// Scroll top
 window.addEventListener('scroll',function(){
-  var btn=document.getElementById('scroll-top');
-  if(btn)btn.classList.toggle('show',window.scrollY>300);
+  const btn=document.getElementById('scroll-top');
+  if(btn)btn.classList.toggle('show',window.scrollY>400);
 });
 </script>
 <div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
