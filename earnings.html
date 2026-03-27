@@ -323,6 +323,20 @@ footer{
   </div>
 </section>
 
+<div class="skel-wrap" id="skel-main" style="padding:24px 48px;max-width:1320px;margin:0 auto">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+    <div class="skeleton skel-stat"></div>
+    <div class="skeleton skel-stat"></div>
+    <div class="skeleton skel-stat"></div>
+  </div>
+  <div class="skeleton skel-chart" style="margin-bottom:24px"></div>
+  <div class="skeleton" style="height:40px;margin:6px 0"></div>
+  <div class="skeleton" style="height:40px;margin:6px 0"></div>
+  <div class="skeleton" style="height:40px;margin:6px 0"></div>
+  <div class="skeleton" style="height:40px;margin:6px 0"></div>
+  <div class="skeleton" style="height:40px;margin:6px 0"></div>
+</div>
+
 <main style="padding:0 48px 64px">
 
   <!-- SKELETON: EARNINGS TABLE -->
@@ -840,6 +854,11 @@ function fetchData(endpoint) {
     .then(function(data) {
       if (data.status === 'error') {
         showError(data.message || 'Server error');
+        return;
+      }
+      if(data.status==='initializing'){
+        document.querySelectorAll('.skel-wrap').forEach(function(el){el.innerHTML='<div style="text-align:center;padding:60px 0;color:var(--t2);font-family:DM Mono,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase">Scanner initializing... refreshing in 30s</div>'});
+        setTimeout(function(){fetchData('/api/earnings')},30000);
         return;
       }
       DATA = data;

@@ -281,6 +281,12 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   .foot-right{text-align:center}
   .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
 }
+.skeleton{background:linear-gradient(90deg,rgba(18,18,22,0.9) 25%,rgba(30,30,38,0.9) 50%,rgba(18,18,22,0.9) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:10px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-stat{height:80px;margin-bottom:12px}
+.skel-chart{height:300px;margin:16px 0}
+.skel-row{height:40px;margin:6px 0}
+.skel-hide{display:none}
 </style>
 </head>
 <body>
@@ -333,6 +339,15 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
     </div>
   </div>
 </section>
+
+<div class="skel-wrap" id="skel-main" style="padding:24px 48px;max-width:1320px;margin:0 auto">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+    <div class="skeleton skel-stat"></div>
+    <div class="skeleton skel-stat"></div>
+    <div class="skeleton skel-stat"></div>
+  </div>
+  <div class="skeleton skel-chart" style="height:400px;margin-bottom:24px"></div>
+</div>
 
 <main>
   <div class="status-row reveal">
@@ -1281,6 +1296,7 @@ Promise.all([
   var d=results[1];
   if(d.status!=='ok'){console.error('GPR API error:',d.message);return}
   D=d;renderAll();
+  document.querySelectorAll('.skel-wrap').forEach(function(el){el.classList.add('skel-hide')});
 }).catch(function(e){console.error('Init failed:',e)});
 </script>
 </body>
