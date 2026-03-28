@@ -102,38 +102,6 @@ nav{
   font-family:var(--mono);font-size:8px;letter-spacing:4px;
   text-transform:uppercase;color:var(--muted);margin-top:4px;
 }
-/* Dropdown */
-.nav-dropdown{position:relative}
-.nav-dropdown-toggle{
-  font-family:var(--mono);font-size:9px;letter-spacing:3px;
-  text-transform:uppercase;color:var(--ink3);
-  cursor:pointer;display:flex;align-items:center;gap:5px;
-  background:none;border:none;padding:0;transition:color .25s;
-}
-.nav-dropdown-toggle:hover,.nav-dropdown-toggle.active{color:var(--ink)}
-.nav-dropdown-arrow{font-size:7px;opacity:.4;transition:transform .2s;margin-left:2px}
-.nav-dropdown-arrow.open{transform:rotate(180deg)}
-.nav-dropdown-menu{
-  display:none;
-  position:absolute;top:calc(100% + 18px);left:50%;
-  transform:translateX(-50%);
-  background:rgba(250,250,248,0.98);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(0,0,0,0.1);
-  border-radius:14px;
-  padding:6px;min-width:210px;z-index:400;
-  box-shadow:0 16px 48px rgba(0,0,0,0.1);
-}
-.nav-dropdown-menu.open{display:block}
-.nav-dropdown-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 14px;border-radius:10px;
-  text-decoration:none;color:var(--ink3);
-  font-family:var(--mono);font-size:10px;letter-spacing:1px;
-  transition:all .15s;white-space:nowrap;
-}
-.nav-dropdown-item:hover{background:rgba(0,0,0,0.04);color:var(--ink)}
-.nav-dropdown-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 
 /* ═══════════════════════════════════════════════
    HERO
@@ -538,19 +506,7 @@ footer{
   </a>
   <div class="nav-links">
     <a href="index.html" class="nav-link active">Home</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-dropdown-arrow" id="tools-arrow">▾</span></button>
-      <div class="nav-dropdown-menu" id="tools-menu">
-        <a href="cot.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#5b8af0"></span>COT Intelligence</a>
-        <a href="liquidity.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#06b6d4"></span>Liquidity Monitor</a>
-        <a href="bonds.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Bonds &amp; Rates</a>
-        <a href="macro.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#f59e0b"></span>Macro Dashboard</a>
-        <a href="crossmarket.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#8b5cf6"></span>Cross-Market</a>
-        <a href="earnings.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Earnings Intelligence</a>
-        <a href="congressional.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#c8a84b"></span>Congressional</a>
-        <a href="geopolitical.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#ef4444"></span>Geopolitical Risk</a>
-      </div>
-    </div>
+    <a href="cot.html" class="nav-link">COT Intelligence</a>
     <a href="owl.html" class="nav-link">The Owl</a>
     <a href="blog.html" class="nav-link">Insights</a>
     <a href="about.html" class="nav-link">About</a>
@@ -559,20 +515,10 @@ footer{
   <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
 </nav>
 
-<!-- Mobile menu — identica struttura di about.html -->
+<!-- Mobile menu -->
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Home</a>
-  <div class="nav-mobile-divider"></div>
-  <div class="nav-mobile-sublabel">Tools</div>
   <a href="cot.html">COT Intelligence</a>
-  <a href="liquidity.html">Liquidity Monitor</a>
-  <a href="bonds.html">Bonds &amp; Rates</a>
-  <a href="macro.html">Macro Dashboard</a>
-  <a href="crossmarket.html">Cross-Market</a>
-  <a href="earnings.html">Earnings Intelligence</a>
-  <a href="congressional.html">Congressional</a>
-  <a href="geopolitical.html">Geopolitical Risk</a>
-  <div class="nav-mobile-divider"></div>
   <a href="owl.html">The Owl</a>
   <a href="blog.html">Insights</a>
   <a href="about.html">About</a>
@@ -691,28 +637,28 @@ footer{
   <div class="platform-section">
     <div class="platform-header">
       <p class="s-overline rv d0">Platform</p>
-      <h2 class="s-h2 rv d1">Built for traders who <span class="em">think in structure.</span></h2>
+      <h2 class="s-h2 rv d1">Two ways to access <span class="em">the edge.</span></h2>
     </div>
     <div class="platform-grid">
       <div class="plat-card plat-card-a rv-l d0">
         <div>
-          <div class="plat-tag">Primary Tool</div>
+          <div class="plat-tag">Free Tool</div>
           <div class="plat-title">COT Intelligence</div>
-          <p class="plat-desc">Track institutional positioning across 39 futures markets. Z-Score extremes, net position history and capital flow regime — the most direct signal of where informed money is building exposure.</p>
+          <p class="plat-desc">Institutional positioning across 39 futures markets. Capital flow analysis, Z-Score extremes, Sankey diagrams and weekly CFTC reports — free and open.</p>
         </div>
         <div class="plat-footer">
-          <a href="cot.html" class="plat-cta">Open Tool</a>
+          <a href="cot.html" class="plat-cta">Open COT Intelligence</a>
           <span class="plat-arrow">→</span>
         </div>
       </div>
       <div class="plat-card plat-card-b rv-r d1">
         <div>
-          <div class="plat-tag">Research</div>
-          <div class="plat-title">Insights &amp; Analysis</div>
-          <p class="plat-desc">Market structure analysis, macro regime commentary and positioning breakdowns — written for traders who want interpretive context, not just data outputs.</p>
+          <div class="plat-tag">Premium Suite</div>
+          <div class="plat-title">The Owl</div>
+          <p class="plat-desc">The full VILASIO analytics suite. Macro regime, rates &amp; credit, liquidity, cross-market, earnings drift, congressional tracking and geopolitical risk — all in one platform.</p>
         </div>
         <div class="plat-footer">
-          <a href="blog.html" class="plat-cta">Read Insights</a>
+          <a href="owl.html" class="plat-cta">Discover The Owl</a>
           <span class="plat-arrow">→</span>
         </div>
       </div>
@@ -772,26 +718,7 @@ const mObs=new IntersectionObserver((entries)=>{
 },{threshold:0.25});
 if(mSect) mObs.observe(mSect);
 
-// Dropdown toggle — identical to about.html
-function toggleToolsMenu(e){
-  e.stopPropagation();
-  const menu=document.getElementById('tools-menu');
-  const arrow=document.getElementById('tools-arrow');
-  const toggle=document.querySelector('.nav-dropdown-toggle');
-  menu.classList.toggle('open');
-  arrow.classList.toggle('open');
-  toggle.classList.toggle('active');
-}
-document.addEventListener('click',function(){
-  const menu=document.getElementById('tools-menu');
-  const arrow=document.getElementById('tools-arrow');
-  const toggle=document.querySelector('.nav-dropdown-toggle');
-  if(menu) menu.classList.remove('open');
-  if(arrow) arrow.classList.remove('open');
-  if(toggle) toggle.classList.remove('active');
-});
-
-// Mobile menu — identical to about.html
+// Mobile menu
 function toggleMobileMenu(){
   document.getElementById('mobile-menu').classList.toggle('open');
 }
