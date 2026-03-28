@@ -11,145 +11,337 @@
 <meta property="og:url" content="https://vilasio.com">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
 :root{
-  --bg:#08080a;--surf:#0c0c10;--brd:rgba(255,255,255,0.06);--white:#f0f0f0;--t1:#c0c0c4;--t2:#78787f;--t3:#50505a;--gold:#c8a84b;--gold2:#d4be64;
-  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);--card-border:rgba(200,168,75,0.06);--card-border-hover:rgba(200,168,75,0.14);--card-shadow:0 4px 24px rgba(0,0,0,0.5);
-  --r:18px;--r-sm:14px;--r-xs:10px;
+  --bg:#FAFAF8;
+  --bg2:#F2F1ED;
+  --white:#FFFFFF;
+  --ink:#111111;
+  --ink3:#6B6B6B;
+  --muted:#9A9A9A;
+  --brd:#D8D8D4;
+  --gold:#C5A33C;
+  --heading:'DM Sans',system-ui,-apple-system,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
 }
+
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.7}
-body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);pointer-events:none;z-index:0}
-body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-weight:300;
+  overflow-x:hidden;line-height:1.7;
+}
 
-nav{position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:32px;padding:12px 28px;background:rgba(12,12,16,0.8);backdrop-filter:blur(20px);border:1px solid var(--card-border);border-radius:100px;white-space:nowrap}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-img{width:24px;height:24px;opacity:0.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-link:hover{color:var(--white)}
-.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:20px;cursor:pointer}
-.nav-mobile-menu{display:none;position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:99;background:rgba(12,12,16,0.95);backdrop-filter:blur(20px);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:16px 24px;flex-direction:column;gap:12px;min-width:220px}
-.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;padding:8px 0;transition:color .3s}
-.nav-mobile-menu a:hover{color:var(--white)}
-.nav-mobile-menu.open{display:flex}
+/* Grain texture */
+body::after{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;mix-blend-mode:multiply;
+}
 
-.legal-hero{padding:140px 0 64px;border-bottom:1px solid var(--brd);position:relative;z-index:1}
-.legal-hero-inner{max-width:800px;margin:0 auto;padding:0 64px}
-.legal-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.legal-hero h1{font-family:"Alata",sans-serif;font-size:48px;font-weight:400;line-height:1.1;color:var(--white);margin-bottom:16px}
-.legal-hero-meta{font-size:12px;color:var(--t2);font-family:"DM Mono",monospace;letter-spacing:1px}
+/* ═══════════════════════════════════════════════
+   NAV — full-width, Citadel style
+═══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 64px;height:68px;
+  background:rgba(250,250,248,0.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-img{width:26px;height:26px;filter:brightness(0)}
+.nav-brand-name{
+  font-family:var(--heading);font-size:15px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--ink);
+}
+.nav-center{display:flex;align-items:center;gap:36px}
+.nav-link{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;transition:color .18s;
+  position:relative;
+}
+.nav-link::after{
+  content:"";position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .2s ease;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-link:hover::after{transform:scaleX(1)}
+.nav-cta{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:10px 22px;text-decoration:none;
+  transition:background .18s,color .18s;flex-shrink:0;
+}
+.nav-cta:hover{background:var(--gold);color:var(--ink)}
+.nav-hamburger{
+  display:none;background:none;border:none;color:var(--ink);
+  font-size:20px;cursor:pointer;padding:0;line-height:1;
+}
+.nav-mobile{
+  display:none;position:fixed;
+  top:68px;left:0;right:0;
+  background:rgba(250,250,248,0.98);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  flex-direction:column;padding:20px 32px 28px;gap:16px;
+  z-index:299;box-shadow:0 16px 40px rgba(0,0,0,0.07);
+}
+.nav-mobile.open{display:flex}
+.mob-link{
+  font-family:var(--body);font-size:13px;font-weight:400;
+  color:var(--ink3);text-decoration:none;
+  padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);
+  transition:color .15s;
+}
+.mob-link:hover{color:var(--ink)}
+.mob-cta{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:12px 24px;text-decoration:none;
+  text-align:center;margin-top:4px;transition:background .18s;
+  display:block;
+}
+.mob-cta:hover{background:var(--gold);color:var(--ink)}
 
-.legal-body{max-width:800px;margin:0 auto;padding:64px 64px 80px;position:relative;z-index:1}
+/* ═══════════════════════════════════════════════
+   LEGAL HERO
+═══════════════════════════════════════════════ */
+.legal-hero{
+  background:var(--bg2);
+  padding:148px 64px 60px;
+}
+.legal-hero-inner{
+  max-width:800px;margin:0 auto;
+}
+.legal-overline{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;
+}
+.legal-rule{
+  width:40px;height:2px;background:var(--gold);opacity:0.8;
+  margin-bottom:32px;
+}
+.legal-hero h1{
+  font-family:var(--heading);
+  font-size:clamp(32px,4vw,56px);
+  font-weight:700;line-height:1.1;color:var(--ink);
+  letter-spacing:-1px;margin-bottom:20px;
+}
+.legal-meta{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+}
 
-.legal-section{margin-bottom:52px;padding-bottom:52px;border-bottom:1px solid var(--brd)}
-.legal-section:last-child{border-bottom:none;margin-bottom:0}
+/* ═══════════════════════════════════════════════
+   LEGAL BODY
+═══════════════════════════════════════════════ */
+.legal-body{
+  max-width:800px;margin:0 auto;padding:80px 64px;
+  position:relative;z-index:1;
+}
 
-.legal-section h2{font-family:"Alata",sans-serif;font-size:20px;font-weight:400;color:var(--white);margin-bottom:20px;display:flex;align-items:center;gap:14px}
-.legal-section h2::before{content:"";display:block;width:3px;height:20px;background:var(--gold);flex-shrink:0}
+.legal-intro{
+  font-family:var(--body);font-size:15px;font-weight:300;
+  color:var(--ink3);line-height:1.85;margin-bottom:56px;
+}
 
-.legal-section h3{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;color:var(--t1);margin:24px 0 10px;text-transform:uppercase;letter-spacing:1px}
+/* TOC */
+.toc{
+  border-bottom:1px solid var(--brd);
+  padding-bottom:40px;margin-bottom:56px;
+}
+.toc-title{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:4px;text-transform:uppercase;color:var(--muted);
+  margin-bottom:20px;
+}
+.toc ol{list-style:none;padding:0;counter-reset:toc}
+.toc ol li{
+  counter-increment:toc;
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:1px;color:var(--ink3);
+  padding:6px 0;display:flex;gap:12px;align-items:baseline;
+}
+.toc ol li::before{
+  content:counter(toc, decimal-leading-zero);
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--gold);min-width:22px;
+}
+.toc ol li a{
+  color:var(--ink3);text-decoration:none;
+  font-family:var(--body);font-size:14px;font-weight:300;
+  letter-spacing:0;transition:color .2s;
+}
+.toc ol li a:hover{color:var(--ink)}
 
-.legal-section p{font-size:14px;line-height:1.85;color:var(--t2);margin-bottom:14px}
+/* Sections */
+.legal-section{margin-top:56px}
+.legal-section h2{
+  font-family:var(--heading);font-size:20px;font-weight:600;
+  color:var(--ink);margin-bottom:20px;
+}
+.legal-section h3{
+  font-family:var(--heading);font-size:14px;font-weight:600;
+  color:var(--ink);margin:28px 0 10px;
+  text-transform:uppercase;letter-spacing:1px;
+}
+.legal-section p{
+  font-family:var(--body);font-size:15px;font-weight:300;
+  color:var(--ink3);line-height:1.85;margin-bottom:14px;
+}
 .legal-section p:last-child{margin-bottom:0}
-.legal-section strong{color:var(--white);font-weight:500}
+.legal-section strong{color:var(--ink);font-weight:500}
+.legal-section a{
+  color:var(--gold);text-decoration:underline;text-underline-offset:3px;
+  transition:color .2s;
+}
+.legal-section a:hover{color:var(--ink)}
 
 .legal-section ul{list-style:none;padding:0;margin:12px 0 16px}
-.legal-section ul li{font-size:14px;line-height:1.8;color:var(--t2);padding-left:18px;position:relative;margin-bottom:6px}
-.legal-section ul li::before{content:"—";position:absolute;left:0;color:var(--gold);font-size:11px}
+.legal-section ul li{
+  font-family:var(--body);font-size:15px;font-weight:300;
+  color:var(--ink3);line-height:1.85;
+  padding-left:20px;position:relative;margin-bottom:4px;
+}
+.legal-section ul li::before{
+  content:"\2014";position:absolute;left:0;color:var(--gold);
+  font-size:12px;
+}
 
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--brd);border:1px solid var(--brd);margin:20px 0}
-.info-cell{background:var(--surf);padding:16px 20px}
-.info-cell-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.info-cell-value{font-size:13px;color:var(--t1);line-height:1.6}
-
-.toc{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xs);padding:28px 32px;margin-bottom:52px}
-.toc-title{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.toc ol{list-style:none;padding:0;counter-reset:toc}
-.toc ol li{counter-increment:toc;font-size:13px;color:var(--t2);padding:5px 0;display:flex;gap:10px}
-.toc ol li::before{content:counter(toc, decimal-leading-zero);font-family:"DM Mono",monospace;font-size:10px;color:rgba(200,168,75,0.5);min-width:20px}
-.toc ol li a{color:var(--t1);text-decoration:none;transition:color .2s}
-.toc ol li a:hover{color:var(--white)}
-
-footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
-.foot-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.foot-logo{width:22px;height:22px;opacity:0.7}
-.foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  padding:40px 64px;border-top:1px solid var(--brd);
+  background:var(--white);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-logo{width:22px;height:22px;filter:brightness(0);opacity:0.7}
+.foot-name{
+  font-family:var(--heading);font-size:13px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);
+}
 .foot-links{display:flex;gap:28px}
-.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.foot-links a:hover{color:var(--white)}
-.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--t2);opacity:.6}
+.foot-links a{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--ink3);
+  text-decoration:none;transition:color .25s;
+}
+.foot-links a:hover{color:var(--ink)}
+.foot-right{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3)}
 
-.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0;position:relative;z-index:1}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0}
-.disclaimer-bar p strong{color:var(--t1);font-weight:500}
-.disclaimer-bar a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
-.disclaimer-bar a:hover{color:var(--gold2)}
-
-@media(max-width:768px){
-  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+/* ═══════════════════════════════════════════════
+   DISCLAIMER BAR
+═══════════════════════════════════════════════ */
+.disclaimer-bar{background:var(--bg2);border-top:1px solid var(--brd);padding:32px 0}
+.disclaimer-inner{
+  max-width:1200px;margin:0 auto;padding:0 64px;
+  display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+}
+.disclaimer-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+}
+.disclaimer-bar p{
+  font-size:12px;line-height:1.75;color:var(--muted);
+  margin:0;font-family:var(--body);font-weight:300;
 }
 
-@media(max-width:900px){
-  nav{padding:10px 20px;gap:16px;top:12px}
-  .nav-links{display:none}
-  .nav-mobile-btn{display:block}
-  .legal-hero-inner,.legal-body{padding-left:24px;padding-right:24px}
-  .legal-hero h1{font-size:32px}
-  .info-grid{grid-template-columns:1fr}
-  footer{padding:40px 24px;flex-direction:column;align-items:flex-start;gap:24px}
-  .foot-links{flex-wrap:wrap;gap:16px}
+/* ═══════════════════════════════════════════════
+   SCROLL TOP
+═══════════════════════════════════════════════ */
+.scroll-top{
+  position:fixed;bottom:24px;right:6px;z-index:290;
+  width:36px;height:36px;background:rgba(250,250,248,0.92);
+  border:1px solid rgba(0,0,0,0.1);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;
+  backdrop-filter:blur(10px);
 }
-.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid rgba(200,168,75,0.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
 .scroll-top.show{opacity:1;pointer-events:auto}
-.scroll-top:hover{border-color:rgba(200,168,75,0.14);transform:translateY(-2px)}
-.scroll-top svg{width:16px;height:16px;stroke:#c0c0c4;fill:none;stroke-width:2}
+.scroll-top:hover{border-color:rgba(0,0,0,0.25);transform:translateY(-2px)}
+.scroll-top svg{width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2}
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}
+.rv.vis{opacity:1;transform:none}
+.d0{transition-delay:0s}.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:960px){
+  nav{padding:0 24px}
+  .nav-center,.nav-cta{display:none}
+  .nav-hamburger{display:block}
+  .legal-hero{padding:128px 24px 48px}
+  .legal-body{padding:56px 24px}
+  footer{flex-direction:column;padding:32px 24px;text-align:center}
+  .foot-links{flex-wrap:wrap;justify-content:center}
+  .foot-right{text-align:center}
+}
+@media(max-width:768px){
+  .disclaimer-inner{padding:0 24px}
+  .legal-hero h1{font-size:32px}
+}
 </style>
 </head>
 <body>
 
+<!-- ════════════════ NAV ════════════════ -->
 <nav>
   <a href="index.html" class="nav-brand">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
-    <span class="nav-name">Vilasio</span>
+    <span class="nav-brand-name">VILASIO</span>
   </a>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">Home</a>
+  <div class="nav-center">
     <a href="cot.html" class="nav-link">COT Intelligence</a>
-    <a href="owl.html" class="nav-link">The Owl</a>
     <a href="blog.html" class="nav-link">Insights</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="about.html" class="nav-link">Methodology</a>
   </div>
-  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">&#9776;</button>
+  <a href="owl.html" class="nav-cta">The Owl</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">&#9776;</button>
 </nav>
-<div class="nav-mobile-menu" id="mobile-menu">
-  <a href="index.html">Home</a>
-  <a href="cot.html">COT Intelligence</a>
-  <a href="owl.html">The Owl</a>
-  <a href="blog.html">Insights</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
+
+<!-- Mobile nav -->
+<div class="nav-mobile" id="nav-mobile">
+  <a href="cot.html" class="mob-link">COT Intelligence</a>
+  <a href="blog.html" class="mob-link">Insights</a>
+  <a href="about.html" class="mob-link">Methodology</a>
+  <a href="owl.html" class="mob-cta">The Owl</a>
 </div>
 
+<!-- ════════════════ HERO ════════════════ -->
 <div class="legal-hero">
   <div class="legal-hero-inner">
-    <div class="legal-tag">Legal</div>
-    <h1>Cookie Policy</h1>
-    <div class="legal-hero-meta">Last updated: March 2026</div>
+    <div class="legal-overline rv d0">Legal</div>
+    <div class="legal-rule rv d1"></div>
+    <h1 class="rv d2">Cookie Policy</h1>
+    <div class="legal-meta rv d3">Last updated: March 2026</div>
   </div>
 </div>
 
+<!-- ════════════════ BODY ════════════════ -->
 <div class="legal-body">
 
-  <p style="font-size:14px;line-height:1.85;color:var(--t2);margin-bottom:52px">This Cookie Policy explains how Vilasio uses cookies and similar technologies when you access or use vilasio.com and any related subdomains or pages operated under the Vilasio project.</p>
+  <p class="legal-intro rv d0">This Cookie Policy explains how Vilasio uses cookies and similar technologies when you access or use vilasio.com and any related subdomains or pages operated under the Vilasio project.</p>
 
-  <div class="toc">
+  <div class="toc rv d1">
     <div class="toc-title">Table of Contents</div>
     <ol>
       <li><a href="#what-are-cookies">What Are Cookies</a></li>
@@ -161,20 +353,20 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
     </ol>
   </div>
 
-  <div class="legal-section" id="what-are-cookies">
+  <div class="legal-section rv d0" id="what-are-cookies">
     <h2>What Are Cookies</h2>
     <p>Cookies are small text files stored on your device when you visit a website. They can be used to enable website functionality, remember preferences, improve user experience, and analyse how visitors use a website.</p>
     <p>Cookies may be set directly by the website you are visiting (first-party cookies) or by external services integrated into the website (third-party cookies).</p>
   </div>
 
-  <div class="legal-section" id="current-use">
+  <div class="legal-section rv d0" id="current-use">
     <h2>How We Currently Use Cookies</h2>
     <p><strong>At present, Vilasio does not actively deploy third-party analytics cookies, advertising cookies, or tracking pixels on the Platform.</strong></p>
     <p>The website is currently operated without active third-party tracking tools such as Google Analytics or advertising technologies.</p>
     <p>However, depending on browser behaviour, hosting infrastructure, or future technical changes, limited technical storage or browser-level processes may still occur as part of normal website delivery and operation.</p>
   </div>
 
-  <div class="legal-section" id="future-use">
+  <div class="legal-section rv d0" id="future-use">
     <h2>Future Use of Cookies and Similar Technologies</h2>
     <p>Vilasio may introduce cookies or similar technologies in the future for purposes such as:</p>
     <ul>
@@ -188,7 +380,7 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
     <p><strong>Vilasio does not intend to use cookies for personalised advertising or behavioural ad targeting.</strong></p>
   </div>
 
-  <div class="legal-section" id="managing">
+  <div class="legal-section rv d0" id="managing">
     <h2>Managing Cookies</h2>
     <p>You can control, disable, or delete cookies through your browser settings at any time.</p>
     <p>Most browsers allow you to:</p>
@@ -202,26 +394,27 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
     <p>Please note that disabling certain technical cookies or browser storage mechanisms may affect the functionality or availability of some parts of the website if such features are introduced in the future.</p>
   </div>
 
-  <div class="legal-section" id="changes">
+  <div class="legal-section rv d0" id="changes">
     <h2>Changes to This Policy</h2>
     <p>Vilasio may update this Cookie Policy from time to time to reflect changes in website functionality, technical implementation, or legal requirements.</p>
     <p>When changes are made, the "Last updated" date at the top of this page will be revised.</p>
     <p>Users are encouraged to review this Cookie Policy periodically.</p>
   </div>
 
-  <div class="legal-section" id="contact">
+  <div class="legal-section rv d0" id="contact">
     <h2>Contact</h2>
     <p>If you have any questions regarding this Cookie Policy or the use of cookies and similar technologies on the Platform, you may contact us at:</p>
-    <p><a href="mailto:info@vilasio.com" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">info@vilasio.com</a></p>
-    <p>or through the <a href="contact.html" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Contact</a> page available on the Platform.</p>
+    <p><a href="mailto:info@vilasio.com">info@vilasio.com</a></p>
+    <p>or through the <a href="contact.html">Contact</a> page available on the Platform.</p>
   </div>
 
 </div>
 
+<!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="foot-brand">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="V">
-    <span class="foot-name">VILASIO</span>
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="Vilasio">
+    <span class="foot-name">Vilasio</span>
   </div>
   <div class="foot-links">
     <a href="privacy.html">Privacy Policy</a>
@@ -232,6 +425,7 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
   <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
 
+<!-- ════════════════ DISCLAIMER ════════════════ -->
 <div class="disclaimer-bar">
   <div class="disclaimer-inner">
     <span class="disclaimer-label">Disclaimer</span>
@@ -242,20 +436,37 @@ footer{border-top:1px solid var(--brd);padding:48px 64px;display:flex;justify-co
   </div>
 </div>
 
+<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</div>
+
 <script>
-function toggleMobileMenu(){
-  document.getElementById('mobile-menu').classList.toggle('open');
+// Scroll reveal
+const revObs=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>revObs.observe(el));
+
+// Mobile nav
+function toggleMobile(){
+  const mn=document.getElementById('nav-mobile');
+  const hb=document.getElementById('hamburger');
+  mn.classList.toggle('open');
+  hb.textContent=mn.classList.contains('open')?'\u2715':'\u2630';
 }
-document.addEventListener('click',function(e){
-  var menu=document.getElementById('mobile-menu');
-  var btn=document.querySelector('.nav-mobile-btn');
-  if(!menu.contains(e.target)&&!btn.contains(e.target)){
-    menu.classList.remove('open');
+document.addEventListener('click',(e)=>{
+  const mn=document.getElementById('nav-mobile');
+  const hb=document.getElementById('hamburger');
+  if(mn&&hb&&!mn.contains(e.target)&&!hb.contains(e.target)){
+    mn.classList.remove('open');
+    hb.textContent='\u2630';
   }
 });
-window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)});
-</script>
-<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 
+// Scroll top
+window.addEventListener('scroll',()=>{
+  document.getElementById('scroll-top').classList.toggle('show',window.scrollY>400);
+},{passive:true});
+</script>
 </body>
 </html>
