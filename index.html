@@ -117,18 +117,25 @@ nav{
 .mob-cta:hover{background:var(--gold);color:var(--ink)}
 
 /* ═══════════════════════════════════════════════
-   HERO — split (text left, video right sticky)
+   HERO — full-width video background
 ═══════════════════════════════════════════════ */
 .hero{
-  display:grid;grid-template-columns:55% 45%;
-  min-height:100vh;padding-top:68px;
+  position:relative;min-height:100vh;overflow:hidden;
+  display:flex;align-items:center;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:1;
+}
+.hero-bg video{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.hero-overlay{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(to right,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.4) 50%,rgba(0,0,0,0.1) 100%);
 }
 .hero-text{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:120px 64px 80px;
-  background:
-    radial-gradient(ellipse 100% 80% at 20% 30%,rgba(197,163,60,0.04) 0%,transparent 60%),
-    var(--bg);
+  position:relative;z-index:3;
+  padding:160px 64px 80px;max-width:680px;
 }
 .hero-overline{
   font-family:var(--mono);font-size:10px;font-weight:500;
@@ -137,7 +144,7 @@ nav{
   opacity:0;animation:au .8s ease forwards .1s;
 }
 .hero-rule{
-  width:40px;height:2px;background:var(--gold);opacity:0.6;
+  width:40px;height:2px;background:var(--gold);opacity:0.8;
   margin-bottom:32px;
   opacity:0;animation:au .8s ease forwards .2s;
 }
@@ -145,13 +152,13 @@ nav{
   font-family:var(--heading);
   font-size:clamp(42px,5vw,72px);
   font-weight:700;line-height:1.08;letter-spacing:-2px;
-  color:var(--ink);margin-bottom:24px;
+  color:#fff;margin-bottom:24px;
   opacity:0;animation:au .8s ease forwards .3s;
 }
 .hero-h1 .em{color:var(--gold)}
 .hero-desc{
   font-family:var(--body);font-size:16px;font-weight:300;
-  color:var(--ink3);line-height:1.85;
+  color:rgba(255,255,255,0.7);line-height:1.85;
   max-width:480px;margin-bottom:40px;
   opacity:0;animation:au .8s ease forwards .45s;
 }
@@ -161,29 +168,18 @@ nav{
 }
 .hero-note{
   font-family:var(--mono);font-size:9px;font-weight:400;
-  letter-spacing:1.5px;color:var(--muted);margin-top:24px;
+  letter-spacing:1.5px;color:rgba(255,255,255,0.4);margin-top:24px;
   opacity:0;animation:au .8s ease forwards .75s;
 }
-/* Video column */
-.hero-video{
-  position:sticky;top:0;height:100vh;
-  background:#0A0A0F;overflow:hidden;
-  border-left:1px solid rgba(0,0,0,0.08);
+/* Hero buttons — light on dark */
+.hero .btn-primary{
+  background:var(--gold);color:var(--ink);
 }
-.hero-video video{
-  width:100%;height:100%;object-fit:cover;display:block;
+.hero .btn-primary:hover{background:#d4b44e;transform:translateY(-1px)}
+.hero .btn-ghost{
+  color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2);
 }
-.hero-video::after{
-  content:"";position:absolute;inset:0;
-  background:rgba(0,0,0,0.15);pointer-events:none;
-}
-/* Fallback if no video — sits behind the <video> */
-.hero-video-fallback{
-  position:absolute;inset:0;z-index:-1;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 40%,rgba(197,163,60,0.08) 0%,transparent 60%),
-    #0A0A0F;
-}
+.hero .btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}
 .btn-primary{
   background:var(--ink);color:var(--white);
   font-family:var(--body);font-size:11px;font-weight:500;
@@ -426,11 +422,7 @@ footer{
   nav{padding:0 24px}
   .nav-center,.nav-cta{display:none}
   .nav-hamburger{display:block}
-  .hero{grid-template-columns:1fr}
-  .hero-video{display:none}
-  .hero-text{padding:100px 24px 60px;text-align:center}
-  .hero-desc{margin-left:auto;margin-right:auto}
-  .hero-ctas{justify-content:center}
+  .hero-text{padding:120px 24px 60px}
   .track-section,.platform-section{padding:72px 24px}
   .track-grid{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr 1fr}
@@ -480,6 +472,12 @@ footer{
 
 <!-- ════════════════ HERO ════════════════ -->
 <section class="hero">
+  <div class="hero-bg">
+    <video autoplay muted loop playsinline>
+      <source src="hero-video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
   <div class="hero-text">
     <p class="hero-overline">Financial Analytics &amp; Market Research</p>
     <div class="hero-rule"></div>
@@ -493,12 +491,6 @@ footer{
       <a href="owl.html" class="btn-ghost">Discover The Owl</a>
     </div>
     <p class="hero-note">Free access to COT Intelligence &middot; Premium analytics via The Owl</p>
-  </div>
-  <div class="hero-video">
-    <video autoplay muted loop playsinline>
-      <source src="hero-video.mp4" type="video/mp4">
-    </video>
-    <div class="hero-video-fallback"></div>
   </div>
 </section>
 
