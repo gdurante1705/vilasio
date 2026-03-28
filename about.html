@@ -3,374 +3,565 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>About — VILASIO</title>
-<meta name="description" content="Vilasio provides financial market analytics and research tools. Institutional positioning data, COT Intelligence, market structure analysis and macro insights.">
-<meta property="og:title" content="VILASIO — Financial Analytics & Market Research">
+<title>Methodology — VILASIO</title>
+<meta name="description" content="VILASIO's analytical framework: institutional positioning, macro regime identification, liquidity & rates structure, and cross-market intelligence.">
+<meta property="og:title" content="Methodology — VILASIO">
 <meta property="og:description" content="Institutional positioning, macro regime, cross-market correlations and geopolitical risk for professional traders.">
 <meta property="og:image" content="https://vilasio.com/Social_Profile.jpg">
-<meta property="og:url" content="https://vilasio.com">
+<meta property="og:url" content="https://vilasio.com/about.html">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#08080a;
-  --surf:#0c0c10;
-  --brd:rgba(255,255,255,0.06);
-  --white:#f0f0f0;
-  --t1:#c0c0c4;
-  --t2:#78787f;
-  --t3:#50505a;
-  --gold:#c8a84b;
-  --gold2:#d4be64;
-  --grn:#22c55e;
-  --red:#ef4444;
-  --bp:#5b8af0;
-  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
-  --card-border:rgba(200,168,75,0.06);
-  --card-border-hover:rgba(200,168,75,0.14);
-  --card-shadow:0 4px 24px rgba(0,0,0,0.5);
-  --r:18px;
-  --r-sm:14px;
-  --r-xs:10px;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.7}
 
-body::before{
-  content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:900px;height:700px;
-  background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);
-  pointer-events:none;z-index:0;
+:root{
+  --bg:#FAFAF8;
+  --bg2:#F2F1ED;
+  --white:#FFFFFF;
+  --ink:#111111;
+  --ink3:#6B6B6B;
+  --muted:#9A9A9A;
+  --brd:#D8D8D4;
+  --gold:#C5A33C;
+  --heading:'DM Sans',system-ui,-apple-system,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
 }
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-weight:300;
+  overflow-x:hidden;line-height:1.7;
+}
+
+/* Grain texture */
 body::after{
   content:"";position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;mix-blend-mode:multiply;
 }
 
-/* ─── NAV ─── */
+/* ═══════════════════════════════════════════════
+   NAV — full-width, Citadel style
+═══════════════════════════════════════════════ */
 nav{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;
-  display:flex;align-items:center;gap:32px;
-  padding:14px 28px;
-  background:rgba(12,12,16,0.8);
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 64px;height:68px;
+  background:rgba(250,250,248,0.95);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:100px;
+  border-bottom:1px solid rgba(0,0,0,0.07);
 }
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-img{width:24px;height:24px;opacity:0.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-link:hover,.nav-link.active{color:var(--white)}
-.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
-.nav-mobile-menu{
-  display:none;position:fixed;top:64px;left:16px;right:16px;
-  background:rgba(12,12,16,0.95);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:var(--r);
-  flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-img{width:26px;height:26px;filter:brightness(0)}
+.nav-brand-name{
+  font-family:var(--heading);font-size:15px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--ink);
 }
-.nav-mobile-menu.open{display:flex}
-.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-mobile-menu a:hover{color:var(--white)}
-.nav-mobile-divider{height:1px;background:var(--brd)}
-.nav-mobile-sublabel{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--t3);margin-top:4px}
-.nav-dropdown{position:relative}
-.nav-dropdown-toggle{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:5px;background:none;border:none;padding:0;transition:color .3s}
-.nav-dropdown-toggle:hover,.nav-dropdown-toggle.active{color:var(--white)}
-.nav-dropdown-arrow{font-size:7px;opacity:.4;transition:transform .2s;margin-left:2px}
-.nav-dropdown-arrow.open{transform:rotate(180deg)}
-.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 18px);left:50%;transform:translateX(-50%);background:rgba(12,12,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(200,168,75,0.06);border-radius:var(--r-sm);padding:6px;min-width:200px;z-index:200}
-.nav-dropdown-menu.open{display:block}
-.nav-dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-xs);text-decoration:none;color:var(--t2);font-family:"DM Mono",monospace;font-size:10px;letter-spacing:1px;transition:all .15s;white-space:nowrap}
-.nav-dropdown-item:hover{background:rgba(255,255,255,0.04);color:var(--white)}
-.nav-dropdown-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.about-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.nav-center{display:flex;align-items:center;gap:36px}
+.nav-link{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;transition:color .18s;
+  position:relative;
+}
+.nav-link::after{
+  content:"";position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .2s ease;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-link:hover::after{transform:scaleX(1)}
+.nav-link.active{color:var(--ink)}
+.nav-link.active::after{transform:scaleX(1)}
+.nav-cta{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:10px 22px;text-decoration:none;
+  transition:background .18s,color .18s;flex-shrink:0;
+}
+.nav-cta:hover{background:var(--gold);color:var(--ink)}
+.nav-hamburger{
+  display:none;background:none;border:none;color:var(--ink);
+  font-size:20px;cursor:pointer;padding:0;line-height:1;
+}
+.nav-mobile{
+  display:none;position:fixed;
+  top:68px;left:0;right:0;
+  background:rgba(250,250,248,0.98);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  flex-direction:column;padding:20px 32px 28px;gap:16px;
+  z-index:299;box-shadow:0 16px 40px rgba(0,0,0,0.07);
+}
+.nav-mobile.open{display:flex}
+.mob-link{
+  font-family:var(--body);font-size:13px;font-weight:400;
+  color:var(--ink3);text-decoration:none;
+  padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);
+  transition:color .15s;
+}
+.mob-link:hover,.mob-link.active{color:var(--ink)}
+.mob-cta{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:12px 24px;text-decoration:none;
+  text-align:center;margin-top:4px;transition:background .18s;
+  display:block;
+}
+.mob-cta:hover{background:var(--gold);color:var(--ink)}
 
-/* ─── HERO ─── */
-.about-hero{padding:160px 64px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;min-height:80vh;max-width:1280px;margin:0 auto}
-.ah-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards .1s}
-.ah-h1{font-family:"Alata",sans-serif;font-size:clamp(42px,5vw,68px);font-weight:400;letter-spacing:-2px;line-height:1.05;margin-bottom:24px;opacity:0;animation:fadeUp .8s ease forwards .25s}
-.ah-h1 em{font-style:normal;color:var(--gold2)}
-.ah-desc{font-size:16px;color:var(--t1);line-height:1.8;max-width:480px;opacity:0;animation:fadeUp .8s ease forwards .4s}
-.ah-desc strong{color:var(--white);font-weight:500}
-.ah-visual{display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp .8s ease forwards .55s}
-.ah-stat{
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r);
-  box-shadow:var(--card-shadow);
-  padding:24px 28px;display:flex;align-items:center;gap:20px;
-  transition:border-color .3s;position:relative;overflow:hidden;
+/* ═══════════════════════════════════════════════
+   SECTION DIVIDER
+═══════════════════════════════════════════════ */
+.section-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--brd) 20%,var(--brd) 80%,transparent);
 }
-.ah-stat:hover{border-color:var(--card-border-hover)}
-.ah-stat::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);
-}
-.ah-stat-num{font-family:"Alata",sans-serif;font-size:36px;font-weight:400;color:var(--white);line-height:1;min-width:80px}
-.ah-stat-label{font-size:14px;color:var(--t1);line-height:1.5}
-.ah-stat-label strong{display:block;color:var(--white);font-weight:400;font-size:15px;margin-bottom:2px}
 
-/* ─── DIVIDER ─── */
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--brd),transparent);margin:0 64px}
-
-/* ─── ABOUT BODY ─── */
-section.about-body{padding:80px 64px;max-width:1280px;margin:0 auto}
-.s-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.s-h2{font-family:"Alata",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
-.s-h2 em{font-style:normal;color:var(--gold2)}
-.s-sub{font-size:16px;color:var(--t1);max-width:560px;line-height:1.75}
-
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
-.ag-card{
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r);
-  box-shadow:var(--card-shadow);
-  padding:36px;
-  transition:border-color .3s;position:relative;overflow:hidden;
+/* ═══════════════════════════════════════════════
+   COMMON
+═══════════════════════════════════════════════ */
+.inner{max-width:1200px;margin:0 auto;padding:0 64px}
+.s-overline{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;
 }
-.ag-card:hover{border-color:var(--card-border-hover)}
-.ag-card::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);
+.s-overline::before{content:"";width:18px;height:1px;background:var(--gold);opacity:0.5;flex-shrink:0}
+.s-h2{
+  font-family:var(--heading);font-size:clamp(26px,3vw,44px);
+  font-weight:700;line-height:1.08;color:var(--ink);
+  letter-spacing:-0.8px;margin-bottom:48px;
 }
-.ag-icon{font-size:28px;margin-bottom:16px;color:var(--gold)}
-.ag-title{font-family:"Alata",sans-serif;font-size:16px;font-weight:400;margin-bottom:10px}
-.ag-desc{font-size:13px;color:var(--t1);line-height:1.7}
+.em-gold{color:var(--gold)}
 
-/* ─── MISSION QUOTE ─── */
-.about-mission{
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r);
-  box-shadow:var(--card-shadow);
-  padding:64px;margin-top:24px;position:relative;overflow:hidden;
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.page-hero{
+  padding:148px 64px 100px;
+  background:
+    radial-gradient(ellipse 70% 50% at 0% 30%,rgba(197,163,60,0.04) 0%,transparent 60%),
+    var(--bg);
 }
-.about-mission::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);
+.hero-tag{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:5px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:16px;
+  opacity:0;animation:au .8s ease forwards .1s;
 }
-.am-quote{font-family:"Alata",sans-serif;font-size:clamp(22px,3vw,32px);font-weight:400;line-height:1.4;color:var(--white);max-width:700px;margin:0 auto;text-align:center}
-.am-quote em{font-style:italic;color:var(--gold2)}
-.am-source{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--t2);margin-top:24px;text-align:center}
+.hero-rule{
+  width:40px;height:2px;background:var(--gold);opacity:0.6;
+  margin-bottom:36px;
+  opacity:0;animation:au .8s ease forwards .2s;
+}
+.page-h1{
+  font-family:var(--heading);
+  font-size:clamp(38px,5.5vw,80px);
+  font-weight:700;line-height:1.0;letter-spacing:-3px;
+  color:var(--ink);margin-bottom:28px;
+  opacity:0;animation:au .8s ease forwards .3s;
+}
+.hero-sub{
+  font-family:var(--body);font-size:17px;font-weight:300;
+  color:var(--ink3);max-width:620px;line-height:1.7;
+  opacity:0;animation:au .8s ease forwards .45s;
+}
 
-/* ─── FOOTER ─── */
-footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px}
+/* ═══════════════════════════════════════════════
+   OUR APPROACH
+═══════════════════════════════════════════════ */
+.approach-section{padding:108px 0}
+.approach-lead{
+  font-family:var(--heading);
+  font-size:clamp(26px,3vw,42px);
+  font-weight:700;color:var(--ink);line-height:1.12;
+  max-width:700px;margin-bottom:36px;letter-spacing:-0.8px;
+}
+.approach-body{
+  max-width:680px;
+  font-family:var(--body);font-size:16px;font-weight:300;
+  color:var(--ink3);line-height:1.9;
+}
+.approach-body p+p{margin-top:24px}
+
+/* ═══════════════════════════════════════════════
+   ANALYTICAL FRAMEWORK — FOUR PILLARS
+═══════════════════════════════════════════════ */
+.framework-section{padding:108px 0;background:var(--white)}
+.framework-header{margin-bottom:0}
+.framework-header .s-h2{margin-bottom:0}
+
+.pillars{
+  max-width:1200px;margin:56px auto 0;padding:0 64px;
+  border-top:1px solid var(--brd);
+}
+.pillar{
+  display:grid;grid-template-columns:88px 1fr;gap:56px;
+  padding:60px 0;border-bottom:1px solid var(--brd);
+  align-items:start;
+}
+.pillar-num{
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding-top:5px;
+}
+.pillar-ghost{
+  font-family:var(--heading);font-size:64px;font-weight:700;
+  color:rgba(197,163,60,0.09);line-height:1;
+  user-select:none;display:block;margin-bottom:-8px;
+}
+.pillar-lbl{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--gold);letter-spacing:3px;text-transform:uppercase;
+}
+.pillar-title{
+  font-family:var(--heading);font-size:22px;font-weight:600;
+  color:var(--ink);margin-bottom:18px;line-height:1.2;letter-spacing:-0.3px;
+}
+.pillar-body{
+  font-family:var(--body);font-size:15px;font-weight:300;
+  color:var(--ink3);line-height:1.88;max-width:660px;
+}
+
+/* ═══════════════════════════════════════════════
+   DATA SOURCES
+═══════════════════════════════════════════════ */
+.data-section{padding:108px 0}
+.data-intro{
+  font-family:var(--body);font-size:16px;font-weight:300;
+  color:var(--ink3);line-height:1.9;max-width:680px;
+  margin-bottom:56px;
+}
+.source-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0 80px;border-top:1px solid var(--brd);
+}
+.source-row{
+  display:grid;grid-template-columns:148px 1fr;
+  gap:16px;padding:22px 0;border-bottom:1px solid var(--brd);
+  align-items:baseline;
+}
+.source-name{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--ink);letter-spacing:2px;text-transform:uppercase;
+}
+.source-desc{
+  font-family:var(--body);font-size:13px;font-weight:300;
+  color:var(--ink3);line-height:1.65;
+}
+
+/* ═══════════════════════════════════════════════
+   WHAT WE ARE NOT
+═══════════════════════════════════════════════ */
+.notwhat-section{padding:108px 0;background:var(--bg2)}
+.notwhat-body{
+  max-width:680px;
+  font-family:var(--body);font-size:16px;font-weight:300;
+  color:var(--ink3);line-height:1.9;
+}
+.notwhat-body p+p{margin-top:24px}
+
+/* ═══════════════════════════════════════════════
+   BUILT BY TRADERS
+═══════════════════════════════════════════════ */
+.origin-section{padding:108px 0}
+.origin-body{
+  max-width:660px;
+  font-family:var(--body);font-size:16px;font-weight:300;
+  color:var(--ink3);line-height:1.9;
+}
+.origin-sig{
+  margin-top:44px;padding-top:28px;border-top:1px solid var(--brd);
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:2px;color:var(--muted);
+}
+.origin-sig a{color:var(--gold);text-decoration:none}
+.origin-sig a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  padding:40px 64px;border-top:1px solid var(--brd);
+  background:var(--white);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
 .foot-brand{display:flex;align-items:center;gap:10px}
-.foot-logo{width:22px;height:22px;opacity:0.7}
-.foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.foot-logo{width:22px;height:22px;filter:brightness(0);opacity:0.7}
+.foot-name{
+  font-family:var(--heading);font-size:13px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);
+}
 .foot-links{display:flex;gap:28px}
-.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.foot-links a:hover{color:var(--white)}
-.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t2)}
+.foot-links a{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--ink3);
+  text-decoration:none;transition:color .25s;
+}
+.foot-links a:hover{color:var(--ink)}
+.foot-right{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3)}
 
-/* ─── DISCLAIMER ─── */
-.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
-.disclaimer-bar p strong{color:var(--t2);font-weight:400}
-.disclaimer-bar a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
-.disclaimer-bar a:hover{color:var(--gold2)}
+/* ═══════════════════════════════════════════════
+   DISCLAIMER BAR
+═══════════════════════════════════════════════ */
+.disclaimer-bar{background:var(--bg2);border-top:1px solid var(--brd);padding:32px 0}
+.disclaimer-inner{
+  max-width:1200px;margin:0 auto;padding:0 64px;
+  display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+}
+.disclaimer-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+}
+.disclaimer-bar p{
+  font-size:12px;line-height:1.75;color:var(--muted);
+  margin:0;font-family:var(--body);font-weight:300;
+}
 
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:none}
-.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+/* ═══════════════════════════════════════════════
+   SCROLL TOP
+═══════════════════════════════════════════════ */
+.scroll-top{
+  position:fixed;bottom:24px;right:6px;z-index:290;
+  width:36px;height:36px;background:rgba(250,250,248,0.92);
+  border:1px solid rgba(0,0,0,0.1);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;
+  backdrop-filter:blur(10px);
+}
+.scroll-top.show{opacity:1;pointer-events:auto}
+.scroll-top:hover{border-color:rgba(0,0,0,0.25);transform:translateY(-2px)}
+.scroll-top svg{width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2}
 
-/* ─── RESPONSIVE ─── */
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
+@keyframes au{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}
+.rv.vis{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-20px);transition:opacity .75s ease,transform .75s ease}
+.rv-l.vis{opacity:1;transform:none}
+.d0{transition-delay:0s}.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
 @media(max-width:960px){
-  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
-  .nav-links{display:none}
-  .nav-mobile-btn{display:block}
-  .about-hero{grid-template-columns:1fr;padding:120px 24px 60px;gap:48px}
-  .about-grid{grid-template-columns:1fr}
-  .about-grid-3{grid-template-columns:1fr}
-  section.about-body{padding:60px 24px}
-  .about-mission{padding:40px 24px}
-  .divider{margin:0 24px}
+  nav{padding:0 24px}
+  .nav-center,.nav-cta{display:none}
+  .nav-hamburger{display:block}
+  .page-hero{padding:120px 24px 72px}
+  .inner,.pillars{padding-left:24px;padding-right:24px}
+  .approach-section,.framework-section,.data-section,
+  .notwhat-section,.origin-section{padding:72px 0}
+  .pillar{grid-template-columns:1fr;gap:16px;padding:44px 0}
+  .pillar-ghost{font-size:44px}
+  .source-grid{grid-template-columns:1fr}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
 }
 @media(max-width:768px){
-  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+  .disclaimer-inner{padding:0 24px}
+  .source-row{grid-template-columns:100px 1fr;gap:12px}
 }
-.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid rgba(200,168,75,0.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
-.scroll-top.show{opacity:1;pointer-events:auto}
-.scroll-top:hover{border-color:rgba(200,168,75,0.14);transform:translateY(-2px)}
-.scroll-top svg{width:16px;height:16px;stroke:#c0c0c4;fill:none;stroke-width:2}
-
+@media(max-width:600px){
+  .page-h1{letter-spacing:-1.5px}
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ════════════════ NAV ════════════════ -->
 <nav>
   <a href="index.html" class="nav-brand">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
-    <span class="nav-name">Vilasio</span>
+    <span class="nav-brand-name">VILASIO</span>
   </a>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">Home</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-toggle" onclick="toggleToolsMenu(event)">Tools <span class="nav-dropdown-arrow" id="tools-arrow">▾</span></button>
-      <div class="nav-dropdown-menu">
-        <a href="cot.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#5b8af0"></span>COT Intelligence</a>
-        <a href="liquidity.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#06b6d4"></span>Liquidity Monitor</a>
-        <a href="bonds.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Bonds &amp; Rates</a>
-        <a href="macro.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#f59e0b"></span>Macro Dashboard</a>
-        <a href="crossmarket.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#8b5cf6"></span>Cross-Market</a>
-        <a href="earnings.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#22c55e"></span>Earnings Intelligence</a>
-        <a href="congressional.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#c8a84b"></span>Congressional</a>
-        <a href="geopolitical.html" class="nav-dropdown-item"><span class="nav-dropdown-dot" style="background:#ef4444"></span>Geopolitical Risk</a>
-      </div>
-    </div>
-    <a href="owl.html" class="nav-link">The Owl</a>
+  <div class="nav-center">
+    <a href="cot.html" class="nav-link">COT Intelligence</a>
     <a href="blog.html" class="nav-link">Insights</a>
-    <a href="about.html" class="nav-link active">About</a>
-    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="about.html" class="nav-link active">Methodology</a>
   </div>
-  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
+  <a href="owl.html" class="nav-cta">The Owl</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">&#9776;</button>
 </nav>
 
-<!-- Mobile menu -->
-<div class="nav-mobile-menu" id="mobile-menu">
-  <a href="index.html">Home</a>
-  <div class="nav-mobile-divider"></div>
-  <div class="nav-mobile-sublabel">Tools</div>
-  <a href="cot.html">COT Intelligence</a>
-  <a href="liquidity.html">Liquidity Monitor</a>
-  <a href="bonds.html">Bonds &amp; Rates</a>
-  <a href="macro.html">Macro Dashboard</a>
-  <a href="crossmarket.html">Cross-Market</a>
-  <a href="earnings.html">Earnings Intelligence</a>
-  <a href="congressional.html">Congressional</a>
-  <a href="geopolitical.html">Geopolitical Risk</a>
-  <div class="nav-mobile-divider"></div>
-  <a href="owl.html">The Owl</a>
-  <a href="blog.html">Insights</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
+<!-- Mobile nav -->
+<div class="nav-mobile" id="nav-mobile">
+  <a href="cot.html" class="mob-link">COT Intelligence</a>
+  <a href="blog.html" class="mob-link">Insights</a>
+  <a href="about.html" class="mob-link active">Methodology</a>
+  <a href="owl.html" class="mob-cta">The Owl</a>
 </div>
 
-<!-- HERO -->
-<div class="about-hero">
-  <div>
-    <div class="ah-tag">About Vilasio</div>
-    <h1 class="ah-h1">Built for traders<br>who <em>think.</em></h1>
-    <p class="ah-desc">
-      Vilasio is a financial intelligence platform that turns institutional-grade data into clear, actionable tools for serious traders.
-    </p>
-  </div>
-  <div class="ah-visual">
-    <div class="ah-stat">
-      <div class="ah-stat-num">39</div>
-      <div class="ah-stat-label"><strong>Markets Tracked</strong>Futures, commodities, currencies &amp; indices</div>
-    </div>
-    <div class="ah-stat">
-      <div class="ah-stat-num">COT</div>
-      <div class="ah-stat-label"><strong>CFTC Data</strong>Institutional positioning from weekly commitment reports</div>
-    </div>
-    <div class="ah-stat">
-      <div class="ah-stat-num">Z</div>
-      <div class="ah-stat-label"><strong>Analytics</strong>Z-Score, capital flow, net positioning &amp; more</div>
-    </div>
-  </div>
-</div>
+<!-- ════════════════ HERO ════════════════ -->
+<section class="page-hero">
+  <p class="hero-tag">Methodology</p>
+  <div class="hero-rule"></div>
+  <h1 class="page-h1">How We Read Markets</h1>
+  <p class="hero-sub">VILASIO&rsquo;s analytical framework for institutional positioning, macro regime identification, and cross-market intelligence.</p>
+</section>
 
-<div class="divider"></div>
+<div class="section-divider"></div>
 
-<!-- ABOUT BODY -->
-<section class="about-body">
-  <p class="s-tag reveal">The Mission</p>
-  <h2 class="s-h2 reveal">We close the gap.<br><em>Retail meets institutional.</em></h2>
-  <p class="s-sub reveal" style="margin-top:20px">Most retail traders are blind to what institutions actually do. They trade price — we trade positioning, liquidity, and regime. Vilasio was built to close that gap.</p>
-  <p class="s-sub reveal" style="margin-top:16px;margin-bottom:64px">We take the same data that hedge funds and institutional desks use — COT reports, Fed liquidity flows, macro indicators, geopolitical risk models, insider trades — and make it accessible, visual, and actionable. No noise. No hype. Just the data that moves markets.</p>
-
-  <p class="s-tag reveal">What we track</p>
-  <h2 class="s-h2 reveal">8 tools.<br><em>One platform.</em></h2>
-
-  <div class="about-grid" style="margin-top:32px">
-    <div class="ag-card reveal">
-      <div class="ag-title">COT Intelligence</div>
-      <div class="ag-desc">CFTC positioning across 39 futures markets. Z-Score extremes, capital flows and institutional sentiment.</div>
-    </div>
-    <div class="ag-card reveal reveal-d1">
-      <div class="ag-title">Liquidity Monitor</div>
-      <div class="ag-desc">Fed balance sheet, RRP, TGA and SOFR spreads. Net liquidity is the tide that moves all boats.</div>
-    </div>
-    <div class="ag-card reveal reveal-d2">
-      <div class="ag-title">Bonds &amp; Rates</div>
-      <div class="ag-desc">Treasury yields, credit spreads and MOVE index. The macro backbone behind every risk-on/off decision.</div>
-    </div>
-    <div class="ag-card reveal reveal-d3">
-      <div class="ag-title">Macro Dashboard</div>
-      <div class="ag-desc">Regime quadrant, inflation monitor, labor market and banking system health.</div>
-    </div>
-    <div class="ag-card reveal">
-      <div class="ag-title">Cross-Market</div>
-      <div class="ag-desc">Sector rotation, currency strength, commodity flows and cross-asset correlations in one view.</div>
-    </div>
-    <div class="ag-card reveal reveal-d1">
-      <div class="ag-title">Earnings Intelligence</div>
-      <div class="ag-desc">PEAD scanner, EPS surprise history and post-earnings drift — where institutional money moves after earnings.</div>
-    </div>
-    <div class="ag-card reveal reveal-d2">
-      <div class="ag-title">Congressional</div>
-      <div class="ag-desc">SEC Form 4 insider trades and congressional financial disclosures. Follow where smart money goes.</div>
-    </div>
-    <div class="ag-card reveal reveal-d3">
-      <div class="ag-title">Geopolitical Risk</div>
-      <div class="ag-desc">AI-GPR index for 120+ countries, interactive globe and market impact overlay.</div>
+<!-- ════════════════ OUR APPROACH ════════════════ -->
+<section class="approach-section">
+  <div class="inner">
+    <p class="s-overline rv d0">Our Approach</p>
+    <h2 class="approach-lead rv d1">Price is the output,<br>not the input.</h2>
+    <div class="approach-body rv d2">
+      <p>VILASIO is built on this premise. The majority of market participants focus on what has already happened &mdash; price action, technical patterns, lagging indicators. Our platform is designed to surface what is happening underneath: where institutional capital is flowing, how macro regimes are shifting, and where structural dislocations are forming before they become consensus.</p>
+      <p>We do not forecast. We do not issue trade signals. We provide a structured analytical layer that allows professionals to form independent, evidence-based views on market direction, risk, and opportunity.</p>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<div class="section-divider"></div>
 
-<!-- PHILOSOPHY -->
-<section class="about-body">
-  <p class="s-tag reveal">Philosophy</p>
-  <h2 class="s-h2 reveal">How we approach<br><em>the data.</em></h2>
-  <div class="about-grid-3">
-    <div class="ag-card reveal">
-      <div class="ag-title">Data Over Noise</div>
-      <div class="ag-desc">We only show data that institutional traders actually use. If it doesn't move markets, it's not on Vilasio.</div>
+<!-- ════════════════ ANALYTICAL FRAMEWORK ════════════════ -->
+<section class="framework-section">
+  <div class="inner framework-header">
+    <p class="s-overline rv d0">Framework</p>
+    <h2 class="s-h2 rv d1">Four pillars of <span class="em-gold">market intelligence.</span></h2>
+  </div>
+
+  <div class="pillars">
+
+    <div class="pillar rv d0">
+      <div class="pillar-num">
+        <span class="pillar-ghost">I</span>
+        <span class="pillar-lbl">I.</span>
+      </div>
+      <div>
+        <h3 class="pillar-title">Institutional Positioning</h3>
+        <p class="pillar-body">We systematically process CFTC Commitment of Traders data across 39 futures markets spanning equities, rates, energy, metals, currencies, agriculture, and livestock. For each market, we compute net positioning, weekly changes, open interest dynamics, and rolling Z-Scores to identify statistical extremes in speculator and commercial hedger behavior. Capital flow analysis maps the directional movement of institutional money across sectors on a weekly basis.</p>
+      </div>
     </div>
-    <div class="ag-card reveal reveal-d1">
-      <div class="ag-title">Positioning Over Price</div>
-      <div class="ag-desc">Price is the last thing to move. We track COT positioning, liquidity flows and macro regimes — the signals that precede price action.</div>
+
+    <div class="pillar rv d1">
+      <div class="pillar-num">
+        <span class="pillar-ghost">II</span>
+        <span class="pillar-lbl">II.</span>
+      </div>
+      <div>
+        <h3 class="pillar-title">Macro Regime Identification</h3>
+        <p class="pillar-body">Markets do not move in isolation &mdash; they respond to the macroeconomic environment they operate in. Our macro framework tracks the key structural forces that shape asset prices: inflation trajectory, labor market conditions, banking system health, and central bank policy. These inputs are synthesized into a regime classification that distinguishes between expansion, contraction, stagflation, and reflation &mdash; providing context for every positioning signal.</p>
+      </div>
     </div>
-    <div class="ag-card reveal reveal-d2">
-      <div class="ag-title">Clarity Over Complexity</div>
-      <div class="ag-desc">Financial data is complex. Our job is to make it clear, visual and instantly readable for any serious trader.</div>
+
+    <div class="pillar rv d2">
+      <div class="pillar-num">
+        <span class="pillar-ghost">III</span>
+        <span class="pillar-lbl">III.</span>
+      </div>
+      <div>
+        <h3 class="pillar-title">Liquidity &amp; Rates Structure</h3>
+        <p class="pillar-body">Net liquidity is the single most important variable in modern financial markets. We monitor Federal Reserve balance sheet dynamics, reverse repo facility usage, Treasury General Account flows, and SOFR spread conditions to assess the liquidity environment. In parallel, we track the full term structure of Treasury yields, investment-grade and high-yield credit spreads, and interest rate volatility (MOVE Index) to map the fixed income landscape that anchors all risk pricing.</p>
+      </div>
+    </div>
+
+    <div class="pillar rv d3">
+      <div class="pillar-num">
+        <span class="pillar-ghost">IV</span>
+        <span class="pillar-lbl">IV.</span>
+      </div>
+      <div>
+        <h3 class="pillar-title">Cross-Market &amp; Geopolitical Intelligence</h3>
+        <p class="pillar-body">Asset classes are interconnected. Our cross-market framework identifies sector rotation patterns, currency strength hierarchies, and commodity correlation shifts that reveal where capital is migrating. This is complemented by a geopolitical risk layer that monitors political instability, trade policy risk, and conflict dynamics across 120+ countries &mdash; because in modern markets, a policy decision in Washington or a supply disruption in the Middle East can move global risk premia overnight.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ════════════════ DATA SOURCES ════════════════ -->
+<section class="data-section">
+  <div class="inner">
+    <p class="s-overline rv d0">Data</p>
+    <h2 class="s-h2 rv d1">Transparent. Public. Auditable.</h2>
+    <p class="data-intro rv d2">Every data point on the VILASIO platform is derived from publicly available, institutional-grade sources. We do not generate proprietary data, nor do we rely on crowd-sourced or social sentiment inputs. Our analytics are built on the same raw data used by institutional desks globally &mdash; processed, structured, and visualized for clarity and speed.</p>
+
+    <div class="source-grid rv d3">
+      <div class="source-row">
+        <span class="source-name">CFTC</span>
+        <span class="source-desc">Commitment of Traders weekly reports</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">Federal Reserve</span>
+        <span class="source-desc">Balance sheet, SOMA holdings, reserve data</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">U.S. Treasury</span>
+        <span class="source-desc">TGA balances, auction data, yield curves</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">BLS</span>
+        <span class="source-desc">CPI, employment, labor market indicators</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">CBOE</span>
+        <span class="source-desc">Options data, VIX, put/call ratios</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">SEC</span>
+        <span class="source-desc">Form 4 insider transactions, congressional disclosures</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">ICE / CME</span>
+        <span class="source-desc">Futures pricing, open interest, volume</span>
+      </div>
+      <div class="source-row">
+        <span class="source-name">FRED</span>
+        <span class="source-desc">Federal Reserve Economic Data aggregation</span>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<div class="section-divider"></div>
 
-<!-- FOUNDER -->
-<section class="about-body">
-  <div class="about-mission reveal">
-    <div class="am-quote" style="text-align:left;max-width:680px;margin:0">"Vilasio started as a personal tool — a dashboard I built because I couldn't find anything that showed me the full picture.<br><br>COT data, central bank liquidity, macro regime, geopolitical risk, insider trades — all in one place, all updated in real-time.<br><br>If you're a trader who thinks before you act, <em>this is built for you.</em>"</div>
-    <div class="am-source" style="text-align:left;margin-top:28px">— Giuseppe Durante, Founder &nbsp;·&nbsp; info@vilasio.com</div>
+<!-- ════════════════ WHAT WE ARE NOT ════════════════ -->
+<section class="notwhat-section">
+  <div class="inner">
+    <p class="s-overline rv d0">Disclaimer</p>
+    <h2 class="s-h2 rv d1">What VILASIO is &mdash;<br>and what it is not.</h2>
+    <div class="notwhat-body rv d2">
+      <p>VILASIO is a research and analytics platform. We provide tools that help market professionals analyze institutional positioning, macro conditions, and cross-market dynamics. Our dashboards are designed to inform &mdash; not to instruct. We do not issue buy or sell recommendations, we do not manage capital, and we do not provide personalized financial advice.</p>
+      <p>The analytical frameworks presented on this platform reflect our interpretation of publicly available data. They are not prepared with any individual&rsquo;s financial situation in mind. Users are solely responsible for their own investment and trading decisions. Past positioning patterns and macro regime indicators are not predictive of future market outcomes.</p>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<div class="section-divider"></div>
+
+<!-- ════════════════ BUILT BY TRADERS ════════════════ -->
+<section class="origin-section">
+  <div class="inner">
+    <p class="s-overline rv d0">Origin</p>
+    <h2 class="s-h2 rv d1">Built from the desk,<br>not the boardroom.</h2>
+    <div class="origin-body rv d2">
+      <p>VILASIO was built by active market participants who found that the tools available to retail and independent traders fell short of what was needed. The platform started as an internal analytical workspace &mdash; a way to consolidate the data streams that matter into a single, coherent view. We made it public because we believe better tools lead to better decisions, regardless of account size or institutional affiliation.</p>
+    </div>
+    <div class="origin-sig rv d3">
+      &mdash;&nbsp;&nbsp;The VILASIO Team &middot; <a href="mailto:info@vilasio.com">info@vilasio.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="foot-brand">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="V">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="Vilasio">
     <span class="foot-name">Vilasio</span>
   </div>
   <div class="foot-links">
@@ -382,7 +573,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
 
-<!-- DISCLAIMER -->
+<!-- ════════════════ DISCLAIMER ════════════════ -->
 <div class="disclaimer-bar">
   <div class="disclaimer-inner">
     <span class="disclaimer-label">Disclaimer</span>
@@ -393,45 +584,37 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   </div>
 </div>
 
+<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</div>
+
 <script>
-// Reveal on scroll
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*60)});
-},{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// Scroll reveal
+const revObs=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv,.rv-l').forEach(el=>revObs.observe(el));
 
-// Dropdown toggle
-function toggleToolsMenu(e){
-  e.stopPropagation();
-  const menu=document.querySelector('.nav-dropdown-menu');
-  const arrow=document.getElementById('tools-arrow');
-  const toggle=document.querySelector('.nav-dropdown-toggle');
-  menu.classList.toggle('open');
-  arrow.classList.toggle('open');
-  toggle.classList.toggle('active');
+// Mobile nav
+function toggleMobile(){
+  const mn=document.getElementById('nav-mobile');
+  const hb=document.getElementById('hamburger');
+  mn.classList.toggle('open');
+  hb.textContent=mn.classList.contains('open')?'\u2715':'\u2630';
 }
-document.addEventListener('click',function(){
-  const menu=document.querySelector('.nav-dropdown-menu');
-  const arrow=document.getElementById('tools-arrow');
-  const toggle=document.querySelector('.nav-dropdown-toggle');
-  if(menu)menu.classList.remove('open');
-  if(arrow)arrow.classList.remove('open');
-  if(toggle)toggle.classList.remove('active');
-});
-
-// Mobile menu
-function toggleMobileMenu(){
-  document.getElementById('mobile-menu').classList.toggle('open');
-}
-document.addEventListener('click',function(e){
-  const menu=document.getElementById('mobile-menu');
-  const btn=document.querySelector('.nav-mobile-btn');
-  if(menu && !menu.contains(e.target) && !btn.contains(e.target)){
-    menu.classList.remove('open');
+document.addEventListener('click',(e)=>{
+  const mn=document.getElementById('nav-mobile');
+  const hb=document.getElementById('hamburger');
+  if(mn&&hb&&!mn.contains(e.target)&&!hb.contains(e.target)){
+    mn.classList.remove('open');
+    hb.textContent='\u2630';
   }
 });
-window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)});
+
+// Scroll top
+window.addEventListener('scroll',()=>{
+  document.getElementById('scroll-top').classList.toggle('show',window.scrollY>400);
+},{passive:true});
 </script>
-<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 </body>
 </html>
