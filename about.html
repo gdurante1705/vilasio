@@ -331,24 +331,6 @@ footer{
 .d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
 /* ═══════════════════════════════════════════════
-   SIDEBAR LAYOUT + EXPLODED VIEW
-═══════════════════════════════════════════════ */
-.page-layout{display:flex;align-items:stretch;max-width:1440px;margin:0 auto;position:relative}
-.page-content{flex:1;min-width:0}
-.page-visual{width:480px;flex-shrink:0;padding-right:48px}
-.exploded-sticky{position:sticky;top:calc(50vh - 220px);padding:20px 0}
-.exploded-images{position:relative;width:100%;max-width:420px;margin:0 auto}
-.exploded-images img{width:100%;height:auto;display:block;border-radius:8px}
-.exploded-img-closed{position:relative;z-index:2;transition:opacity .05s linear}
-.exploded-img-open{position:absolute;top:0;left:0;z-index:1;opacity:0;transition:opacity .05s linear}
-.exploded-caption{text-align:center;margin-top:20px;font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#BBB;transition:opacity .3s ease}
-.exploded-caption .gold{color:#C5A33C;font-weight:500}
-@media(max-width:960px){
-  .page-layout{display:block}
-  .page-visual{display:none}
-}
-
-/* ═══════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════ */
 @media(max-width:960px){
@@ -407,9 +389,6 @@ footer{
   <h1 class="page-h1">How We Read Markets</h1>
   <p class="hero-sub">VILASIO&rsquo;s analytical framework for institutional positioning, macro regime identification, and cross-market intelligence.</p>
 </section>
-
-<div class="page-layout">
-<main class="page-content">
 
 <div class="section-divider"></div>
 
@@ -517,20 +496,6 @@ footer{
   </div>
 </section>
 
-</main>
-<aside class="page-visual">
-  <div class="exploded-sticky">
-    <div class="exploded-images" id="explodedImages">
-      <img src="layers-closed.png" alt="VILASIO Platform" class="exploded-img-closed" id="imgClosed">
-      <img src="layers-open.png" alt="VILASIO Analytics Layers" class="exploded-img-open" id="imgOpen">
-    </div>
-    <div class="exploded-caption" id="explodedCaption">
-      <span class="gold">01</span> &nbsp;The surface — price action
-    </div>
-  </div>
-</aside>
-</div><!-- /page-layout -->
-
 <!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="foot-brand">
@@ -562,40 +527,6 @@ footer{
 </div>
 
 <script>
-// Exploded view — image crossfade on scroll
-(function(){
-  var imgClosed=document.getElementById('imgClosed');
-  var imgOpen=document.getElementById('imgOpen');
-  var caption=document.getElementById('explodedCaption');
-  if(!imgClosed||!imgOpen)return;
-  var captions=[
-    '<span class="gold">01</span> &nbsp;The surface — price action',
-    '<span class="gold">02</span> &nbsp;Below — institutional positioning',
-    '<span class="gold">03</span> &nbsp;Deeper — liquidity & macro regime',
-    '<span class="gold">04</span> &nbsp;The structure — every layer revealed'
-  ];
-  function update(){
-    var st=window.pageYOffset||document.documentElement.scrollTop;
-    var dh=document.documentElement.scrollHeight-window.innerHeight;
-    var progress=dh>0?Math.max(0,Math.min(1,st/dh)):0;
-    var fadeStart=0.15,fadeEnd=0.70;
-    var fade=Math.max(0,Math.min(1,(progress-fadeStart)/(fadeEnd-fadeStart)));
-    var eased=fade<0.5?2*fade*fade:1-Math.pow(-2*fade+2,2)/2;
-    imgClosed.style.opacity=1-eased;
-    imgOpen.style.opacity=eased;
-    var scale=0.95+eased*0.10;
-    imgClosed.parentElement.style.transform='scale('+scale+')';
-    var ci;
-    if(progress<0.25)ci=0;else if(progress<0.45)ci=1;else if(progress<0.65)ci=2;else ci=3;
-    if(caption)caption.innerHTML=captions[ci];
-  }
-  var ticking=false;
-  window.addEventListener('scroll',function(){
-    if(!ticking){requestAnimationFrame(function(){update();ticking=false});ticking=true}
-  });
-  update();
-})();
-
 // Scroll reveal
 const revObs=new IntersectionObserver((entries)=>{
   entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')});

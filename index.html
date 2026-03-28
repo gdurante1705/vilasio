@@ -181,38 +181,15 @@ nav{
 }
 .btn-ghost:hover{color:var(--ink);border-color:var(--ink3);transform:translateY(-1px)}
 
-/* Right: atmospheric placeholder */
+/* Right: hero image */
 .hero-right{
   background:var(--bg2);
-  position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
+  display:flex;align-items:center;justify-content:center;
+  padding:48px;
 }
-
-/* Abstract atmospheric panel — light palette */
-.abs-svg{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;
-}
-/* Animated horizontal scan line — gold, light opacity */
-.abs-scan{
-  position:absolute;inset:0;pointer-events:none;overflow:hidden;
-}
-.abs-scan::after{
-  content:"";position:absolute;
-  left:0;right:0;height:1px;top:0;
-  background:linear-gradient(90deg,transparent,rgba(197,163,60,0.18),transparent);
-  animation:scanMove 6s linear infinite;
-}
-@keyframes scanMove{from{top:-2px}to{top:100%}}
-/* Left seam — 1px gold gradient, subtle */
-.abs-seam{
-  position:absolute;top:0;left:0;width:1px;height:100%;
-  background:linear-gradient(to bottom,
-    transparent 0%,
-    rgba(197,163,60,0.3) 35%,
-    rgba(197,163,60,0.15) 65%,
-    transparent 100%);
-  pointer-events:none;
+.hero-right img{
+  width:100%;max-width:480px;height:auto;
+  border-radius:8px;display:block;
 }
 
 /* ═══════════════════════════════════════════════
@@ -435,24 +412,6 @@ footer{
 .d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.40s}
 
 /* ═══════════════════════════════════════════════
-   SIDEBAR LAYOUT + EXPLODED VIEW
-═══════════════════════════════════════════════ */
-.page-layout{display:flex;align-items:stretch;max-width:1440px;margin:0 auto;position:relative}
-.page-content{flex:1;min-width:0}
-.page-visual{width:480px;flex-shrink:0;padding-right:48px}
-.exploded-sticky{position:sticky;top:calc(50vh - 220px);padding:20px 0}
-.exploded-images{position:relative;width:100%;max-width:420px;margin:0 auto}
-.exploded-images img{width:100%;height:auto;display:block;border-radius:8px}
-.exploded-img-closed{position:relative;z-index:2;transition:opacity .05s linear}
-.exploded-img-open{position:absolute;top:0;left:0;z-index:1;opacity:0;transition:opacity .05s linear}
-.exploded-caption{text-align:center;margin-top:20px;font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#BBB;transition:opacity .3s ease}
-.exploded-caption .gold{color:#C5A33C;font-weight:500}
-@media(max-width:960px){
-  .page-layout{display:block}
-  .page-visual{display:none}
-}
-
-/* ═══════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════ */
 @media(max-width:1100px){
@@ -532,86 +491,11 @@ footer{
     </div>
   </div>
 
-  <!-- Right: abstract atmospheric panel -->
-  <div class="hero-right" id="hero-abstract">
-    <!-- Layered SVG — light palette: cream / grey / black / gold only -->
-    <svg class="abs-svg" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <!-- Central gold radial glow -->
-        <radialGradient id="glow-c" cx="50%" cy="48%" r="48%">
-          <stop offset="0%" stop-color="#C5A33C" stop-opacity="0.07"/>
-          <stop offset="100%" stop-color="#C5A33C" stop-opacity="0"/>
-        </radialGradient>
-        <!-- Vignette — darkens corners slightly for depth -->
-        <radialGradient id="vign" cx="50%" cy="50%" r="70%">
-          <stop offset="60%" stop-color="transparent" stop-opacity="0"/>
-          <stop offset="100%" stop-color="#111111" stop-opacity="0.06"/>
-        </radialGradient>
-      </defs>
-
-      <!-- Glow layer -->
-      <rect width="600" height="800" fill="url(#glow-c)"/>
-
-      <!-- Concentric circles — grey, very low opacity -->
-      <circle cx="300" cy="400" r="55"  stroke="#999" stroke-width="1" fill="none" opacity="0.5"/>
-      <circle cx="300" cy="400" r="115" stroke="#999" stroke-width="0.9" fill="none" opacity="0.4"/>
-      <circle cx="300" cy="400" r="185" stroke="#999" stroke-width="0.9" fill="none" opacity="0.35"/>
-      <circle cx="300" cy="400" r="265" stroke="#D4D4D4" stroke-width="0.6" fill="none" opacity="0.25"/>
-      <circle cx="300" cy="400" r="355" stroke="#999" stroke-width="0.7" fill="none" opacity="0.15"/>
-      <!-- Gold accent ring -->
-      <circle cx="300" cy="400" r="183" stroke="#C5A33C" stroke-width="0.8" fill="none" opacity="0.12"/>
-
-      <!-- Cross-hairs — very light grey -->
-      <line x1="300" y1="215" x2="300" y2="585" stroke="#111111" stroke-width="0.4" opacity="0.06"/>
-      <line x1="115" y1="400" x2="485" y2="400" stroke="#111111" stroke-width="0.4" opacity="0.06"/>
-      <!-- Diagonals -->
-      <line x1="115" y1="215" x2="485" y2="585" stroke="#111111" stroke-width="0.3" opacity="0.04"/>
-      <line x1="485" y1="215" x2="115" y2="585" stroke="#111111" stroke-width="0.3" opacity="0.04"/>
-
-      <!-- Horizontal pulse lines — gold dashed -->
-      <line x1="0" y1="168" x2="600" y2="168" stroke="#C5A33C" stroke-width="0.6" stroke-dasharray="5,9"  opacity="0.14"/>
-      <line x1="0" y1="632" x2="600" y2="632" stroke="#C5A33C" stroke-width="0.5" stroke-dasharray="4,12" opacity="0.10"/>
-      <!-- Subtle grey horizontal -->
-      <line x1="0" y1="400" x2="600" y2="400" stroke="#111111" stroke-width="0.4" stroke-dasharray="6,14" opacity="0.05"/>
-
-      <!-- Data dots — ONLY gold, dark grey, near-black -->
-      <!-- Gold primary dots -->
-      <circle cx="182" cy="252" r="3"   fill="#C5A33C" opacity="0.65"/>
-      <circle cx="182" cy="252" r="8"   fill="#C5A33C" opacity="0.06"/>
-      <circle cx="418" cy="316" r="2.5" fill="#C5A33C" opacity="0.55"/>
-      <circle cx="418" cy="316" r="6"   fill="#C5A33C" opacity="0.05"/>
-      <circle cx="300" cy="400" r="3.5" fill="#C5A33C" opacity="0.5"/>
-      <circle cx="300" cy="400" r="10"  fill="#C5A33C" opacity="0.05"/>
-      <circle cx="356" cy="502" r="2"   fill="#C5A33C" opacity="0.45"/>
-      <circle cx="518" cy="234" r="1.8" fill="#C5A33C" opacity="0.4"/>
-      <circle cx="86"  cy="514" r="2.2" fill="#C5A33C" opacity="0.38"/>
-      <circle cx="468" cy="456" r="2"   fill="#C5A33C" opacity="0.35"/>
-      <!-- Dark grey dots -->
-      <circle cx="138" cy="348" r="2.5" fill="#6B6B6B" opacity="0.5"/>
-      <circle cx="138" cy="348" r="7"   fill="#6B6B6B" opacity="0.05"/>
-      <circle cx="372" cy="222" r="2.8" fill="#6B6B6B" opacity="0.45"/>
-      <circle cx="372" cy="222" r="7"   fill="#6B6B6B" opacity="0.04"/>
-      <circle cx="224" cy="562" r="1.8" fill="#6B6B6B" opacity="0.35"/>
-      <circle cx="540" cy="392" r="2"   fill="#6B6B6B" opacity="0.3"/>
-      <circle cx="150" cy="432" r="1.8" fill="#6B6B6B" opacity="0.28"/>
-      <!-- Near-black dots -->
-      <circle cx="248" cy="304" r="2"   fill="#111111" opacity="0.25"/>
-      <circle cx="500" cy="484" r="1.8" fill="#111111" opacity="0.2"/>
-      <circle cx="430" cy="562" r="1.5" fill="#111111" opacity="0.18"/>
-
-      <!-- Vignette -->
-      <rect width="600" height="800" fill="url(#vign)"/>
-    </svg>
-
-    <!-- Animated scan line overlay -->
-    <div class="abs-scan"></div>
-    <!-- Left-edge gold seam -->
-    <div class="abs-seam"></div>
+  <!-- Right: platform visual -->
+  <div class="hero-right">
+    <img src="layers-open.png" alt="VILASIO Analytics Platform — institutional positioning, liquidity, macro regime layers">
   </div>
 </section>
-
-<div class="page-layout">
-<main class="page-content">
 
 <div class="section-divider"></div>
 
@@ -727,20 +611,6 @@ footer{
   </div>
 </div>
 
-</main>
-<aside class="page-visual">
-  <div class="exploded-sticky">
-    <div class="exploded-images" id="explodedImages">
-      <img src="layers-closed.png" alt="VILASIO Platform" class="exploded-img-closed" id="imgClosed">
-      <img src="layers-open.png" alt="VILASIO Analytics Layers" class="exploded-img-open" id="imgOpen">
-    </div>
-    <div class="exploded-caption" id="explodedCaption">
-      <span class="gold">01</span> &nbsp;The surface — price action
-    </div>
-  </div>
-</aside>
-</div><!-- /page-layout -->
-
 <!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="foot-brand">
@@ -772,40 +642,6 @@ footer{
 </div>
 
 <script>
-// Exploded view — image crossfade on scroll
-(function(){
-  var imgClosed=document.getElementById('imgClosed');
-  var imgOpen=document.getElementById('imgOpen');
-  var caption=document.getElementById('explodedCaption');
-  if(!imgClosed||!imgOpen)return;
-  var captions=[
-    '<span class="gold">01</span> &nbsp;The surface — price action',
-    '<span class="gold">02</span> &nbsp;Below — institutional positioning',
-    '<span class="gold">03</span> &nbsp;Deeper — liquidity & macro regime',
-    '<span class="gold">04</span> &nbsp;The structure — every layer revealed'
-  ];
-  function update(){
-    var st=window.pageYOffset||document.documentElement.scrollTop;
-    var dh=document.documentElement.scrollHeight-window.innerHeight;
-    var progress=dh>0?Math.max(0,Math.min(1,st/dh)):0;
-    var fadeStart=0.15,fadeEnd=0.70;
-    var fade=Math.max(0,Math.min(1,(progress-fadeStart)/(fadeEnd-fadeStart)));
-    var eased=fade<0.5?2*fade*fade:1-Math.pow(-2*fade+2,2)/2;
-    imgClosed.style.opacity=1-eased;
-    imgOpen.style.opacity=eased;
-    var scale=0.95+eased*0.10;
-    imgClosed.parentElement.style.transform='scale('+scale+')';
-    var ci;
-    if(progress<0.25)ci=0;else if(progress<0.45)ci=1;else if(progress<0.65)ci=2;else ci=3;
-    if(caption)caption.innerHTML=captions[ci];
-  }
-  var ticking=false;
-  window.addEventListener('scroll',function(){
-    if(!ticking){requestAnimationFrame(function(){update();ticking=false});ticking=true}
-  });
-  update();
-})();
-
 // Scroll reveal
 const revObs=new IntersectionObserver((entries)=>{
   entries.forEach(en=>{if(en.isIntersecting) en.target.classList.add('vis')});
