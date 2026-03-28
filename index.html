@@ -439,37 +439,14 @@ footer{
 ═══════════════════════════════════════════════ */
 .page-layout{display:flex;align-items:stretch;max-width:1440px;margin:0 auto;position:relative}
 .page-content{flex:1;min-width:0}
-.page-visual{width:440px;flex-shrink:0;padding-right:48px}
-.exploded-sticky{position:sticky;top:calc(50vh - 150px);padding:40px 0}
-.exploded-stack{position:relative;width:340px;height:230px;perspective:1600px;transform-style:preserve-3d;margin:0 auto}
-.exploded-layer{position:absolute;top:0;left:0;width:100%;height:100%;background:#FFF;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:20px 24px;will-change:transform,opacity,box-shadow;backface-visibility:hidden}
-.exploded-layer-label{font-family:var(--mono);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:#BBB;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.exploded-layer-label .num{color:#C5A33C;font-weight:500}
-.layer-price .sparkline-svg{width:100%;height:55%;margin-top:6px}
-.layer-price .sparkline-svg path.line{fill:none;stroke:#111;stroke-width:1.8;stroke-linecap:round}
-.layer-price .sparkline-svg .bl{stroke:#E8E6E1;stroke-width:0.8;stroke-dasharray:3 3}
-.layer-price .sparkline-svg .dot{fill:#C5A33C}
-.layer-positioning .bars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.br{display:flex;align-items:center;gap:8px}
-.br-l{font-family:var(--mono);font-size:9px;color:#AAA;width:22px;text-align:right}
-.br-t{flex:1;height:10px;background:#F5F4F0;border-radius:2px;overflow:hidden}
-.br-f{height:100%;border-radius:2px}
-.layer-macro .quad{width:100%;height:calc(100% - 36px);position:relative;margin-top:4px}
-.qv{position:absolute;left:50%;top:12%;bottom:12%;width:1px;background:#E8E6E1}
-.qh{position:absolute;top:50%;left:12%;right:12%;height:1px;background:#E8E6E1}
-.qd{position:absolute;width:7px;height:7px;border-radius:50%;background:#C5A33C;top:30%;left:36%;box-shadow:0 0 10px rgba(197,163,60,0.25)}
-.qg{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
-.qc{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#D0D0D0}
-.qc.on{color:#C5A33C;font-weight:500}
-.layer-liquidity .area-svg{width:100%;height:58%;margin-top:6px}
-.af{fill:rgba(197,163,60,0.06)}
-.al{fill:none;stroke:#C5A33C;stroke-width:1.2;stroke-linecap:round}
-.ab{stroke:#E8E6E1;stroke-width:0.8;stroke-dasharray:3 3}
-.layer-structure .circles-svg{width:100%;height:calc(100% - 36px);margin-top:2px}
-.cr{fill:none;stroke:#E0E0E0;stroke-width:0.7}
-.cg{fill:none;stroke:#C5A33C;stroke-width:0.8;opacity:0.35}
-.cd{fill:#C5A33C}
-.cdd{fill:#111;opacity:0.2}
+.page-visual{width:480px;flex-shrink:0;padding-right:48px}
+.exploded-sticky{position:sticky;top:calc(50vh - 220px);padding:20px 0}
+.exploded-images{position:relative;width:100%;max-width:420px;margin:0 auto}
+.exploded-images img{width:100%;height:auto;display:block;border-radius:8px}
+.exploded-img-closed{position:relative;z-index:2;transition:opacity .05s linear}
+.exploded-img-open{position:absolute;top:0;left:0;z-index:1;opacity:0;transition:opacity .05s linear}
+.exploded-caption{text-align:center;margin-top:20px;font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#BBB;transition:opacity .3s ease}
+.exploded-caption .gold{color:#C5A33C;font-weight:500}
 @media(max-width:960px){
   .page-layout{display:block}
   .page-visual{display:none}
@@ -753,53 +730,12 @@ footer{
 </main>
 <aside class="page-visual">
   <div class="exploded-sticky">
-    <div class="exploded-stack" id="explodedStack">
-      <div class="exploded-layer layer-structure" data-layer="4">
-        <div class="exploded-layer-label"><span class="num">05</span> Structure</div>
-        <svg class="circles-svg" viewBox="0 0 300 150">
-          <circle cx="150" cy="75" r="65" class="cr"/><circle cx="150" cy="75" r="45" class="cr"/>
-          <circle cx="150" cy="75" r="28" class="cg"/><circle cx="150" cy="75" r="12" class="cg"/>
-          <circle cx="100" cy="42" r="2.5" class="cd"/><circle cx="210" cy="58" r="2" class="cd"/>
-          <circle cx="130" cy="115" r="2" class="cdd"/><circle cx="190" cy="35" r="1.8" class="cdd"/>
-          <circle cx="235" cy="95" r="2.5" class="cd"/><circle cx="80" cy="85" r="2" class="cdd"/>
-          <circle cx="170" cy="118" r="1.8" class="cd"/>
-        </svg>
-      </div>
-      <div class="exploded-layer layer-liquidity" data-layer="3">
-        <div class="exploded-layer-label"><span class="num">04</span> Liquidity</div>
-        <svg class="area-svg" viewBox="0 0 300 120">
-          <line x1="0" y1="100" x2="300" y2="100" class="ab"/>
-          <path class="af" d="M0,100 L0,78 C30,74 60,66 100,62 C140,58 170,48 210,44 C250,40 280,36 300,32 L300,100 Z"/>
-          <path class="al" d="M0,78 C30,74 60,66 100,62 C140,58 170,48 210,44 C250,40 280,36 300,32"/>
-        </svg>
-      </div>
-      <div class="exploded-layer layer-macro" data-layer="2">
-        <div class="exploded-layer-label"><span class="num">03</span> Macro Regime</div>
-        <div class="quad">
-          <div class="qv"></div><div class="qh"></div><div class="qd"></div>
-          <div class="qg">
-            <div class="qc on">Expansion</div><div class="qc">Reflation</div>
-            <div class="qc">Contraction</div><div class="qc">Stagflation</div>
-          </div>
-        </div>
-      </div>
-      <div class="exploded-layer layer-positioning" data-layer="1">
-        <div class="exploded-layer-label"><span class="num">02</span> Positioning</div>
-        <div class="bars">
-          <div class="br"><span class="br-l">ES</span><div class="br-t"><div class="br-f" style="width:72%;background:#111"></div></div></div>
-          <div class="br"><span class="br-l">GC</span><div class="br-t"><div class="br-f" style="width:65%;background:#C5A33C"></div></div></div>
-          <div class="br"><span class="br-l">CL</span><div class="br-t"><div class="br-f" style="width:35%;background:#AAA"></div></div></div>
-          <div class="br"><span class="br-l">6E</span><div class="br-t"><div class="br-f" style="width:55%;background:#111"></div></div></div>
-        </div>
-      </div>
-      <div class="exploded-layer layer-price" data-layer="0">
-        <div class="exploded-layer-label"><span class="num">01</span> Price</div>
-        <svg class="sparkline-svg" viewBox="0 0 300 100">
-          <line x1="0" y1="75" x2="300" y2="75" class="bl"/>
-          <path class="line" d="M0,68 C20,66 40,62 65,56 C90,50 110,42 135,38 C160,34 180,38 205,42 C230,36 250,24 270,22 C285,20 295,18 300,16"/>
-          <circle cx="300" cy="16" r="3" class="dot"/>
-        </svg>
-      </div>
+    <div class="exploded-images" id="explodedImages">
+      <img src="layers-closed.png" alt="VILASIO Platform" class="exploded-img-closed" id="imgClosed">
+      <img src="layers-open.png" alt="VILASIO Analytics Layers" class="exploded-img-open" id="imgOpen">
+    </div>
+    <div class="exploded-caption" id="explodedCaption">
+      <span class="gold">01</span> &nbsp;The surface — price action
     </div>
   </div>
 </aside>
@@ -836,39 +772,36 @@ footer{
 </div>
 
 <script>
-// Exploded view — sidebar sticky, page-scroll driven
+// Exploded view — image crossfade on scroll
 (function(){
-  var stack=document.getElementById('explodedStack');
-  if(!stack)return;
-  var layers=stack.querySelectorAll('.exploded-layer');
-  var n=layers.length;
-  var maxSep=60,maxRot=10,baseRX=18,endRX=5;
-  function ease(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+  var imgClosed=document.getElementById('imgClosed');
+  var imgOpen=document.getElementById('imgOpen');
+  var caption=document.getElementById('explodedCaption');
+  if(!imgClosed||!imgOpen)return;
+  var captions=[
+    '<span class="gold">01</span> &nbsp;The surface — price action',
+    '<span class="gold">02</span> &nbsp;Below — institutional positioning',
+    '<span class="gold">03</span> &nbsp;Deeper — liquidity & macro regime',
+    '<span class="gold">04</span> &nbsp;The structure — every layer revealed'
+  ];
   function update(){
     var st=window.pageYOffset||document.documentElement.scrollTop;
     var dh=document.documentElement.scrollHeight-window.innerHeight;
-    var p=ease(Math.max(0,Math.min(1,dh>0?st/dh:0)));
-    var c=(n-1)/2;
-    for(var i=0;i<n;i++){
-      var l=layers[i];
-      var idx=parseInt(l.dataset.layer);
-      var off=idx-c;
-      var ty=off*maxSep*p;
-      var rx=-off*maxRot*p*0.25;
-      var tz=-Math.abs(off)*8*p;
-      var sb=2+p*26;
-      var sy=1+p*5;
-      var so=0.02+p*0.08;
-      var op=0.5+p*0.5;
-      l.style.transform='translateY('+ty+'px) rotateX('+rx+'deg) translateZ('+tz+'px)';
-      l.style.boxShadow='0 '+sy+'px '+sb+'px rgba(0,0,0,'+so+')';
-      l.style.opacity=op;
-    }
-    stack.style.transform='rotateX('+(baseRX-(baseRX-endRX)*p)+'deg)';
+    var progress=dh>0?Math.max(0,Math.min(1,st/dh)):0;
+    var fadeStart=0.15,fadeEnd=0.70;
+    var fade=Math.max(0,Math.min(1,(progress-fadeStart)/(fadeEnd-fadeStart)));
+    var eased=fade<0.5?2*fade*fade:1-Math.pow(-2*fade+2,2)/2;
+    imgClosed.style.opacity=1-eased;
+    imgOpen.style.opacity=eased;
+    var scale=0.95+eased*0.10;
+    imgClosed.parentElement.style.transform='scale('+scale+')';
+    var ci;
+    if(progress<0.25)ci=0;else if(progress<0.45)ci=1;else if(progress<0.65)ci=2;else ci=3;
+    if(caption)caption.innerHTML=captions[ci];
   }
-  var tick=false;
+  var ticking=false;
   window.addEventListener('scroll',function(){
-    if(!tick){requestAnimationFrame(function(){update();tick=false});tick=true}
+    if(!ticking){requestAnimationFrame(function(){update();ticking=false});ticking=true}
   });
   update();
 })();
