@@ -302,7 +302,7 @@ nav{
 ═══════════════════════════════════════════════ */
 .methodology{
   padding:120px 64px;background:var(--white);
-  text-align:center;position:relative;overflow:hidden;
+  text-align:center;
 }
 .method-overline{
   font-family:var(--mono);font-size:9px;font-weight:500;
@@ -435,45 +435,16 @@ footer{
 .d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.40s}
 
 /* ═══════════════════════════════════════════════
-   DECORATIVE FINANCIAL ANIMATIONS
+   SCROLL-DRIVEN VISUAL — right column
 ═══════════════════════════════════════════════ */
-.anim-sep{height:22px;overflow:hidden;position:relative;flex-shrink:0}
-.spark-svg{width:100%;height:100%;display:block}
-.spark-line{stroke-dasharray:55,45;animation:sparkScroll 18s linear infinite}
-.spark-gold{stroke-dasharray:28,72;animation:sparkScroll 24s linear infinite reverse}
-@keyframes sparkScroll{from{stroke-dashoffset:0}to{stroke-dashoffset:-400}}
-
-.dot-grid{
-  position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:radial-gradient(circle,rgba(150,150,150,0.14) 1.5px,transparent 1.5px);
-  background-size:28px 28px;animation:dotBreathe 12s ease-in-out infinite;
+.scroll-vis{
+  position:fixed;top:68px;
+  left:calc(50% + 540px);width:320px;
+  height:calc(100vh - 68px);
+  pointer-events:none;z-index:2;opacity:0.14;
 }
-@keyframes dotBreathe{0%,100%{opacity:0.42}50%{opacity:0.9}}
-
-.radar-wrap{
-  position:absolute;right:-80px;bottom:-80px;
-  width:420px;height:420px;pointer-events:none;z-index:0;
-}
-.radar-c{transform-origin:200px 200px;animation:radarExpand 10s ease-out infinite;opacity:0}
-.radar-c1{animation-delay:0s}
-.radar-c2{animation-delay:3.33s}
-.radar-c3{animation-delay:6.67s}
-@keyframes radarExpand{
-  0%{transform:scale(0.1);opacity:0.1}
-  100%{transform:scale(4.5);opacity:0}
-}
-
-.flow-wrap{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.flow-svg{width:100%;height:100%}
-.flow-p1{stroke-dasharray:70,50;animation:flowScroll 22s linear infinite}
-.flow-p2{stroke-dasharray:50,60;animation:flowScroll 17s linear infinite;animation-delay:-8s}
-.flow-p3{stroke-dasharray:90,70;animation:flowScroll 28s linear infinite;animation-delay:-16s}
-@keyframes flowScroll{from{stroke-dashoffset:0}to{stroke-dashoffset:-480}}
-
-@media(max-width:960px){
-  .radar-wrap{width:240px;height:240px;right:-40px;bottom:-40px}
-  .flow-wrap{display:none}
-}
+.scroll-vis svg{width:100%;height:100%}
+@media(max-width:1440px){.scroll-vis{display:none}}
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
@@ -535,6 +506,51 @@ footer{
   <a href="blog.html" class="mob-link">Insights</a>
   <a href="about.html" class="mob-link">Methodology</a>
   <a href="owl.html" class="mob-cta">The Owl</a>
+</div>
+
+<!-- ════════════════ SCROLL VISUAL ════════════════ -->
+<div class="scroll-vis" id="scroll-vis" aria-hidden="true">
+  <svg viewBox="0 0 300 700" xmlns="http://www.w3.org/2000/svg">
+    <!-- Phase 1: Flat line -->
+    <g id="sv-flat">
+      <line x1="40" y1="350" x2="260" y2="350" stroke="#D4D4D4" stroke-width="1.2"/>
+      <circle cx="260" cy="350" r="3" fill="#C5A33C" opacity="0.7"/>
+      <circle cx="40" cy="350" r="2" fill="#D4D4D4" opacity="0.5"/>
+    </g>
+    <!-- Phase 2: Sparkline -->
+    <g id="sv-spark" opacity="0">
+      <polyline points="40,380 70,355 100,395 130,340 155,368 185,315 215,385 245,348 260,360" fill="none" stroke="#D4D4D4" stroke-width="1.2"/>
+      <polyline points="40,400 75,375 110,410 140,365 170,392 200,350 230,405 255,372 260,380" fill="none" stroke="#C5A33C" stroke-width="0.6" opacity="0.45"/>
+      <circle cx="185" cy="315" r="3" fill="#C5A33C" opacity="0.6"/>
+      <circle cx="130" cy="340" r="2" fill="#111" opacity="0.25"/>
+    </g>
+    <!-- Phase 3: Scattered dots -->
+    <g id="sv-dots" opacity="0">
+      <circle cx="55" cy="195" r="2.5" fill="#D4D4D4"/>
+      <circle cx="125" cy="420" r="3" fill="#C5A33C" opacity="0.55"/>
+      <circle cx="185" cy="275" r="2" fill="#111" opacity="0.3"/>
+      <circle cx="245" cy="505" r="2.5" fill="#D4D4D4"/>
+      <circle cx="85" cy="345" r="2" fill="#C5A33C" opacity="0.45"/>
+      <circle cx="205" cy="175" r="2.8" fill="#D4D4D4"/>
+      <circle cx="148" cy="545" r="2" fill="#111" opacity="0.25"/>
+      <circle cx="48" cy="475" r="2.5" fill="#D4D4D4"/>
+      <circle cx="225" cy="315" r="2" fill="#C5A33C" opacity="0.35"/>
+      <circle cx="105" cy="235" r="2.2" fill="#D4D4D4"/>
+      <circle cx="255" cy="155" r="2.5" fill="#111" opacity="0.28"/>
+      <circle cx="168" cy="445" r="2.8" fill="#C5A33C" opacity="0.42"/>
+      <circle cx="78" cy="595" r="2" fill="#D4D4D4"/>
+      <circle cx="230" cy="580" r="2" fill="#111" opacity="0.2"/>
+    </g>
+    <!-- Phase 4: Concentric circles -->
+    <g id="sv-circles" opacity="0">
+      <circle cx="150" cy="350" r="28" fill="none" stroke="#D4D4D4" stroke-width="0.8"/>
+      <circle cx="150" cy="350" r="68" fill="none" stroke="#D4D4D4" stroke-width="0.7"/>
+      <circle cx="150" cy="350" r="112" fill="none" stroke="#C5A33C" stroke-width="0.6" opacity="0.5"/>
+      <circle cx="150" cy="350" r="162" fill="none" stroke="#D4D4D4" stroke-width="0.5"/>
+      <circle cx="150" cy="350" r="218" fill="none" stroke="#D4D4D4" stroke-width="0.4" opacity="0.6"/>
+      <circle cx="150" cy="350" r="4" fill="#C5A33C" opacity="0.55"/>
+    </g>
+  </svg>
 </div>
 
 <!-- ════════════════ HERO ════════════════ -->
@@ -677,13 +693,7 @@ footer{
   </div>
 </div>
 
-<!-- Sparkline animated separator -->
-<div class="anim-sep" aria-hidden="true">
-  <svg class="spark-svg" viewBox="0 0 1200 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <polyline class="spark-line" points="0,11 80,7 160,15 240,9 320,13 400,6 480,12 560,8 640,14 720,10 800,7 880,13 960,9 1040,15 1120,7 1200,11" fill="none" stroke="#D4D4D4" stroke-width="1"/>
-    <polyline class="spark-gold" points="280,13 340,8 400,15 460,10 520,6 580,12 640,9 700,14" fill="none" stroke="#C5A33C" stroke-width="0.8"/>
-  </svg>
-</div>
+<div class="section-divider"></div>
 
 <!-- ════════════════ STATS ════════════════ -->
 <div class="stats">
@@ -709,14 +719,6 @@ footer{
 
 <!-- ════════════════ METHODOLOGY ════════════════ -->
 <section class="methodology">
-  <!-- Radar pulse — bottom right corner -->
-  <div class="radar-wrap" aria-hidden="true">
-    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle class="radar-c radar-c1" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.7"/>
-      <circle class="radar-c radar-c2" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.5"/>
-      <circle class="radar-c radar-c3" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.4"/>
-    </svg>
-  </div>
   <p class="method-overline rv d0">Our Methodology</p>
   <div class="method-body">
     <p class="rv d1">Most analytics platforms surface data. We surface structure &mdash; the <span class="em-gold">institutional flows, regime shifts, and positioning extremes</span> that move markets before price does.</p>
@@ -730,15 +732,7 @@ footer{
 <div class="section-divider"></div>
 
 <!-- ════════════════ PLATFORM ════════════════ -->
-<div style="background:var(--bg);position:relative;overflow:hidden">
-  <!-- Bezier capital flow lines -->
-  <div class="flow-wrap" aria-hidden="true">
-    <svg class="flow-svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <path class="flow-p1" d="M-100,90 C200,35 420,160 680,80 C880,15 1000,110 1300,60" fill="none" stroke="#C5A33C" stroke-width="0.9" opacity="0.07"/>
-      <path class="flow-p2" d="M-100,200 C160,140 380,240 660,180 C880,130 1000,200 1300,155" fill="none" stroke="#A0A0A0" stroke-width="0.7" opacity="0.06"/>
-      <path class="flow-p3" d="M-100,310 C240,270 460,330 720,285 C930,248 1060,310 1300,272" fill="none" stroke="#111111" stroke-width="0.5" opacity="0.04"/>
-    </svg>
-  </div>
+<div style="background:var(--bg)">
   <div class="platform-section">
     <div class="platform-header">
       <p class="s-overline rv d0">Platform</p>
@@ -802,6 +796,34 @@ footer{
 </div>
 
 <script>
+// Scroll-driven visual — 4-phase cross-fade
+(function(){
+  var flat=document.getElementById('sv-flat');
+  var spark=document.getElementById('sv-spark');
+  var dots=document.getElementById('sv-dots');
+  var circles=document.getElementById('sv-circles');
+  if(!flat)return;
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function ease(t){return t<0.5?2*t*t:-1+(4-2*t)*t}
+  function update(){
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    if(max<=0)return;
+    var p=clamp(window.scrollY/max);
+    flat.setAttribute('opacity',clamp(1-(p-0.18)/0.15));
+    var s=0;
+    if(p<0.12)s=0;else if(p<0.28)s=ease((p-0.12)/0.16);else if(p<0.48)s=1;else if(p<0.62)s=1-ease((p-0.48)/0.14);
+    spark.setAttribute('opacity',clamp(s));
+    var d=0;
+    if(p<0.42)d=0;else if(p<0.58)d=ease((p-0.42)/0.16);else if(p<0.74)d=1;else if(p<0.86)d=1-ease((p-0.74)/0.12);
+    dots.setAttribute('opacity',clamp(d));
+    var c=0;
+    if(p<0.68)c=0;else c=ease((p-0.68)/0.18);
+    circles.setAttribute('opacity',clamp(c));
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
+})();
+
 // Scroll reveal
 const revObs=new IntersectionObserver((entries)=>{
   entries.forEach(en=>{if(en.isIntersecting) en.target.classList.add('vis')});
