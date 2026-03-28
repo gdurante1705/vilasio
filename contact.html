@@ -11,275 +11,445 @@
 <meta property="og:url" content="https://vilasio.com">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#08080a;
-  --surf:#0c0c10;
-  --brd:rgba(255,255,255,0.06);
-  --white:#f0f0f0;
-  --t1:#c0c0c4;
-  --t2:#78787f;
-  --t3:#50505a;
-  --gold:#c8a84b;
-  --gold2:#d4be64;
-  --grn:#22c55e;
-  --red:#ef4444;
-  --bp:#5b8af0;
-  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
-  --card-border:rgba(200,168,75,0.06);
-  --card-border-hover:rgba(200,168,75,0.14);
-  --card-shadow:0 4px 24px rgba(0,0,0,0.5);
-  --r:18px;
-  --r-sm:14px;
-  --r-xs:10px;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;overflow-x:hidden;line-height:1.7}
 
-body::before{
-  content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:900px;height:700px;
-  background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);
-  pointer-events:none;z-index:0;
+:root{
+  --bg:#FAFAF8;
+  --bg2:#F2F1ED;
+  --white:#FFFFFF;
+  --ink:#111111;
+  --ink3:#6B6B6B;
+  --muted:#9A9A9A;
+  --brd:#D8D8D4;
+  --gold:#C5A33C;
+  --heading:'DM Sans',system-ui,-apple-system,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
 }
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-weight:300;
+  overflow-x:hidden;line-height:1.7;
+}
+
+/* Grain texture */
 body::after{
   content:"";position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;mix-blend-mode:multiply;
 }
 
-/* ─── NAV ─── */
+/* ═══════════════════════════════════════════════
+   NAV — full-width, Citadel style
+═══════════════════════════════════════════════ */
 nav{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;
-  display:flex;align-items:center;gap:32px;
-  padding:14px 28px;
-  background:rgba(12,12,16,0.8);
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 64px;height:68px;
+  background:rgba(250,250,248,0.95);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:100px;
+  border-bottom:1px solid rgba(0,0,0,0.07);
 }
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-img{width:24px;height:24px;opacity:0.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-link:hover,.nav-link.active{color:var(--white)}
-.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
-.nav-mobile-menu{
-  display:none;position:fixed;top:64px;left:16px;right:16px;
-  background:rgba(12,12,16,0.95);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:var(--r);
-  flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-img{width:26px;height:26px;filter:brightness(0)}
+.nav-brand-name{
+  font-family:var(--heading);font-size:15px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--ink);
 }
-.nav-mobile-menu.open{display:flex}
-.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-mobile-menu a:hover{color:var(--white)}
+.nav-center{display:flex;align-items:center;gap:36px}
+.nav-link{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;transition:color .18s;
+  position:relative;
+}
+.nav-link::after{
+  content:"";position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .2s ease;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-link:hover::after{transform:scaleX(1)}
+.nav-link.active{color:var(--ink)}
+.nav-link.active::after{transform:scaleX(1)}
+.nav-cta{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:10px 22px;text-decoration:none;
+  transition:background .18s,color .18s;flex-shrink:0;
+}
+.nav-cta:hover{background:var(--gold);color:var(--ink)}
+.nav-hamburger{
+  display:none;background:none;border:none;color:var(--ink);
+  font-size:20px;cursor:pointer;padding:0;line-height:1;
+}
+.nav-mobile{
+  display:none;position:fixed;
+  top:68px;left:0;right:0;
+  background:rgba(250,250,248,0.98);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  flex-direction:column;padding:20px 32px 28px;gap:16px;
+  z-index:299;box-shadow:0 16px 40px rgba(0,0,0,0.07);
+}
+.nav-mobile.open{display:flex}
+.mob-link{
+  font-family:var(--body);font-size:13px;font-weight:400;
+  color:var(--ink3);text-decoration:none;
+  padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);
+  transition:color .15s;
+}
+.mob-link:hover,.mob-link.active{color:var(--ink)}
+.mob-cta{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:12px 24px;text-decoration:none;
+  text-align:center;margin-top:4px;transition:background .18s;
+  display:block;
+}
+.mob-cta:hover{background:var(--gold);color:var(--ink)}
 
-/* ─── CONTACT HERO ─── */
-.contact-hero{padding:160px 64px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;min-height:80vh;max-width:1280px;margin:0 auto}
-.coh-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards .1s}
-.coh-h1{font-family:"Alata",sans-serif;font-size:clamp(42px,5vw,68px);font-weight:400;letter-spacing:-2px;line-height:1.05;margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards .25s}
-.coh-h1 em{font-style:normal;color:var(--gold2)}
-.coh-desc{font-size:16px;color:var(--t1);line-height:1.75;margin-bottom:40px;opacity:0;animation:fadeUp .8s ease forwards .4s}
-
-/* ─── CONTACT INFO CARDS ─── */
-.contact-info{display:flex;flex-direction:column;gap:12px;opacity:0;animation:fadeUp .8s ease forwards .5s}
-.ci-item{
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r);
-  box-shadow:var(--card-shadow);
-  padding:20px 24px;display:flex;align-items:center;gap:16px;
-  transition:border-color .3s;position:relative;overflow:hidden;
+/* ═══════════════════════════════════════════════
+   COMMON
+═══════════════════════════════════════════════ */
+.inner{max-width:1200px;margin:0 auto;padding:0 64px}
+.s-overline{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;
 }
-.ci-item:hover{border-color:var(--card-border-hover)}
-.ci-item::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent);
-}
-.ci-icon{font-size:18px;color:var(--gold);width:24px;text-align:center}
-.ci-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:2px}
-.ci-value{font-size:14px;color:var(--white)}
-.ci-value a{color:var(--white);text-decoration:none;transition:color .3s}
-.ci-value a:hover{color:var(--gold2)}
+.s-overline::before{content:"";width:18px;height:1px;background:var(--gold);opacity:0.5;flex-shrink:0}
 
-/* ─── CONTACT FORM ─── */
-.contact-form-wrap{opacity:0;animation:fadeUp .8s ease forwards .35s}
-.cf-title{font-family:"Alata",sans-serif;font-size:20px;font-weight:400;margin-bottom:6px}
-.cf-sub{font-size:14px;color:var(--t1);margin-bottom:28px}
-.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.form-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2)}
-.form-input{
-  background:var(--surf);
+/* ═══════════════════════════════════════════════
+   CONTACT HERO
+═══════════════════════════════════════════════ */
+.contact-hero{
+  background:var(--bg2);
+  padding:140px 0 100px;
+}
+.contact-hero-inner{
+  max-width:1200px;margin:0 auto;padding:0 64px;
+}
+.hero-overline{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;display:inline-flex;align-items:center;gap:12px;
+  opacity:0;animation:au .8s ease forwards .1s;
+}
+.hero-overline::before{content:"";width:18px;height:1px;background:var(--gold);opacity:0.5}
+.contact-h1{
+  font-family:var(--heading);
+  font-size:clamp(40px,5vw,68px);
+  font-weight:700;line-height:1.05;letter-spacing:-2px;
+  color:var(--ink);margin-bottom:20px;
+  opacity:0;animation:au .8s ease forwards .25s;
+}
+.contact-h1 .em-gold{color:var(--gold)}
+.contact-desc{
+  font-family:var(--body);font-size:17px;font-weight:300;
+  color:var(--ink3);line-height:1.75;max-width:560px;
+  opacity:0;animation:au .8s ease forwards .4s;
+}
+
+/* ═══════════════════════════════════════════════
+   CONTACT GRID
+═══════════════════════════════════════════════ */
+.contact-grid{
+  max-width:1200px;margin:0 auto;padding:80px 64px 100px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+  align-items:start;
+}
+
+/* LEFT — info */
+.contact-info{opacity:0;animation:au .8s ease forwards .5s}
+.info-heading{
+  font-family:var(--heading);font-size:22px;font-weight:600;
+  color:var(--ink);margin-bottom:8px;letter-spacing:-0.3px;
+}
+.info-sub{
+  font-family:var(--body);font-size:14px;font-weight:300;
+  color:var(--ink3);line-height:1.7;margin-bottom:36px;
+}
+
+.ci-card{
+  background:var(--white);
   border:1px solid var(--brd);
-  border-radius:var(--r-xs);
-  color:var(--white);padding:12px 16px;
-  font-family:"Roboto Slab",serif;font-size:14px;
-  outline:none;transition:border-color .3s;width:100%;
+  border-radius:12px;
+  padding:28px 32px;
+  margin-bottom:16px;
+  transition:border-color .2s;
+}
+.ci-card:hover{border-color:rgba(0,0,0,0.15)}
+.ci-icon{
+  font-family:var(--mono);font-size:14px;font-weight:500;
+  color:var(--gold);margin-bottom:12px;
+}
+.ci-label{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:3px;text-transform:uppercase;color:var(--muted);
+  margin-bottom:6px;
+}
+.ci-value{
+  font-family:var(--body);font-size:15px;font-weight:400;color:var(--ink);
+}
+.ci-value a{color:var(--ink);text-decoration:none;transition:color .2s}
+.ci-value a:hover{color:var(--gold)}
+
+.ci-note{
+  margin-top:24px;
+  font-family:var(--body);font-size:13px;font-weight:300;
+  color:var(--muted);line-height:1.7;
+  padding-left:16px;border-left:2px solid var(--brd);
+}
+
+/* RIGHT — form */
+.contact-form-wrap{opacity:0;animation:au .8s ease forwards .55s}
+.form-card{
+  background:var(--white);
+  border:1px solid var(--brd);
+  border-radius:12px;
+  padding:36px 36px 40px;
+}
+.form-title{
+  font-family:var(--heading);font-size:20px;font-weight:600;
+  color:var(--ink);margin-bottom:6px;letter-spacing:-0.2px;
+}
+.form-sub{
+  font-family:var(--body);font-size:13px;font-weight:300;
+  color:var(--ink3);margin-bottom:28px;
+}
+
+.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-label{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:3px;text-transform:uppercase;color:var(--muted);
+}
+.form-input{
+  background:var(--bg);
+  border:1px solid var(--brd);
+  border-radius:8px;
+  color:var(--ink);padding:13px 16px;
+  font-family:var(--body);font-size:14px;font-weight:300;
+  outline:none;transition:border-color .2s;width:100%;
 }
 .form-input:focus{border-color:var(--gold)}
-.form-input::placeholder{color:var(--t3)}
-textarea.form-input{resize:vertical;min-height:120px}
-select.form-input{background:var(--surf);appearance:none;cursor:pointer}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-submit{
-  font-family:"DM Mono",monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--bg);
-  background:linear-gradient(135deg,var(--gold),#b8952f);
-  padding:15px 36px;border:none;border-radius:100px;
-  cursor:pointer;transition:all .3s;width:100%;margin-top:4px;
-  box-shadow:0 4px 16px rgba(200,168,75,0.15);
+.form-input::placeholder{color:var(--muted)}
+textarea.form-input{resize:vertical;min-height:130px;line-height:1.6}
+select.form-input{
+  background:var(--bg);
+  appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9A9A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+  padding-right:40px;
 }
-.form-submit:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(200,168,75,0.25)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.form-submit{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:15px 36px;border:none;border-radius:0;
+  cursor:pointer;transition:all .2s;width:100%;margin-top:4px;
+}
+.form-submit:hover{background:var(--gold);color:var(--ink)}
+
 .success-msg{
   display:none;
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:var(--r);
-  padding:20px;text-align:center;font-size:14px;color:var(--white);margin-top:16px;
+  background:var(--bg2);
+  border:1px solid var(--brd);
+  border-radius:8px;
+  padding:20px;text-align:center;
+  font-family:var(--body);font-size:14px;font-weight:400;
+  color:var(--ink);margin-top:16px;
 }
 
-/* ─── FOOTER ─── */
-footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px}
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  padding:40px 64px;border-top:1px solid var(--brd);
+  background:var(--white);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
 .foot-brand{display:flex;align-items:center;gap:10px}
-.foot-logo{width:22px;height:22px;opacity:0.7}
-.foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.foot-logo{width:22px;height:22px;filter:brightness(0);opacity:0.7}
+.foot-name{
+  font-family:var(--heading);font-size:13px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);
+}
 .foot-links{display:flex;gap:28px}
-.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.foot-links a:hover{color:var(--white)}
-.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t2)}
+.foot-links a{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--ink3);
+  text-decoration:none;transition:color .25s;
+}
+.foot-links a:hover{color:var(--ink)}
+.foot-right{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3)}
 
-/* ─── DISCLAIMER ─── */
-.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
-.disclaimer-bar p strong{color:var(--t2);font-weight:400}
-.disclaimer-bar a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
-.disclaimer-bar a:hover{color:var(--gold2)}
+/* ═══════════════════════════════════════════════
+   DISCLAIMER BAR
+═══════════════════════════════════════════════ */
+.disclaimer-bar{background:var(--bg2);border-top:1px solid var(--brd);padding:32px 0}
+.disclaimer-inner{
+  max-width:1200px;margin:0 auto;padding:0 64px;
+  display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+}
+.disclaimer-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+}
+.disclaimer-bar p{
+  font-size:12px;line-height:1.75;color:var(--muted);
+  margin:0;font-family:var(--body);font-weight:300;
+}
 
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:none}
+/* ═══════════════════════════════════════════════
+   SCROLL TOP
+═══════════════════════════════════════════════ */
+.scroll-top{
+  position:fixed;bottom:24px;right:6px;z-index:290;
+  width:36px;height:36px;background:rgba(250,250,248,0.92);
+  border:1px solid rgba(0,0,0,0.1);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;
+  backdrop-filter:blur(10px);
+}
+.scroll-top.show{opacity:1;pointer-events:auto}
+.scroll-top:hover{border-color:rgba(0,0,0,0.25);transform:translateY(-2px)}
+.scroll-top svg{width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2}
 
-/* ─── RESPONSIVE ─── */
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
+@keyframes au{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}
+.rv.vis{opacity:1;transform:none}
+.d0{transition-delay:0s}.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
 @media(max-width:960px){
-  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
-  .nav-links{display:none}
-  .nav-mobile-btn{display:block}
-  .contact-hero{grid-template-columns:1fr;padding:120px 24px 60px;gap:48px}
+  nav{padding:0 24px}
+  .nav-center,.nav-cta{display:none}
+  .nav-hamburger{display:block}
+  .contact-hero{padding:120px 0 72px}
+  .contact-hero-inner{padding:0 24px}
+  .contact-grid{grid-template-columns:1fr;padding:56px 24px 72px;gap:48px}
   .form-row{grid-template-columns:1fr}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
 }
 @media(max-width:768px){
-  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+  .disclaimer-inner{padding:0 24px}
+  .form-card{padding:28px 24px 32px}
 }
-.scroll-top{position:fixed;bottom:24px;right:6px;z-index:90;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid rgba(200,168,75,0.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
-.scroll-top.show{opacity:1;pointer-events:auto}
-.scroll-top:hover{border-color:rgba(200,168,75,0.14);transform:translateY(-2px)}
-.scroll-top svg{width:16px;height:16px;stroke:#c0c0c4;fill:none;stroke-width:2}
-
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ════════════════ NAV ════════════════ -->
 <nav>
   <a href="index.html" class="nav-brand">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
-    <span class="nav-name">Vilasio</span>
+    <span class="nav-brand-name">VILASIO</span>
   </a>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">Home</a>
+  <div class="nav-center">
     <a href="cot.html" class="nav-link">COT Intelligence</a>
-    <a href="owl.html" class="nav-link">The Owl</a>
     <a href="blog.html" class="nav-link">Insights</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="contact.html" class="nav-link active">Contact</a>
+    <a href="about.html" class="nav-link">Methodology</a>
   </div>
-  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
+  <a href="owl.html" class="nav-cta">The Owl</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">&#9776;</button>
 </nav>
 
-<!-- Mobile menu -->
-<div class="nav-mobile-menu" id="mobile-menu">
-  <a href="index.html">Home</a>
-  <a href="cot.html">COT Intelligence</a>
-  <a href="owl.html">The Owl</a>
-  <a href="blog.html">Insights</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
+<!-- Mobile nav -->
+<div class="nav-mobile" id="nav-mobile">
+  <a href="cot.html" class="mob-link">COT Intelligence</a>
+  <a href="blog.html" class="mob-link">Insights</a>
+  <a href="about.html" class="mob-link">Methodology</a>
+  <a href="owl.html" class="mob-cta">The Owl</a>
 </div>
 
-<!-- CONTACT HERO -->
-<div class="contact-hero">
-  <div>
-    <div class="coh-tag">Contact</div>
-    <h1 class="coh-h1">Let's<br><em>talk.</em></h1>
-    <p class="coh-desc">Whether you have a question about COT Intelligence, want early access to new tools, or just want to connect — we read every message personally.</p>
-    <div class="contact-info">
-      <div class="ci-item">
-        <div class="ci-icon">@</div>
-        <div class="ci-content">
-          <div class="ci-label">Email</div>
-          <div class="ci-value"><a href="mailto:info@vilasio.com">info@vilasio.com</a></div>
+<!-- ════════════════ HERO ════════════════ -->
+<section class="contact-hero">
+  <div class="contact-hero-inner">
+    <p class="hero-overline">Contact</p>
+    <h1 class="contact-h1">Let's <span class="em-gold">talk.</span></h1>
+    <p class="contact-desc">Whether you have a question about COT Intelligence, want early access to new tools, or just want to connect &mdash; we read every message personally.</p>
+  </div>
+</section>
+
+<!-- ════════════════ CONTACT GRID ════════════════ -->
+<div class="contact-grid">
+
+  <!-- LEFT — info -->
+  <div class="contact-info">
+    <h2 class="info-heading rv d0">Get in touch</h2>
+    <p class="info-sub rv d1">Reach out directly or use the form. We respond to every message.</p>
+
+    <div class="ci-card rv d2">
+      <div class="ci-icon">@</div>
+      <div class="ci-label">Email</div>
+      <div class="ci-value"><a href="mailto:info@vilasio.com">info@vilasio.com</a></div>
+    </div>
+
+    <p class="ci-note rv d3">We typically reply within 24&ndash;48 hours on business days.</p>
+  </div>
+
+  <!-- RIGHT — form -->
+  <div class="contact-form-wrap">
+    <div class="form-card">
+      <div class="form-title">Send a message</div>
+      <div class="form-sub">Tell us what's on your mind. Be as specific as you like.</div>
+      <form id="contact-form" method="POST" action="https://formspree.io/f/xkoveddy">
+        <input type="hidden" name="_subject" value="New message from vilasio.com">
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-input" placeholder="Your name" name="name" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="Your email" name="email" required>
+          </div>
         </div>
-      </div>
-      <div class="ci-item">
-        <div class="ci-icon" style="color:var(--t2)">!</div>
-        <div class="ci-content">
-          <div class="ci-label">Response time</div>
-          <div class="ci-value" style="color:var(--t1);font-size:13px">We typically reply within 24–48 hours on business days.</div>
+        <div class="form-field">
+          <label class="form-label">Subject</label>
+          <select class="form-input" name="subject">
+            <option value="">Select a topic</option>
+            <option>COT Intelligence — General Question</option>
+            <option>COT Intelligence — Technical Support</option>
+            <option>Partnership / Business</option>
+            <option>Other</option>
+          </select>
         </div>
-      </div>
+        <div class="form-field">
+          <label class="form-label">Message</label>
+          <textarea class="form-input" placeholder="Write your message here..." name="message"></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message &rarr;</button>
+        <div class="success-msg" id="success-msg">Message sent. We'll be in touch soon.</div>
+      </form>
     </div>
   </div>
 
-  <div class="contact-form-wrap">
-    <div class="cf-title">Send a message</div>
-    <div class="cf-sub">Tell us what's on your mind. Be as specific as you like.</div>
-    <form id="contact-form" method="POST" action="https://formspree.io/f/xkoveddy">
-      <input type="hidden" name="_subject" value="New message from vilasio.com">
-      <div class="form-row">
-        <div class="form-field">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-input" placeholder="Your name" name="name" required>
-        </div>
-        <div class="form-field">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="Your email" name="email" required>
-        </div>
-      </div>
-      <div class="form-field">
-        <label class="form-label">Subject</label>
-        <select class="form-input" name="subject">
-          <option value="">Select a topic</option>
-          <option>COT Intelligence — General Question</option>
-          <option>COT Intelligence — Technical Support</option>
-          <option>Partnership / Business</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label class="form-label">Message</label>
-        <textarea class="form-input" placeholder="Write your message here..." name="message"></textarea>
-      </div>
-      <button type="submit" class="form-submit">Send Message →</button>
-      <div class="success-msg" id="success-msg">Message sent. We'll be in touch soon.</div>
-    </form>
-  </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="foot-brand">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="V">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="Vilasio">
     <span class="foot-name">Vilasio</span>
   </div>
   <div class="foot-links">
@@ -291,7 +461,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
 
-<!-- DISCLAIMER -->
+<!-- ════════════════ DISCLAIMER ════════════════ -->
 <div class="disclaimer-bar">
   <div class="disclaimer-inner">
     <span class="disclaimer-label">Disclaimer</span>
@@ -302,20 +472,54 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   </div>
 </div>
 
+<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</div>
+
 <script>
-// Mobile menu
-function toggleMobileMenu(){
-  document.getElementById('mobile-menu').classList.toggle('open');
+// Scroll reveal
+const revObs=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>revObs.observe(el));
+
+// Mobile nav
+function toggleMobile(){
+  const mn=document.getElementById('nav-mobile');
+  const hb=document.getElementById('hamburger');
+  mn.classList.toggle('open');
+  hb.textContent=mn.classList.contains('open')?'\u2715':'\u2630';
 }
-document.addEventListener('click',function(e){
-  const menu=document.getElementById('mobile-menu');
-  const btn=document.querySelector('.nav-mobile-btn');
-  if(menu && !menu.contains(e.target) && !btn.contains(e.target)){
-    menu.classList.remove('open');
+document.addEventListener('click',(e)=>{
+  const mn=document.getElementById('nav-mobile');
+  const hb=document.getElementById('hamburger');
+  if(mn&&hb&&!mn.contains(e.target)&&!hb.contains(e.target)){
+    mn.classList.remove('open');
+    hb.textContent='\u2630';
   }
 });
-window.addEventListener('scroll',function(){var btn=document.getElementById('scroll-top');if(btn)btn.classList.toggle('show',window.scrollY>300)});
+
+// Form submission
+const form=document.getElementById('contact-form');
+const successMsg=document.getElementById('success-msg');
+form.addEventListener('submit',function(e){
+  e.preventDefault();
+  const data=new FormData(form);
+  fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}})
+    .then(r=>{
+      if(r.ok){
+        form.reset();
+        successMsg.style.display='block';
+        setTimeout(()=>{successMsg.style.display='none'},6000);
+      }
+    })
+    .catch(()=>{});
+});
+
+// Scroll top
+window.addEventListener('scroll',()=>{
+  document.getElementById('scroll-top').classList.toggle('show',window.scrollY>400);
+},{passive:true});
 </script>
-<div class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 </body>
 </html>
