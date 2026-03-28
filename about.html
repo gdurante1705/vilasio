@@ -142,13 +142,21 @@ nav{
 .em-gold{color:var(--gold)}
 
 /* ═══════════════════════════════════════════════
-   HERO
+   HERO — video background (matches landing page)
 ═══════════════════════════════════════════════ */
 .page-hero{
-  padding:148px 64px 100px;
-  background:
-    radial-gradient(ellipse 70% 50% at 0% 30%,rgba(197,163,60,0.04) 0%,transparent 60%),
-    var(--bg);
+  position:relative;min-height:80vh;overflow:hidden;
+  display:flex;align-items:center;
+}
+.hero-bg{position:absolute;inset:0;z-index:1}
+.hero-bg video{width:100%;height:100%;object-fit:cover;display:block}
+.hero-overlay{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(to right,rgba(0,0,0,0.78) 0%,rgba(0,0,0,0.45) 50%,rgba(0,0,0,0.15) 100%);
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:160px 64px 100px;max-width:680px;
 }
 .hero-tag{
   font-family:var(--mono);font-size:10px;font-weight:500;
@@ -157,21 +165,43 @@ nav{
   opacity:0;animation:au .8s ease forwards .1s;
 }
 .hero-rule{
-  width:40px;height:2px;background:var(--gold);opacity:0.6;
+  width:40px;height:2px;background:var(--gold);opacity:0.8;
   margin-bottom:36px;
   opacity:0;animation:au .8s ease forwards .2s;
 }
 .page-h1{
   font-family:var(--heading);
-  font-size:clamp(38px,5.5vw,80px);
-  font-weight:700;line-height:1.0;letter-spacing:-3px;
-  color:var(--ink);margin-bottom:28px;
+  font-size:clamp(38px,5.5vw,72px);
+  font-weight:700;line-height:1.05;letter-spacing:-2.5px;
+  color:#fff;margin-bottom:24px;
   opacity:0;animation:au .8s ease forwards .3s;
 }
 .hero-sub{
   font-family:var(--body);font-size:17px;font-weight:300;
-  color:var(--ink3);max-width:620px;line-height:1.7;
+  color:rgba(255,255,255,0.7);max-width:560px;line-height:1.7;
+  margin-bottom:40px;
   opacity:0;animation:au .8s ease forwards .45s;
+}
+.hero-ctas{
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  opacity:0;animation:au .8s ease forwards .6s;
+}
+.hero-ctas .btn-primary{background:var(--gold);color:var(--ink)}
+.hero-ctas .btn-primary:hover{background:#d4b44e;transform:translateY(-1px)}
+.hero-ctas .btn-ghost{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2)}
+.hero-ctas .btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}
+.btn-primary{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:14px 32px;text-decoration:none;
+  transition:all .2s;display:inline-block;white-space:nowrap;
+}
+.btn-ghost{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--brd);
+  padding:13px 28px;white-space:nowrap;
+  transition:all .2s;display:inline-block;
 }
 
 /* ═══════════════════════════════════════════════
@@ -180,9 +210,10 @@ nav{
 .approach-section{padding:108px 0}
 .approach-lead{
   font-family:var(--heading);
-  font-size:clamp(26px,3vw,42px);
-  font-weight:700;color:var(--ink);line-height:1.12;
-  max-width:700px;margin-bottom:36px;letter-spacing:-0.8px;
+  font-size:clamp(28px,3.5vw,48px);
+  font-weight:700;color:var(--ink);line-height:1.1;
+  max-width:700px;margin-bottom:36px;letter-spacing:-1px;
+  border-left:3px solid var(--gold);padding-left:28px;
 }
 .approach-body{
   max-width:680px;
@@ -197,6 +228,19 @@ nav{
 .framework-section{padding:108px 0;background:var(--white)}
 .framework-header{margin-bottom:0;position:relative;z-index:1}
 .framework-header .s-h2{margin-bottom:0}
+.framework-stats{
+  display:flex;gap:48px;margin-top:48px;padding-bottom:40px;
+  border-bottom:1px solid var(--brd);
+}
+.fw-stat-num{
+  font-family:var(--heading);font-size:clamp(28px,3vw,42px);font-weight:700;
+  color:var(--gold);display:block;line-height:1;letter-spacing:-1px;
+}
+.fw-stat-label{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  margin-top:8px;display:block;
+}
 .framework-body{margin-top:48px;position:relative;z-index:1}
 .framework-body p{
   font-family:var(--body);font-size:16px;font-weight:300;
@@ -224,9 +268,11 @@ nav{
 }
 .source-row{
   display:grid;grid-template-columns:148px 1fr;
-  gap:16px;padding:22px 0;border-bottom:1px solid var(--brd);
-  align-items:baseline;
+  gap:16px;padding:22px 12px;border-bottom:1px solid var(--brd);
+  align-items:baseline;margin:0 -12px;
+  transition:background .2s;border-radius:4px;
 }
+.source-row:hover{background:var(--bg)}
 .source-name{
   font-family:var(--mono);font-size:10px;font-weight:500;
   color:var(--ink);letter-spacing:2px;text-transform:uppercase;
@@ -263,6 +309,7 @@ nav{
 }
 .origin-sig a{color:var(--gold);text-decoration:none}
 .origin-sig a:hover{text-decoration:underline;text-underline-offset:3px}
+.origin-cta{display:flex;gap:14px;margin-top:44px}
 
 /* ═══════════════════════════════════════════════
    FOOTER
@@ -338,11 +385,11 @@ footer{
   .nav-center,.nav-cta{display:none}
   .nav-hamburger{display:block}
   .page-hero{padding:120px 24px 72px}
-  .inner,.pillars{padding-left:24px;padding-right:24px}
+  .inner{padding-left:24px;padding-right:24px}
+  .hero-content{padding:120px 24px 72px}
   .approach-section,.framework-section,.data-section,
   .notwhat-section,.origin-section{padding:72px 0}
-  .pillar{grid-template-columns:1fr;gap:16px;padding:44px 0}
-  .pillar-ghost{font-size:44px}
+  .framework-stats{flex-wrap:wrap;gap:24px 40px}
   .source-grid{grid-template-columns:1fr}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -384,10 +431,22 @@ footer{
 
 <!-- ════════════════ HERO ════════════════ -->
 <section class="page-hero">
-  <p class="hero-tag">Methodology</p>
-  <div class="hero-rule"></div>
-  <h1 class="page-h1">How We Read Markets</h1>
-  <p class="hero-sub">VILASIO&rsquo;s analytical framework for institutional positioning, macro regime identification, and cross-market intelligence.</p>
+  <div class="hero-bg">
+    <video autoplay muted loop playsinline>
+      <source src="hero-video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Methodology</p>
+    <div class="hero-rule"></div>
+    <h1 class="page-h1">How We Read Markets</h1>
+    <p class="hero-sub">VILASIO&rsquo;s analytical framework for institutional positioning, macro regime identification, and cross-market intelligence.</p>
+    <div class="hero-ctas">
+      <a href="cot.html" class="btn-primary">COT Intelligence</a>
+      <a href="owl.html" class="btn-ghost">Discover The Owl</a>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider"></div>
@@ -413,8 +472,15 @@ footer{
     <h2 class="s-h2 rv d1">What we track &mdash; and <span class="em-gold">why it matters.</span></h2>
   </div>
 
+  <div class="inner framework-stats rv d2">
+    <div class="fw-stat"><span class="fw-stat-num">39</span><span class="fw-stat-label">Futures Markets</span></div>
+    <div class="fw-stat"><span class="fw-stat-num">4</span><span class="fw-stat-label">Macro Regimes</span></div>
+    <div class="fw-stat"><span class="fw-stat-num">120+</span><span class="fw-stat-label">Countries</span></div>
+    <div class="fw-stat"><span class="fw-stat-num">8</span><span class="fw-stat-label">Analytics Tools</span></div>
+  </div>
+
   <div class="inner framework-body">
-    <p class="fw-intro rv d2">Our analytical framework is organized around the structural forces that drive asset prices: institutional positioning, macroeconomic regime, liquidity conditions, and cross-market dynamics.</p>
+    <p class="fw-intro rv d3">Our analytical framework is organized around the structural forces that drive asset prices: institutional positioning, macroeconomic regime, liquidity conditions, and cross-market dynamics.</p>
     <p class="rv d3">We process CFTC Commitment of Traders data across 39 futures markets to map where institutional capital is concentrated and how it shifts week over week. We track inflation trajectory, labor conditions, and banking system health to classify the macro regime &mdash; expansion, contraction, stagflation, or reflation &mdash; because positioning data without macro context is noise. We monitor Federal Reserve balance sheet dynamics, SOFR spreads, Treasury yield curves, and credit conditions to assess the liquidity environment that underpins all risk pricing. And we layer cross-market intelligence &mdash; sector rotation, currency strength, commodity correlations, and geopolitical risk across 120+ countries &mdash; to identify where capital is migrating before it shows up in price.</p>
     <p class="rv d4">Each of these dimensions is served by a dedicated analytical tool within the VILASIO platform. Together, they form a single, coherent view of the market structure that institutional desks use to make decisions.</p>
   </div>
@@ -492,6 +558,10 @@ footer{
     </div>
     <div class="origin-sig rv d3">
       &mdash;&nbsp;&nbsp;The VILASIO Team &middot; <a href="mailto:info@vilasio.com">info@vilasio.com</a>
+    </div>
+    <div class="origin-cta rv d4">
+      <a href="owl.html" class="btn-primary" style="background:var(--ink);color:var(--white)">Explore The Owl</a>
+      <a href="cot.html" class="btn-ghost" style="color:var(--ink3);border-color:var(--brd)">COT Intelligence</a>
     </div>
   </div>
 </section>
