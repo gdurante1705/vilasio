@@ -177,9 +177,9 @@ nav{
   content:"";position:absolute;inset:0;
   background:rgba(0,0,0,0.15);pointer-events:none;
 }
-/* Fallback if no video */
+/* Fallback if no video — sits behind the <video> */
 .hero-video-fallback{
-  position:absolute;inset:0;
+  position:absolute;inset:0;z-index:-1;
   background:
     radial-gradient(ellipse 60% 50% at 50% 40%,rgba(197,163,60,0.08) 0%,transparent 60%),
     #0A0A0F;
