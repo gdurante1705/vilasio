@@ -435,44 +435,44 @@ footer{
 .d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.40s}
 
 /* ═══════════════════════════════════════════════
-   EXPLODED VIEW
+   SIDEBAR LAYOUT + EXPLODED VIEW
 ═══════════════════════════════════════════════ */
-.exploded-section{position:relative;height:300vh}
-.exploded-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.exploded-stack{position:relative;width:420px;height:280px;perspective:1800px;transform-style:preserve-3d}
-.exploded-layer{position:absolute;top:0;left:0;width:100%;height:100%;background:#FFFFFF;border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:24px 28px;transition:box-shadow .1s ease;will-change:transform,opacity;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.exploded-layer-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#999;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.page-layout{display:flex;align-items:flex-start;max-width:1440px;margin:0 auto}
+.page-content{flex:1;min-width:0}
+.page-visual{width:440px;flex-shrink:0;padding-right:48px}
+.exploded-sticky{position:sticky;top:50%;transform:translateY(-50%);padding:40px 0}
+.exploded-stack{position:relative;width:340px;height:230px;perspective:1600px;transform-style:preserve-3d;margin:0 auto}
+.exploded-layer{position:absolute;top:0;left:0;width:100%;height:100%;background:#FFF;border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:20px 24px;will-change:transform,opacity,box-shadow;backface-visibility:hidden}
+.exploded-layer-label{font-family:var(--mono);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:#BBB;margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .exploded-layer-label .num{color:#C5A33C;font-weight:500}
-.layer-price .sparkline-svg{width:100%;height:60%;margin-top:8px}
-.layer-price .sparkline-svg path{fill:none;stroke:#111;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.layer-price .sparkline-svg .baseline{stroke:#E0E0E0;stroke-width:1;stroke-dasharray:4 4}
-.layer-positioning .bars{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-.layer-positioning .bar-row{display:flex;align-items:center;gap:12px}
-.layer-positioning .bar-label{font-family:var(--mono);font-size:10px;color:#999;width:28px;text-align:right}
-.layer-positioning .bar-track{flex:1;height:14px;background:#F2F1ED;border-radius:3px;overflow:hidden;position:relative}
-.layer-positioning .bar-fill{height:100%;border-radius:3px;position:absolute;left:0;top:0}
-.layer-positioning .bar-pct{font-family:var(--mono);font-size:9px;color:#999;width:36px}
-.layer-macro .quadrant{width:100%;height:calc(100% - 40px);position:relative;margin-top:8px}
-.quadrant-grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
-.quadrant-cell{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#CCC}
-.quadrant-cell.active{color:#C5A33C;font-weight:500}
-.quadrant-cross-v{position:absolute;left:50%;top:10%;bottom:10%;width:1px;background:#E8E6E1}
-.quadrant-cross-h{position:absolute;top:50%;left:10%;right:10%;height:1px;background:#E8E6E1}
-.quadrant-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#C5A33C;top:32%;left:38%;box-shadow:0 0 12px rgba(197,163,60,0.3)}
-.layer-liquidity .area-svg{width:100%;height:65%;margin-top:8px}
-.layer-liquidity .area-svg .area-fill{fill:rgba(197,163,60,0.08)}
-.layer-liquidity .area-svg .area-line{fill:none;stroke:#C5A33C;stroke-width:1.5;stroke-linecap:round}
-.layer-liquidity .area-svg .area-baseline{stroke:#E8E6E1;stroke-width:1;stroke-dasharray:3 3}
-.layer-structure .circles-svg{width:100%;height:calc(100% - 40px);margin-top:4px}
-.layer-structure .circles-svg circle{fill:none;stroke:#E0E0E0;stroke-width:0.8}
-.layer-structure .circles-svg .dot{fill:#C5A33C;stroke:none}
-.layer-structure .circles-svg .dot-dark{fill:#111;stroke:none;opacity:0.3}
-.layer-structure .circles-svg .center-ring{stroke:#C5A33C;stroke-width:1;opacity:0.4}
-@media(max-width:768px){
-  .exploded-section{height:auto;padding:60px 24px}
-  .exploded-sticky{position:relative;height:auto}
-  .exploded-stack{width:300px;height:200px;perspective:none;transform-style:flat}
-  .exploded-layer{position:relative;margin-bottom:16px;transform:none!important;box-shadow:0 2px 12px rgba(0,0,0,0.06)!important;opacity:1!important}
+.layer-price .sparkline-svg{width:100%;height:55%;margin-top:6px}
+.layer-price .sparkline-svg path.line{fill:none;stroke:#111;stroke-width:1.8;stroke-linecap:round}
+.layer-price .sparkline-svg .bl{stroke:#E8E6E1;stroke-width:0.8;stroke-dasharray:3 3}
+.layer-price .sparkline-svg .dot{fill:#C5A33C}
+.layer-positioning .bars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.br{display:flex;align-items:center;gap:8px}
+.br-l{font-family:var(--mono);font-size:9px;color:#AAA;width:22px;text-align:right}
+.br-t{flex:1;height:10px;background:#F5F4F0;border-radius:2px;overflow:hidden}
+.br-f{height:100%;border-radius:2px}
+.layer-macro .quad{width:100%;height:calc(100% - 36px);position:relative;margin-top:4px}
+.qv{position:absolute;left:50%;top:12%;bottom:12%;width:1px;background:#E8E6E1}
+.qh{position:absolute;top:50%;left:12%;right:12%;height:1px;background:#E8E6E1}
+.qd{position:absolute;width:7px;height:7px;border-radius:50%;background:#C5A33C;top:30%;left:36%;box-shadow:0 0 10px rgba(197,163,60,0.25)}
+.qg{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.qc{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#D0D0D0}
+.qc.on{color:#C5A33C;font-weight:500}
+.layer-liquidity .area-svg{width:100%;height:58%;margin-top:6px}
+.af{fill:rgba(197,163,60,0.06)}
+.al{fill:none;stroke:#C5A33C;stroke-width:1.2;stroke-linecap:round}
+.ab{stroke:#E8E6E1;stroke-width:0.8;stroke-dasharray:3 3}
+.layer-structure .circles-svg{width:100%;height:calc(100% - 36px);margin-top:2px}
+.cr{fill:none;stroke:#E0E0E0;stroke-width:0.7}
+.cg{fill:none;stroke:#C5A33C;stroke-width:0.8;opacity:0.35}
+.cd{fill:#C5A33C}
+.cdd{fill:#111;opacity:0.2}
+@media(max-width:960px){
+  .page-layout{display:block}
+  .page-visual{display:none}
 }
 
 /* ═══════════════════════════════════════════════
@@ -633,6 +633,9 @@ footer{
   </div>
 </section>
 
+<div class="page-layout">
+<main class="page-content">
+
 <div class="section-divider"></div>
 
 <!-- ════════════════ WHAT WE TRACK ════════════════ -->
@@ -699,97 +702,6 @@ footer{
   </div>
 </div>
 
-<!-- ════════════════ EXPLODED VIEW ════════════════ -->
-<section class="exploded-section">
-  <div class="exploded-sticky">
-    <div class="exploded-stack" id="explodedStack">
-
-      <!-- Layer 5: STRUCTURE (bottom) -->
-      <div class="exploded-layer layer-structure" data-layer="4">
-        <div class="exploded-layer-label"><span class="num">05</span> Structure</div>
-        <svg class="circles-svg" viewBox="0 0 360 180">
-          <circle cx="180" cy="90" r="75" />
-          <circle cx="180" cy="90" r="55" />
-          <circle cx="180" cy="90" r="35" class="center-ring" />
-          <circle cx="180" cy="90" r="15" class="center-ring" />
-          <circle cx="120" cy="50" r="3" class="dot" />
-          <circle cx="250" cy="70" r="2.5" class="dot" />
-          <circle cx="150" cy="130" r="2" class="dot-dark" />
-          <circle cx="220" cy="40" r="2" class="dot-dark" />
-          <circle cx="280" cy="110" r="3" class="dot" />
-          <circle cx="100" cy="100" r="2.5" class="dot-dark" />
-          <circle cx="200" cy="140" r="2" class="dot" />
-        </svg>
-      </div>
-
-      <!-- Layer 4: LIQUIDITY -->
-      <div class="exploded-layer layer-liquidity" data-layer="3">
-        <div class="exploded-layer-label"><span class="num">04</span> Liquidity</div>
-        <svg class="area-svg" viewBox="0 0 360 160">
-          <line x1="0" y1="130" x2="360" y2="130" class="area-baseline" />
-          <path class="area-fill" d="M0,130 L0,100 C40,95 80,85 120,80 C160,75 200,60 240,55 C280,50 320,45 360,40 L360,130 Z" />
-          <path class="area-line" d="M0,100 C40,95 80,85 120,80 C160,75 200,60 240,55 C280,50 320,45 360,40" />
-        </svg>
-      </div>
-
-      <!-- Layer 3: MACRO -->
-      <div class="exploded-layer layer-macro" data-layer="2">
-        <div class="exploded-layer-label"><span class="num">03</span> Macro Regime</div>
-        <div class="quadrant">
-          <div class="quadrant-cross-v"></div>
-          <div class="quadrant-cross-h"></div>
-          <div class="quadrant-dot"></div>
-          <div class="quadrant-grid">
-            <div class="quadrant-cell active">Expansion</div>
-            <div class="quadrant-cell">Reflation</div>
-            <div class="quadrant-cell">Contraction</div>
-            <div class="quadrant-cell">Stagflation</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Layer 2: POSITIONING -->
-      <div class="exploded-layer layer-positioning" data-layer="1">
-        <div class="exploded-layer-label"><span class="num">02</span> Positioning</div>
-        <div class="bars">
-          <div class="bar-row">
-            <span class="bar-label">ES</span>
-            <div class="bar-track"><div class="bar-fill" style="width:72%;background:#111"></div></div>
-            <span class="bar-pct">+72%</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">GC</span>
-            <div class="bar-track"><div class="bar-fill" style="width:65%;background:#C5A33C"></div></div>
-            <span class="bar-pct">+65%</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">CL</span>
-            <div class="bar-track"><div class="bar-fill" style="width:38%;background:#999"></div></div>
-            <span class="bar-pct">-22%</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">6E</span>
-            <div class="bar-track"><div class="bar-fill" style="width:55%;background:#111"></div></div>
-            <span class="bar-pct">+55%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Layer 1: PRICE (top) -->
-      <div class="exploded-layer layer-price" data-layer="0">
-        <div class="exploded-layer-label"><span class="num">01</span> Price</div>
-        <svg class="sparkline-svg" viewBox="0 0 360 120">
-          <line x1="0" y1="90" x2="360" y2="90" class="baseline" />
-          <path d="M0,80 C20,78 40,75 60,70 C80,65 100,55 120,50 C140,45 160,48 180,52 C200,56 220,45 240,35 C260,25 280,30 300,28 C320,26 340,22 360,20" />
-        </svg>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
 <!-- ════════════════ METHODOLOGY ════════════════ -->
 <section class="methodology">
   <p class="method-overline rv d0">Our Methodology</p>
@@ -838,6 +750,61 @@ footer{
   </div>
 </div>
 
+</main>
+<aside class="page-visual">
+  <div class="exploded-sticky">
+    <div class="exploded-stack" id="explodedStack">
+      <div class="exploded-layer layer-structure" data-layer="4">
+        <div class="exploded-layer-label"><span class="num">05</span> Structure</div>
+        <svg class="circles-svg" viewBox="0 0 300 150">
+          <circle cx="150" cy="75" r="65" class="cr"/><circle cx="150" cy="75" r="45" class="cr"/>
+          <circle cx="150" cy="75" r="28" class="cg"/><circle cx="150" cy="75" r="12" class="cg"/>
+          <circle cx="100" cy="42" r="2.5" class="cd"/><circle cx="210" cy="58" r="2" class="cd"/>
+          <circle cx="130" cy="115" r="2" class="cdd"/><circle cx="190" cy="35" r="1.8" class="cdd"/>
+          <circle cx="235" cy="95" r="2.5" class="cd"/><circle cx="80" cy="85" r="2" class="cdd"/>
+          <circle cx="170" cy="118" r="1.8" class="cd"/>
+        </svg>
+      </div>
+      <div class="exploded-layer layer-liquidity" data-layer="3">
+        <div class="exploded-layer-label"><span class="num">04</span> Liquidity</div>
+        <svg class="area-svg" viewBox="0 0 300 120">
+          <line x1="0" y1="100" x2="300" y2="100" class="ab"/>
+          <path class="af" d="M0,100 L0,78 C30,74 60,66 100,62 C140,58 170,48 210,44 C250,40 280,36 300,32 L300,100 Z"/>
+          <path class="al" d="M0,78 C30,74 60,66 100,62 C140,58 170,48 210,44 C250,40 280,36 300,32"/>
+        </svg>
+      </div>
+      <div class="exploded-layer layer-macro" data-layer="2">
+        <div class="exploded-layer-label"><span class="num">03</span> Macro Regime</div>
+        <div class="quad">
+          <div class="qv"></div><div class="qh"></div><div class="qd"></div>
+          <div class="qg">
+            <div class="qc on">Expansion</div><div class="qc">Reflation</div>
+            <div class="qc">Contraction</div><div class="qc">Stagflation</div>
+          </div>
+        </div>
+      </div>
+      <div class="exploded-layer layer-positioning" data-layer="1">
+        <div class="exploded-layer-label"><span class="num">02</span> Positioning</div>
+        <div class="bars">
+          <div class="br"><span class="br-l">ES</span><div class="br-t"><div class="br-f" style="width:72%;background:#111"></div></div></div>
+          <div class="br"><span class="br-l">GC</span><div class="br-t"><div class="br-f" style="width:65%;background:#C5A33C"></div></div></div>
+          <div class="br"><span class="br-l">CL</span><div class="br-t"><div class="br-f" style="width:35%;background:#AAA"></div></div></div>
+          <div class="br"><span class="br-l">6E</span><div class="br-t"><div class="br-f" style="width:55%;background:#111"></div></div></div>
+        </div>
+      </div>
+      <div class="exploded-layer layer-price" data-layer="0">
+        <div class="exploded-layer-label"><span class="num">01</span> Price</div>
+        <svg class="sparkline-svg" viewBox="0 0 300 100">
+          <line x1="0" y1="75" x2="300" y2="75" class="bl"/>
+          <path class="line" d="M0,68 C20,66 40,62 65,56 C90,50 110,42 135,38 C160,34 180,38 205,42 C230,36 250,24 270,22 C285,20 295,18 300,16"/>
+          <circle cx="300" cy="16" r="3" class="dot"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</aside>
+</div><!-- /page-layout -->
+
 <!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="foot-brand">
@@ -869,46 +836,41 @@ footer{
 </div>
 
 <script>
-// Exploded view — scroll-driven layer separation
+// Exploded view — sidebar sticky, page-scroll driven
 (function(){
-  const section=document.querySelector('.exploded-section');
-  const stack=document.getElementById('explodedStack');
-  if(!section||!stack)return;
-  const layers=stack.querySelectorAll('.exploded-layer');
-  const layerCount=layers.length;
-  const maxSeparation=70;
-  const maxRotateX=12;
-  const maxShadowBlur=30;
-  function updateLayers(){
-    const rect=section.getBoundingClientRect();
-    const sectionHeight=section.offsetHeight;
-    const viewportH=window.innerHeight;
-    const scrolled=-rect.top;
-    const scrollRange=sectionHeight-viewportH;
-    const progress=Math.max(0,Math.min(1,scrolled/scrollRange));
-    const eased=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
-    layers.forEach(function(layer){
-      const index=parseInt(layer.dataset.layer);
-      const center=(layerCount-1)/2;
-      const offset=index-center;
-      const translateY=offset*maxSeparation*eased;
-      const rotateX=-offset*maxRotateX*eased*0.3;
-      const translateZ=-Math.abs(offset)*10*eased;
-      const shadowOpacity=0.03+eased*0.08;
-      const shadowBlur=4+eased*maxShadowBlur;
-      const shadowY=2+eased*8;
-      layer.style.transform='translateY('+translateY+'px) rotateX('+rotateX+'deg) translateZ('+translateZ+'px)';
-      layer.style.boxShadow='0 '+shadowY+'px '+shadowBlur+'px rgba(0,0,0,'+shadowOpacity+')';
-      layer.style.opacity=0.6+eased*0.4;
-    });
-    const stackRotateX=15-eased*10;
-    stack.style.transform='rotateX('+stackRotateX+'deg)';
+  var stack=document.getElementById('explodedStack');
+  if(!stack)return;
+  var layers=stack.querySelectorAll('.exploded-layer');
+  var n=layers.length;
+  var maxSep=60,maxRot=10,baseRX=18,endRX=5;
+  function ease(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+  function update(){
+    var st=window.pageYOffset||document.documentElement.scrollTop;
+    var dh=document.documentElement.scrollHeight-window.innerHeight;
+    var p=ease(Math.max(0,Math.min(1,dh>0?st/dh:0)));
+    var c=(n-1)/2;
+    for(var i=0;i<n;i++){
+      var l=layers[i];
+      var idx=parseInt(l.dataset.layer);
+      var off=idx-c;
+      var ty=off*maxSep*p;
+      var rx=-off*maxRot*p*0.25;
+      var tz=-Math.abs(off)*8*p;
+      var sb=2+p*26;
+      var sy=1+p*5;
+      var so=0.02+p*0.08;
+      var op=0.5+p*0.5;
+      l.style.transform='translateY('+ty+'px) rotateX('+rx+'deg) translateZ('+tz+'px)';
+      l.style.boxShadow='0 '+sy+'px '+sb+'px rgba(0,0,0,'+so+')';
+      l.style.opacity=op;
+    }
+    stack.style.transform='rotateX('+(baseRX-(baseRX-endRX)*p)+'deg)';
   }
-  let ticking=false;
+  var tick=false;
   window.addEventListener('scroll',function(){
-    if(!ticking){requestAnimationFrame(function(){updateLayers();ticking=false});ticking=true}
+    if(!tick){requestAnimationFrame(function(){update();tick=false});tick=true}
   });
-  updateLayers();
+  update();
 })();
 
 // Scroll reveal
