@@ -438,13 +438,13 @@ footer{
    SCROLL-DRIVEN VISUAL — right column
 ═══════════════════════════════════════════════ */
 .scroll-vis{
-  position:fixed;top:68px;
-  left:calc(50% + 540px);width:320px;
+  position:fixed;top:68px;right:3vw;
+  width:clamp(200px,20vw,320px);
   height:calc(100vh - 68px);
-  pointer-events:none;z-index:2;opacity:0.14;
+  pointer-events:none;z-index:2;opacity:0.32;
 }
 .scroll-vis svg{width:100%;height:100%}
-@media(max-width:1440px){.scroll-vis{display:none}}
+@media(max-width:1100px){.scroll-vis{display:none}}
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
@@ -513,41 +513,41 @@ footer{
   <svg viewBox="0 0 300 700" xmlns="http://www.w3.org/2000/svg">
     <!-- Phase 1: Flat line -->
     <g id="sv-flat">
-      <line x1="40" y1="350" x2="260" y2="350" stroke="#D4D4D4" stroke-width="1.2"/>
+      <line x1="40" y1="350" x2="260" y2="350" stroke="#999" stroke-width="1.5"/>
       <circle cx="260" cy="350" r="3" fill="#C5A33C" opacity="0.7"/>
-      <circle cx="40" cy="350" r="2" fill="#D4D4D4" opacity="0.5"/>
+      <circle cx="40" cy="350" r="2" fill="#888" opacity="0.5"/>
     </g>
     <!-- Phase 2: Sparkline -->
     <g id="sv-spark" opacity="0">
-      <polyline points="40,380 70,355 100,395 130,340 155,368 185,315 215,385 245,348 260,360" fill="none" stroke="#D4D4D4" stroke-width="1.2"/>
+      <polyline points="40,380 70,355 100,395 130,340 155,368 185,315 215,385 245,348 260,360" fill="none" stroke="#999" stroke-width="1.5"/>
       <polyline points="40,400 75,375 110,410 140,365 170,392 200,350 230,405 255,372 260,380" fill="none" stroke="#C5A33C" stroke-width="0.6" opacity="0.45"/>
       <circle cx="185" cy="315" r="3" fill="#C5A33C" opacity="0.6"/>
       <circle cx="130" cy="340" r="2" fill="#111" opacity="0.25"/>
     </g>
     <!-- Phase 3: Scattered dots -->
     <g id="sv-dots" opacity="0">
-      <circle cx="55" cy="195" r="2.5" fill="#D4D4D4"/>
+      <circle cx="55" cy="195" r="2.5" fill="#888"/>
       <circle cx="125" cy="420" r="3" fill="#C5A33C" opacity="0.55"/>
       <circle cx="185" cy="275" r="2" fill="#111" opacity="0.3"/>
-      <circle cx="245" cy="505" r="2.5" fill="#D4D4D4"/>
+      <circle cx="245" cy="505" r="2.5" fill="#888"/>
       <circle cx="85" cy="345" r="2" fill="#C5A33C" opacity="0.45"/>
-      <circle cx="205" cy="175" r="2.8" fill="#D4D4D4"/>
+      <circle cx="205" cy="175" r="2.8" fill="#888"/>
       <circle cx="148" cy="545" r="2" fill="#111" opacity="0.25"/>
-      <circle cx="48" cy="475" r="2.5" fill="#D4D4D4"/>
+      <circle cx="48" cy="475" r="2.5" fill="#888"/>
       <circle cx="225" cy="315" r="2" fill="#C5A33C" opacity="0.35"/>
-      <circle cx="105" cy="235" r="2.2" fill="#D4D4D4"/>
+      <circle cx="105" cy="235" r="2.2" fill="#888"/>
       <circle cx="255" cy="155" r="2.5" fill="#111" opacity="0.28"/>
       <circle cx="168" cy="445" r="2.8" fill="#C5A33C" opacity="0.42"/>
-      <circle cx="78" cy="595" r="2" fill="#D4D4D4"/>
+      <circle cx="78" cy="595" r="2" fill="#888"/>
       <circle cx="230" cy="580" r="2" fill="#111" opacity="0.2"/>
     </g>
     <!-- Phase 4: Concentric circles -->
     <g id="sv-circles" opacity="0">
-      <circle cx="150" cy="350" r="28" fill="none" stroke="#D4D4D4" stroke-width="0.8"/>
-      <circle cx="150" cy="350" r="68" fill="none" stroke="#D4D4D4" stroke-width="0.7"/>
+      <circle cx="150" cy="350" r="28" fill="none" stroke="#999" stroke-width="1"/>
+      <circle cx="150" cy="350" r="68" fill="none" stroke="#999" stroke-width="0.9"/>
       <circle cx="150" cy="350" r="112" fill="none" stroke="#C5A33C" stroke-width="0.6" opacity="0.5"/>
-      <circle cx="150" cy="350" r="162" fill="none" stroke="#D4D4D4" stroke-width="0.5"/>
-      <circle cx="150" cy="350" r="218" fill="none" stroke="#D4D4D4" stroke-width="0.4" opacity="0.6"/>
+      <circle cx="150" cy="350" r="162" fill="none" stroke="#999" stroke-width="0.7"/>
+      <circle cx="150" cy="350" r="218" fill="none" stroke="#999" stroke-width="0.6" opacity="0.6"/>
       <circle cx="150" cy="350" r="4" fill="#C5A33C" opacity="0.55"/>
     </g>
   </svg>
@@ -592,11 +592,11 @@ footer{
       <rect width="600" height="800" fill="url(#glow-c)"/>
 
       <!-- Concentric circles — grey, very low opacity -->
-      <circle cx="300" cy="400" r="55"  stroke="#D4D4D4" stroke-width="0.8" fill="none" opacity="0.5"/>
-      <circle cx="300" cy="400" r="115" stroke="#D4D4D4" stroke-width="0.7" fill="none" opacity="0.4"/>
-      <circle cx="300" cy="400" r="185" stroke="#D4D4D4" stroke-width="0.7" fill="none" opacity="0.35"/>
+      <circle cx="300" cy="400" r="55"  stroke="#999" stroke-width="1" fill="none" opacity="0.5"/>
+      <circle cx="300" cy="400" r="115" stroke="#999" stroke-width="0.9" fill="none" opacity="0.4"/>
+      <circle cx="300" cy="400" r="185" stroke="#999" stroke-width="0.9" fill="none" opacity="0.35"/>
       <circle cx="300" cy="400" r="265" stroke="#D4D4D4" stroke-width="0.6" fill="none" opacity="0.25"/>
-      <circle cx="300" cy="400" r="355" stroke="#D4D4D4" stroke-width="0.5" fill="none" opacity="0.15"/>
+      <circle cx="300" cy="400" r="355" stroke="#999" stroke-width="0.7" fill="none" opacity="0.15"/>
       <!-- Gold accent ring -->
       <circle cx="300" cy="400" r="183" stroke="#C5A33C" stroke-width="0.8" fill="none" opacity="0.12"/>
 
