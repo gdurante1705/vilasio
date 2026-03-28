@@ -298,46 +298,28 @@ nav{
 }
 
 /* ═══════════════════════════════════════════════
-   MANIFESTO
+   METHODOLOGY
 ═══════════════════════════════════════════════ */
-.manifesto{
-  padding:130px 64px;background:#111111;
-  text-align:center;position:relative;overflow:hidden;
+.methodology{
+  padding:120px 64px;background:var(--white);
+  text-align:center;
 }
-.manifesto::before{
-  content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:680px;height:680px;
-  background:radial-gradient(circle,rgba(197,163,60,0.055) 0%,rgba(197,163,60,0.018) 40%,transparent 70%);
-  pointer-events:none;
-}
-.manifesto-inner{position:relative;z-index:2}
-.manifesto-overline{
+.method-overline{
   font-family:var(--mono);font-size:9px;font-weight:500;
   letter-spacing:5px;text-transform:uppercase;
-  color:rgba(197,163,60,0.55);margin-bottom:60px;
+  color:var(--gold);margin-bottom:56px;
   display:inline-flex;align-items:center;gap:16px;
 }
-.manifesto-overline::before,.manifesto-overline::after{
-  content:"";width:22px;height:1px;background:rgba(197,163,60,0.3);
+.method-overline::before,.method-overline::after{
+  content:"";width:32px;height:1px;background:var(--gold);opacity:0.4;
 }
-.manifesto-lines{display:flex;flex-direction:column;gap:4px;margin-bottom:56px}
-.mline{
-  font-family:var(--heading);
-  font-size:clamp(20px,2.5vw,37px);font-weight:500;
-  line-height:1.35;letter-spacing:-0.3px;
-  color:rgba(255,255,255,0.1);transition:color .65s ease;
+.method-body{
+  max-width:700px;margin:0 auto;
+  font-family:var(--body);font-size:clamp(16px,2vw,22px);
+  font-weight:400;line-height:1.9;color:var(--ink3);
 }
-.mline.lit{color:rgba(255,255,255,0.88)}
-.mline.gold-line{color:var(--gold)}
-.btn-ghost-inv{
-  font-family:var(--body);font-size:11px;font-weight:500;
-  letter-spacing:1.2px;text-transform:uppercase;
-  color:rgba(255,255,255,0.38);
-  border:1px solid rgba(255,255,255,0.12);
-  padding:13px 32px;text-decoration:none;
-  display:inline-block;transition:all .22s;
-}
-.btn-ghost-inv:hover{color:var(--ink);background:var(--gold);border-color:var(--gold);transform:translateY(-1px)}
+.method-body .em-gold{color:var(--gold);font-weight:600}
+.method-body p+p{margin-top:32px}
 
 /* ═══════════════════════════════════════════════
    PLATFORM
@@ -471,7 +453,7 @@ footer{
   .track-grid{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr 1fr}
   .stat-cell{padding:40px 24px}
-  .manifesto{padding:88px 24px}
+  .methodology{padding:80px 24px}
   .platform-grid{grid-template-columns:1fr}
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
@@ -500,7 +482,7 @@ footer{
   <div class="nav-center">
     <a href="cot.html" class="nav-link">COT Intelligence</a>
     <a href="blog.html" class="nav-link">Insights</a>
-    <a href="about.html" class="nav-link">About</a>
+    <a href="about.html" class="nav-link">Methodology</a>
   </div>
   <a href="owl.html" class="nav-cta">The Owl</a>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">☰</button>
@@ -510,7 +492,7 @@ footer{
 <div class="nav-mobile" id="nav-mobile">
   <a href="cot.html" class="mob-link">COT Intelligence</a>
   <a href="blog.html" class="mob-link">Insights</a>
-  <a href="about.html" class="mob-link">About</a>
+  <a href="about.html" class="mob-link">Methodology</a>
   <a href="owl.html" class="mob-cta">The Owl</a>
 </div>
 
@@ -678,21 +660,15 @@ footer{
 
 <div class="section-divider"></div>
 
-<!-- ════════════════ MANIFESTO ════════════════ -->
-<section class="manifesto">
-  <div class="manifesto-inner">
-    <p class="manifesto-overline rv d0">The VILASIO Philosophy</p>
-    <div class="manifesto-lines" id="mlines">
-      <p class="mline">Price tells you what happened.</p>
-      <p class="mline gold-line">Positioning tells you what&rsquo;s next.</p>
-      <p class="mline" style="margin-top:20px">Most platforms show you charts.</p>
-      <p class="mline lit">We show you the structure underneath.</p>
-      <p class="mline" style="margin-top:20px">Because the edge isn&rsquo;t in the data &mdash;</p>
-      <p class="mline gold-line">it&rsquo;s in how you read it.</p>
-    </div>
-    <div class="rv d0">
-      <a href="about.html" class="btn-ghost-inv">Our approach</a>
-    </div>
+<!-- ════════════════ METHODOLOGY ════════════════ -->
+<section class="methodology">
+  <p class="method-overline rv d0">Our Methodology</p>
+  <div class="method-body">
+    <p class="rv d1">Most analytics platforms surface data. We surface structure &mdash; the <span class="em-gold">institutional flows, regime shifts, and positioning extremes</span> that move markets before price does.</p>
+    <p class="rv d2">Our tools don&rsquo;t predict. They decode. Every dashboard is built to answer one question: <span class="em-gold">where is capital moving, and why.</span></p>
+  </div>
+  <div class="rv d3" style="margin-top:52px">
+    <a href="about.html" class="btn-ghost">Our Methodology</a>
   </div>
 </section>
 
@@ -768,23 +744,6 @@ const revObs=new IntersectionObserver((entries)=>{
   entries.forEach(en=>{if(en.isIntersecting) en.target.classList.add('vis')});
 },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el=>revObs.observe(el));
-
-// Manifesto stagger
-const mLines=document.querySelectorAll('#mlines .mline');
-let mFired=false;
-const mObs=new IntersectionObserver((entries)=>{
-  if(entries[0].isIntersecting&&!mFired){
-    mFired=true;
-    mLines.forEach((l,i)=>setTimeout(()=>{
-      if(l.classList.contains('gold-line')) l.style.color='var(--gold)';
-      else if(l.classList.contains('lit')) l.style.color='rgba(255,255,255,0.88)';
-      else l.style.color='rgba(255,255,255,0.18)';
-    },i*140));
-    mObs.disconnect();
-  }
-},{threshold:0.3});
-const mSect=document.querySelector('.manifesto');
-if(mSect) mObs.observe(mSect);
 
 // Mobile nav
 function toggleMobile(){
