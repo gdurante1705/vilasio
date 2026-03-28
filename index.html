@@ -302,7 +302,7 @@ nav{
 ═══════════════════════════════════════════════ */
 .methodology{
   padding:120px 64px;background:var(--white);
-  text-align:center;
+  text-align:center;position:relative;overflow:hidden;
 }
 .method-overline{
   font-family:var(--mono);font-size:9px;font-weight:500;
@@ -433,6 +433,47 @@ footer{
 .rv-r.vis{opacity:1;transform:none}
 .d0{transition-delay:0s}.d1{transition-delay:.08s}.d2{transition-delay:.16s}
 .d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.40s}
+
+/* ═══════════════════════════════════════════════
+   DECORATIVE FINANCIAL ANIMATIONS
+═══════════════════════════════════════════════ */
+.anim-sep{height:22px;overflow:hidden;position:relative;flex-shrink:0}
+.spark-svg{width:100%;height:100%;display:block}
+.spark-line{stroke-dasharray:55,45;animation:sparkScroll 18s linear infinite}
+.spark-gold{stroke-dasharray:28,72;animation:sparkScroll 24s linear infinite reverse}
+@keyframes sparkScroll{from{stroke-dashoffset:0}to{stroke-dashoffset:-400}}
+
+.dot-grid{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(150,150,150,0.14) 1.5px,transparent 1.5px);
+  background-size:28px 28px;animation:dotBreathe 12s ease-in-out infinite;
+}
+@keyframes dotBreathe{0%,100%{opacity:0.42}50%{opacity:0.9}}
+
+.radar-wrap{
+  position:absolute;right:-80px;bottom:-80px;
+  width:420px;height:420px;pointer-events:none;z-index:0;
+}
+.radar-c{transform-origin:200px 200px;animation:radarExpand 10s ease-out infinite;opacity:0}
+.radar-c1{animation-delay:0s}
+.radar-c2{animation-delay:3.33s}
+.radar-c3{animation-delay:6.67s}
+@keyframes radarExpand{
+  0%{transform:scale(0.1);opacity:0.1}
+  100%{transform:scale(4.5);opacity:0}
+}
+
+.flow-wrap{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.flow-svg{width:100%;height:100%}
+.flow-p1{stroke-dasharray:70,50;animation:flowScroll 22s linear infinite}
+.flow-p2{stroke-dasharray:50,60;animation:flowScroll 17s linear infinite;animation-delay:-8s}
+.flow-p3{stroke-dasharray:90,70;animation:flowScroll 28s linear infinite;animation-delay:-16s}
+@keyframes flowScroll{from{stroke-dashoffset:0}to{stroke-dashoffset:-480}}
+
+@media(max-width:960px){
+  .radar-wrap{width:240px;height:240px;right:-40px;bottom:-40px}
+  .flow-wrap{display:none}
+}
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
@@ -636,7 +677,13 @@ footer{
   </div>
 </div>
 
-<div class="section-divider"></div>
+<!-- Sparkline animated separator -->
+<div class="anim-sep" aria-hidden="true">
+  <svg class="spark-svg" viewBox="0 0 1200 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline class="spark-line" points="0,11 80,7 160,15 240,9 320,13 400,6 480,12 560,8 640,14 720,10 800,7 880,13 960,9 1040,15 1120,7 1200,11" fill="none" stroke="#D4D4D4" stroke-width="1"/>
+    <polyline class="spark-gold" points="280,13 340,8 400,15 460,10 520,6 580,12 640,9 700,14" fill="none" stroke="#C5A33C" stroke-width="0.8"/>
+  </svg>
+</div>
 
 <!-- ════════════════ STATS ════════════════ -->
 <div class="stats">
@@ -662,6 +709,14 @@ footer{
 
 <!-- ════════════════ METHODOLOGY ════════════════ -->
 <section class="methodology">
+  <!-- Radar pulse — bottom right corner -->
+  <div class="radar-wrap" aria-hidden="true">
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="radar-c radar-c1" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.7"/>
+      <circle class="radar-c radar-c2" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.5"/>
+      <circle class="radar-c radar-c3" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.4"/>
+    </svg>
+  </div>
   <p class="method-overline rv d0">Our Methodology</p>
   <div class="method-body">
     <p class="rv d1">Most analytics platforms surface data. We surface structure &mdash; the <span class="em-gold">institutional flows, regime shifts, and positioning extremes</span> that move markets before price does.</p>
@@ -675,7 +730,15 @@ footer{
 <div class="section-divider"></div>
 
 <!-- ════════════════ PLATFORM ════════════════ -->
-<div style="background:var(--bg)">
+<div style="background:var(--bg);position:relative;overflow:hidden">
+  <!-- Bezier capital flow lines -->
+  <div class="flow-wrap" aria-hidden="true">
+    <svg class="flow-svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <path class="flow-p1" d="M-100,90 C200,35 420,160 680,80 C880,15 1000,110 1300,60" fill="none" stroke="#C5A33C" stroke-width="0.9" opacity="0.07"/>
+      <path class="flow-p2" d="M-100,200 C160,140 380,240 660,180 C880,130 1000,200 1300,155" fill="none" stroke="#A0A0A0" stroke-width="0.7" opacity="0.06"/>
+      <path class="flow-p3" d="M-100,310 C240,270 460,330 720,285 C930,248 1060,310 1300,272" fill="none" stroke="#111111" stroke-width="0.5" opacity="0.04"/>
+    </svg>
+  </div>
   <div class="platform-section">
     <div class="platform-header">
       <p class="s-overline rv d0">Platform</p>

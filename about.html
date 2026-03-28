@@ -177,7 +177,7 @@ nav{
 /* ═══════════════════════════════════════════════
    OUR APPROACH
 ═══════════════════════════════════════════════ */
-.approach-section{padding:108px 0}
+.approach-section{padding:108px 0;position:relative;overflow:hidden}
 .approach-lead{
   font-family:var(--heading);
   font-size:clamp(26px,3vw,42px);
@@ -192,41 +192,21 @@ nav{
 .approach-body p+p{margin-top:24px}
 
 /* ═══════════════════════════════════════════════
-   ANALYTICAL FRAMEWORK — FOUR PILLARS
+   ANALYTICAL FRAMEWORK
 ═══════════════════════════════════════════════ */
-.framework-section{padding:108px 0;background:var(--white)}
-.framework-header{margin-bottom:0}
+.framework-section{padding:108px 0;background:var(--white);position:relative;overflow:hidden}
+.framework-header{margin-bottom:0;position:relative;z-index:1}
 .framework-header .s-h2{margin-bottom:0}
-
-.pillars{
-  max-width:1200px;margin:56px auto 0;padding:0 64px;
-  border-top:1px solid var(--brd);
+.framework-body{margin-top:48px;position:relative;z-index:1}
+.framework-body p{
+  font-family:var(--body);font-size:16px;font-weight:300;
+  color:var(--ink3);line-height:1.9;max-width:720px;
 }
-.pillar{
-  display:grid;grid-template-columns:88px 1fr;gap:56px;
-  padding:60px 0;border-bottom:1px solid var(--brd);
-  align-items:start;
-}
-.pillar-num{
-  display:flex;flex-direction:column;align-items:flex-start;
-  padding-top:5px;
-}
-.pillar-ghost{
-  font-family:var(--heading);font-size:64px;font-weight:700;
-  color:rgba(197,163,60,0.09);line-height:1;
-  user-select:none;display:block;margin-bottom:-8px;
-}
-.pillar-lbl{
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  color:var(--gold);letter-spacing:3px;text-transform:uppercase;
-}
-.pillar-title{
-  font-family:var(--heading);font-size:22px;font-weight:600;
-  color:var(--ink);margin-bottom:18px;line-height:1.2;letter-spacing:-0.3px;
-}
-.pillar-body{
-  font-family:var(--body);font-size:15px;font-weight:300;
-  color:var(--ink3);line-height:1.88;max-width:660px;
+.framework-body p+p{margin-top:26px}
+.fw-intro{
+  font-family:var(--heading)!important;font-size:19px!important;
+  font-weight:500!important;color:var(--ink)!important;
+  max-width:680px!important;line-height:1.5!important;letter-spacing:-0.2px;
 }
 
 /* ═══════════════════════════════════════════════
@@ -270,7 +250,7 @@ nav{
 /* ═══════════════════════════════════════════════
    BUILT BY TRADERS
 ═══════════════════════════════════════════════ */
-.origin-section{padding:108px 0}
+.origin-section{padding:108px 0;position:relative;overflow:hidden}
 .origin-body{
   max-width:660px;
   font-family:var(--body);font-size:16px;font-weight:300;
@@ -351,6 +331,82 @@ footer{
 .d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
 /* ═══════════════════════════════════════════════
+   DECORATIVE FINANCIAL ANIMATIONS
+═══════════════════════════════════════════════ */
+
+/* Animated sparkline separator */
+.anim-sep{height:22px;overflow:hidden;position:relative;flex-shrink:0}
+.spark-svg{width:100%;height:100%;display:block}
+.spark-line{stroke-dasharray:55,45;animation:sparkScroll 18s linear infinite}
+.spark-gold{stroke-dasharray:28,72;animation:sparkScroll 24s linear infinite reverse}
+@keyframes sparkScroll{from{stroke-dashoffset:0}to{stroke-dashoffset:-400}}
+
+/* Dot grid breathing */
+.dot-grid{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(150,150,150,0.14) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+  animation:dotBreathe 12s ease-in-out infinite;
+}
+@keyframes dotBreathe{0%,100%{opacity:0.42}50%{opacity:0.9}}
+
+/* Radar concentric pulse */
+.radar-wrap{
+  position:absolute;right:-80px;bottom:-80px;
+  width:420px;height:420px;pointer-events:none;z-index:0;
+}
+.radar-c{transform-origin:200px 200px;animation:radarExpand 10s ease-out infinite;opacity:0}
+.radar-c1{animation-delay:0s}
+.radar-c2{animation-delay:3.33s}
+.radar-c3{animation-delay:6.67s}
+@keyframes radarExpand{
+  0%{transform:scale(0.1);opacity:0.1}
+  100%{transform:scale(4.5);opacity:0}
+}
+
+/* Floating number terminal */
+.anim-terminal{
+  position:absolute;right:64px;top:24px;z-index:0;
+  font-family:var(--mono);font-size:7px;letter-spacing:1px;
+  color:var(--ink);opacity:0.05;
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:3px 10px;width:168px;
+  pointer-events:none;user-select:none;line-height:2;
+}
+
+/* Flow / Bezier lines */
+.flow-wrap{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.flow-svg{width:100%;height:100%}
+.flow-p1{stroke-dasharray:70,50;animation:flowScroll 22s linear infinite}
+.flow-p2{stroke-dasharray:50,60;animation:flowScroll 17s linear infinite;animation-delay:-8s}
+.flow-p3{stroke-dasharray:90,70;animation:flowScroll 28s linear infinite;animation-delay:-16s}
+@keyframes flowScroll{from{stroke-dashoffset:0}to{stroke-dashoffset:-480}}
+
+/* COT horizontal bars */
+.anim-cot{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;flex-direction:column;gap:7px;
+  padding:0 40px 20px;pointer-events:none;z-index:0;opacity:0.07;
+}
+.cot-b{
+  height:1.5px;
+  background:linear-gradient(90deg,rgba(150,150,150,0.3),rgba(197,163,60,0.55));
+  transform-origin:left;
+  animation:cotPulse 14s ease-in-out infinite;
+}
+.cot-b:nth-child(2){animation-delay:-2s;animation-duration:11s}
+.cot-b:nth-child(3){animation-delay:-5s;animation-duration:16s}
+.cot-b:nth-child(4){animation-delay:-8s;animation-duration:13s}
+.cot-b:nth-child(5){animation-delay:-10s;animation-duration:18s}
+@keyframes cotPulse{0%,100%{transform:scaleX(0.4);opacity:0.5}50%{transform:scaleX(1);opacity:1}}
+
+@media(max-width:960px){
+  .radar-wrap{width:240px;height:240px;right:-40px;bottom:-40px}
+  .anim-terminal{display:none}
+  .anim-cot{display:none}
+}
+
+/* ═══════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════ */
 @media(max-width:960px){
@@ -414,6 +470,7 @@ footer{
 
 <!-- ════════════════ OUR APPROACH ════════════════ -->
 <section class="approach-section">
+  <div class="anim-terminal" id="num-terminal" aria-hidden="true"></div>
   <div class="inner">
     <p class="s-overline rv d0">Our Approach</p>
     <h2 class="approach-lead rv d1">Price is the output,<br>not the input.</h2>
@@ -424,68 +481,51 @@ footer{
   </div>
 </section>
 
-<div class="section-divider"></div>
+<!-- Sparkline animated separator -->
+<div class="anim-sep" aria-hidden="true">
+  <svg class="spark-svg" viewBox="0 0 1200 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline class="spark-line" points="0,11 80,7 160,15 240,9 320,13 400,6 480,12 560,8 640,14 720,10 800,7 880,13 960,9 1040,15 1120,7 1200,11" fill="none" stroke="#D4D4D4" stroke-width="1"/>
+    <polyline class="spark-gold" points="300,13 360,8 420,15 480,10 540,6 600,12 660,9 720,14" fill="none" stroke="#C5A33C" stroke-width="0.8"/>
+  </svg>
+</div>
 
 <!-- ════════════════ ANALYTICAL FRAMEWORK ════════════════ -->
 <section class="framework-section">
-  <div class="inner framework-header">
-    <p class="s-overline rv d0">Framework</p>
-    <h2 class="s-h2 rv d1">Four pillars of <span class="em-gold">market intelligence.</span></h2>
+  <!-- Dot grid breathing background -->
+  <div class="dot-grid" aria-hidden="true"></div>
+  <!-- COT bars decorative -->
+  <div class="anim-cot" aria-hidden="true">
+    <div class="cot-b" style="width:62%"></div>
+    <div class="cot-b" style="width:88%"></div>
+    <div class="cot-b" style="width:41%"></div>
+    <div class="cot-b" style="width:74%"></div>
+    <div class="cot-b" style="width:56%"></div>
   </div>
 
-  <div class="pillars">
+  <div class="inner framework-header">
+    <p class="s-overline rv d0">Framework</p>
+    <h2 class="s-h2 rv d1">What we track &mdash; and <span class="em-gold">why it matters.</span></h2>
+  </div>
 
-    <div class="pillar rv d0">
-      <div class="pillar-num">
-        <span class="pillar-ghost">I</span>
-        <span class="pillar-lbl">I.</span>
-      </div>
-      <div>
-        <h3 class="pillar-title">Institutional Positioning</h3>
-        <p class="pillar-body">We systematically process CFTC Commitment of Traders data across 39 futures markets spanning equities, rates, energy, metals, currencies, agriculture, and livestock. For each market, we compute net positioning, weekly changes, open interest dynamics, and rolling Z-Scores to identify statistical extremes in speculator and commercial hedger behavior. Capital flow analysis maps the directional movement of institutional money across sectors on a weekly basis.</p>
-      </div>
-    </div>
-
-    <div class="pillar rv d1">
-      <div class="pillar-num">
-        <span class="pillar-ghost">II</span>
-        <span class="pillar-lbl">II.</span>
-      </div>
-      <div>
-        <h3 class="pillar-title">Macro Regime Identification</h3>
-        <p class="pillar-body">Markets do not move in isolation &mdash; they respond to the macroeconomic environment they operate in. Our macro framework tracks the key structural forces that shape asset prices: inflation trajectory, labor market conditions, banking system health, and central bank policy. These inputs are synthesized into a regime classification that distinguishes between expansion, contraction, stagflation, and reflation &mdash; providing context for every positioning signal.</p>
-      </div>
-    </div>
-
-    <div class="pillar rv d2">
-      <div class="pillar-num">
-        <span class="pillar-ghost">III</span>
-        <span class="pillar-lbl">III.</span>
-      </div>
-      <div>
-        <h3 class="pillar-title">Liquidity &amp; Rates Structure</h3>
-        <p class="pillar-body">Net liquidity is the single most important variable in modern financial markets. We monitor Federal Reserve balance sheet dynamics, reverse repo facility usage, Treasury General Account flows, and SOFR spread conditions to assess the liquidity environment. In parallel, we track the full term structure of Treasury yields, investment-grade and high-yield credit spreads, and interest rate volatility (MOVE Index) to map the fixed income landscape that anchors all risk pricing.</p>
-      </div>
-    </div>
-
-    <div class="pillar rv d3">
-      <div class="pillar-num">
-        <span class="pillar-ghost">IV</span>
-        <span class="pillar-lbl">IV.</span>
-      </div>
-      <div>
-        <h3 class="pillar-title">Cross-Market &amp; Geopolitical Intelligence</h3>
-        <p class="pillar-body">Asset classes are interconnected. Our cross-market framework identifies sector rotation patterns, currency strength hierarchies, and commodity correlation shifts that reveal where capital is migrating. This is complemented by a geopolitical risk layer that monitors political instability, trade policy risk, and conflict dynamics across 120+ countries &mdash; because in modern markets, a policy decision in Washington or a supply disruption in the Middle East can move global risk premia overnight.</p>
-      </div>
-    </div>
-
+  <div class="inner framework-body">
+    <p class="fw-intro rv d2">Our analytical framework is organized around the structural forces that drive asset prices: institutional positioning, macroeconomic regime, liquidity conditions, and cross-market dynamics.</p>
+    <p class="rv d3">We process CFTC Commitment of Traders data across 39 futures markets to map where institutional capital is concentrated and how it shifts week over week. We track inflation trajectory, labor conditions, and banking system health to classify the macro regime &mdash; expansion, contraction, stagflation, or reflation &mdash; because positioning data without macro context is noise. We monitor Federal Reserve balance sheet dynamics, SOFR spreads, Treasury yield curves, and credit conditions to assess the liquidity environment that underpins all risk pricing. And we layer cross-market intelligence &mdash; sector rotation, currency strength, commodity correlations, and geopolitical risk across 120+ countries &mdash; to identify where capital is migrating before it shows up in price.</p>
+    <p class="rv d4">Each of these dimensions is served by a dedicated analytical tool within the VILASIO platform. Together, they form a single, coherent view of the market structure that institutional desks use to make decisions.</p>
   </div>
 </section>
 
 <div class="section-divider"></div>
 
 <!-- ════════════════ DATA SOURCES ════════════════ -->
-<section class="data-section">
+<section class="data-section" style="position:relative;overflow:hidden">
+  <!-- Bezier flow lines — capital flow motif -->
+  <div class="flow-wrap" aria-hidden="true">
+    <svg class="flow-svg" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <path class="flow-p1" d="M-100,80 C200,30 400,140 650,70 C850,10 950,100 1300,50" fill="none" stroke="#C5A33C" stroke-width="0.8" opacity="0.07"/>
+      <path class="flow-p2" d="M-100,160 C180,110 380,200 600,150 C820,100 980,170 1300,130" fill="none" stroke="#A0A0A0" stroke-width="0.6" opacity="0.06"/>
+      <path class="flow-p3" d="M-100,240 C220,200 450,260 700,220 C900,185 1050,240 1300,210" fill="none" stroke="#111111" stroke-width="0.5" opacity="0.04"/>
+    </svg>
+  </div>
   <div class="inner">
     <p class="s-overline rv d0">Data</p>
     <h2 class="s-h2 rv d1">Transparent. Public. Auditable.</h2>
@@ -546,6 +586,14 @@ footer{
 
 <!-- ════════════════ BUILT BY TRADERS ════════════════ -->
 <section class="origin-section">
+  <!-- Radar pulse — bottom right -->
+  <div class="radar-wrap" aria-hidden="true">
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="radar-c radar-c1" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.7"/>
+      <circle class="radar-c radar-c2" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.5"/>
+      <circle class="radar-c radar-c3" cx="200" cy="200" r="80" stroke="#C5A33C" stroke-width="0.4"/>
+    </svg>
+  </div>
   <div class="inner">
     <p class="s-overline rv d0">Origin</p>
     <h2 class="s-h2 rv d1">Built from the desk,<br>not the boardroom.</h2>
@@ -589,6 +637,26 @@ footer{
 </div>
 
 <script>
+// Number terminal — decorative changing digits
+(function(){
+  const el=document.getElementById('num-terminal');
+  if(!el)return;
+  const spans=[];
+  for(let i=0;i<42;i++){
+    const s=document.createElement('span');
+    s.textContent=(Math.random()*9999|0).toString().padStart(4,'0');
+    el.appendChild(s);
+    spans.push(s);
+  }
+  setInterval(function(){
+    const n=Math.floor(Math.random()*3)+1;
+    for(let i=0;i<n;i++){
+      const idx=Math.floor(Math.random()*spans.length);
+      spans[idx].textContent=(Math.random()*9999|0).toString().padStart(4,'0');
+    }
+  },1600);
+})();
+
 // Scroll reveal
 const revObs=new IntersectionObserver((entries)=>{
   entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')});
