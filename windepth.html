@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinDepth — Vilasio</title>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#050507;
+  --bg2:#0a0a0f;
+  --surf:#0f0f16;
+  --surf2:#16161f;
+  --brd:rgba(255,255,255,0.07);
+  --brd2:rgba(255,255,255,0.12);
+  --white:#f4f5fa;
+  --gray:#6b7280;
+  --gray2:#9ca3af;
+  --gold:#c8a84b;
+  --gold2:#e8c96a;
+  --grn:#00d97e;
+  --red:#ff4d4d;
+  --amb:#f59e0b;
+  --blu:#3b82f6;
+  --accent:#7c6fff;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Roboto Slab',serif;
+  font-weight:300;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* GRAIN */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:1000;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 64px;
+  background:rgba(5,5,7,0.8);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--brd);
+}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo-img{width:28px;height:28px;opacity:0.9}
+.nav-name{
+  font-family:'Alata',sans-serif;
+  font-size:15px;font-weight:500;
+  letter-spacing:0.5px;color:var(--white);
+}
+.nav-product{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--gold);
+  margin-left:4px;opacity:0.8;
+}
+.nav-right{display:flex;align-items:center;gap:32px}
+.nav-link{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gray);text-decoration:none;
+  transition:color .3s;
+}
+.nav-link:hover{color:var(--white)}
+.nav-btn{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  background:var(--white);color:var(--bg);
+  border:none;padding:10px 22px;cursor:pointer;
+  text-decoration:none;
+  transition:background .3s,transform .2s;
+}
+.nav-btn:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  padding:0;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:140px 64px 100px;
+  position:relative;z-index:2;
+}
+
+.hero-right{
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  border-left:1px solid var(--brd);
+  overflow:hidden;
+}
+
+/* Animated grid bg */
+.hero-right::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--brd) 1px,transparent 1px),
+    linear-gradient(90deg,var(--brd) 1px,transparent 1px);
+  background-size:48px 48px;
+  opacity:0.5;
+}
+
+.hero-right::after{
+  content:'';
+  position:absolute;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(124,111,255,0.08) 0%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;
+  opacity:0;animation:fadeUp .8s ease forwards .1s;
+}
+.hero-tag-dot{
+  width:6px;height:6px;
+  background:var(--gold);
+  border-radius:50%;
+  animation:pulse 2s ease infinite;
+}
+
+.hero-h1{
+  font-family:'Alata',sans-serif;
+  font-size:clamp(52px,6vw,80px);
+  font-weight:700;line-height:1.0;
+  letter-spacing:-2px;
+  margin-bottom:12px;
+  opacity:0;animation:fadeUp .8s ease forwards .25s;
+}
+
+.hero-h1 span{
+  background:linear-gradient(135deg,var(--white) 0%,var(--gray2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+.hero-h1 .wd{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+.hero-sub-title{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gray);margin-bottom:24px;
+  opacity:0;animation:fadeUp .8s ease forwards .35s;
+}
+
+.hero-desc{
+  font-size:16px;color:var(--gray2);
+  max-width:460px;line-height:1.75;
+  margin-bottom:48px;
+  opacity:0;animation:fadeUp .8s ease forwards .45s;
+}
+
+.hero-desc strong{color:var(--white);font-weight:500}
+
+.hero-actions{
+  display:flex;align-items:center;gap:16px;
+  opacity:0;animation:fadeUp .8s ease forwards .55s;
+}
+
+.btn-primary{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  background:var(--white);color:var(--bg);
+  padding:14px 32px;border:none;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  transition:all .3s;
+}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
+
+.btn-ghost{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gray);background:none;
+  border:1px solid var(--brd2);
+  padding:14px 32px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  transition:all .3s;
+}
+.btn-ghost:hover{color:var(--white);border-color:rgba(255,255,255,0.3)}
+
+/* SCORE DISPLAY */
+.score-display{
+  position:relative;z-index:2;
+  text-align:center;
+  opacity:0;animation:fadeUp 1s ease forwards .7s;
+}
+
+.score-ring{
+  width:240px;height:240px;
+  border-radius:50%;
+  border:1px solid var(--brd2);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;
+  background:var(--surf);
+  box-shadow:0 0 80px rgba(124,111,255,0.08),inset 0 0 40px rgba(0,0,0,0.3);
+}
+
+.score-ring::before{
+  content:'';
+  position:absolute;inset:-2px;
+  border-radius:50%;
+  background:conic-gradient(
+    var(--grn) 0deg,
+    var(--grn) 302deg,
+    var(--brd) 302deg
+  );
+  z-index:-1;
+  -webkit-mask:radial-gradient(circle at center,transparent 117px,black 118px);
+  mask:radial-gradient(circle at center,transparent 117px,black 118px);
+}
+
+.score-num{
+  font-family:'Alata',sans-serif;
+  font-size:56px;font-weight:700;
+  background:linear-gradient(135deg,var(--white),var(--gray2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
+}
+
+.score-label{
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gray);margin-top:6px;
+}
+
+.score-badge{
+  display:inline-block;margin-top:8px;
+  padding:3px 12px;
+  border:1px solid var(--grn);
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--grn);
+}
+
+.score-components{
+  display:flex;gap:16px;margin-top:28px;
+}
+
+.sc-item{
+  background:var(--surf2);
+  border:1px solid var(--brd);
+  padding:12px 18px;text-align:center;
+  min-width:90px;
+}
+
+.sc-val{
+  font-family:'Alata',sans-serif;
+  font-size:22px;font-weight:600;
+  line-height:1;margin-bottom:4px;
+}
+.sc-val.peak{color:var(--blu)}
+.sc-val.core{color:var(--gold)}
+
+.sc-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:7px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gray);
+}
+
+/* DIVIDER */
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--brd2),transparent);
+  margin:0 64px;
+}
+
+/* SECTION */
+section{padding:100px 64px;position:relative}
+
+.s-tag{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+
+.s-h2{
+  font-family:'Alata',sans-serif;
+  font-size:clamp(32px,4vw,52px);
+  font-weight:600;line-height:1.1;letter-spacing:-1px;
+  margin-bottom:16px;
+}
+
+.s-h2 em{font-style:normal;color:var(--gold2)}
+
+.s-sub{
+  font-size:16px;color:var(--gray2);
+  max-width:540px;line-height:1.7;
+}
+
+/* PROBLEM SECTION */
+.problem-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+  margin-top:56px;
+}
+
+.prob-card{
+  background:var(--surf);
+  border:1px solid var(--brd);
+  padding:36px;
+  position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+.prob-card:hover{border-color:var(--brd2)}
+
+.prob-card.highlight{
+  border-color:rgba(200,168,75,0.2);
+  background:linear-gradient(135deg,var(--surf) 0%,rgba(200,168,75,0.04) 100%);
+}
+.prob-card.highlight::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--gold);
+}
+
+.prob-num{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:4px;color:var(--gray);
+  margin-bottom:16px;
+}
+.prob-title{
+  font-family:'Alata',sans-serif;
+  font-size:18px;font-weight:500;
+  margin-bottom:12px;
+}
+.prob-desc{font-size:14px;color:var(--gray2);line-height:1.7}
+
+/* FORMULA SECTION */
+.formula-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+  margin-top:64px;
+  align-items:start;
+}
+
+.formula-box{
+  background:var(--surf);
+  border:1px solid var(--brd2);
+  padding:40px;
+  position:relative;
+}
+.formula-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--gold),var(--accent));
+}
+
+.formula-eq{
+  font-family:'DM Mono',monospace;
+  font-size:13px;color:var(--gray2);
+  line-height:2.2;
+}
+.formula-eq .highlight{color:var(--white);font-size:15px}
+.formula-eq .gold{color:var(--gold2)}
+.formula-eq .blue{color:var(--blu)}
+
+.formula-components{display:flex;flex-direction:column;gap:16px}
+
+.fc{
+  background:var(--surf);border:1px solid var(--brd);
+  padding:28px 32px;position:relative;overflow:hidden;
+  transition:all .3s;
+}
+.fc:hover{border-color:var(--brd2);transform:translateX(4px)}
+.fc.peak-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--blu)}
+.fc.core-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)}
+
+.fc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.fc-name{
+  font-family:'Alata',sans-serif;
+  font-size:15px;font-weight:500;
+}
+.fc-weight{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:3px;
+  padding:4px 10px;border:1px solid var(--brd2);
+  color:var(--gray);
+}
+.fc-formula{
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--gray2);
+  margin-bottom:12px;line-height:1.8;
+}
+.fc-desc{font-size:13px;color:var(--gray);line-height:1.6}
+.fc-bar{height:2px;background:var(--brd);margin-top:16px;position:relative}
+.fc-bar-fill{position:absolute;top:0;left:0;bottom:0}
+
+/* SCALE */
+.scale-table{
+  margin-top:56px;
+  border:1px solid var(--brd);
+  overflow:hidden;
+}
+.scale-header{
+  display:grid;grid-template-columns:140px 160px 1fr 160px;
+  padding:14px 28px;
+  border-bottom:1px solid var(--brd);
+  background:var(--surf);
+}
+.sh-label{
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gray);
+}
+.scale-row{
+  display:grid;grid-template-columns:140px 160px 1fr 160px;
+  padding:22px 28px;
+  border-bottom:1px solid var(--brd);
+  align-items:center;
+  transition:background .2s;
+  position:relative;
+}
+.scale-row:last-child{border-bottom:none}
+.scale-row:hover{background:var(--surf)}
+.scale-row::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+}
+.scale-row.grn::before{background:var(--grn)}
+.scale-row.amb::before{background:var(--amb)}
+.scale-row.red::before{background:var(--red)}
+
+.sr-range{
+  font-family:'DM Mono',monospace;
+  font-size:13px;color:var(--white);
+}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+}
+.badge.grn{border:1px solid var(--grn);color:var(--grn)}
+.badge.amb{border:1px solid var(--amb);color:var(--amb)}
+.badge.red{border:1px solid var(--red);color:var(--red)}
+.badge-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.badge.grn .badge-dot{background:var(--grn)}
+.badge.amb .badge-dot{background:var(--amb)}
+.badge.red .badge-dot{background:var(--red)}
+
+.sr-desc{font-size:13px;color:var(--gray2)}
+.sr-bar{display:flex;align-items:center;gap:10px}
+.sr-bar-track{flex:1;height:3px;background:var(--brd);position:relative}
+.sr-bar-fill{position:absolute;top:0;left:0;bottom:0;border-radius:2px}
+
+/* TRADERS */
+.traders-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;margin-top:56px;
+}
+.trader-card{
+  background:var(--surf);border:1px solid var(--brd);
+  padding:40px;position:relative;overflow:hidden;
+}
+.trader-card.winner{
+  border-color:rgba(0,217,126,0.15);
+}
+.trader-card.winner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--grn);
+}
+.tc-label{
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gray);margin-bottom:20px;
+}
+.tc-trades{
+  display:flex;flex-direction:column;gap:6px;
+  margin-bottom:24px;
+}
+.tc-trade{
+  display:flex;align-items:center;gap:10px;
+}
+.tc-trade-bar{
+  height:6px;border-radius:3px;
+}
+.tc-trade-val{
+  font-family:'DM Mono',monospace;
+  font-size:10px;color:var(--gray2);
+  white-space:nowrap;
+}
+.tc-score{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:20px;border-top:1px solid var(--brd);
+}
+.tc-wd{
+  font-family:'Alata',sans-serif;
+  font-size:28px;font-weight:600;
+}
+.tc-verdict{
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+}
+
+/* FEATURES */
+.feat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;margin-top:56px;
+}
+.feat{
+  background:var(--surf);border:1px solid var(--brd);
+  padding:36px 28px;transition:all .3s;
+}
+.feat:hover{border-color:var(--brd2);transform:translateY(-2px)}
+.feat-num{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:4px;
+  color:var(--gold);margin-bottom:20px;
+}
+.feat-title{
+  font-family:'Alata',sans-serif;
+  font-size:16px;font-weight:500;margin-bottom:10px;
+}
+.feat-desc{font-size:13px;color:var(--gray2);line-height:1.6}
+
+/* PRICING */
+.pricing-wrap{
+  max-width:500px;margin:64px auto 0;
+  position:relative;
+}
+.pricing-glow{
+  position:absolute;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(200,168,75,0.08) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.pricing-card{
+  background:var(--surf);
+  border:1px solid var(--brd2);
+  position:relative;overflow:hidden;
+}
+.pricing-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),var(--gold),transparent);
+}
+.pc-top{padding:48px 48px 32px;border-bottom:1px solid var(--brd)}
+.pc-badge{
+  display:inline-block;
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  border:1px solid var(--gold);color:var(--gold);
+  padding:4px 14px;margin-bottom:28px;
+}
+.pc-price{
+  font-family:'Alata',sans-serif;
+  font-size:72px;font-weight:700;line-height:1;
+  color:var(--white);
+}
+.pc-price sup{font-size:24px;vertical-align:super;color:var(--gray2)}
+.pc-price sub{
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--gray);
+  letter-spacing:2px;vertical-align:baseline;
+}
+.pc-desc{font-size:14px;color:var(--gray2);margin-top:14px;line-height:1.6}
+.pc-features{padding:32px 48px;display:flex;flex-direction:column;gap:14px}
+.pf-row{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--gray2)}
+.pf-check{
+  width:16px;height:16px;flex-shrink:0;
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:var(--gold);
+}
+.pc-cta{padding:0 48px 48px}
+.pc-cta a{
+  display:block;text-align:center;
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  background:var(--white);color:var(--bg);
+  padding:18px;text-decoration:none;
+  transition:all .3s;
+}
+.pc-cta a:hover{background:var(--gold2)}
+.pc-note{
+  text-align:center;margin-top:14px;
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:2px;color:var(--gray);
+}
+
+/* FOOTER */
+footer{
+  padding:40px 64px;
+  border-top:1px solid var(--brd);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-logo{width:24px;height:24px;opacity:0.7}
+.foot-name{
+  font-family:'Alata',sans-serif;
+  font-size:13px;font-weight:500;color:var(--gray2);
+}
+.foot-copy{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:2px;color:var(--gray);
+}
+.foot-right{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:2px;color:var(--gray);
+  text-align:right;
+}
+
+.foot-links{display:flex;gap:28px;flex-wrap:wrap}
+.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
+.foot-links a:hover{color:var(--white)}
+.disclaimer-bar{background:#0a0a10;border-top:1px solid rgba(255,255,255,0.1);padding:32px 0}
+.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c8a84b;white-space:nowrap;flex-shrink:0}
+.disclaimer-bar p{font-size:12px;line-height:1.75;color:#6b7280;margin:0}
+@media(max-width:768px){.disclaimer-inner{padding:0 24px}.foot-links{justify-content:center}}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{
+  0%,100%{opacity:1}50%{opacity:0.4}
+}
+
+.reveal{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.reveal.visible{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:16px 24px}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-left{padding:120px 24px 60px}
+  .hero-right{padding:60px 24px;border-left:none;border-top:1px solid var(--brd)}
+  section{padding:80px 24px}
+  .divider{margin:0 24px}
+  .problem-grid,.formula-layout,.traders-grid,.feat-grid{grid-template-columns:1fr}
+  .scale-header{display:none}
+  .scale-row{grid-template-columns:1fr 1fr;gap:8px}
+  .sr-bar{display:none}
+  footer{flex-direction:column;gap:16px;padding:32px 24px;text-align:center}
+  .foot-right{text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
+    <span class="nav-name">Vilasio</span>
+    <span class="nav-product">/ WinDepth</span>
+  </div>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="cot.html" class="nav-link">COT Intelligence</a>
+    <a href="blog.html" class="nav-link">Insights</a>
+    <a href="about.html" class="nav-link">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      Vilasio &nbsp;·&nbsp; Performance Analytics
+    </div>
+    <h1 class="hero-h1">
+      <span>Measure</span><br>
+      <span class="wd">How You Win.</span>
+    </h1>
+    <p class="hero-sub-title">A Structural Metric for Positive Performance Quality</p>
+    <p class="hero-desc">
+      Profit is visible. <strong>Depth is invisible.</strong><br><br>
+      WinDepth reveals the structural quality behind your winning trades —
+      not how much you make, but <strong>how replicable the way you make it is.</strong>
+    </p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">Get WinDepth</a>
+      <a href="https://github.com/gdurante1705/vilasio/releases/download/v0.1/WinDepth.zip" class="btn-ghost">↓ Download Beta</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="score-display">
+      <div class="score-ring">
+        <div class="score-num">0.84</div>
+        <div class="score-label">WinDepth Score</div>
+        <div class="score-badge">Excellent</div>
+      </div>
+      <div class="score-components">
+        <div class="sc-item">
+          <div class="sc-val peak">0.79</div>
+          <div class="sc-lbl">Peak Ratio</div>
+        </div>
+        <div class="sc-item">
+          <div class="sc-val core">0.87</div>
+          <div class="sc-lbl">Core Ratio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<section>
+  <p class="s-tag reveal">Why WinDepth exists</p>
+  <h2 class="s-h2 reveal">Traditional metrics <em>don't answer<br>the right question.</em></h2>
+  <p class="s-sub reveal">Sharpe, Profit Factor, Expectancy — all useful. But none of them ask:<br><strong style="color:var(--white)">Are my profits structurally replicable, or do they depend on a few extreme events?</strong></p>
+
+  <div class="problem-grid">
+    <div class="prob-card reveal reveal-delay-1">
+      <div class="prob-num">01 — THE PROBLEM</div>
+      <div class="prob-title">A system can look excellent and be fragile.</div>
+      <div class="prob-desc">A couple of exceptional trades, a lucky period, an isolated spike. If those peaks are not replicable, the system is structurally weak — regardless of what the Sharpe Ratio says.</div>
+    </div>
+    <div class="prob-card reveal reveal-delay-2">
+      <div class="prob-num">02 — THE PROBLEM</div>
+      <div class="prob-title">Profit Factor ignores internal distribution.</div>
+      <div class="prob-desc">Two traders with identical Profit Factor can have completely different structural depth. One depends on a single outlier. The other distributes value consistently. WinDepth tells them apart.</div>
+    </div>
+    <div class="prob-card highlight reveal reveal-delay-3" style="grid-column:1/-1">
+      <div class="prob-num">THE SOLUTION</div>
+      <div class="prob-title" style="font-size:22px">WinDepth measures exactly this.</div>
+      <div class="prob-desc" style="max-width:600px;font-size:15px">
+        It focuses exclusively on the distribution of positive R-multiples — how close your winners are to your best trade, and how stable they are around their own mean. One score. Deep insight.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FORMULA -->
+<section id="formula">
+  <p class="s-tag reveal">Proprietary Formula</p>
+  <h2 class="s-h2 reveal">Two engines.<br><em>One metric.</em></h2>
+
+  <div class="formula-layout">
+    <div class="formula-box reveal">
+      <div class="formula-eq">
+        <div style="color:var(--gray);font-size:9px;letter-spacing:4px;margin-bottom:24px">WINDEPTH FORMULA</div>
+        <div class="highlight">WD = 0.4 × <span class="blue">Peak Ratio</span></div>
+        <div class="highlight">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 0.6 × <span class="gold">Core Ratio</span></div>
+        <div style="height:1px;background:var(--brd);margin:24px 0"></div>
+        <div style="margin-bottom:8px"><span class="blue">Peak Ratio</span> = 1 − MAD(MaxR⁺ − R⁺) / MaxR⁺</div>
+        <div><span class="gold">Core Ratio</span> = 1 − MAD(R⁺ − μ) / μ</div>
+        <div style="height:1px;background:var(--brd);margin:24px 0"></div>
+        <div style="color:var(--gray);font-size:10px;line-height:1.8">
+          Uses <strong style="color:var(--gray2)">Mean Absolute Deviation</strong> instead of standard deviation — linear, robust, not distorted by outliers.
+        </div>
+        <div style="margin-top:20px;padding:16px;background:var(--bg2);border:1px solid var(--brd)">
+          <div style="color:var(--gray);font-size:9px;letter-spacing:3px;margin-bottom:8px">OUTPUT RANGE</div>
+          <div style="color:var(--white);font-size:22px;font-family:'Alata',sans-serif;font-weight:600">0 → 1</div>
+          <div style="color:var(--gray);font-size:11px;margin-top:4px">Closer to 1 = structurally deeper system</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-components">
+      <div class="fc peak-card reveal">
+        <div class="fc-header">
+          <div class="fc-name" style="color:var(--blu)">Peak Ratio</div>
+          <div class="fc-weight">Weight 0.4</div>
+        </div>
+        <div class="fc-formula">1 − MAD(MaxR⁺ − R⁺) / MaxR⁺</div>
+        <div class="fc-desc"><strong style="color:var(--gray2)">Are your wins close to your best trade?</strong><br><br>
+        A high Peak Ratio means your system regularly reaches near its maximum potential. A low one means your best trade is an outlier that distorts everything below it.</div>
+        <div class="fc-bar"><div class="fc-bar-fill" style="width:79%;background:var(--blu)"></div></div>
+      </div>
+
+      <div class="fc core-card reveal reveal-delay-1">
+        <div class="fc-header">
+          <div class="fc-name" style="color:var(--gold)">Core Ratio</div>
+          <div class="fc-weight">Weight 0.6</div>
+        </div>
+        <div class="fc-formula">1 − MAD(R⁺ − μ) / μ</div>
+        <div class="fc-desc"><strong style="color:var(--gray2)">Are your wins stable around their average?</strong><br><br>
+        A high Core Ratio means your positive trades are tightly distributed — consistent, replicable, structurally solid. This is why it carries more weight.</div>
+        <div class="fc-bar"><div class="fc-bar-fill" style="width:87%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCALE -->
+<section id="scale">
+  <p class="s-tag reveal">Score Interpretation</p>
+  <h2 class="s-h2 reveal">Where does your<br><em>system stand?</em></h2>
+  <p class="s-sub reveal">WinDepth outputs a single score from 0 to 1. Here's what it means.</p>
+
+  <div class="scale-table reveal">
+    <div class="scale-header">
+      <div class="sh-label">Range</div>
+      <div class="sh-label">Level</div>
+      <div class="sh-label">Meaning</div>
+      <div class="sh-label">Depth</div>
+    </div>
+    <div class="scale-row grn">
+      <div class="sr-range">0.80 — 1.00</div>
+      <div><span class="badge grn"><span class="badge-dot"></span>Excellent</span></div>
+      <div class="sr-desc">Highly coherent and replicable system. Professional-grade structural depth.</div>
+      <div class="sr-bar"><div class="sr-bar-track"><div class="sr-bar-fill" style="width:92%;background:var(--grn)"></div></div></div>
+    </div>
+    <div class="scale-row amb">
+      <div class="sr-range">0.65 — 0.79</div>
+      <div><span class="badge amb"><span class="badge-dot"></span>Stable</span></div>
+      <div class="sr-desc">Good consistency with room for optimization. Solid foundation.</div>
+      <div class="sr-bar"><div class="sr-bar-track"><div class="sr-bar-fill" style="width:72%;background:var(--amb)"></div></div></div>
+    </div>
+    <div class="scale-row amb">
+      <div class="sr-range">0.50 — 0.64</div>
+      <div><span class="badge amb"><span class="badge-dot"></span>Partial</span></div>
+      <div class="sr-desc">Partial dependency on outliers. The system requires structural work.</div>
+      <div class="sr-bar"><div class="sr-bar-track"><div class="sr-bar-fill" style="width:57%;background:var(--amb)"></div></div></div>
+    </div>
+    <div class="scale-row red">
+      <div class="sr-range">&lt; 0.50</div>
+      <div><span class="badge red"><span class="badge-dot"></span>Fragile</span></div>
+      <div class="sr-desc">Unstable structure. Results are not consistently replicable.</div>
+      <div class="sr-bar"><div class="sr-bar-track"><div class="sr-bar-fill" style="width:30%;background:var(--red)"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TRADER COMPARISON -->
+<section>
+  <p class="s-tag reveal">Real example</p>
+  <h2 class="s-h2 reveal">Same expectancy.<br><em>Different depth.</em></h2>
+  <p class="s-sub reveal">This is what WinDepth reveals that no other metric captures.</p>
+
+  <div class="traders-grid">
+    <div class="trader-card reveal">
+      <div class="tc-label">Trader A — Lottery Style</div>
+      <div class="tc-trades">
+        <div class="tc-trade">
+          <div class="tc-trade-bar" style="width:180px;background:var(--red)"></div>
+          <div class="tc-trade-val">+8.0R</div>
+        </div>
+        <div class="tc-trade">
+          <div class="tc-trade-bar" style="width:20px;background:var(--gray)"></div>
+          <div class="tc-trade-val">+0.4R × 20</div>
+        </div>
+        <div class="tc-trade">
+          <div class="tc-trade-bar" style="width:20px;background:var(--gray)"></div>
+          <div class="tc-trade-val">micro wins</div>
+        </div>
+      </div>
+      <div class="tc-score">
+        <div>
+          <div class="tc-wd" style="color:var(--red)">0.31</div>
+          <div class="tc-verdict" style="color:var(--red)">Fragile</div>
+        </div>
+        <div style="font-size:13px;color:var(--gray2);max-width:180px">One trade carries everything. Not replicable.</div>
+      </div>
+    </div>
+
+    <div class="trader-card winner reveal reveal-delay-1">
+      <div class="tc-label">Trader B — Structural Edge</div>
+      <div class="tc-trades">
+        <div class="tc-trade">
+          <div class="tc-trade-bar" style="width:60px;background:var(--grn)"></div>
+          <div class="tc-trade-val">+1.5R</div>
+        </div>
+        <div class="tc-trade">
+          <div class="tc-trade-bar" style="width:70px;background:var(--grn)"></div>
+          <div class="tc-trade-val">+1.7R</div>
+        </div>
+        <div class="tc-trade">
+          <div class="tc-trade-bar" style="width:80px;background:var(--grn)"></div>
+          <div class="tc-trade-val">+2.0R × 13 more</div>
+        </div>
+      </div>
+      <div class="tc-score">
+        <div>
+          <div class="tc-wd" style="color:var(--grn)">0.87</div>
+          <div class="tc-verdict" style="color:var(--grn)">Excellent</div>
+        </div>
+        <div style="font-size:13px;color:var(--gray2);max-width:180px">Consistent wins. Replicable structure. Real edge.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section>
+  <p class="s-tag reveal">What's included</p>
+  <h2 class="s-h2 reveal">Everything you need.<br><em>Nothing you don't.</em></h2>
+
+  <div class="feat-grid">
+    <div class="feat reveal">
+      <div class="feat-num">01</div>
+      <div class="feat-title">WinDepth Score</div>
+      <div class="feat-desc">Real-time calculation of WinDepth, Peak Ratio and Core Ratio directly from your ATAS export. Structural depth measured instantly.</div>
+    </div>
+    <div class="feat reveal reveal-delay-1">
+      <div class="feat-num">02</div>
+      <div class="feat-title">Live Journal</div>
+      <div class="feat-desc">Full trading journal with equity curve, P&L by hour, duration distribution, day-of-week heatmap and complete trade log.</div>
+    </div>
+    <div class="feat reveal reveal-delay-2">
+      <div class="feat-num">03</div>
+      <div class="feat-title">ATAS Integration</div>
+      <div class="feat-desc">Auto-detects new ATAS exports in your Downloads folder. Export from ATAS, the journal updates in under 3 seconds. No manual steps.</div>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-num">04</div>
+      <div class="feat-title">Persistent History</div>
+      <div class="feat-desc">Trade history accumulates automatically across sessions. Every export adds new trades — duplicates removed. Your full history, always available.</div>
+    </div>
+    <div class="feat reveal reveal-delay-1">
+      <div class="feat-num">05</div>
+      <div class="feat-title">Native Desktop App</div>
+      <div class="feat-desc">No browser, no account required. Runs locally on Windows. Your data never leaves your machine — full privacy by design.</div>
+    </div>
+    <div class="feat reveal reveal-delay-2">
+      <div class="feat-num">06</div>
+      <div class="feat-title">Complete Statistics</div>
+      <div class="feat-desc">Win rate, profit factor, Sharpe ratio, expectancy, max drawdown, streak analysis and every metric a serious trader needs.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="divider"></div>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <p class="s-tag reveal" style="text-align:center">Beta Access</p>
+  <h2 class="s-h2 reveal" style="text-align:center">Download WinDepth.<br><em>Free during beta.</em></h2>
+  <p class="s-sub reveal" style="text-align:center">Windows desktop app · ATAS integration · No account required</p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:48px">
+    <div class="reveal" style="background:#0f0f16;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:32px 48px;text-align:center;max-width:480px">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px">v0.1 Beta · Windows 10/11</div>
+      <div style="font-size:14px;color:#9ca3af;margin-bottom:24px;line-height:1.7">
+        Includes: WinDepth Score · Full journal · ATAS live integration<br>
+        Requires: Python 3.10+ installed
+      </div>
+      <form id="beta-form" action="https://formspree.io/f/mvzbnpbd" method="POST" style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px;margin:0 auto">
+        <input type="text" name="name" placeholder="Your name" required style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:12px 16px;color:var(--white);font-family:'Roboto Slab',serif;font-size:13px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,168,75,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+        <input type="email" name="email" placeholder="Your email" required style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:12px 16px;color:var(--white);font-family:'Roboto Slab',serif;font-size:13px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,168,75,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+        <input type="hidden" name="_subject" value="WinDepth Beta Request">
+        <button type="submit" style="display:inline-block;background:var(--white);color:var(--bg);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;text-decoration:none;border-radius:4px;border:none;cursor:pointer;transition:background .2s;font-weight:600" onmouseover="this.style.background='#ddb95e'" onmouseout="this.style.background='var(--white)'">Request Beta Access</button>
+      </form>
+      <p style="font-size:11px;color:#6b7280;margin-top:14px">We'll send you the download link · Free during beta period</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section id="pricing" style="padding-bottom:120px">
+  <p class="s-tag reveal" style="text-align:center">Pricing</p>
+  <h2 class="s-h2 reveal" style="text-align:center">One investment.<br><em>Real edge.</em></h2>
+
+  <div class="pricing-wrap">
+    <div class="pricing-glow"></div>
+    <div class="pricing-card reveal">
+      <div class="pc-top">
+        <div class="pc-badge">WinDepth Pro</div>
+        <div class="pc-price"><sup>€</sup>19<sub>/mo</sub></div>
+        <div class="pc-desc">Full access to WinDepth Desktop with all future updates included. Cancel anytime.</div>
+      </div>
+      <div class="pc-features">
+        <div class="pf-row"><div class="pf-check">✓</div>WinDepth Score · Peak &amp; Core Ratio</div>
+        <div class="pf-row"><div class="pf-check">✓</div>Live journal with ATAS auto-integration</div>
+        <div class="pf-row"><div class="pf-check">✓</div>Full statistics dashboard · 6 charts</div>
+        <div class="pf-row"><div class="pf-check">✓</div>Persistent trade history across sessions</div>
+        <div class="pf-row"><div class="pf-check">✓</div>Native Windows desktop app</div>
+        <div class="pf-row"><div class="pf-check">✓</div>All future updates included</div>
+        <div class="pf-row"><div class="pf-check">✓</div>Priority support via email</div>
+      </div>
+      <div class="pc-cta">
+        <a href="#">Subscribe Now</a>
+        <p class="pc-note">No contracts · Cancel anytime · Instant access</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="V">
+    <span class="foot-name">Vilasio</span>
+  </div>
+  <div class="foot-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="cookie.html">Cookie Policy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="foot-right">&copy; 2026 Vilasio. Financial Analytics &amp; Market Research.</div>
+</footer>
+
+<div class="disclaimer-bar">
+  <div class="disclaimer-inner">
+    <span class="disclaimer-label">Financial Disclaimer</span>
+    <p>The information, data visualizations, and analytical tools provided on this website are intended strictly for informational, educational, and research purposes. Vilasio provides financial market analytics designed to help users better understand market structure, institutional positioning, and statistical patterns in financial markets. The content available on this platform does not constitute financial advice, investment advice, trading advice, or recommendations to buy or sell financial instruments.</p>
+    <p>Trading and investing in financial markets involve substantial risk, including the potential loss of capital. Users are solely responsible for their own financial and trading decisions and should conduct their own research or consult a qualified financial professional before making any investment decisions.</p>
+    <p>While reasonable efforts are made to ensure the accuracy and reliability of the information provided, Vilasio makes no guarantees regarding completeness, accuracy, or timeliness of any data or analysis.</p>
+    <p>By using this website and its tools, users acknowledge that Vilasio and its creators cannot be held liable for any financial losses or damages resulting from the use of the information or analytical tools provided.</p>
+  </div>
+</div>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting){
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

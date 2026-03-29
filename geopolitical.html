@@ -22,8 +22,8 @@
   --bg2:#F2F1ED;
   --white:#FFFFFF;
   --ink:#111111;
-  --ink3:#6B6B6B;
-  --muted:#9A9A9A;
+  --ink3:#444444;
+  --muted:#777777;
   --brd:#D8D8D4;
   --gold:#C5A33C;
   --gold2:#d4b44e;
@@ -749,9 +749,9 @@ function heatBorder(v){if(v==null)return'var(--card-border)';if(v<1)return'rgba(
 function heatTopColor(v){if(v==null)return'var(--ink3)';if(v<1)return'rgba(34,197,94,0.4)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
 function fmtChg(v){if(v==null)return'\u2014';return(v>=0?'+':'')+v.toFixed(1)}
 function fmtEvtChg(c,p){if(c==null||p==null)return{text:'\u2014',cls:''};var d=c-p;return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'}}
-var _ttOpts={backgroundColor:'rgba(255,255,255,0.96)',titleColor:'#6B6B6B',bodyColor:'#111111',borderColor:'#D8D8D4',borderWidth:1,titleFont:{family:'var(--mono)',size:9},bodyFont:{family:'var(--mono)',size:10},padding:10,cornerRadius:8};
-var _xOpts={ticks:{color:'#9A9A9A',font:{family:'var(--mono)',size:8},maxTicksLimit:12},grid:{color:'rgba(0,0,0,0.05)'}};
-var _yOpts={ticks:{color:'#9A9A9A',font:{family:'var(--mono)',size:9}},grid:{color:'rgba(0,0,0,0.05)'}};
+var _ttOpts={backgroundColor:'rgba(255,255,255,0.96)',titleColor:'#444444',bodyColor:'#111111',borderColor:'#D8D8D4',borderWidth:1,titleFont:{family:'var(--mono)',size:9},bodyFont:{family:'var(--mono)',size:10},padding:10,cornerRadius:8};
+var _xOpts={ticks:{color:'#777777',font:{family:'var(--mono)',size:8},maxTicksLimit:12},grid:{color:'rgba(0,0,0,0.05)'}};
+var _yOpts={ticks:{color:'#777777',font:{family:'var(--mono)',size:9}},grid:{color:'rgba(0,0,0,0.05)'}};
 var _zonePlugin={id:'zones',beforeDraw:function(ch){var yA=ch.scales.y,c=ch.ctx,l=ch.chartArea.left,r=ch.chartArea.right;var y80=yA.getPixelForValue(80),yB=yA.getPixelForValue(yA.min);if(y80>ch.chartArea.top){c.fillStyle='rgba(34,197,94,0.04)';c.fillRect(l,y80,r-l,yB-y80)}var y200=yA.getPixelForValue(200),yT=yA.getPixelForValue(yA.max);if(y200<yB){c.fillStyle='rgba(239,68,68,0.04)';c.fillRect(l,yT,r-l,y200-yT)}}};
 
 function resolveGprName(topoName){return NAME_MAP[topoName]||topoName}
@@ -1256,7 +1256,7 @@ function _buildCountryChart(name,latest){
   var label=_gprYears>=10?'Last 10 Years':('Last '+_gprYears+'Y');
   document.getElementById('pr-subtitle').textContent=name+' \u00b7 '+label;
   var ctx=document.getElementById('countryChart');
-  _countryChart=new Chart(ctx,{type:'line',data:{labels:sl.dates,datasets:[{label:name+' GPR',data:sl.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10,bottom:10,left:0,right:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#9A9A9A',font:{family:'var(--mono)',size:7},maxTicksLimit:5},grid:{display:false}},y:{ticks:{color:'#9A9A9A',font:{family:'var(--mono)',size:8}},grid:{color:'rgba(0,0,0,0.05)'}}}}});
+  _countryChart=new Chart(ctx,{type:'line',data:{labels:sl.dates,datasets:[{label:name+' GPR',data:sl.values,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10,bottom:10,left:0,right:8}},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#777777',font:{family:'var(--mono)',size:7},maxTicksLimit:5},grid:{display:false}},y:{ticks:{color:'#777777',font:{family:'var(--mono)',size:8}},grid:{color:'rgba(0,0,0,0.05)'}}}}});
   var vals=sl.values.filter(function(v){return v!=null});
   var peak=vals.length?Math.max.apply(null,vals):null;
   var avg=vals.length?(vals.reduce(function(a,b){return a+b},0)/vals.length):null;
@@ -1290,7 +1290,7 @@ function renderDailyChart(){
   var g=D.gpr||{},dates=g.dailyDates||[],vals=g.dailyValues||[];
   if(_dailyChart){_dailyChart.destroy();_dailyChart=null}
   var ctx=document.getElementById('dailyChart');if(!ctx||!dates.length)return;
-  _dailyChart=new Chart(ctx,{type:'line',data:{labels:dates,datasets:[{label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#9A9A9A',font:{family:'var(--mono)',size:8},maxTicksLimit:8},grid:{color:'rgba(0,0,0,0.05)'}},y:_yOpts}},plugins:[_zonePlugin]});
+  _dailyChart=new Chart(ctx,{type:'line',data:{labels:dates,datasets:[{label:'AI-GPR Daily',data:vals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:_ttOpts},scales:{x:{ticks:{color:'#777777',font:{family:'var(--mono)',size:8},maxTicksLimit:8},grid:{color:'rgba(0,0,0,0.05)'}},y:_yOpts}},plugins:[_zonePlugin]});
 }
 
 function sortRisks(mode){_riskSort=mode;document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sort')===mode)});renderRisks()}

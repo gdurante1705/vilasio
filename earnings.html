@@ -21,8 +21,8 @@
   --bg2:#F2F1ED;
   --white:#FFFFFF;
   --ink:#111111;
-  --ink3:#6B6B6B;
-  --muted:#9A9A9A;
+  --ink3:#444444;
+  --muted:#777777;
   --brd:#D8D8D4;
   --gold:#C5A33C;
   --heading:'DM Sans',system-ui,-apple-system,sans-serif;
@@ -830,7 +830,7 @@ function loadEpsHistory(symbol) {
           var midX = metaE.data[i] ? (bar.x + metaE.data[i].x) / 2 : bar.x;
           /* Row 1: date + quarter */
           c2.font = "500 10px 'IBM Plex Sans'";
-          c2.fillStyle = '#9A9A9A';
+          c2.fillStyle = '#777777';
           c2.fillText(dateLabels[i] + '  \u00b7  ' + qLabels[i], midX, yBase);
           /* Row 2: surprise % */
           var v = surprises[i];
@@ -865,7 +865,7 @@ function loadEpsHistory(symbol) {
             legend: {display: false},
             tooltip: {
               backgroundColor: 'rgba(255,255,255,0.97)', titleFont: {family: "'IBM Plex Mono', monospace", size: 10}, bodyFont: {family: "'IBM Plex Mono', monospace", size: 10},
-              titleColor: '#111111', bodyColor: '#6B6B6B', borderColor: 'rgba(0,0,0,0.08)', borderWidth: 1, padding: 12, cornerRadius: 8,
+              titleColor: '#111111', bodyColor: '#444444', borderColor: 'rgba(0,0,0,0.08)', borderWidth: 1, padding: 12, cornerRadius: 8,
               callbacks: {
                 title: function(items) { return qLabels[items[0].dataIndex] + ' \u00b7 ' + dateLabels[items[0].dataIndex]; },
                 label: function(c) { var v = c.parsed.y; return c.dataset.label + ': $' + (v != null ? v.toFixed(2) : '\u2014'); },
@@ -880,7 +880,7 @@ function loadEpsHistory(symbol) {
           },
           scales: {
             x: {display: false},
-            y: {grid: {color: 'rgba(0,0,0,0.04)'}, ticks: {font: {family: "'IBM Plex Mono', monospace", size: 8}, color: '#9A9A9A', callback: function(v) {return '$' + v.toFixed(2)}}}
+            y: {grid: {color: 'rgba(0,0,0,0.04)'}, ticks: {font: {family: "'IBM Plex Mono', monospace", size: 8}, color: '#777777', callback: function(v) {return '$' + v.toFixed(2)}}}
           }
         },
         plugins: [epsLabelPlugin]
