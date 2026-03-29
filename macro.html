@@ -20,8 +20,8 @@
   --bg2:#F2F1ED;
   --white:#FFFFFF;
   --ink:#111111;
-  --ink3:#444444;
-  --muted:#777777;
+  --ink3:#222222;
+  --muted:#555555;
   --brd:#D8D8D4;
   --gold:#C5A33C;
   --gold2:#d4be64;
@@ -671,8 +671,8 @@ function fPct(v){return v==null?"\u2014":v.toFixed(2)+"%"}
 function fChgP(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
 function fK(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(0)+"K"}
 function sl(a,n){return n>=a.length?a:a.slice(-n)}
-var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#777777",font:{family:"DM Mono",size:8}}};
-var tipO={backgroundColor:"#ffffff",titleColor:"#111111",bodyColor:"#444444",borderColor:"rgba(0,0,0,0.1)",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
+var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#555555",font:{family:"DM Mono",size:8}}};
+var tipO={backgroundColor:"#ffffff",titleColor:"#111111",bodyColor:"#222222",borderColor:"rgba(0,0,0,0.1)",borderWidth:1,titleFont:{family:"Alata",weight:"400",size:12},bodyFont:{family:"DM Mono",size:10},padding:10};
 function pOpts(cb){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:cb||function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
 function renderAll(){renderCards();renderMorpheus();renderRegimeQuadrant();renderRegimeTimeline();renderInflation();renderUR();renderNFP();renderIC();renderJO();renderBankUS();renderBankIXG();renderBankIAK()}

@@ -20,8 +20,8 @@
   --bg2:#F2F1ED;
   --white:#FFFFFF;
   --ink:#111111;
-  --ink3:#444444;
-  --muted:#777777;
+  --ink3:#222222;
+  --muted:#555555;
   --brd:#D8D8D4;
   --gold:#C5A33C;
   --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
@@ -440,8 +440,8 @@ function fChgPct(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
 function fBps(v){return v==null?"\u2014":Math.round(v*100)+" bps"}
 function sl(a,n){return n>=a.length?a:a.slice(-n)}
 
-var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#777777",font:{family:"IBM Plex Mono",size:8}}};
-var tipO={backgroundColor:"#ffffff",titleColor:"#111111",bodyColor:"#444444",borderColor:"#D8D8D4",borderWidth:1,titleFont:{family:"DM Sans",weight:"600",size:12},bodyFont:{family:"IBM Plex Mono",size:10},padding:10};
+var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#555555",font:{family:"IBM Plex Mono",size:8}}};
+var tipO={backgroundColor:"#ffffff",titleColor:"#111111",bodyColor:"#222222",borderColor:"#D8D8D4",borderWidth:1,titleFont:{family:"DM Sans",weight:"600",size:12},bodyFont:{family:"IBM Plex Mono",size:10},padding:10};
 function pctOpts(){return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+fPct(c.parsed.y)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),y:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{callback:function(v){return v.toFixed(1)+"%"}})})}}}
 
 function renderAll(){renderCards();renderYields();renderSpread();renderReal();renderBE();renderCredit();renderMOVE()}

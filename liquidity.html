@@ -20,8 +20,8 @@
   --bg2:#F2F1ED;
   --white:#FFFFFF;
   --ink:#111111;
-  --ink3:#444444;
-  --muted:#777777;
+  --ink3:#222222;
+  --muted:#555555;
   --brd:#D8D8D4;
   --gold:#C5A33C;
   --gold2:#b8962e;
@@ -505,8 +505,8 @@ function fChg(v){if(v==null)return"\u2014";var s=v>=0?"+":"";if(Math.abs(v)>=100
 function fPct(v){return v==null?"\u2014":(v>=0?"+":"")+v.toFixed(2)+"%"}
 function sl(arr,n){return n>=arr.length?arr:arr.slice(-n)}
 
-var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#777777",font:{family:"IBM Plex Mono",size:8}}};
-var tipO={backgroundColor:"#ffffff",titleColor:"#111111",bodyColor:"#444444",borderColor:"#D8D8D4",borderWidth:1,titleFont:{family:"DM Sans",weight:"700",size:12},bodyFont:{family:"IBM Plex Mono",size:10},padding:10,cornerRadius:8};
+var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#555555",font:{family:"IBM Plex Mono",size:8}}};
+var tipO={backgroundColor:"#ffffff",titleColor:"#111111",bodyColor:"#222222",borderColor:"#D8D8D4",borderWidth:1,titleFont:{family:"DM Sans",weight:"700",size:12},bodyFont:{family:"IBM Plex Mono",size:10},padding:10,cornerRadius:8};
 
 function mOpts(){
   return{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
@@ -563,7 +563,7 @@ function renderNetLiq(){
     var spMap={};D.sp500.dates.forEach(function(d,i){spMap[d]=D.sp500.values[i]});
     var spData=dates.map(function(d){if(spMap[d])return spMap[d];for(var off=1;off<=7;off++){var dt=new Date(d);dt.setDate(dt.getDate()-off);var ck=dt.toISOString().slice(0,10);if(spMap[ck])return spMap[ck];dt=new Date(d);dt.setDate(dt.getDate()+off);ck=dt.toISOString().slice(0,10);if(spMap[ck])return spMap[ck]}return null});
     ds.push({label:"S&P 500",data:spData,borderColor:"rgba(0,0,0,0.35)",borderWidth:1,pointRadius:0,fill:false,tension:0.1,yAxisID:"yP",spanGaps:true});
-    scales.yP={position:"right",grid:{display:false},ticks:{color:"#777777",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(0)}}};
+    scales.yP={position:"right",grid:{display:false},ticks:{color:"#555555",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v>=1000?(v/1000).toFixed(1)+"K":v.toFixed(0)}}};
   }
   if(charts.netLiq)charts.netLiq.destroy();
   charts.netLiq=new Chart(ctx,{type:"line",data:{labels:dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yP")return"S&P 500: "+c.parsed.y.toLocaleString();return c.dataset.label+": "+fBn(c.parsed.y)}}})},scales:scales}});
@@ -634,7 +634,7 @@ function renderM2(){
     plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){if(c.dataset.yAxisID==="yR")return"M2 YoY: "+fPct(c.parsed.y);return"M2: "+fBn(c.parsed.y)}}})},
     scales:{
       x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:8,maxRotation:0})}),
-      y:{position:"left",beginAtZero:false,grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#777777",font:{family:"IBM Plex Mono",size:8},callback:function(v){return fBn(v)}}},
+      y:{position:"left",beginAtZero:false,grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#555555",font:{family:"IBM Plex Mono",size:8},callback:function(v){return fBn(v)}}},
       yR:{type:"linear",position:"right",grid:{display:false},min:yMin,max:yMax,ticks:{color:"#c8a84b",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v.toFixed(1)+"%"}}}
     }
   }});
