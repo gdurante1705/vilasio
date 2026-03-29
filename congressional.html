@@ -11,197 +11,259 @@
 <meta property="og:url" content="https://vilasio.com">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Roboto+Slab:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
 :root{
-  --bg:#08080a;
-  --surf:#0c0c10;
-  --brd:rgba(255,255,255,0.06);
-  --white:#f0f0f0;
-  --t1:#c0c0c4;
-  --t2:#78787f;
-  --t3:#50505a;
-  --gold:#c8a84b;
-  --gold2:#d4be64;
-  --gold-dim:rgba(200,168,75,0.12);
+  --bg:#FAFAF8;
+  --bg2:#F2F1ED;
+  --white:#FFFFFF;
+  --ink:#111111;
+  --ink3:#6B6B6B;
+  --muted:#9A9A9A;
+  --brd:#D8D8D4;
+  --gold:#C5A33C;
   --grn:#22c55e;--grn-dim:rgba(34,197,94,0.10);
   --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
   --amb:#f59e0b;--violet:#f472b6;
   --bp:#5b8af0;
-  --card:linear-gradient(135deg,rgba(18,18,22,0.9) 0%,rgba(12,12,15,0.88) 100%);
-  --card-border:rgba(200,168,75,0.06);
-  --card-border-hover:rgba(200,168,75,0.14);
-  --card-shadow:0 4px 24px rgba(0,0,0,0.5);
-  --r:18px;
-  --r-sm:14px;
-  --r-xs:10px;
+  --heading:'DM Sans',system-ui,-apple-system,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:"Roboto Slab",serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.7}
 
-body::before{
-  content:"";position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:900px;height:700px;
-  background:radial-gradient(ellipse at center,rgba(200,168,75,0.025) 0%,transparent 70%);
-  pointer-events:none;z-index:0;
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-weight:300;
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  line-height:1.7;
 }
+
+/* Grain texture */
 body::after{
   content:"";position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;mix-blend-mode:multiply;
 }
 
 /* ─── NAV ─── */
 nav{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;
-  display:flex;align-items:center;gap:32px;
-  padding:14px 28px;
-  background:rgba(12,12,16,0.8);
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 64px;height:68px;
+  background:rgba(250,250,248,0.95);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:100px;
+  border-bottom:1px solid rgba(0,0,0,0.07);
 }
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-img{width:24px;height:24px;opacity:0.9}
-.nav-name{font-family:"Alata",sans-serif;font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-link{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-link:hover,.nav-link.active{color:var(--white)}
-.nav-mobile-btn{display:none;background:none;border:none;color:var(--white);font-size:18px;cursor:pointer;padding:0;line-height:1}
-.nav-mobile-menu{
-  display:none;position:fixed;top:64px;left:16px;right:16px;
-  background:rgba(12,12,16,0.95);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(200,168,75,0.06);
-  border-radius:var(--r);
-  flex-direction:column;padding:24px 28px;gap:18px;z-index:99;
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-img{width:26px;height:26px;filter:brightness(0)}
+.nav-brand-name{
+  font-family:var(--heading);font-size:15px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--ink);
 }
-.nav-mobile-menu.open{display:flex}
-.nav-mobile-menu a{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.nav-mobile-menu a:hover{color:var(--white)}
+.nav-center{display:flex;align-items:center;gap:36px}
+.nav-link{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;transition:color .18s;
+  position:relative;
+}
+.nav-link::after{
+  content:"";position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .2s ease;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-link:hover::after{transform:scaleX(1)}
+.nav-link.active{color:var(--ink)}
+.nav-link.active::after{transform:scaleX(1)}
+.nav-cta{
+  font-family:var(--body);font-size:11px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:10px 22px;text-decoration:none;
+  transition:background .18s,color .18s;flex-shrink:0;
+}
+.nav-cta:hover{background:var(--gold);color:var(--ink)}
+.nav-hamburger{
+  display:none;background:none;border:none;color:var(--ink);
+  font-size:20px;cursor:pointer;padding:0;line-height:1;
+}
+.nav-mobile{
+  display:none;position:fixed;
+  top:68px;left:0;right:0;
+  background:rgba(250,250,248,0.98);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  flex-direction:column;padding:20px 32px 28px;gap:16px;
+  z-index:299;box-shadow:0 16px 40px rgba(0,0,0,0.07);
+}
+.nav-mobile.open{display:flex}
+.mob-link{
+  font-family:var(--body);font-size:13px;font-weight:400;
+  color:var(--ink3);text-decoration:none;
+  padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);
+  transition:color .15s;
+}
+.mob-link:hover,.mob-link.active{color:var(--ink)}
+.mob-cta{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:12px 24px;text-decoration:none;
+  text-align:center;margin-top:4px;transition:background .18s;
+  display:block;
+}
+.mob-cta:hover{background:var(--gold);color:var(--ink)}
 
 /* ─── SCROLL TOP ─── */
-.scroll-top{position:fixed;bottom:24px;right:16px;z-index:100;width:36px;height:36px;background:rgba(12,12,16,0.9);border:1px solid var(--card-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}
+.scroll-top{
+  position:fixed;bottom:24px;right:6px;z-index:290;
+  width:36px;height:36px;background:rgba(250,250,248,0.92);
+  border:1px solid rgba(0,0,0,0.1);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;opacity:0;pointer-events:none;
+  backdrop-filter:blur(10px);
+}
 .scroll-top.show{opacity:1;pointer-events:auto}
-.scroll-top:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
-.scroll-top svg{width:16px;height:16px;stroke:var(--t1);fill:none;stroke-width:2}
+.scroll-top:hover{border-color:rgba(0,0,0,0.25);transform:translateY(-2px)}
+.scroll-top svg{width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2}
 
 /* ─── HERO ─── */
-.hero{padding:88px 48px 24px}
+.hero{padding:100px 48px 24px}
 .hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
-.hero-tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+.hero-tag{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
 .pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
-.hero-h1{font-family:"Alata",sans-serif;font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:-1.5px;line-height:1.1;margin-top:6px}
-.hero-h1 em{font-style:normal;color:var(--gold2)}
-.hero-desc{font-size:12px;color:var(--t1);line-height:1.6;max-width:540px;margin-top:6px}
+.hero-h1{font-family:var(--heading);font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-1.5px;line-height:1.1;margin-top:6px;color:var(--ink)}
+.hero-h1 em{font-style:normal;color:var(--gold)}
+.hero-desc{font-size:13px;color:var(--ink3);line-height:1.6;max-width:540px;margin-top:6px}
 .hero-badges{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.update-badge{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,168,75,0.2);padding:5px 12px;white-space:nowrap;border-radius:100px}
+.update-badge{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(197,163,60,0.25);padding:5px 12px;white-space:nowrap;border-radius:100px}
 .refresh-row{display:flex;align-items:center;gap:8px}
-.refresh-btn{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px}
-.refresh-btn:hover{color:var(--white);border-color:var(--card-border-hover)}
-.refresh-btn.loading{color:var(--gold);border-color:rgba(200,168,75,0.3);pointer-events:none}
+.refresh-btn{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);border:1px solid var(--brd);background:none;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:100px}
+.refresh-btn:hover{color:var(--ink);border-color:rgba(0,0,0,0.25)}
+.refresh-btn.loading{color:var(--gold);border-color:rgba(197,163,60,0.3);pointer-events:none}
 
 /* ─── STATUS CARDS ─── */
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
-.status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);padding:24px 28px;position:relative;overflow:hidden;transition:border-color .2s}
-.status-card:hover{border-color:var(--card-border-hover)}
-.status-card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
-.sc-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
-.sc-val{font-family:"Alata",sans-serif;font-size:36px;font-weight:400;letter-spacing:-0.5px;line-height:1}
+.status-card{background:var(--white);border:1px solid var(--brd);border-radius:8px;padding:24px 28px;position:relative;overflow:hidden;transition:border-color .2s}
+.status-card:hover{border-color:rgba(0,0,0,0.18)}
+.sc-label{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.sc-val{font-family:var(--heading);font-size:36px;font-weight:700;letter-spacing:-0.5px;line-height:1;color:var(--ink)}
 .sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px}
-.sc-delta{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;color:var(--t2)}
-.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-delta.neut{color:var(--t2)}
-.sc-note{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:inherit}
+.sc-delta{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--muted)}
+.sc-delta.up{color:var(--grn)}.sc-delta.dn{color:var(--red)}.sc-delta.neut{color:var(--muted)}
+.sc-note{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:inherit}
 
 /* ─── MAIN ─── */
 main{padding:0 48px 64px}
 
 /* ─── CHART SECTIONS ─── */
-.chart-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-sm);box-shadow:var(--card-shadow);margin-bottom:16px;position:relative;overflow:hidden;transition:border-color .2s}
-.chart-section:hover{border-color:var(--card-border-hover)}
-.chart-section::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.08),transparent)}
+.chart-section{background:var(--white);border:1px solid var(--brd);border-radius:8px;margin-bottom:16px;position:relative;overflow:hidden;transition:border-color .2s}
+.chart-section:hover{border-color:rgba(0,0,0,0.18)}
 .chart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--brd)}
-.ch-title{font-family:"Alata",sans-serif;font-size:15px;font-weight:400}
-.ch-sub{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--t1);margin-top:2px}
+.ch-title{font-family:var(--heading);font-size:15px;font-weight:600;color:var(--ink)}
+.ch-sub{font-family:var(--mono);font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:2px}
 
 /* ─── TABS ─── */
 .tab-bar{display:flex;gap:0;padding:0 28px;border-bottom:1px solid var(--brd)}
-.tab-btn{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);background:none;border:none;border-bottom:2px solid transparent;padding:12px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.tab-btn:hover{color:var(--white)}
+.tab-btn{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;padding:12px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
 .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
 
 /* ─── FILTERS ─── */
 .filter-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;gap:12px}
-.filter-select{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;color:var(--white);background:var(--surf);border:1px solid var(--card-border);border-radius:100px;padding:6px 14px;cursor:pointer;appearance:none;-webkit-appearance:none;outline:none;transition:border-color .2s}
+.filter-select{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--ink);background:var(--bg);border:1px solid var(--brd);border-radius:100px;padding:6px 14px;cursor:pointer;appearance:none;-webkit-appearance:none;outline:none;transition:border-color .2s}
 .filter-select:focus,.filter-select:hover{border-color:var(--gold)}
-.filter-select option{background:var(--bg);color:var(--white);font-family:"DM Mono",monospace;font-size:10px}
-.filter-count{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
+.filter-select option{background:var(--white);color:var(--ink);font-family:var(--mono);font-size:10px}
+.filter-count{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 
 /* ─── TABLE ─── */
 .tbl-wrap{padding:0 28px 16px;overflow-x:auto}
-.data-table{width:100%;border-collapse:collapse;font-family:"DM Mono",monospace;font-size:10px;margin-top:12px}
-.data-table th{padding:10px 8px;font-weight:400;color:var(--t2);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd);cursor:default}
+.data-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:10px;margin-top:12px}
+.data-table th{padding:10px 8px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-size:8px;text-align:left;border-bottom:1px solid var(--brd);cursor:default}
 .data-table th[onclick]{cursor:pointer;user-select:none;transition:color .2s}
 .data-table th[onclick]:hover{color:var(--gold)}
-.data-table td{padding:8px 8px;border-bottom:1px solid var(--brd);color:var(--white);white-space:nowrap}
-.data-table tr:hover td{background:rgba(200,168,75,0.03)}
-.data-table tr:nth-child(even) td{background:rgba(255,255,255,0.015)}
+.data-table td{padding:8px 8px;border-bottom:1px solid rgba(0,0,0,0.05);color:var(--ink);white-space:nowrap}
+.data-table tr:hover td{background:rgba(197,163,60,0.04)}
+.data-table tr:nth-child(even) td{background:rgba(0,0,0,0.015)}
 .val-big{color:var(--gold);font-weight:500}
-.val-huge{color:var(--gold2);font-weight:500;text-shadow:0 0 12px rgba(200,168,75,0.2)}
+.val-huge{color:#b8952f;font-weight:500}
 th.col-role,td.col-role{text-align:left;width:auto}
 
 /* ─── BADGES ─── */
-.badge{font-family:"DM Mono",monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block;border-radius:100px}
+.badge{font-family:var(--mono);font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;display:inline-block;border-radius:100px}
 .badge.grn{color:var(--grn);border:1px solid rgba(34,197,94,0.3);background:var(--grn-dim)}
 .badge.red{color:var(--red);border:1px solid rgba(239,68,68,0.3);background:var(--red-dim)}
 .badge.blu{color:var(--bp);border:1px solid rgba(91,138,240,0.3);background:rgba(91,138,240,0.1)}
-.badge.gold{color:var(--gold);border:1px solid rgba(200,168,75,0.3);background:var(--gold-dim)}
-.badge.gray{color:var(--t1);border:1px solid var(--brd);background:var(--surf)}
+.badge.gold{color:var(--gold);border:1px solid rgba(197,163,60,0.3);background:rgba(197,163,60,0.10)}
+.badge.gray{color:var(--ink3);border:1px solid var(--brd);background:var(--bg2)}
 .badge.violet{color:var(--violet);border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.1)}
 .badge.amb{color:var(--amb);border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1)}
 
 /* ─── CHART EXPLAIN DROPDOWNS ─── */
 .chart-explain{margin-top:12px}
-.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
-.chart-explain-toggle:hover{color:var(--t2)}
+.chart-explain-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;border:none;background:none;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.chart-explain-toggle:hover{color:var(--ink3)}
 .chart-explain-toggle svg{width:12px;height:12px;transition:transform 0.2s;fill:currentColor}
 .chart-explain-toggle.open svg{transform:rotate(180deg)}
 .chart-explain-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 0 0 18px}
 .chart-explain-content.open{max-height:600px}
-.chart-explain-content p{font-family:'Roboto Slab',serif;font-size:12px;line-height:1.7;color:var(--t2);margin:0 0 8px 0}
-.chart-explain-content strong{color:var(--t1);font-weight:400}
+.chart-explain-content p{font-family:var(--body);font-size:12px;line-height:1.7;color:var(--muted);margin:0 0 8px 0}
+.chart-explain-content strong{color:var(--ink3);font-weight:500}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}.reveal.visible{opacity:1;transform:none}
 
 /* ─── FOOTER ─── */
-footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;gap:24px}
-.foot-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.foot-logo{width:22px;height:22px;opacity:0.7}
-.foot-name{font-family:"Alata",sans-serif;font-size:13px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+footer{
+  padding:40px 64px;border-top:1px solid var(--brd);
+  background:var(--white);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-logo{width:22px;height:22px;filter:brightness(0);opacity:0.7}
+.foot-name{
+  font-family:var(--heading);font-size:13px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);
+}
 .foot-links{display:flex;gap:28px}
-.foot-links a{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .3s}
-.foot-links a:hover{color:var(--white)}
-.foot-right{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;color:var(--t2)}
+.foot-links a{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--ink3);
+  text-decoration:none;transition:color .25s;
+}
+.foot-links a:hover{color:var(--ink)}
+.foot-right{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3)}
 
 /* ─── DISCLAIMER ─── */
-.disclaimer-bar{background:var(--surf);border-top:1px solid var(--brd);padding:32px 0}
-.disclaimer-inner{max-width:1200px;margin:0 auto;padding:0 64px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.disclaimer-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px;flex-shrink:0}
-.disclaimer-bar p{font-size:12px;line-height:1.75;color:var(--t3);margin:0;font-family:"Roboto Slab",serif;font-weight:300}
-.disclaimer-bar p strong{color:var(--t2);font-weight:400}
+.disclaimer-bar{background:var(--bg2);border-top:1px solid var(--brd);padding:32px 0}
+.disclaimer-inner{
+  max-width:1200px;margin:0 auto;padding:0 64px;
+  display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+}
+.disclaimer-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+}
+.disclaimer-bar p{
+  font-size:12px;line-height:1.75;color:var(--muted);
+  margin:0;font-family:var(--body);font-weight:300;
+}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:960px){
-  nav{top:12px;left:12px;right:12px;transform:none;padding:12px 20px;gap:0;justify-content:space-between}
-  .nav-links{display:none}
-  .nav-mobile-btn{display:block}
+  nav{padding:0 24px}
+  .nav-center,.nav-cta{display:none}
+  .nav-hamburger{display:block}
 }
 @media(max-width:768px){
-  .hero{padding:76px 16px 16px}
+  .hero{padding:84px 16px 16px}
   main{padding:0 16px 40px}
   .status-row{grid-template-columns:1fr 1fr}
   .tab-bar{overflow-x:auto}
@@ -209,14 +271,14 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   footer{flex-direction:column;padding:32px 24px;text-align:center}
   .foot-links{flex-wrap:wrap;justify-content:center}
   .foot-right{text-align:center}
-  .disclaimer-inner{padding:0 24px;flex-direction:column;gap:10px}
+  .disclaimer-inner{padding:0 24px}
 }
 @media(max-width:480px){
   .status-row{grid-template-columns:1fr}
 }
 
 /* Skeleton loader */
-.skeleton{background:linear-gradient(90deg,rgba(18,18,22,0.9) 25%,rgba(30,30,38,0.9) 50%,rgba(18,18,22,0.9) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:10px}
+.skeleton{background:linear-gradient(90deg,var(--bg2) 25%,var(--brd) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .skel-stat{height:80px;margin-bottom:12px}
 .skel-chart{height:300px;margin:16px 0}
@@ -230,29 +292,21 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
 <nav>
   <a class="nav-brand" href="index.html">
     <img class="nav-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
-    <span class="nav-name">Vilasio</span>
+    <span class="nav-brand-name">Vilasio</span>
   </a>
-  <div class="nav-links">
-    <a class="nav-link" href="owl.html">The Owl</a>
-    <a class="nav-link" href="liquidity.html">Liquidity</a>
-    <a class="nav-link" href="bonds.html">Bonds</a>
-    <a class="nav-link" href="macro.html">Macro</a>
-    <a class="nav-link" href="crossmarket.html">Cross-Market</a>
-    <a class="nav-link" href="earnings.html">Earnings</a>
-    <a class="nav-link active" href="congressional.html">Congressional</a>
-    <a class="nav-link" href="geopolitical.html">Geopolitical</a>
+  <div class="nav-center">
+    <a class="nav-link" href="cot.html">COT Intelligence</a>
+    <a class="nav-link" href="blog.html">Insights</a>
+    <a class="nav-link" href="about.html">Methodology</a>
   </div>
-  <button class="nav-mobile-btn" onclick="document.getElementById('mobileMenu').classList.toggle('open');this.textContent=this.textContent==='\u2630'?'\u2715':'\u2630'">&#9776;</button>
+  <a class="nav-cta" href="owl.html">The Owl</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">&#9776;</button>
 </nav>
-<div class="nav-mobile-menu" id="mobileMenu">
-  <a href="owl.html">The Owl</a>
-  <a href="liquidity.html">Liquidity</a>
-  <a href="bonds.html">Bonds</a>
-  <a href="macro.html">Macro</a>
-  <a href="crossmarket.html">Cross-Market</a>
-  <a href="earnings.html">Earnings</a>
-  <a href="congressional.html">Congressional</a>
-  <a href="geopolitical.html">Geopolitical</a>
+<div class="nav-mobile" id="nav-mobile">
+  <a class="mob-link" href="cot.html">COT Intelligence</a>
+  <a class="mob-link" href="blog.html">Insights</a>
+  <a class="mob-link" href="about.html">Methodology</a>
+  <a class="mob-cta" href="owl.html">The Owl</a>
 </div>
 
 <!-- SCROLL TOP -->
@@ -301,24 +355,24 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div class="sc-label">Insider Sentiment</div>
       <div class="sc-val" id="sc-net-val">&#8212;</div>
       <div class="sc-sub"><span class="sc-delta" id="sc-net-ratio">&#8212;</span></div>
-      <div class="sc-sub"><span class="sc-note" style="color:var(--t3)">buy / sell ratio this week</span></div>
+      <div class="sc-sub"><span class="sc-note" style="color:var(--muted)">buy / sell ratio this week</span></div>
     </div>
     <div class="status-card neut" id="sc-big">
       <div class="sc-label">Largest Insider Buy</div>
       <div class="sc-val" id="sc-big-val">&#8212;</div>
       <div class="sc-sub"><span class="sc-delta" id="sc-big-amount">&#8212;</span></div>
-      <div class="sc-sub"><span class="sc-note" id="sc-big-who" style="color:var(--t3)">&#8212;</span></div>
+      <div class="sc-sub"><span class="sc-note" id="sc-big-who" style="color:var(--muted)">&#8212;</span></div>
     </div>
     <div class="status-card neut" id="sc-cnt">
       <div class="sc-label">Total Insider Trades</div>
       <div class="sc-val" id="sc-cnt-val">&#8212;</div>
       <div class="sc-sub"><span class="sc-delta neut" id="sc-cnt-ptr">&#8212;</span></div>
-      <div class="sc-sub"><span class="sc-note" style="color:var(--t3)">excl. option exercises</span></div>
+      <div class="sc-sub"><span class="sc-note" style="color:var(--muted)">excl. option exercises</span></div>
     </div>
     <div class="status-card neut" id="sc-ovr">
       <div class="sc-label">Signal Confluence</div>
       <div class="sc-val" id="sc-ovr-val">&#8212;</div>
-      <div class="sc-sub"><span class="sc-note" style="color:var(--t3)">earnings + insider buy overlap</span></div>
+      <div class="sc-sub"><span class="sc-note" style="color:var(--muted)">earnings + insider buy overlap</span></div>
     </div>
   </div>
 
@@ -341,12 +395,12 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
         <option value="proposed">Proposed Sales</option>
       </select>
     </div>
-    <div class="tbl-wrap"><table class="data-table" id="insider-table"><tr><td style="color:var(--t2)">Loading insider trades...</td></tr></table></div>
+    <div class="tbl-wrap"><table class="data-table" id="insider-table"><tr><td style="color:var(--muted)">Loading insider trades...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this table</button>
       <div class="chart-explain-content">
         <p><strong>Role levels:</strong> &#9632;&#9632;&#9632; C-Suite (CEO, CFO, COO, CTO, President, Chairman) &#8212; highest relevance. &#9632;&#9632;&#9633; Director / Board member. &#9632;&#9633;&#9633; Officer, affiliate, or other role. In the 10% Owners tab, all entries show &#9632;&#9632;&#9632; as maximum relevance.</p>
-        <p><strong>Name colors:</strong> White names are individual persons. <span style="color:#60a5fa">Blue names</span> are corporate entities (LLC, Holdings, Fund, etc.) &#8212; institutional block holders.</p>
+        <p><strong>Name colors:</strong> Dark names are individual persons. <span style="color:#3b82f6">Blue names</span> are corporate entities (LLC, Holdings, Fund, etc.) &#8212; institutional block holders.</p>
         <p><strong>Transaction types:</strong> <strong style="color:var(--grn)">Buy</strong> &#8212; open market purchase, strongest signal. <strong style="color:var(--red)">Sale</strong> &#8212; direct market sale. <strong style="color:var(--amb)">Proposed Sale</strong> &#8212; pre-planned Rule 10b5-1, weakest signal. Option exercises are filtered out automatically.</p>
         <p><strong>Why insider trades matter:</strong> Executives sell for many reasons (diversification, taxes, estate planning) but buy for only one &#8212; they believe the stock is undervalued. Clusters of insider buying at the same company represent the strongest signal.</p>
       </div>
@@ -359,9 +413,9 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
       <div><div class="ch-title">Congressional Disclosures</div><div class="ch-sub">House PTR Filings &#183; STOCK Act &#183; <span id="congress-count-label">&#8212;</span> Unique Filers</div></div>
     </div>
     <div style="padding:8px 28px">
-      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.5px;color:var(--t1);padding:12px 16px;border:1px solid var(--card-border);background:var(--surf);border-radius:var(--r-xs);line-height:1.7">Each row is a <strong style="color:var(--white)">Periodic Transaction Report (PTR)</strong> filed under the STOCK Act. Click <strong style="color:var(--gold)">View PDF</strong> to see the actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently are the most active traders to monitor.</div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.5px;color:var(--ink3);padding:12px 16px;border:1px solid var(--brd);background:var(--bg2);border-radius:8px;line-height:1.7">Each row is a <strong style="color:var(--ink)">Periodic Transaction Report (PTR)</strong> filed under the STOCK Act. Click <strong style="color:var(--gold)">View PDF</strong> to see the actual trades with tickers, amounts, and buy/sell details. Representatives filing frequently are the most active traders to monitor.</div>
     </div>
-    <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--t2)">Loading congressional filings...</td></tr></table></div>
+    <div class="tbl-wrap"><table class="data-table" id="congress-table"><tr><td style="color:var(--muted)">Loading congressional filings...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this table</button>
       <div class="chart-explain-content">
@@ -375,7 +429,7 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   <!-- SMART MONEY OVERLAP -->
   <div class="chart-section reveal">
     <div class="chart-header"><div><div class="ch-title">Signal Confluence</div><div class="ch-sub">Dual Confirmation &#183; Earnings Surprise + Insider Buy on Same Ticker</div></div></div>
-    <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--t2)">Loading overlap...</td></tr></table></div>
+    <div class="tbl-wrap"><table class="data-table" id="overlap-table"><tr><td style="color:var(--muted)">Loading overlap...</td></tr></table></div>
     <div class="chart-explain" style="padding:0 28px 16px">
       <button class="chart-explain-toggle" onclick="togExplain(this)"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg> How to read this table</button>
       <div class="chart-explain-content">
@@ -386,25 +440,28 @@ footer{padding:40px 64px;border-top:1px solid var(--brd);display:flex;align-item
   </div>
 </main>
 
-<!-- FOOTER (bonds.html pattern) -->
+<!-- FOOTER -->
 <footer>
-  <a class="foot-brand" href="index.html">
-    <img class="foot-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="Vilasio">
+  <div class="foot-brand">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="foot-logo" alt="Vilasio">
     <span class="foot-name">Vilasio</span>
-  </a>
+  </div>
   <div class="foot-links">
     <a href="privacy.html">Privacy Policy</a>
     <a href="terms.html">Terms of Use</a>
     <a href="cookie.html">Cookie Policy</a>
     <a href="contact.html">Contact</a>
   </div>
-  <div class="foot-right">&copy; 2026 VILASIO</div>
+  <div class="foot-right">&copy; 2026 VILASIO. Financial Analytics &amp; Market Research.</div>
 </footer>
 
 <div class="disclaimer-bar">
   <div class="disclaimer-inner">
     <span class="disclaimer-label">Disclaimer</span>
-    <p>The information provided on this website is for <strong>informational and educational purposes only</strong> and does not constitute financial, investment, trading, or legal advice. Past performance is not indicative of future results. Trading futures, forex, and other financial instruments involves substantial risk of loss and is not suitable for all investors. You should carefully consider your investment objectives, level of experience, and risk appetite before making any trading decisions. Vilasio does not provide personalized investment advice. Always consult a qualified financial advisor before making investment decisions.</p>
+    <p>The information, data visualizations, and analytical tools provided on this website are intended strictly for informational, educational, and research purposes. Vilasio provides financial market analytics designed to help users better understand market structure, institutional positioning, and statistical patterns in financial markets. The content available on this platform does not constitute financial advice, investment advice, trading advice, or recommendations to buy or sell financial instruments.</p>
+    <p>Trading and investing in financial markets involve substantial risk, including the potential loss of capital. Users are solely responsible for their own financial and trading decisions and should conduct their own research or consult a qualified financial professional before making any investment decisions.</p>
+    <p>While reasonable efforts are made to ensure the accuracy and reliability of the information provided, Vilasio makes no guarantees regarding completeness, accuracy, or timeliness of any data or analysis.</p>
+    <p>By using this website and its tools, users acknowledge that Vilasio and its creators cannot be held liable for any financial losses or damages resulting from the use of the information or analytical tools provided.</p>
   </div>
 </div>
 
@@ -458,19 +515,19 @@ function isCorporate(n){
   return false;
 }
 function ownerName(name){
-  return'<span style="color:'+(isCorporate(name)?'#60a5fa':'#fff')+'">'+name+'</span>';
+  return'<span style="color:'+(isCorporate(name)?'#3b82f6':'var(--ink)')+'">'+name+'</span>';
 }
 function roleCell(rel,forceLevel){
   var lv=forceLevel||getRelLevel(rel);
   var blk='display:inline-block;width:6px;height:6px;border-radius:1px;margin:0 1px';
-  var on3='#eab308',on2='#f472b6',on1='#4b5563',off='#1f2937';
+  var on3='#b8952f',on2='#d97706',on1='#9ca3af',off='#e5e7eb';
   var c1,c2,c3,lc;
   if(lv===3){c1=on3;c2=on3;c3=on3;lc=on3}
   else if(lv===2){c1=on2;c2=on2;c3=off;lc=on2}
-  else{c1=on1;c2=off;c3=off;lc='#6b7280'}
+  else{c1=on1;c2=off;c3=off;lc='#9ca3af'}
   var h='<div style="display:inline-flex;align-items:center;gap:6px">';
   h+='<span style="display:flex;align-items:center;gap:2px"><span style="'+blk+';background:'+c1+'"></span><span style="'+blk+';background:'+c2+'"></span><span style="'+blk+';background:'+c3+'"></span></span>';
-  if(rel)h+='<span style="font-family:\'DM Mono\',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:'+lc+';white-space:nowrap">'+rel+'</span>';
+  if(rel)h+='<span style="font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:'+lc+';white-space:nowrap">'+rel+'</span>';
   h+='</div>';
   return h;
 }
@@ -546,7 +603,7 @@ function renderInsiderTable(){
   var trades=raw.filter(function(t){return!isOptionExercise(t.transaction)});
   var filter=document.getElementById('insider-filter').value;
   var el=document.getElementById('insider-table');
-  if(!trades.length){var msg=currentTab==='topowner'?'No 10% owner trades reported this week. This view shows trades by shareholders owning 10%+ of a company \u2014 data refreshes weekly.':'No insider trades available for this view.';el.innerHTML='<tr><td style="color:var(--t2);padding:20px 6px">'+msg+'</td></tr>';document.getElementById('insider-count').textContent='0 trades';return}
+  if(!trades.length){var msg=currentTab==='topowner'?'No 10% owner trades reported this week. This view shows trades by shareholders owning 10%+ of a company \u2014 data refreshes weekly.':'No insider trades available for this view.';el.innerHTML='<tr><td style="color:var(--muted);padding:20px 6px">'+msg+'</td></tr>';document.getElementById('insider-count').textContent='0 trades';return}
 
   var filtered=trades;
   if(filter==='buy')filtered=trades.filter(function(t){return txnClass(t.transaction)==='buy'});
@@ -577,13 +634,13 @@ function renderInsiderTable(){
     html+='<td style="color:var(--gold);font-weight:500">'+t.ticker+'</td>';
     html+='<td>'+ownerName(t.owner)+'</td>';
     html+='<td class="col-role">'+roleCell(t.relationship)+'</td>';
-    html+='<td style="color:#e5e7eb">'+t.date+'</td>';
+    html+='<td>'+t.date+'</td>';
     html+='<td>'+txnBadge(t.transaction)+'</td>';
-    html+='<td style="color:#e5e7eb">'+fmtMoney(t.cost)+'</td>';
-    html+='<td style="color:#e5e7eb">'+fmtNum(t.shares)+'</td>';
-    html+='<td class="'+valCls+'" style="color:#e5e7eb">'+fmtVal(t.value)+'</td>';
-    html+='<td style="color:#e5e7eb">'+fmtNum(t.sharesTotal)+'</td>';
-    html+='<td style="color:#e5e7eb;font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
+    html+='<td>'+fmtMoney(t.cost)+'</td>';
+    html+='<td>'+fmtNum(t.shares)+'</td>';
+    html+='<td class="'+valCls+'">'+fmtVal(t.value)+'</td>';
+    html+='<td>'+fmtNum(t.sharesTotal)+'</td>';
+    html+='<td style="font-size:9px">'+(t.secForm4||'\u2014')+'</td>';
     html+='</tr>';
   });
   html+='</tbody>';
@@ -597,6 +654,7 @@ function renderCards(){
   document.getElementById('sc-net-val').textContent=(st.netSentiment||'--').toUpperCase();
   document.getElementById('sc-net-ratio').textContent=(st.insiderBuys||0)+' buys / '+(st.insiderSells||0)+' sells';
   document.getElementById('sc-net-ratio').className='sc-delta '+cls;
+
   var big=st.biggestInsiderBuy||{};
   document.getElementById('sc-big').className='status-card '+(big.ticker?'up':'neut');
   document.getElementById('sc-big-val').textContent=big.ticker||'\u2014';
@@ -620,7 +678,7 @@ function renderCongress(){
   var ct=D.congressional_trades||{};
   var trades=ct.trades||[];
   var el=document.getElementById('congress-table');
-  if(!trades.length){el.innerHTML='<tr><td style="color:var(--t2);padding:20px 6px">No House PTR filings found.</td></tr>';return}
+  if(!trades.length){el.innerHTML='<tr><td style="color:var(--muted);padding:20px 6px">No House PTR filings found.</td></tr>';return}
 
   var freq={};
   trades.forEach(function(t){freq[t.name]=(freq[t.name]||0)+1});
@@ -656,7 +714,7 @@ function renderCongress(){
 function renderOverlap(){
   var ovr=D.smartMoneyOverlap||[];
   var el=document.getElementById('overlap-table');
-  if(!ovr.length){el.innerHTML='<tr><td style="color:var(--t2)">No signal confluence detected. This section activates when a stock has both an earnings signal and insider buying.</td></tr>';return}
+  if(!ovr.length){el.innerHTML='<tr><td style="color:var(--muted)">No signal confluence detected. This section activates when a stock has both an earnings signal and insider buying.</td></tr>';return}
   var html='<thead><tr><th>Symbol</th><th>Signal Sources</th></tr></thead><tbody>';
   ovr.forEach(function(o){
     var badges=o.sources.map(function(s){
@@ -680,6 +738,22 @@ function refreshData(){
     D=d;renderAll();btn.textContent='REFRESH';btn.classList.remove('loading');
   }).catch(function(){btn.textContent='FAILED';setTimeout(function(){btn.textContent='REFRESH';btn.classList.remove('loading')},2000)});
 }
+
+/* Mobile nav */
+function toggleMobile(){
+  var mn=document.getElementById('nav-mobile');
+  var hb=document.getElementById('hamburger');
+  mn.classList.toggle('open');
+  hb.textContent=mn.classList.contains('open')?'\u2715':'\u2630';
+}
+document.addEventListener('click',function(e){
+  var mn=document.getElementById('nav-mobile');
+  var hb=document.getElementById('hamburger');
+  if(mn&&hb&&!mn.contains(e.target)&&!hb.contains(e.target)){
+    mn.classList.remove('open');
+    hb.textContent='\u2630';
+  }
+});
 
 /* Scroll-to-top button */
 window.addEventListener('scroll',function(){document.getElementById('scrollTop').classList.toggle('show',window.scrollY>300)});
