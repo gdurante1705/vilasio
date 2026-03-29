@@ -630,8 +630,8 @@ function renderSectorTable(){
   rows.forEach(function(row){
     html+='<tr><td class="tf-label">'+row.label+'</td>';
     cols.forEach(function(c){
-      var v=c[row.key],col=v!=null?(v>=0?'#22c55e':'#ef4444'):'var(--ink3)';
-      html+='<td style="background:'+sectorHeatColor(v)+';color:'+col+'">'+fmtPct(v)+'</td>';
+      var v=c[row.key];
+      html+='<td style="background:'+sectorHeatColor(v)+';color:#111">'+fmtPct(v)+'</td>';
     });
     html+='</tr>';
   });
@@ -655,8 +655,8 @@ function renderCommodityTable(){
   rows.forEach(function(row){
     html+='<tr><td class="tf-label">'+row.label+'</td>';
     cols.forEach(function(co){
-      var v=co[row.key],col=v!=null?(v>=0?'#22c55e':'#ef4444'):'var(--ink3)';
-      html+='<td style="background:'+heatColor(v)+';color:'+col+'">'+fmtPct(v)+'</td>';
+      var v=co[row.key];
+      html+='<td style="background:'+heatColor(v)+';color:#111">'+fmtPct(v)+'</td>';
     });
     html+='</tr>';
   });
