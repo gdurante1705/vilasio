@@ -63,7 +63,7 @@ nav{
   font-family:var(--heading);font-size:15px;font-weight:700;
   letter-spacing:2.5px;text-transform:uppercase;color:var(--ink);
 }
-.nav-center{display:flex;align-items:center;gap:36px}
+.nav-links{display:flex;align-items:center;gap:36px}
 .nav-link{
   font-family:var(--body);font-size:11px;font-weight:500;
   letter-spacing:1px;text-transform:uppercase;
@@ -238,8 +238,7 @@ footer{
 /* ─── RESPONSIVE ─── */
 @media(max-width:960px){
   nav{padding:0 24px}
-  .nav-center{display:none}
-  .nav-cta{display:none}
+  .nav-links{display:none}
   .nav-hamburger{display:block}
 }
 @media(max-width:768px){
@@ -268,19 +267,27 @@ footer{
     <img class="nav-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" alt="V">
     <span class="nav-brand-name">Vilasio</span>
   </a>
-  <div class="nav-center">
-    <a class="nav-link" href="cot.html">COT Intelligence</a>
-    <a class="nav-link" href="blog.html">Insights</a>
-    <a class="nav-link" href="about.html">Methodology</a>
+  <div class="nav-links">
+    <a href="owl.html" class="nav-link">The Owl</a>
+    <a href="liquidity.html" class="nav-link">Liquidity</a>
+    <a href="bonds.html" class="nav-link active">Bonds</a>
+    <a href="macro.html" class="nav-link">Macro</a>
+    <a href="crossmarket.html" class="nav-link">Cross-Market</a>
+    <a href="earnings.html" class="nav-link">Earnings</a>
+    <a href="congressional.html" class="nav-link">Congressional</a>
+    <a href="geopolitical.html" class="nav-link">Geopolitical</a>
   </div>
-  <a class="nav-cta" href="owl.html">The Owl</a>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">&#9776;</button>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-  <a class="mob-link" href="cot.html">COT Intelligence</a>
-  <a class="mob-link" href="blog.html">Insights</a>
-  <a class="mob-link" href="about.html">Methodology</a>
-  <a class="mob-cta" href="owl.html">The Owl</a>
+  <a href="owl.html" class="mob-link">The Owl</a>
+  <a href="liquidity.html" class="mob-link">Liquidity</a>
+  <a href="bonds.html" class="mob-link active">Bonds</a>
+  <a href="macro.html" class="mob-link">Macro</a>
+  <a href="crossmarket.html" class="mob-link">Cross-Market</a>
+  <a href="earnings.html" class="mob-link">Earnings</a>
+  <a href="congressional.html" class="mob-link">Congressional</a>
+  <a href="geopolitical.html" class="mob-link">Geopolitical</a>
 </div>
 
 <!-- SCROLL TOP -->
