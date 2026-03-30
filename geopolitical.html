@@ -67,6 +67,13 @@ html[data-theme="dark"] .disclaimer-bar{background:var(--bg)}
 html[data-theme="dark"] .scroll-top{background:rgba(10,10,15,0.9);border-color:rgba(255,255,255,0.1)}
 html[data-theme="dark"] .scroll-top svg{stroke:var(--muted)}
 html[data-theme="dark"] body::after{mix-blend-mode:screen;opacity:0.015}
+html[data-theme="dark"] .card{background:var(--white);border-color:var(--brd)}
+html[data-theme="dark"] .map-tooltip{background:rgba(10,10,15,0.96);color:var(--ink);border-color:var(--brd)}
+html[data-theme="dark"] .side-panel{background:rgba(10,10,15,0.9);border-color:var(--brd)}
+html[data-theme="dark"] .side-panel .sp-title{color:var(--ink)}
+html[data-theme="dark"] .refresh-btn{color:var(--muted);border-color:var(--brd)}
+html[data-theme="dark"] .refresh-btn:hover{color:var(--ink);border-color:rgba(255,255,255,0.2)}
+html[data-theme="dark"] canvas{border-radius:var(--r)}
 .theme-toggle{background:none;border:1px solid var(--brd);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;padding:0}
 .theme-toggle:hover{border-color:var(--gold)}
 .theme-toggle svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.5;transition:stroke .2s}
@@ -771,15 +778,18 @@ var NAME_MAP={
 
 function gprLevel(v){if(v==null)return{label:'N/A',cls:'gray'};if(v<80)return{label:'LOW',cls:'grn'};if(v<=120)return{label:'ELEVATED',cls:'amb'};if(v<=200)return{label:'HIGH',cls:'red'};return{label:'EXTREME',cls:'extreme'}}
 function gprCardClass(v){if(v==null)return'neut';if(v<80)return'up';if(v<=120)return'warn';if(v<=200)return'dn';return'dn'}
-function mapFill(v,hasData){if(v==null&&!hasData)return'#111827';if(v==null||v<5)return'#0f2318';if(v<20)return'#14532d';if(v<50)return'#166534';if(v<100)return'#854d0e';if(v<200)return'#7f1d1d';return'#dc2626'}
+function mapFill(v,hasData){var dk=_isDark();if(v==null&&!hasData)return dk?'#111827':'#e5e7eb';if(v==null||v<5)return dk?'#0f2318':'#d1fae5';if(v<20)return dk?'#14532d':'#a7f3d0';if(v<50)return dk?'#166534':'#6ee7b7';if(v<100)return dk?'#854d0e':'#fde68a';if(v<200)return dk?'#7f1d1d':'#fca5a5';return dk?'#dc2626':'#f87171'}
 function heatColor(v){if(v==null)return'var(--bg2)';if(v<1)return'rgba(34,197,94,0.06)';if(v<20)return'rgba(34,197,94,0.12)';if(v<80)return'rgba(245,158,11,0.12)';if(v<200)return'rgba(239,68,68,0.15)';return'rgba(220,38,38,0.25)'}
 function heatBorder(v){if(v==null)return'var(--card-border)';if(v<1)return'rgba(34,197,94,0.15)';if(v<20)return'rgba(34,197,94,0.3)';if(v<80)return'rgba(245,158,11,0.3)';if(v<200)return'rgba(239,68,68,0.3)';return'rgba(220,38,38,0.5)'}
 function heatTopColor(v){if(v==null)return'var(--ink3)';if(v<1)return'rgba(34,197,94,0.4)';if(v<20)return'var(--grn)';if(v<80)return'var(--amb)';if(v<200)return'var(--red)';return'#dc2626'}
 function fmtChg(v){if(v==null)return'\u2014';return(v>=0?'+':'')+v.toFixed(1)}
 function fmtEvtChg(c,p){if(c==null||p==null)return{text:'\u2014',cls:''};var d=c-p;return{text:(d>=0?'+':'')+d.toFixed(1),cls:d>=0?'dn':'up'}}
-var _ttOpts={backgroundColor:'rgba(255,255,255,0.96)',titleColor:'#222222',bodyColor:'#111111',borderColor:'#D8D8D4',borderWidth:1,titleFont:{family:'var(--mono)',size:9},bodyFont:{family:'var(--mono)',size:10},padding:10,cornerRadius:8};
-var _xOpts={ticks:{color:'#555555',font:{family:'var(--mono)',size:8},maxTicksLimit:12},grid:{color:'rgba(0,0,0,0.05)'}};
-var _yOpts={ticks:{color:'#555555',font:{family:'var(--mono)',size:9}},grid:{color:'rgba(0,0,0,0.05)'}};
+function _isDark(){return document.documentElement.getAttribute('data-theme')==='dark'}
+var _ttOpts={get backgroundColor(){return _isDark()?'rgba(10,10,15,0.96)':'rgba(255,255,255,0.96)'},get titleColor(){return _isDark()?'#888890':'#222222'},get bodyColor(){return _isDark()?'#E8E8EC':'#111111'},get borderColor(){return _isDark()?'rgba(255,255,255,0.08)':'#D8D8D4'},borderWidth:1,titleFont:{family:'var(--mono)',size:9},bodyFont:{family:'var(--mono)',size:10},padding:10,cornerRadius:8};
+function _axColor(){return _isDark()?'#888890':'#555555'}
+function _gridColor(){return _isDark()?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.05)'}
+var _xOpts={get ticks(){return{color:_axColor(),font:{family:'var(--mono)',size:8},maxTicksLimit:12}},get grid(){return{color:_gridColor()}}};
+var _yOpts={get ticks(){return{color:_axColor(),font:{family:'var(--mono)',size:9}}},get grid(){return{color:_gridColor()}}};
 var _zonePlugin={id:'zones',beforeDraw:function(ch){var yA=ch.scales.y,c=ch.ctx,l=ch.chartArea.left,r=ch.chartArea.right;var y80=yA.getPixelForValue(80),yB=yA.getPixelForValue(yA.min);if(y80>ch.chartArea.top){c.fillStyle='rgba(34,197,94,0.04)';c.fillRect(l,y80,r-l,yB-y80)}var y200=yA.getPixelForValue(200),yT=yA.getPixelForValue(yA.max);if(y200<yB){c.fillStyle='rgba(239,68,68,0.04)';c.fillRect(l,yT,r-l,y200-yT)}}};
 
 function resolveGprName(topoName){return NAME_MAP[topoName]||topoName}
