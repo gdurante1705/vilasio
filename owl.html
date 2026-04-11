@@ -156,61 +156,60 @@ nav{
 }
 
 /* ═══════════════════════════════════════════════
-   HERO
+   DASHBOARD LAYOUT — 3-column, single viewport
 ═══════════════════════════════════════════════ */
-.hero{
-  background:var(--bg2);
-  padding:120px 64px 60px;
-  text-align:center;
+.owl-dashboard{
+  min-height:calc(100vh - 68px);
+  padding:88px 32px 24px;
+  display:grid;
+  grid-template-columns:1fr 1.8fr 1fr;
+  grid-template-rows:1fr auto;
+  gap:20px;
+  max-width:1440px;margin:0 auto;
+  align-items:center;
 }
-.hero-inner{max-width:680px;margin:0 auto}
+.owl-col{display:flex;flex-direction:column;gap:14px}
+.owl-hero{text-align:center;padding:0 16px}
 .hero-owl{
-  width:72px;height:72px;
+  width:56px;height:56px;
   filter:brightness(0);
-  margin:0 auto 28px;display:block;
-  opacity:0;animation:au .8s ease forwards .1s;
+  margin:0 auto 16px;display:block;
 }
 .hero-overline{
-  font-family:var(--mono);font-size:10px;font-weight:500;
+  font-family:var(--mono);font-size:9px;font-weight:500;
   letter-spacing:4px;text-transform:uppercase;color:var(--gold);
-  margin-bottom:20px;
-  opacity:0;animation:au .8s ease forwards .2s;
+  margin-bottom:12px;
 }
 .hero-h1{
   font-family:var(--heading);
-  font-size:clamp(42px,5vw,72px);
-  font-weight:700;line-height:1.05;letter-spacing:-2px;
-  color:var(--ink);margin-bottom:16px;
-  opacity:0;animation:au .8s ease forwards .3s;
+  font-size:clamp(32px,3.5vw,52px);
+  font-weight:700;line-height:1.05;letter-spacing:-1.5px;
+  color:var(--ink);margin-bottom:10px;
 }
 .hero-subtitle{
-  font-family:var(--heading);font-size:19px;font-weight:500;
+  font-family:var(--heading);font-size:16px;font-weight:500;
   color:var(--ink);letter-spacing:-0.2px;
-  margin-bottom:20px;
-  opacity:0;animation:au .8s ease forwards .4s;
+  margin-bottom:12px;
 }
 .hero-desc{
-  font-family:var(--body);font-size:15px;font-weight:300;
-  color:var(--ink3);line-height:1.8;max-width:560px;margin:0 auto;
-  opacity:0;animation:au .8s ease forwards .5s;
+  font-family:var(--body);font-size:13px;font-weight:300;
+  color:var(--ink3);line-height:1.7;max-width:400px;margin:0 auto;
 }
+.owl-bottom{
+  grid-column:1/4;
+  display:flex;justify-content:center;
+  padding:0 32px;
+}
+.owl-bottom .tool-card{max-width:420px;width:100%}
 
 /* ═══════════════════════════════════════════════
-   TOOL GRID
+   TOOL CARDS
 ═══════════════════════════════════════════════ */
-.grid-section{padding:64px 0}
-.tool-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:24px;
-  max-width:1000px;margin:0 auto;padding:0 64px;
-}
-.tool-card-solo{
-  max-width:488px;margin:24px auto 0;padding-left:64px;padding-right:64px;
-}
 .tool-card{
   background:var(--white);
   border:1px solid var(--brd);
   border-radius:8px;
-  padding:36px;
+  padding:22px 24px;
   text-decoration:none;color:var(--ink);
   transition:all .25s ease;
   display:block;
@@ -341,10 +340,12 @@ footer{
   nav{padding:0 24px}
   .nav-center,.nav-cta{display:none}
   .nav-hamburger{display:block}
-  .hero{padding:100px 24px 48px}
+  .owl-dashboard{grid-template-columns:1fr;grid-template-rows:auto;padding:88px 24px 24px;min-height:auto}
+  .owl-hero{order:-1;padding:0 0 24px}
+  .owl-col{gap:12px}
+  .owl-bottom{grid-column:1;padding:0}
+  .owl-bottom .tool-card{max-width:none}
   .inner{padding-left:24px;padding-right:24px}
-  .tool-grid{padding:0 24px}
-  .tool-card-solo{padding-left:24px;padding-right:24px}
   .cot-note{padding:36px 24px 0}
   .stats-grid{grid-template-columns:repeat(2,1fr);padding:0 24px}
   .stat-item:nth-child(2){border-right:none}
@@ -354,9 +355,7 @@ footer{
   .foot-right{text-align:center}
 }
 @media(max-width:768px){
-  .tool-grid{grid-template-columns:1fr;gap:16px;padding:0 24px}
-  .tool-card{padding:28px 24px}
-  .tool-card-solo{max-width:none;padding:0 24px}
+  .tool-card{padding:20px 20px}
   .hero-h1{letter-spacing:-1.5px}
   .stats-grid{grid-template-columns:1fr;padding:0 24px}
   .stat-item{border-right:none;padding:28px 16px}
@@ -393,46 +392,47 @@ footer{
   <a href="owl.html" class="mob-cta">The Owl</a>
 </div>
 
-<!-- ════════════════ HERO ════════════════ -->
-<section class="hero">
-  <div class="hero-inner">
+<!-- ════════════════ DASHBOARD ════════════════ -->
+<div class="owl-dashboard">
+  <!-- Left column: 3 cards -->
+  <div class="owl-col">
+    <a href="liquidity.html" class="tool-card rv d0">
+      <span class="card-tag">FED DATA</span>
+      <div class="card-name">Liquidity Monitor</div>
+      <div class="card-desc">Fed balance sheet, TGA, reverse repo, and net liquidity tracking.</div>
+    </a>
+    <a href="bonds.html" class="tool-card rv d1">
+      <span class="card-tag">TREASURY</span>
+      <div class="card-name">Bond &amp; Yield</div>
+      <div class="card-desc">Treasury yield curves, real rates, term premium, and credit spreads.</div>
+    </a>
+    <a href="macro.html" class="tool-card rv d2">
+      <span class="card-tag">KEY INDICATORS</span>
+      <div class="card-name">Macro Dashboard</div>
+      <div class="card-desc">GDP, inflation, employment, consumer sentiment, and Fed policy.</div>
+    </a>
+  </div>
+
+  <!-- Center: hero -->
+  <div class="owl-hero">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="hero-owl" alt="The Owl">
     <p class="hero-overline">Premium Intelligence</p>
     <h1 class="hero-h1">The Owl</h1>
     <p class="hero-subtitle">Your command center for global markets</p>
     <p class="hero-desc">Institutional-grade analytics across 7 intelligence modules. Macro regime, earnings, geopolitical risk, and more.</p>
   </div>
-</section>
 
-<div class="section-divider"></div>
-
-<!-- ════════════════ TOOL GRID ════════════════ -->
-<section class="grid-section">
-  <div class="tool-grid">
-    <a href="liquidity.html" class="tool-card rv d0">
-      <span class="card-tag">FED DATA</span>
-      <div class="card-name">Liquidity Monitor</div>
-      <div class="card-desc">Fed balance sheet, TGA, reverse repo, and net liquidity tracking.</div>
-    </a>
-    <a href="crossmarket.html" class="tool-card rv d1">
+  <!-- Right column: 3 cards -->
+  <div class="owl-col">
+    <a href="crossmarket.html" class="tool-card rv d3">
       <span class="card-tag">8 ASSET CLASSES</span>
       <div class="card-name">Cross-Market</div>
       <div class="card-desc">Currency strength, correlation matrix, sector rotation, and commodity dashboard.</div>
     </a>
-    <a href="bonds.html" class="tool-card rv d2">
-      <span class="card-tag">TREASURY</span>
-      <div class="card-name">Bond &amp; Yield</div>
-      <div class="card-desc">Treasury yield curves, real rates, term premium, and credit spreads.</div>
-    </a>
-    <a href="earnings.html" class="tool-card rv d3">
+    <a href="earnings.html" class="tool-card rv d4">
       <span class="card-tag">NYSE &amp; NASDAQ</span>
       <div class="card-name">Earnings Intelligence</div>
       <div class="card-desc">PEAD signal scanner, upcoming earnings calendar, analyst ratings, EPS history.</div>
-    </a>
-    <a href="macro.html" class="tool-card rv d4">
-      <span class="card-tag">KEY INDICATORS</span>
-      <div class="card-name">Macro Dashboard</div>
-      <div class="card-desc">GDP, inflation, employment, consumer sentiment, and Fed policy indicators.</div>
     </a>
     <a href="congressional.html" class="tool-card rv d5">
       <span class="card-tag">INSIDER ACTIVITY</span>
@@ -440,14 +440,16 @@ footer{
       <div class="card-desc">Corporate insider trading activity. Executive and director trades.</div>
     </a>
   </div>
-  <div class="tool-card-solo">
+
+  <!-- Bottom: Geopolitical centered -->
+  <div class="owl-bottom">
     <a href="geopolitical.html" class="tool-card rv d6">
       <span class="card-tag">120+ COUNTRIES</span>
       <div class="card-name">Geopolitical Risk</div>
       <div class="card-desc">AI-GPR Index with interactive SVG world map. 120+ country risk profiles with macro indicators.</div>
     </a>
   </div>
-</section>
+</div>
 
 <!-- COT NOTE -->
 <div class="cot-note rv d0">
