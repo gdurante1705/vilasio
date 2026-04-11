@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:vilasio-cot-backend.onrender.com)",
+      "Bash(pip install:*)",
+      "Bash(python -c \":*)",
+      "WebFetch(domain:www.matteoiacoviello.com)",
+      "Bash(python:*)",
+      "Bash(for f:*)",
+      "Bash(do sed:*)",
+      "Bash(echo \"Updated $f\")",
+      "Bash(done)",
+      "Bash(cd:*)"
+    ]
+  }
+}
