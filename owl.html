@@ -160,7 +160,7 @@ nav{
 ═══════════════════════════════════════════════ */
 .hero{
   background:var(--bg2);
-  padding:160px 64px 100px;
+  padding:120px 64px 60px;
   text-align:center;
 }
 .hero-inner{max-width:680px;margin:0 auto}
@@ -198,10 +198,13 @@ nav{
 /* ═══════════════════════════════════════════════
    TOOL GRID
 ═══════════════════════════════════════════════ */
-.grid-section{padding:80px 0}
+.grid-section{padding:64px 0}
 .tool-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
-  max-width:1200px;margin:0 auto;padding:0 64px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:24px;
+  max-width:1000px;margin:0 auto;padding:0 64px;
+}
+.tool-card-solo{
+  max-width:488px;margin:24px auto 0;padding-left:64px;padding-right:64px;
 }
 .tool-card{
   background:var(--white);
@@ -338,9 +341,10 @@ footer{
   nav{padding:0 24px}
   .nav-center,.nav-cta{display:none}
   .nav-hamburger{display:block}
-  .hero{padding:120px 24px 72px}
+  .hero{padding:100px 24px 48px}
   .inner{padding-left:24px;padding-right:24px}
-  .tool-grid{grid-template-columns:repeat(2,1fr);padding:0 24px}
+  .tool-grid{padding:0 24px}
+  .tool-card-solo{padding-left:24px;padding-right:24px}
   .cot-note{padding:36px 24px 0}
   .stats-grid{grid-template-columns:repeat(2,1fr);padding:0 24px}
   .stat-item:nth-child(2){border-right:none}
@@ -352,6 +356,7 @@ footer{
 @media(max-width:768px){
   .tool-grid{grid-template-columns:1fr;gap:16px;padding:0 24px}
   .tool-card{padding:28px 24px}
+  .tool-card-solo{max-width:none;padding:0 24px}
   .hero-h1{letter-spacing:-1.5px}
   .stats-grid{grid-template-columns:1fr;padding:0 24px}
   .stat-item{border-right:none;padding:28px 16px}
@@ -404,49 +409,43 @@ footer{
 <!-- ════════════════ TOOL GRID ════════════════ -->
 <section class="grid-section">
   <div class="tool-grid">
-
     <a href="liquidity.html" class="tool-card rv d0">
       <span class="card-tag">FED DATA</span>
       <div class="card-name">Liquidity Monitor</div>
       <div class="card-desc">Fed balance sheet, TGA, reverse repo, and net liquidity tracking.</div>
     </a>
-
-    <a href="bonds.html" class="tool-card rv d1">
-      <span class="card-tag">TREASURY</span>
-      <div class="card-name">Bond & Yield</div>
-      <div class="card-desc">Treasury yield curves, real rates, term premium, and credit spreads.</div>
-    </a>
-
-    <a href="macro.html" class="tool-card rv d2">
-      <span class="card-tag">KEY INDICATORS</span>
-      <div class="card-name">Macro Dashboard</div>
-      <div class="card-desc">GDP, inflation, employment, consumer sentiment, and Fed policy indicators.</div>
-    </a>
-
-    <a href="crossmarket.html" class="tool-card rv d3">
+    <a href="crossmarket.html" class="tool-card rv d1">
       <span class="card-tag">8 ASSET CLASSES</span>
       <div class="card-name">Cross-Market</div>
       <div class="card-desc">Currency strength, correlation matrix, sector rotation, and commodity dashboard.</div>
     </a>
-
-    <a href="earnings.html" class="tool-card rv d4">
-      <span class="card-tag">NYSE & NASDAQ</span>
+    <a href="bonds.html" class="tool-card rv d2">
+      <span class="card-tag">TREASURY</span>
+      <div class="card-name">Bond &amp; Yield</div>
+      <div class="card-desc">Treasury yield curves, real rates, term premium, and credit spreads.</div>
+    </a>
+    <a href="earnings.html" class="tool-card rv d3">
+      <span class="card-tag">NYSE &amp; NASDAQ</span>
       <div class="card-name">Earnings Intelligence</div>
       <div class="card-desc">PEAD signal scanner, upcoming earnings calendar, analyst ratings, EPS history.</div>
     </a>
-
+    <a href="macro.html" class="tool-card rv d4">
+      <span class="card-tag">KEY INDICATORS</span>
+      <div class="card-name">Macro Dashboard</div>
+      <div class="card-desc">GDP, inflation, employment, consumer sentiment, and Fed policy indicators.</div>
+    </a>
     <a href="congressional.html" class="tool-card rv d5">
       <span class="card-tag">INSIDER ACTIVITY</span>
       <div class="card-name">Congressional Positioning</div>
       <div class="card-desc">Corporate insider trading activity. Executive and director trades.</div>
     </a>
-
+  </div>
+  <div class="tool-card-solo">
     <a href="geopolitical.html" class="tool-card rv d6">
       <span class="card-tag">120+ COUNTRIES</span>
       <div class="card-name">Geopolitical Risk</div>
       <div class="card-desc">AI-GPR Index with interactive SVG world map. 120+ country risk profiles with macro indicators.</div>
     </a>
-
   </div>
 </section>
 
