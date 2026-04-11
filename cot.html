@@ -56,7 +56,7 @@ html[data-theme="dark"]{
 }
 html[data-theme="dark"] body{background:var(--bg);color:var(--ink)}
 html[data-theme="dark"] nav{background:rgba(10,10,15,0.92);border-bottom-color:rgba(255,255,255,0.06)}
-html[data-theme="dark"] .nav-name{color:var(--ink)}
+html[data-theme="dark"] .nav-brand-name{color:var(--ink)}
 html[data-theme="dark"] .nav-link{color:var(--muted)}
 html[data-theme="dark"] .nav-link:hover,.nav-link.active{color:var(--ink)}
 html[data-theme="dark"] .nav-logo-img{filter:none}
@@ -128,10 +128,10 @@ nav{
   border-bottom:1px solid rgba(0,0,0,0.07);
 }
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
-.nav-logo-img{width:24px;height:24px;opacity:0.9;filter:brightness(0)}
-.nav-name{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink)}
+.nav-logo-img{width:26px;height:26px;filter:brightness(0)}
+.nav-brand-name{font-family:var(--heading);font-size:15px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink)}
 .nav-links{display:flex;align-items:center;gap:28px}
-.nav-link{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .3s;position:relative}
+.nav-link{font-family:var(--body);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .18s;position:relative}
 .nav-link::after{content:"";position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
 .nav-link:hover{color:var(--ink)}
 .nav-link:hover::after{transform:scaleX(1)}
@@ -432,7 +432,7 @@ footer{padding:40px 64px 40px 120px;border-top:1px solid var(--brd);display:flex
 <nav>
   <a href="index.html" class="nav-brand">
     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJ3aGl0ZSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSBzY2FsZSgxKSI+PHBhdGggZD0iTTYwLjc0NCw0MC4xODZ2NS4xMTJoNS4xMTJjMi4zMTQsMCw0LjE5LTEuODc2LDQuMTktNC4xOXYtNS4xMTJoLTUuMTEyQzYyLjYyLDM1Ljk5Niw2MC43NDQsMzcuODcyLDYwLjc0NCw0MC4xODZ6Ii8+PHBhdGggZD0iTTcxLjUyLDg5LjIzOWMtMC4yNCwwLjI2LDAuMDcsMC42NSwwLjM4LDAuNDhjMTQuNzEtOC4yMSwyNC4zNC0yNC40MywyMi45Ny00Mi43N2MtMS42OS0yMi42My0yMC40My00MC42NC00My4xLTQxLjUxQzI2LjExLDQuNDU5LDUsMjQuOTY5LDUsNTAuNDA5YzAsMTMuMTUsNS42NSwyNC45NywxNC42NCwzMy4yYzAuMzUsMC4zMiwwLjkyLDAuMDYsMC45Mi0wLjQxdi0yNS41OGM1LjY0LDkuMTksMTUuNDUsMTUuNTQsMjYuNzcsMTYuNDFjLTEuMjcsNy42LTUuNDYsMTQuMjItMTEuMzYsMTguN2MtMC4xNywwLjEzLTAuMTMsMC4zOSwwLjA4LDAuNDZjMS43NiwwLjU4LDMuNTcsMS4wNSw1LjQyLDEuNGMwLjA5LDAuMDIsMC4xOC0wLjAxLDAuMjQtMC4wN2M1LjY5LTUuMjgsOS42LTEyLjQ0LDEwLjc1LTIwLjQ4YzExLjQxLTAuODEsMjEuMzEtNy4xOCwyNi45OC0xNi40MnYxMS40OEM3OS40NCw3Ni44NjksNzYuNDMsODMuOTQ5LDcxLjUyLDg5LjIzOXogTTUwLDEwLjE4OWMxMC4yNiwwLDE5LjMxLDUuMjksMjQuNTgsMTMuMjdjLTIuNTgtMS4zOC01LjUyLTIuMTctOC42NC0yLjE3Yy02LjgzLDAtMTIuNzgsMy43NS0xNS45NCw5LjNjLTMuMTYtNS41NS05LjExLTkuMy0xNS45NC05LjNjLTMuMTIsMC02LjA2LDAuNzktOC42NCwyLjE3QzMwLjY5LDE1LjQ3OSwzOS43NCwxMC4xODksNTAsMTAuMTg5eiBNNTAsNjkuMDY5Yy0xNi4yMywwLTI5LjQ0LTEzLjIxLTI5LjQ0LTI5LjQ0YzAtNy4zMSw2LjE5LTEzLjI3LDEzLjUtMTMuMjdjNy4zMiwwLDEzLjQsNS45NiwxMy40LDEzLjI3djEzLjRoNS4wOHYtMTMuNGMwLTcuMzEsNi4wOC0xMy4yNywxMy40LTEzLjI3YzcuMzEsMCwxMy41LDUuOTYsMTMuNSwxMy4yN0M3OS40NCw1NS44NTksNjYuMjMsNjkuMDY5LDUwLDY5LjA2OXoiLz48cGF0aCBkPSJNMzUuMDY3LDM1Ljk5NmgtNS4xMTJ2NS4xMTJjMCwyLjMxNCwxLjg3Niw0LjE5LDQuMTksNC4xOWg1LjExMXYtNS4xMTJDMzkuMjU2LDM3Ljg3MiwzNy4zODEsMzUuOTk2LDM1LjA2NywzNS45OTZ6Ii8+PC9nPjwvc3ZnPg==" class="nav-logo-img" alt="Vilasio">
-    <span class="nav-name">Vilasio</span>
+    <span class="nav-brand-name">VILASIO</span>
   </a>
   <div class="nav-links">
     <a href="cot.html" class="nav-link active">COT Intelligence</a>
