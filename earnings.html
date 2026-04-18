@@ -985,6 +985,7 @@ function closeEpsPanel() {
 }
 
 /* ─── FETCH DATA ─── */
+var _retryCount=0,_retryMax=6,_retryTimer=null;
 function fetchData(endpoint) {
   document.getElementById('update-badge').textContent = 'Loading...';
   fetch(API + endpoint)
@@ -995,10 +996,16 @@ function fetchData(endpoint) {
         return;
       }
       if(data.status==='initializing'){
-        document.querySelectorAll('.skel-wrap').forEach(function(el){el.innerHTML='<div style="text-align:center;padding:60px 0;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase">Scanner initializing... refreshing in 30s</div>'});
-        setTimeout(function(){fetchData('/api/earnings')},30000);
+        _retryCount++;
+        var msg=_retryCount>=_retryMax
+          ?'Scanner still warming up. Please refresh the page in a minute.'
+          :'Scanner warming up — data will appear shortly... ('+_retryCount+'/'+_retryMax+')';
+        document.querySelectorAll('.skel-wrap').forEach(function(el){el.innerHTML='<div style="text-align:center;padding:60px 0;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase">'+msg+'</div>'});
+        document.getElementById('update-badge').textContent=msg;
+        if(_retryCount<_retryMax){_retryTimer=setTimeout(function(){fetchData('/api/earnings')},15000)}
         return;
       }
+      _retryCount=0;if(_retryTimer){clearTimeout(_retryTimer);_retryTimer=null}
       DATA = data;
       document.getElementById('update-badge').textContent = 'Updated: ' + (data.lastUpdate || 'now');
       renderTrendStrip(data.marketTrend || {});
@@ -1015,7 +1022,11 @@ function fetchData(endpoint) {
     })
     .catch(function(err) {
       console.error('Fetch error:', err);
-      showError('Failed to connect to server');
+      _retryCount++;
+      if(_retryCount<_retryMax){
+        document.querySelectorAll('.skel-wrap').forEach(function(el){el.innerHTML='<div style="text-align:center;padding:60px 0;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase">Unable to load earnings data. Retrying... ('+_retryCount+'/'+_retryMax+')</div>'});
+        _retryTimer=setTimeout(function(){fetchData('/api/earnings')},15000);
+      }else{showError('Failed to connect to server')}
     });
 }
 
