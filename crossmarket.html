@@ -612,8 +612,16 @@ function filterByDays(dates,days){
   return 0;
 }
 function slDays(a,dates,days){var idx=filterByDays(dates,days);return a.slice(idx)}
-var axO={grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#555555",font:{family:"IBM Plex Mono",size:8}}};
-var tipO={backgroundColor:"#FFFFFF",titleColor:"#111111",bodyColor:"#222222",borderColor:"rgba(0,0,0,0.08)",borderWidth:1,titleFont:{family:"DM Sans",weight:"600",size:12},bodyFont:{family:"IBM Plex Mono",size:10},padding:10};
+var axO={grid:{get color(){return _gridColor()}},ticks:{get color(){return _axColor()},font:{family:"IBM Plex Mono",size:8}}};
+function _isDark(){return document.documentElement.getAttribute("data-theme")==="dark"}
+function _tipBg(){return _isDark()?"rgba(10,10,15,0.96)":"rgba(255,255,255,0.96)"}
+function _tipTitle(){return _isDark()?"#888890":"#111111"}
+function _tipBody(){return _isDark()?"#E8E8EC":"#222222"}
+function _tipBorder(){return _isDark()?"rgba(255,255,255,0.08)":"#D8D8D4"}
+function _axColor(){return _isDark()?"#888890":"#555555"}
+function _gridColor(){return _isDark()?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.04)"}
+
+var tipO={get backgroundColor(){return _tipBg()},get titleColor(){return _tipTitle()},get bodyColor(){return _tipBody()},get borderColor(){return _tipBorder()},borderWidth:1,titleFont:{family:"DM Sans",weight:"600",size:12},bodyFont:{family:"IBM Plex Mono",size:10},padding:10};
 
 function togCoint(group,k){cointShow[group][k]=cointShow[group][k]?0:1;document.getElementById('leg-'+group+'-'+k.replace(/[^a-zA-Z0-9]/g,'')).style.opacity=cointShow[group][k]?'1':'0.3';window[renderMap[group]]()}
 
@@ -848,7 +856,7 @@ function renderVixSpx(){
       {label:"VIX",data:vs.vix,borderColor:"#5b8af0",backgroundColor:"transparent",borderWidth:2,pointRadius:0,fill:false,tension:0.3,yAxisID:"yVix",spanGaps:true}
     ];
     if(charts.vixSpx)charts.vixSpx.destroy();
-    charts.vixSpx=new Chart(document.getElementById("vixSpxChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),ySpx:{position:"left",grid:{color:"rgba(0,0,0,0.04)"},ticks:{color:"#111111",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v.toFixed(0)}}},yVix:{position:"right",reverse:true,grid:{display:false},ticks:{color:"#5b8af0",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v.toFixed(0)}}}}}});
+    charts.vixSpx=new Chart(document.getElementById("vixSpxChart").getContext("2d"),{type:"line",data:{labels:vs.dates,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:Object.assign({},tipO,{callbacks:{label:function(c){return c.dataset.label+": "+c.parsed.y.toFixed(2)}}})},scales:{x:Object.assign({},axO,{ticks:Object.assign({},axO.ticks,{maxTicksLimit:10,maxRotation:0})}),ySpx:{position:"left",grid:{get color(){return _gridColor()}},ticks:{color:"#111111",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v.toFixed(0)}}},yVix:{position:"right",reverse:true,grid:{display:false},ticks:{color:"#5b8af0",font:{family:"IBM Plex Mono",size:8},callback:function(v){return v.toFixed(0)}}}}}});
   }
 }
 
