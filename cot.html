@@ -526,14 +526,15 @@ var M={};
 var cm="ES",cw=26,cwOI=26,cwSP=26,cwZS=104,aD={},nC=null,oC=null,sC=null,zC=null;
 var pOn={net:0,oi:0,sp:0,zs:0},show={bp:1,dl:1},zsShow={bp:1,dl:1};
 var BC="#5b8af0",BB="rgba(91,138,240,0.06)",DC="#c8a84b",DB="rgba(200,168,75,0.06)";
-var API="https://vilasio-cot-backend.onrender.com",CP="vcot2_";
+var API="https://vilasio-cot-backend.onrender.com",CP="vcot3_";
+var LATEST_REPORT_DATE=null;
 function sR(s){var x=Math.sin(s+1)*99999;return x-Math.floor(x)}
 function gM(mk,wk){var seed=0;for(var i=0;i<mk.length;i++)seed+=mk.charCodeAt(i);var labels=[],bpL=[],bpS=[],bpN=[],dlL=[],dlS=[],dlN=[],oi=[],price=[],dd=[],dp=[];var now=new Date();for(var i=wk;i>=0;i--){var d=new Date(now);d.setDate(d.getDate()-i*7);labels.push(d.toISOString().slice(0,10));var n1=(sR(seed+i)-0.5)*40000;var bl=Math.round(280000+n1),bs=Math.round(140000-n1*0.5);bpL.push(bl);bpS.push(bs);bpN.push(bl-bs);var dll=Math.round(210000-n1*0.7),dls=Math.round(320000+n1*0.5);dlL.push(dll);dlS.push(dls);dlN.push(dll-dls);oi.push(Math.round((bl+bs+dll+dls)*0.9));price.push(Math.round(5000+sR(seed+i+200)*2000))}for(var i=wk*5;i>=0;i--){var d=new Date(now);d.setDate(d.getDate()-i);if(d.getDay()===0||d.getDay()===6)continue;dd.push(d.toISOString().slice(0,10));dp.push(Math.round(5000+sR(seed+i+300)*2000))}return{labels:labels,bpLong:bpL,bpShort:bpS,bpNet:bpN,dlLong:dlL,dlShort:dlS,dlNet:dlN,oi:oi,price:price,dailyDates:dd,dailyPrice:dp,reportDate:labels[labels.length-1]}}
 function nxE(){var n=new Date(),d=n.getUTCDay(),t=(6-d+7)%7||7,x=new Date(n);x.setUTCDate(x.getUTCDate()+t);x.setUTCHours(0,0,0,0);return x.getTime()}
-function lG(k){try{var r=localStorage.getItem(CP+k);if(!r)return null;var c=JSON.parse(r);if(Date.now()<c.ex)return c.d;return{_o:1,_d:c.d}}catch(e){return null}}
-function lS(k,d){try{localStorage.setItem(CP+k,JSON.stringify({d:d,ex:nxE(),t:Date.now()}))}catch(e){}}
+function lG(k,expectedRd){try{var r=localStorage.getItem(CP+k);if(!r)return null;var c=JSON.parse(r);if(expectedRd&&c.rd&&c.rd!==expectedRd)return null;if(Date.now()<c.ex)return c.d;return{_o:1,_d:c.d}}catch(e){return null}}
+function lS(k,d){try{localStorage.setItem(CP+k,JSON.stringify({d:d,rd:(d&&d.reportDate)||null,ex:nxE(),t:Date.now()}))}catch(e){}}
 function fR(url,n,g){return new Promise(function(ok,no){var a=0;function go(){Promise.race([fetch(url),new Promise(function(_,r){setTimeout(function(){r(new Error("timeout"))},15000)})]).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(ok).catch(function(e){a++;if(a<=n)setTimeout(go,g*a);else no(e)})}go()})}
-function lD(mk,wk){var key=mk+"_"+wk;if(aD[key])return Promise.resolve(aD[key]);var ca=lG(key);if(ca&&!ca._o){aD[key]=ca;return Promise.resolve(ca)}if(ca&&ca._o){aD[key]=ca._d;fR(API+"/api/cot?market="+mk+"&weeks="+wk,2,3000).then(function(d){aD[key]=d;lS(key,d)}).catch(function(){});return Promise.resolve(ca._d)}return fR(API+"/api/cot?market="+mk+"&weeks="+wk,3,3000).then(function(d){aD[key]=d;lS(key,d);return d}).catch(function(e){console.warn("API fail "+mk+":",e.message);aD[key]=gM(mk,wk);return aD[key]})}
+function lD(mk,wk){var key=mk+"_"+wk;if(aD[key])return Promise.resolve(aD[key]);var ca=lG(key,LATEST_REPORT_DATE);if(ca&&!ca._o){aD[key]=ca;return Promise.resolve(ca)}if(ca&&ca._o){aD[key]=ca._d;fR(API+"/api/cot?market="+mk+"&weeks="+wk,2,3000).then(function(d){aD[key]=d;lS(key,d)}).catch(function(){});return Promise.resolve(ca._d)}return fR(API+"/api/cot?market="+mk+"&weeks="+wk,3,3000).then(function(d){aD[key]=d;lS(key,d);return d}).catch(function(e){console.warn("API fail "+mk+":",e.message);aD[key]=gM(mk,wk);return aD[key]})}
 function fmt(n){if(n==null)return"\u2014";return n.toLocaleString("en-US")}
 function fS(n){if(n==null)return"\u2014";return(n>=0?"+":"")+n.toLocaleString("en-US")}
 function fK(n){if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+"M";if(Math.abs(n)>=1e3)return(n/1e3).toFixed(0)+"K";return n.toString()}
@@ -548,6 +549,7 @@ function pTip(c){if(c.dataset.yAxisID==="yP"){var v=c.parsed.y;return"Price: "+(
 /* HEATMAP - grouped by category */
 function rHM(){
   return fR(API+"/api/cot/summary",2,3000).then(function(resp){
+    LATEST_REPORT_DATE=resp.latestReportDate||null;
     var mkts=resp.markets;
     mkts.forEach(function(m){M[m.market]={name:m.name,cat:m.cat,exchange:"",bpNet:m.bpNet,bpNetChg:m.bpNetChg,dlNet:m.dlNet,dlNetChg:m.dlNetChg,oi:m.oi,oiChg:m.oiChg,reportDate:m.reportDate}});
     var area=document.getElementById("heatmap-area");area.innerHTML="";
